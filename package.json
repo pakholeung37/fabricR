@@ -78,12 +78,19 @@
     "pixelmatch": "^4.0.2",
     "prettier": "^2.1.2",
     "qunit": "2.9.2",
+    "rollup": "^2.28.1",
+    "rollup-plugin-babel": "^4.4.0",
+    "rollup-plugin-commonjs": "^10.1.0",
+    "rollup-plugin-node-resolve": "^5.2.0",
+    "rollup-plugin-terser": "^7.0.2",
+    "terser": "^5.3.2",
     "testem": "^3.2.0",
     "uglify-js": "^3.0.0"
   },
   "engines": {
     "node": ">=8.0.0"
   },
-  "main": "./dist/fabric.js",
+  "main": "./dist/fabric.cjs.js",
+  "module": "./dist/fabric.esm.js",
   "dependencies": {}
 }
