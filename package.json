@@ -51,7 +51,8 @@
     "test:visual": "qunit test/node_test_setup.js test/lib test/visual",
     "test:visual:single": "qunit test/node_test_setup.js test/lib",
     "test:all": "npm run test && npm run test:visual",
-    "lint": "eslint --config .eslintrc.json src",
+    "lint": "eslint --config src",
+    "lint:fix": "eslint --fix src",
     "lint_tests": "eslint test/unit --config .eslintrc_tests && eslint test/visual --config .eslintrc_tests",
     "export_gesture_to_site": "cp dist/fabric.js ../fabricjs.com/lib/fabric_with_gestures.js",
     "export_dist_to_site": "cp dist/fabric.js ../fabricjs.com/lib/fabric.js && cp package.json ../fabricjs.com/lib/package.json && cp -r src HEADER.js lib ../fabricjs.com/build/files/",
@@ -66,14 +67,19 @@
     "jsdom": "^15.2.1"
   },
   "devDependencies": {
+    "@babel/preset-env": "^7.11.5",
+    "babel-eslint": "^10.1.0",
     "chalk": "^2.4.1",
-    "eslint": "4.18.x",
+    "eslint": "^7.0.0",
+    "eslint-config-prettier": "^6.11.0",
+    "eslint-plugin-prettier": "^3.1.4",
     "nyc": "^15.1.0",
     "onchange": "^3.x.x",
     "pixelmatch": "^4.0.2",
+    "prettier": "^2.1.2",
     "qunit": "2.9.2",
     "testem": "^3.2.0",
-    "uglify-js": "3.3.x"
+    "uglify-js": "^3.0.0"
   },
   "engines": {
     "node": ">=8.0.0"

@@ -1,17 +1,16 @@
-(function(global) {
-
-  'use strict';
+;(function (global) {
+  "use strict"
 
   /* Adaptation of work of Kevin Lindsey (kevin@kevlindev.com) */
 
-  var fabric = global.fabric || (global.fabric = { });
+  var fabric = global.fabric || (global.fabric = {})
 
   if (fabric.Point) {
-    fabric.warn('fabric.Point is already defined');
-    return;
+    fabric.warn("fabric.Point is already defined")
+    return
   }
 
-  fabric.Point = Point;
+  fabric.Point = Point
 
   /**
    * Point class
@@ -23,13 +22,12 @@
    * @return {fabric.Point} thisArg
    */
   function Point(x, y) {
-    this.x = x;
-    this.y = y;
+    this.x = x
+    this.y = y
   }
 
   Point.prototype = /** @lends fabric.Point.prototype */ {
-
-    type: 'point',
+    type: "point",
 
     constructor: Point,
 
@@ -39,7 +37,7 @@
      * @return {fabric.Point} new Point instance with added values
      */
     add: function (that) {
-      return new Point(this.x + that.x, this.y + that.y);
+      return new Point(this.x + that.x, this.y + that.y)
     },
 
     /**
@@ -49,9 +47,9 @@
      * @chainable
      */
     addEquals: function (that) {
-      this.x += that.x;
-      this.y += that.y;
-      return this;
+      this.x += that.x
+      this.y += that.y
+      return this
     },
 
     /**
@@ -60,7 +58,7 @@
      * @return {fabric.Point} new Point with added value
      */
     scalarAdd: function (scalar) {
-      return new Point(this.x + scalar, this.y + scalar);
+      return new Point(this.x + scalar, this.y + scalar)
     },
 
     /**
@@ -70,9 +68,9 @@
      * @chainable
      */
     scalarAddEquals: function (scalar) {
-      this.x += scalar;
-      this.y += scalar;
-      return this;
+      this.x += scalar
+      this.y += scalar
+      return this
     },
 
     /**
@@ -81,7 +79,7 @@
      * @return {fabric.Point} new Point object with subtracted values
      */
     subtract: function (that) {
-      return new Point(this.x - that.x, this.y - that.y);
+      return new Point(this.x - that.x, this.y - that.y)
     },
 
     /**
@@ -91,9 +89,9 @@
      * @chainable
      */
     subtractEquals: function (that) {
-      this.x -= that.x;
-      this.y -= that.y;
-      return this;
+      this.x -= that.x
+      this.y -= that.y
+      return this
     },
 
     /**
@@ -102,7 +100,7 @@
      * @return {fabric.Point}
      */
     scalarSubtract: function (scalar) {
-      return new Point(this.x - scalar, this.y - scalar);
+      return new Point(this.x - scalar, this.y - scalar)
     },
 
     /**
@@ -112,9 +110,9 @@
      * @chainable
      */
     scalarSubtractEquals: function (scalar) {
-      this.x -= scalar;
-      this.y -= scalar;
-      return this;
+      this.x -= scalar
+      this.y -= scalar
+      return this
     },
 
     /**
@@ -124,7 +122,7 @@
      * @return {fabric.Point}
      */
     multiply: function (scalar) {
-      return new Point(this.x * scalar, this.y * scalar);
+      return new Point(this.x * scalar, this.y * scalar)
     },
 
     /**
@@ -135,9 +133,9 @@
      * @chainable
      */
     multiplyEquals: function (scalar) {
-      this.x *= scalar;
-      this.y *= scalar;
-      return this;
+      this.x *= scalar
+      this.y *= scalar
+      return this
     },
 
     /**
@@ -147,7 +145,7 @@
      * @return {fabric.Point}
      */
     divide: function (scalar) {
-      return new Point(this.x / scalar, this.y / scalar);
+      return new Point(this.x / scalar, this.y / scalar)
     },
 
     /**
@@ -158,9 +156,9 @@
      * @chainable
      */
     divideEquals: function (scalar) {
-      this.x /= scalar;
-      this.y /= scalar;
-      return this;
+      this.x /= scalar
+      this.y /= scalar
+      return this
     },
 
     /**
@@ -169,7 +167,7 @@
      * @return {Boolean}
      */
     eq: function (that) {
-      return (this.x === that.x && this.y === that.y);
+      return this.x === that.x && this.y === that.y
     },
 
     /**
@@ -178,7 +176,7 @@
      * @return {Boolean}
      */
     lt: function (that) {
-      return (this.x < that.x && this.y < that.y);
+      return this.x < that.x && this.y < that.y
     },
 
     /**
@@ -187,7 +185,7 @@
      * @return {Boolean}
      */
     lte: function (that) {
-      return (this.x <= that.x && this.y <= that.y);
+      return this.x <= that.x && this.y <= that.y
     },
 
     /**
@@ -197,7 +195,7 @@
      * @return {Boolean}
      */
     gt: function (that) {
-      return (this.x > that.x && this.y > that.y);
+      return this.x > that.x && this.y > that.y
     },
 
     /**
@@ -206,7 +204,7 @@
      * @return {Boolean}
      */
     gte: function (that) {
-      return (this.x >= that.x && this.y >= that.y);
+      return this.x >= that.x && this.y >= that.y
     },
 
     /**
@@ -216,11 +214,14 @@
      * @return {fabric.Point}
      */
     lerp: function (that, t) {
-      if (typeof t === 'undefined') {
-        t = 0.5;
+      if (typeof t === "undefined") {
+        t = 0.5
       }
-      t = Math.max(Math.min(1, t), 0);
-      return new Point(this.x + (that.x - this.x) * t, this.y + (that.y - this.y) * t);
+      t = Math.max(Math.min(1, t), 0)
+      return new Point(
+        this.x + (that.x - this.x) * t,
+        this.y + (that.y - this.y) * t
+      )
     },
 
     /**
@@ -230,8 +231,8 @@
      */
     distanceFrom: function (that) {
       var dx = this.x - that.x,
-          dy = this.y - that.y;
-      return Math.sqrt(dx * dx + dy * dy);
+        dy = this.y - that.y
+      return Math.sqrt(dx * dx + dy * dy)
     },
 
     /**
@@ -240,7 +241,7 @@
      * @return {fabric.Point}
      */
     midPointFrom: function (that) {
-      return this.lerp(that);
+      return this.lerp(that)
     },
 
     /**
@@ -249,7 +250,7 @@
      * @return {fabric.Point}
      */
     min: function (that) {
-      return new Point(Math.min(this.x, that.x), Math.min(this.y, that.y));
+      return new Point(Math.min(this.x, that.x), Math.min(this.y, that.y))
     },
 
     /**
@@ -258,7 +259,7 @@
      * @return {fabric.Point}
      */
     max: function (that) {
-      return new Point(Math.max(this.x, that.x), Math.max(this.y, that.y));
+      return new Point(Math.max(this.x, that.x), Math.max(this.y, that.y))
     },
 
     /**
@@ -266,7 +267,7 @@
      * @return {String}
      */
     toString: function () {
-      return this.x + ',' + this.y;
+      return this.x + "," + this.y
     },
 
     /**
@@ -276,9 +277,9 @@
      * @chainable
      */
     setXY: function (x, y) {
-      this.x = x;
-      this.y = y;
-      return this;
+      this.x = x
+      this.y = y
+      return this
     },
 
     /**
@@ -287,8 +288,8 @@
      * @chainable
      */
     setX: function (x) {
-      this.x = x;
-      return this;
+      this.x = x
+      return this
     },
 
     /**
@@ -297,8 +298,8 @@
      * @chainable
      */
     setY: function (y) {
-      this.y = y;
-      return this;
+      this.y = y
+      return this
     },
 
     /**
@@ -307,9 +308,9 @@
      * @chainable
      */
     setFromPoint: function (that) {
-      this.x = that.x;
-      this.y = that.y;
-      return this;
+      this.x = that.x
+      this.y = that.y
+      return this
     },
 
     /**
@@ -318,11 +319,11 @@
      */
     swap: function (that) {
       var x = this.x,
-          y = this.y;
-      this.x = that.x;
-      this.y = that.y;
-      that.x = x;
-      that.y = y;
+        y = this.y
+      this.x = that.x
+      this.y = that.y
+      that.x = x
+      that.y = y
     },
 
     /**
@@ -330,8 +331,7 @@
      * @return {fabric.Point}
      */
     clone: function () {
-      return new Point(this.x, this.y);
+      return new Point(this.x, this.y)
     }
-  };
-
-})(typeof exports !== 'undefined' ? exports : this);
+  }
+})(typeof exports !== "undefined" ? exports : this)

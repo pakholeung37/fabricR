@@ -2,14 +2,13 @@
  * @namespace fabric.CommonMethods
  */
 fabric.CommonMethods = {
-
   /**
    * Sets object's properties from options
    * @param {Object} [options] Options object
    */
-  _setOptions: function(options) {
+  _setOptions: function (options) {
     for (var prop in options) {
-      this.set(prop, options[prop]);
+      this.set(prop, options[prop])
     }
   },
 
@@ -18,9 +17,9 @@ fabric.CommonMethods = {
    * @param {Object} [filler] Options object
    * @param {String} [property] property to set the Gradient to
    */
-  _initGradient: function(filler, property) {
+  _initGradient: function (filler, property) {
     if (filler && filler.colorStops && !(filler instanceof fabric.Gradient)) {
-      this.set(property, new fabric.Gradient(filler));
+      this.set(property, new fabric.Gradient(filler))
     }
   },
 
@@ -30,21 +29,20 @@ fabric.CommonMethods = {
    * @param {String} [property] property to set the Pattern to
    * @param {Function} [callback] callback to invoke after pattern load
    */
-  _initPattern: function(filler, property, callback) {
+  _initPattern: function (filler, property, callback) {
     if (filler && filler.source && !(filler instanceof fabric.Pattern)) {
-      this.set(property, new fabric.Pattern(filler, callback));
-    }
-    else {
-      callback && callback();
+      this.set(property, new fabric.Pattern(filler, callback))
+    } else {
+      callback && callback()
     }
   },
 
   /**
    * @private
    */
-  _setObject: function(obj) {
+  _setObject: function (obj) {
     for (var prop in obj) {
-      this._set(prop, obj[prop]);
+      this._set(prop, obj[prop])
     }
   },
 
@@ -55,18 +53,17 @@ fabric.CommonMethods = {
    * @return {fabric.Object} thisArg
    * @chainable
    */
-  set: function(key, value) {
-    if (typeof key === 'object') {
-      this._setObject(key);
+  set: function (key, value) {
+    if (typeof key === "object") {
+      this._setObject(key)
+    } else {
+      this._set(key, value)
     }
-    else {
-      this._set(key, value);
-    }
-    return this;
+    return this
   },
 
-  _set: function(key, value) {
-    this[key] = value;
+  _set: function (key, value) {
+    this[key] = value
   },
 
   /**
@@ -75,12 +72,12 @@ fabric.CommonMethods = {
    * @return {fabric.Object} thisArg
    * @chainable
    */
-  toggle: function(property) {
-    var value = this.get(property);
-    if (typeof value === 'boolean') {
-      this.set(property, !value);
+  toggle: function (property) {
+    var value = this.get(property)
+    if (typeof value === "boolean") {
+      this.set(property, !value)
     }
-    return this;
+    return this
   },
 
   /**
@@ -88,7 +85,7 @@ fabric.CommonMethods = {
    * @param {String} property Property name
    * @return {*} value of a property
    */
-  get: function(property) {
-    return this[property];
+  get: function (property) {
+    return this[property]
   }
-};
+}

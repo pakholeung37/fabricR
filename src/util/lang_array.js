@@ -1,6 +1,5 @@
-(function() {
-
-  var slice = Array.prototype.slice;
+;(function () {
+  var slice = Array.prototype.slice
 
   /**
    * Invokes method on all items in a given array
@@ -10,11 +9,14 @@
    * @return {Array}
    */
   function invoke(array, method) {
-    var args = slice.call(arguments, 2), result = [];
+    var args = slice.call(arguments, 2),
+      result = []
     for (var i = 0, len = array.length; i < len; i++) {
-      result[i] = args.length ? array[i][method].apply(array[i], args) : array[i][method].call(array[i]);
+      result[i] = args.length
+        ? array[i][method].apply(array[i], args)
+        : array[i][method].call(array[i])
     }
-    return result;
+    return result
   }
 
   /**
@@ -25,9 +27,9 @@
    * @return {*}
    */
   function max(array, byProperty) {
-    return find(array, byProperty, function(value1, value2) {
-      return value1 >= value2;
-    });
+    return find(array, byProperty, function (value1, value2) {
+      return value1 >= value2
+    })
   }
 
   /**
@@ -38,20 +40,20 @@
    * @return {*}
    */
   function min(array, byProperty) {
-    return find(array, byProperty, function(value1, value2) {
-      return value1 < value2;
-    });
+    return find(array, byProperty, function (value1, value2) {
+      return value1 < value2
+    })
   }
 
   /**
    * @private
    */
   function fill(array, value) {
-    var k = array.length;
+    var k = array.length
     while (k--) {
-      array[k] = value;
+      array[k] = value
     }
-    return array;
+    return array
   }
 
   /**
@@ -59,26 +61,25 @@
    */
   function find(array, byProperty, condition) {
     if (!array || array.length === 0) {
-      return;
+      return
     }
 
     var i = array.length - 1,
-        result = byProperty ? array[i][byProperty] : array[i];
+      result = byProperty ? array[i][byProperty] : array[i]
     if (byProperty) {
       while (i--) {
         if (condition(array[i][byProperty], result)) {
-          result = array[i][byProperty];
+          result = array[i][byProperty]
         }
       }
-    }
-    else {
+    } else {
       while (i--) {
         if (condition(array[i], result)) {
-          result = array[i];
+          result = array[i]
         }
       }
     }
-    return result;
+    return result
   }
 
   /**
@@ -89,6 +90,5 @@
     invoke: invoke,
     min: min,
     max: max
-  };
-
-})();
+  }
+})()

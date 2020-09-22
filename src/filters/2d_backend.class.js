@@ -1,15 +1,14 @@
-(function() {
+;(function () {
+  "use strict"
 
-  'use strict';
+  var noop = function () {}
 
-  var noop = function() {};
-
-  fabric.Canvas2dFilterBackend = Canvas2dFilterBackend;
+  fabric.Canvas2dFilterBackend = Canvas2dFilterBackend
 
   /**
    * Canvas 2D filter backend.
    */
-  function Canvas2dFilterBackend() {};
+  function Canvas2dFilterBackend() {}
 
   Canvas2dFilterBackend.prototype = /** @lends fabric.Canvas2dFilterBackend.prototype */ {
     evictCachesForKey: noop,
@@ -23,9 +22,7 @@
      * in this object there will be appended some canvases, created once, resized sometimes
      * cleared never. Clearing is left to the developer.
      **/
-    resources: {
-
-    },
+    resources: {},
 
     /**
      * Apply a set of filters against a source image and draw the filtered output
@@ -37,11 +34,17 @@
      * @param {Number} sourceHeight The height of the source input.
      * @param {HTMLCanvasElement} targetCanvas The destination for filtered output to be drawn.
      */
-    applyFilters: function(filters, sourceElement, sourceWidth, sourceHeight, targetCanvas) {
-      var ctx = targetCanvas.getContext('2d');
-      ctx.drawImage(sourceElement, 0, 0, sourceWidth, sourceHeight);
-      var imageData = ctx.getImageData(0, 0, sourceWidth, sourceHeight);
-      var originalImageData = ctx.getImageData(0, 0, sourceWidth, sourceHeight);
+    applyFilters: function (
+      filters,
+      sourceElement,
+      sourceWidth,
+      sourceHeight,
+      targetCanvas
+    ) {
+      var ctx = targetCanvas.getContext("2d")
+      ctx.drawImage(sourceElement, 0, 0, sourceWidth, sourceHeight)
+      var imageData = ctx.getImageData(0, 0, sourceWidth, sourceHeight)
+      var originalImageData = ctx.getImageData(0, 0, sourceWidth, sourceHeight)
       var pipelineState = {
         sourceWidth: sourceWidth,
         sourceHeight: sourceHeight,
@@ -50,16 +53,20 @@
         originalImageData: originalImageData,
         canvasEl: targetCanvas,
         ctx: ctx,
-        filterBackend: this,
-      };
-      filters.forEach(function(filter) { filter.applyTo(pipelineState); });
-      if (pipelineState.imageData.width !== sourceWidth || pipelineState.imageData.height !== sourceHeight) {
-        targetCanvas.width = pipelineState.imageData.width;
-        targetCanvas.height = pipelineState.imageData.height;
+        filterBackend: this
       }
-      ctx.putImageData(pipelineState.imageData, 0, 0);
-      return pipelineState;
-    },
-
-  };
-})();
+      filters.forEach(function (filter) {
+        filter.applyTo(pipelineState)
+      })
+      if (
+        pipelineState.imageData.width !== sourceWidth ||
+        pipelineState.imageData.height !== sourceHeight
+      ) {
+        targetCanvas.width = pipelineState.imageData.width
+        targetCanvas.height = pipelineState.imageData.height
+      }
+      ctx.putImageData(pipelineState.imageData, 0, 0)
+      return pipelineState
+    }
+  }
+})()

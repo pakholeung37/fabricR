@@ -1,8 +1,7 @@
-(function(global) {
+;(function (global) {
+  "use strict"
 
-  'use strict';
-
-  var fabric = global.fabric || (global.fabric = {});
+  var fabric = global.fabric || (global.fabric = {})
 
   /**
    * Textbox class, based on IText, allows the user to resize the text rectangle
@@ -16,13 +15,12 @@
    * @see {@link fabric.Textbox#initialize} for constructor definition
    */
   fabric.Textbox = fabric.util.createClass(fabric.IText, fabric.Observable, {
-
     /**
      * Type of an object
      * @type String
      * @default
      */
-    type: 'textbox',
+    type: "textbox",
 
     /**
      * Minimum width of textbox, in pixels.
@@ -62,7 +60,9 @@
      * @type Object
      * @private
      */
-    _dimensionAffectingProps: fabric.Text.prototype._dimensionAffectingProps.concat('width'),
+    _dimensionAffectingProps: fabric.Text.prototype._dimensionAffectingProps.concat(
+      "width"
+    ),
 
     /**
      * Use this regular expression to split strings in breakable lines
@@ -84,28 +84,28 @@
      * @private
      * @override
      */
-    initDimensions: function() {
+    initDimensions: function () {
       if (this.__skipDimension) {
-        return;
+        return
       }
-      this.isEditing && this.initDelayedCursor();
-      this.clearContextTop();
-      this._clearCache();
+      this.isEditing && this.initDelayedCursor()
+      this.clearContextTop()
+      this._clearCache()
       // clear dynamicMinWidth as it will be different after we re-wrap line
-      this.dynamicMinWidth = 0;
+      this.dynamicMinWidth = 0
       // wrap lines
-      this._styleMap = this._generateStyleMap(this._splitText());
+      this._styleMap = this._generateStyleMap(this._splitText())
       // if after wrapping, the width is smaller than dynamicMinWidth, change the width and re-wrap
       if (this.dynamicMinWidth > this.width) {
-        this._set('width', this.dynamicMinWidth);
+        this._set("width", this.dynamicMinWidth)
       }
-      if (this.textAlign.indexOf('justify') !== -1) {
+      if (this.textAlign.indexOf("justify") !== -1) {
         // once text is measured we need to make space fatter to make justified text.
-        this.enlargeSpaces();
+        this.enlargeSpaces()
       }
       // clear cache and re-calculate height
-      this.height = this.calcTextHeight();
-      this.saveState({ propertySet: '_dimensionAffectingProps' });
+      this.height = this.calcTextHeight()
+      this.saveState({ propertySet: "_dimensionAffectingProps" })
     },
 
     /**
@@ -115,31 +115,34 @@
      * which is only sufficient for Text / IText
      * @private
      */
-    _generateStyleMap: function(textInfo) {
-      var realLineCount     = 0,
-          realLineCharCount = 0,
-          charCount         = 0,
-          map               = {};
+    _generateStyleMap: function (textInfo) {
+      var realLineCount = 0,
+        realLineCharCount = 0,
+        charCount = 0,
+        map = {}
 
       for (var i = 0; i < textInfo.graphemeLines.length; i++) {
-        if (textInfo.graphemeText[charCount] === '\n' && i > 0) {
-          realLineCharCount = 0;
-          charCount++;
-          realLineCount++;
-        }
-        else if (!this.splitByGrapheme && this._reSpaceAndTab.test(textInfo.graphemeText[charCount]) && i > 0) {
+        if (textInfo.graphemeText[charCount] === "\n" && i > 0) {
+          realLineCharCount = 0
+          charCount++
+          realLineCount++
+        } else if (
+          !this.splitByGrapheme &&
+          this._reSpaceAndTab.test(textInfo.graphemeText[charCount]) &&
+          i > 0
+        ) {
           // this case deals with space's that are removed from end of lines when wrapping
-          realLineCharCount++;
-          charCount++;
+          realLineCharCount++
+          charCount++
         }
 
-        map[i] = { line: realLineCount, offset: realLineCharCount };
+        map[i] = { line: realLineCount, offset: realLineCharCount }
 
-        charCount += textInfo.graphemeLines[i].length;
-        realLineCharCount += textInfo.graphemeLines[i].length;
+        charCount += textInfo.graphemeLines[i].length
+        realLineCharCount += textInfo.graphemeLines[i].length
       }
 
-      return map;
+      return map
     },
 
     /**
@@ -147,14 +150,14 @@
      * @param {Number} lineIndex
      * @return {Boolean}
      */
-    styleHas: function(property, lineIndex) {
+    styleHas: function (property, lineIndex) {
       if (this._styleMap && !this.isWrapping) {
-        var map = this._styleMap[lineIndex];
+        var map = this._styleMap[lineIndex]
         if (map) {
-          lineIndex = map.line;
+          lineIndex = map.line
         }
       }
-      return fabric.Text.prototype.styleHas.call(this, property, lineIndex);
+      return fabric.Text.prototype.styleHas.call(this, property, lineIndex)
     },
 
     /**
@@ -162,33 +165,41 @@
      * @param {Number} lineIndex , lineIndex is on wrapped lines.
      * @return {Boolean}
      */
-    isEmptyStyles: function(lineIndex) {
+    isEmptyStyles: function (lineIndex) {
       if (!this.styles) {
-        return true;
+        return true
       }
-      var offset = 0, nextLineIndex = lineIndex + 1, nextOffset, obj, shouldLimit = false,
-          map = this._styleMap[lineIndex], mapNextLine = this._styleMap[lineIndex + 1];
+      var offset = 0,
+        nextLineIndex = lineIndex + 1,
+        nextOffset,
+        obj,
+        shouldLimit = false,
+        map = this._styleMap[lineIndex],
+        mapNextLine = this._styleMap[lineIndex + 1]
       if (map) {
-        lineIndex = map.line;
-        offset = map.offset;
+        lineIndex = map.line
+        offset = map.offset
       }
       if (mapNextLine) {
-        nextLineIndex = mapNextLine.line;
-        shouldLimit = nextLineIndex === lineIndex;
-        nextOffset = mapNextLine.offset;
+        nextLineIndex = mapNextLine.line
+        shouldLimit = nextLineIndex === lineIndex
+        nextOffset = mapNextLine.offset
       }
-      obj = typeof lineIndex === 'undefined' ? this.styles : { line: this.styles[lineIndex] };
+      obj =
+        typeof lineIndex === "undefined"
+          ? this.styles
+          : { line: this.styles[lineIndex] }
       for (var p1 in obj) {
         for (var p2 in obj[p1]) {
           if (p2 >= offset && (!shouldLimit || p2 < nextOffset)) {
             // eslint-disable-next-line no-unused-vars
             for (var p3 in obj[p1][p2]) {
-              return false;
+              return false
             }
           }
         }
       }
-      return true;
+      return true
     },
 
     /**
@@ -196,16 +207,16 @@
      * @param {Number} charIndex
      * @private
      */
-    _getStyleDeclaration: function(lineIndex, charIndex) {
+    _getStyleDeclaration: function (lineIndex, charIndex) {
       if (this._styleMap && !this.isWrapping) {
-        var map = this._styleMap[lineIndex];
+        var map = this._styleMap[lineIndex]
         if (!map) {
-          return null;
+          return null
         }
-        lineIndex = map.line;
-        charIndex = map.offset + charIndex;
+        lineIndex = map.line
+        charIndex = map.offset + charIndex
       }
-      return this.callSuper('_getStyleDeclaration', lineIndex, charIndex);
+      return this.callSuper("_getStyleDeclaration", lineIndex, charIndex)
     },
 
     /**
@@ -214,12 +225,12 @@
      * @param {Object} style
      * @private
      */
-    _setStyleDeclaration: function(lineIndex, charIndex, style) {
-      var map = this._styleMap[lineIndex];
-      lineIndex = map.line;
-      charIndex = map.offset + charIndex;
+    _setStyleDeclaration: function (lineIndex, charIndex, style) {
+      var map = this._styleMap[lineIndex]
+      lineIndex = map.line
+      charIndex = map.offset + charIndex
 
-      this.styles[lineIndex][charIndex] = style;
+      this.styles[lineIndex][charIndex] = style
     },
 
     /**
@@ -227,11 +238,11 @@
      * @param {Number} charIndex
      * @private
      */
-    _deleteStyleDeclaration: function(lineIndex, charIndex) {
-      var map = this._styleMap[lineIndex];
-      lineIndex = map.line;
-      charIndex = map.offset + charIndex;
-      delete this.styles[lineIndex][charIndex];
+    _deleteStyleDeclaration: function (lineIndex, charIndex) {
+      var map = this._styleMap[lineIndex]
+      lineIndex = map.line
+      charIndex = map.offset + charIndex
+      delete this.styles[lineIndex][charIndex]
     },
 
     /**
@@ -242,9 +253,9 @@
      * @returns {Boolean} if the line exists or not
      * @private
      */
-    _getLineStyle: function(lineIndex) {
-      var map = this._styleMap[lineIndex];
-      return !!this.styles[map.line];
+    _getLineStyle: function (lineIndex) {
+      var map = this._styleMap[lineIndex]
+      return !!this.styles[map.line]
     },
 
     /**
@@ -253,9 +264,9 @@
      * @param {Object} style
      * @private
      */
-    _setLineStyle: function(lineIndex) {
-      var map = this._styleMap[lineIndex];
-      this.styles[map.line] = {};
+    _setLineStyle: function (lineIndex) {
+      var map = this._styleMap[lineIndex]
+      this.styles[map.line] = {}
     },
 
     /**
@@ -267,14 +278,15 @@
      * @param {Number} desiredWidth width you want to wrap to
      * @returns {Array} Array of lines
      */
-    _wrapText: function(lines, desiredWidth) {
-      var wrapped = [], i;
-      this.isWrapping = true;
+    _wrapText: function (lines, desiredWidth) {
+      var wrapped = [],
+        i
+      this.isWrapping = true
       for (i = 0; i < lines.length; i++) {
-        wrapped = wrapped.concat(this._wrapLine(lines[i], i, desiredWidth));
+        wrapped = wrapped.concat(this._wrapLine(lines[i], i, desiredWidth))
       }
-      this.isWrapping = false;
-      return wrapped;
+      this.isWrapping = false
+      return wrapped
     },
 
     /**
@@ -287,15 +299,23 @@
      * @returns {number}
      * @private
      */
-    _measureWord: function(word, lineIndex, charOffset) {
-      var width = 0, prevGrapheme, skipLeft = true;
-      charOffset = charOffset || 0;
+    _measureWord: function (word, lineIndex, charOffset) {
+      var width = 0,
+        prevGrapheme,
+        skipLeft = true
+      charOffset = charOffset || 0
       for (var i = 0, len = word.length; i < len; i++) {
-        var box = this._getGraphemeBox(word[i], lineIndex, i + charOffset, prevGrapheme, skipLeft);
-        width += box.kernedWidth;
-        prevGrapheme = word[i];
+        var box = this._getGraphemeBox(
+          word[i],
+          lineIndex,
+          i + charOffset,
+          prevGrapheme,
+          skipLeft
+        )
+        width += box.kernedWidth
+        prevGrapheme = word[i]
       }
-      return width;
+      return width
     },
 
     /**
@@ -307,64 +327,70 @@
      * @returns {Array} Array of line(s) into which the given text is wrapped
      * to.
      */
-    _wrapLine: function(_line, lineIndex, desiredWidth, reservedSpace) {
+    _wrapLine: function (_line, lineIndex, desiredWidth, reservedSpace) {
       var lineWidth = 0,
-          splitByGrapheme = this.splitByGrapheme,
-          graphemeLines = [],
-          line = [],
-          // spaces in different languges?
-          words = splitByGrapheme ? fabric.util.string.graphemeSplit(_line) : _line.split(this._wordJoiners),
-          word = '',
-          offset = 0,
-          infix = splitByGrapheme ? '' : ' ',
-          wordWidth = 0,
-          infixWidth = 0,
-          largestWordWidth = 0,
-          lineJustStarted = true,
-          additionalSpace = this._getWidthOfCharSpacing(),
-          reservedSpace = reservedSpace || 0;
+        splitByGrapheme = this.splitByGrapheme,
+        graphemeLines = [],
+        line = [],
+        // spaces in different languges?
+        words = splitByGrapheme
+          ? fabric.util.string.graphemeSplit(_line)
+          : _line.split(this._wordJoiners),
+        word = "",
+        offset = 0,
+        infix = splitByGrapheme ? "" : " ",
+        wordWidth = 0,
+        infixWidth = 0,
+        largestWordWidth = 0,
+        lineJustStarted = true,
+        additionalSpace = this._getWidthOfCharSpacing(),
+        reservedSpace = reservedSpace || 0
       // fix a difference between split and graphemeSplit
       if (words.length === 0) {
-        words.push([]);
+        words.push([])
       }
-      desiredWidth -= reservedSpace;
+      desiredWidth -= reservedSpace
       for (var i = 0; i < words.length; i++) {
         // if using splitByGrapheme words are already in graphemes.
-        word = splitByGrapheme ? words[i] : fabric.util.string.graphemeSplit(words[i]);
-        wordWidth = this._measureWord(word, lineIndex, offset);
-        offset += word.length;
+        word = splitByGrapheme
+          ? words[i]
+          : fabric.util.string.graphemeSplit(words[i])
+        wordWidth = this._measureWord(word, lineIndex, offset)
+        offset += word.length
 
-        lineWidth += infixWidth + wordWidth - additionalSpace;
+        lineWidth += infixWidth + wordWidth - additionalSpace
         if (lineWidth >= desiredWidth && !lineJustStarted) {
-          graphemeLines.push(line);
-          line = [];
-          lineWidth = wordWidth;
-          lineJustStarted = true;
-        }
-        else {
-          lineWidth += additionalSpace;
+          graphemeLines.push(line)
+          line = []
+          lineWidth = wordWidth
+          lineJustStarted = true
+        } else {
+          lineWidth += additionalSpace
         }
 
         if (!lineJustStarted && !splitByGrapheme) {
-          line.push(infix);
+          line.push(infix)
         }
-        line = line.concat(word);
+        line = line.concat(word)
 
-        infixWidth = splitByGrapheme ? 0 : this._measureWord([infix], lineIndex, offset);
-        offset++;
-        lineJustStarted = false;
+        infixWidth = splitByGrapheme
+          ? 0
+          : this._measureWord([infix], lineIndex, offset)
+        offset++
+        lineJustStarted = false
         // keep track of largest word
         if (wordWidth > largestWordWidth) {
-          largestWordWidth = wordWidth;
+          largestWordWidth = wordWidth
         }
       }
 
-      i && graphemeLines.push(line);
+      i && graphemeLines.push(line)
 
       if (largestWordWidth + reservedSpace > this.dynamicMinWidth) {
-        this.dynamicMinWidth = largestWordWidth - additionalSpace + reservedSpace;
+        this.dynamicMinWidth =
+          largestWordWidth - additionalSpace + reservedSpace
       }
-      return graphemeLines;
+      return graphemeLines
     },
 
     /**
@@ -373,16 +399,18 @@
      * @param {Number} lineIndex text to split
      * @return {Boolean}
      */
-    isEndOfWrapping: function(lineIndex) {
+    isEndOfWrapping: function (lineIndex) {
       if (!this._styleMap[lineIndex + 1]) {
         // is last line, return true;
-        return true;
+        return true
       }
-      if (this._styleMap[lineIndex + 1].line !== this._styleMap[lineIndex].line) {
+      if (
+        this._styleMap[lineIndex + 1].line !== this._styleMap[lineIndex].line
+      ) {
         // this is last line before a line break, return true;
-        return true;
+        return true
       }
-      return false;
+      return false
     },
 
     /**
@@ -390,46 +418,46 @@
      * and counting style.
      * @return Number
      */
-    missingNewlineOffset: function(lineIndex) {
+    missingNewlineOffset: function (lineIndex) {
       if (this.splitByGrapheme) {
-        return this.isEndOfWrapping(lineIndex) ? 1 : 0;
+        return this.isEndOfWrapping(lineIndex) ? 1 : 0
       }
-      return 1;
+      return 1
     },
 
     /**
-    * Gets lines of text to render in the Textbox. This function calculates
-    * text wrapping on the fly every time it is called.
-    * @param {String} text text to split
-    * @returns {Array} Array of lines in the Textbox.
-    * @override
-    */
-    _splitTextIntoLines: function(text) {
+     * Gets lines of text to render in the Textbox. This function calculates
+     * text wrapping on the fly every time it is called.
+     * @param {String} text text to split
+     * @returns {Array} Array of lines in the Textbox.
+     * @override
+     */
+    _splitTextIntoLines: function (text) {
       var newText = fabric.Text.prototype._splitTextIntoLines.call(this, text),
-          graphemeLines = this._wrapText(newText.lines, this.width),
-          lines = new Array(graphemeLines.length);
+        graphemeLines = this._wrapText(newText.lines, this.width),
+        lines = new Array(graphemeLines.length)
       for (var i = 0; i < graphemeLines.length; i++) {
-        lines[i] = graphemeLines[i].join('');
+        lines[i] = graphemeLines[i].join("")
       }
-      newText.lines = lines;
-      newText.graphemeLines = graphemeLines;
-      return newText;
+      newText.lines = lines
+      newText.graphemeLines = graphemeLines
+      return newText
     },
 
-    getMinWidth: function() {
-      return Math.max(this.minWidth, this.dynamicMinWidth);
+    getMinWidth: function () {
+      return Math.max(this.minWidth, this.dynamicMinWidth)
     },
 
-    _removeExtraneousStyles: function() {
-      var linesToKeep = {};
+    _removeExtraneousStyles: function () {
+      var linesToKeep = {}
       for (var prop in this._styleMap) {
         if (this._textLines[prop]) {
-          linesToKeep[this._styleMap[prop].line] = 1;
+          linesToKeep[this._styleMap[prop].line] = 1
         }
       }
       for (var prop in this.styles) {
         if (!linesToKeep[prop]) {
-          delete this.styles[prop];
+          delete this.styles[prop]
         }
       }
     },
@@ -440,10 +468,13 @@
      * @param {Array} [propertiesToInclude] Any properties that you might want to additionally include in the output
      * @return {Object} object representation of an instance
      */
-    toObject: function(propertiesToInclude) {
-      return this.callSuper('toObject', ['minWidth', 'splitByGrapheme'].concat(propertiesToInclude));
+    toObject: function (propertiesToInclude) {
+      return this.callSuper(
+        "toObject",
+        ["minWidth", "splitByGrapheme"].concat(propertiesToInclude)
+      )
     }
-  });
+  })
 
   /**
    * Returns fabric.Textbox instance from an object representation
@@ -452,7 +483,7 @@
    * @param {Object} object Object to create an instance from
    * @param {Function} [callback] Callback to invoke when an fabric.Textbox instance is created
    */
-  fabric.Textbox.fromObject = function(object, callback) {
-    return fabric.Object._fromObject('Textbox', object, callback, 'text');
-  };
-})(typeof exports !== 'undefined' ? exports : this);
+  fabric.Textbox.fromObject = function (object, callback) {
+    return fabric.Object._fromObject("Textbox", object, callback, "text")
+  }
+})(typeof exports !== "undefined" ? exports : this)

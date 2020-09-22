@@ -1,12 +1,11 @@
-(function(global) {
+;(function (global) {
+  "use strict"
 
-  'use strict';
-
-  var fabric = global.fabric || (global.fabric = { });
+  var fabric = global.fabric || (global.fabric = {})
 
   if (fabric.Polygon) {
-    fabric.warn('fabric.Polygon is already defined');
-    return;
+    fabric.warn("fabric.Polygon is already defined")
+    return
   }
 
   /**
@@ -15,36 +14,38 @@
    * @extends fabric.Polyline
    * @see {@link fabric.Polygon#initialize} for constructor definition
    */
-  fabric.Polygon = fabric.util.createClass(fabric.Polyline, /** @lends fabric.Polygon.prototype */ {
+  fabric.Polygon = fabric.util.createClass(
+    fabric.Polyline,
+    /** @lends fabric.Polygon.prototype */ {
+      /**
+       * Type of an object
+       * @type String
+       * @default
+       */
+      type: "polygon",
 
-    /**
-     * Type of an object
-     * @type String
-     * @default
-     */
-    type: 'polygon',
+      /**
+       * @private
+       * @param {CanvasRenderingContext2D} ctx Context to render on
+       */
+      _render: function (ctx) {
+        if (!this.commonRender(ctx)) {
+          return
+        }
+        ctx.closePath()
+        this._renderPaintInOrder(ctx)
+      },
 
-    /**
-     * @private
-     * @param {CanvasRenderingContext2D} ctx Context to render on
-     */
-    _render: function(ctx) {
-      if (!this.commonRender(ctx)) {
-        return;
+      /**
+       * @private
+       * @param {CanvasRenderingContext2D} ctx Context to render on
+       */
+      _renderDashedStroke: function (ctx) {
+        this.callSuper("_renderDashedStroke", ctx)
+        ctx.closePath()
       }
-      ctx.closePath();
-      this._renderPaintInOrder(ctx);
-    },
-
-    /**
-     * @private
-     * @param {CanvasRenderingContext2D} ctx Context to render on
-     */
-    _renderDashedStroke: function(ctx) {
-      this.callSuper('_renderDashedStroke', ctx);
-      ctx.closePath();
-    },
-  });
+    }
+  )
 
   /* _FROM_SVG_START_ */
   /**
@@ -53,7 +54,7 @@
    * @memberOf fabric.Polygon
    * @see: http://www.w3.org/TR/SVG/shapes.html#PolygonElement
    */
-  fabric.Polygon.ATTRIBUTE_NAMES = fabric.SHARED_ATTRIBUTES.concat();
+  fabric.Polygon.ATTRIBUTE_NAMES = fabric.SHARED_ATTRIBUTES.concat()
 
   /**
    * Returns {@link fabric.Polygon} instance from an SVG element
@@ -63,7 +64,7 @@
    * @param {Function} callback callback function invoked after parsing
    * @param {Object} [options] Options object
    */
-  fabric.Polygon.fromElement = fabric.Polyline.fromElementGenerator('Polygon');
+  fabric.Polygon.fromElement = fabric.Polyline.fromElementGenerator("Polygon")
   /* _FROM_SVG_END_ */
 
   /**
@@ -73,8 +74,7 @@
    * @param {Object} object Object to create an instance from
    * @param {Function} [callback] Callback to invoke when an fabric.Path instance is created
    */
-  fabric.Polygon.fromObject = function(object, callback) {
-    return fabric.Object._fromObject('Polygon', object, callback, 'points');
-  };
-
-})(typeof exports !== 'undefined' ? exports : this);
+  fabric.Polygon.fromObject = function (object, callback) {
+    return fabric.Object._fromObject("Polygon", object, callback, "points")
+  }
+})(typeof exports !== "undefined" ? exports : this)

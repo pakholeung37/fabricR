@@ -1,4 +1,4 @@
-(function() {
+;(function () {
   /**
    * Copies all enumerable properties of one js object to another
    * this does not and cannot compete with generic utils.
@@ -18,37 +18,32 @@
     if (deep) {
       if (!fabric.isLikelyNode && source instanceof Element) {
         // avoid cloning deep images, canvases,
-        destination = source;
-      }
-      else if (source instanceof Array) {
-        destination = [];
+        destination = source
+      } else if (source instanceof Array) {
+        destination = []
         for (var i = 0, len = source.length; i < len; i++) {
-          destination[i] = extend({ }, source[i], deep);
+          destination[i] = extend({}, source[i], deep)
         }
-      }
-      else if (source && typeof source === 'object') {
+      } else if (source && typeof source === "object") {
         for (var property in source) {
-          if (property === 'canvas' || property === 'group') {
+          if (property === "canvas" || property === "group") {
             // we do not want to clone this props at all.
             // we want to keep the keys in the copy
-            destination[property] = null;
-          }
-          else if (source.hasOwnProperty(property)) {
-            destination[property] = extend({ }, source[property], deep);
+            destination[property] = null
+          } else if (source.hasOwnProperty(property)) {
+            destination[property] = extend({}, source[property], deep)
           }
         }
-      }
-      else {
+      } else {
         // this sounds odd for an extend but is ok for recursive use
-        destination = source;
+        destination = source
       }
-    }
-    else {
+    } else {
       for (var property in source) {
-        destination[property] = source[property];
+        destination[property] = source[property]
       }
     }
-    return destination;
+    return destination
   }
 
   /**
@@ -59,13 +54,13 @@
    * @return {Object}
    */
   function clone(object, deep) {
-    return extend({ }, object, deep);
+    return extend({}, object, deep)
   }
 
   /** @namespace fabric.util.object */
   fabric.util.object = {
     extend: extend,
     clone: clone
-  };
-  fabric.util.object.extend(fabric.util, fabric.Observable);
-})();
+  }
+  fabric.util.object.extend(fabric.util, fabric.Observable)
+})()

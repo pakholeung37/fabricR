@@ -1,16 +1,21 @@
-(function() {
+;(function () {
   // Calculate an in-between color. Returns a "rgba()" string.
   // Credit: Edwin Martin <edwin@bitstorm.org>
   //         http://www.bitstorm.org/jquery/color-animation/jquery.animate-colors.js
   function calculateColor(begin, end, pos) {
-    var color = 'rgba('
-        + parseInt((begin[0] + pos * (end[0] - begin[0])), 10) + ','
-        + parseInt((begin[1] + pos * (end[1] - begin[1])), 10) + ','
-        + parseInt((begin[2] + pos * (end[2] - begin[2])), 10);
+    var color =
+      "rgba(" +
+      parseInt(begin[0] + pos * (end[0] - begin[0]), 10) +
+      "," +
+      parseInt(begin[1] + pos * (end[1] - begin[1]), 10) +
+      "," +
+      parseInt(begin[2] + pos * (end[2] - begin[2]), 10)
 
-    color += ',' + (begin && end ? parseFloat(begin[3] + pos * (end[3] - begin[3])) : 1);
-    color += ')';
-    return color;
+    color +=
+      "," +
+      (begin && end ? parseFloat(begin[3] + pos * (end[3] - begin[3])) : 1)
+    color += ")"
+    return color
   }
 
   /**
@@ -27,47 +32,48 @@
    */
   function animateColor(fromColor, toColor, duration, options) {
     var startColor = new fabric.Color(fromColor).getSource(),
-        endColor = new fabric.Color(toColor).getSource(),
-        originalOnComplete = options.onComplete,
-        originalOnChange = options.onChange;
-    options = options || {};
+      endColor = new fabric.Color(toColor).getSource(),
+      originalOnComplete = options.onComplete,
+      originalOnChange = options.onChange
+    options = options || {}
 
-    fabric.util.animate(fabric.util.object.extend(options, {
-      duration: duration || 500,
-      startValue: startColor,
-      endValue: endColor,
-      byValue: endColor,
-      easing: function (currentTime, startValue, byValue, duration) {
-        var posValue = options.colorEasing
-          ? options.colorEasing(currentTime, duration)
-          : 1 - Math.cos(currentTime / duration * (Math.PI / 2));
-        return calculateColor(startValue, byValue, posValue);
-      },
-      // has to take in account for color restoring;
-      onComplete: function(current, valuePerc, timePerc) {
-        if (originalOnComplete) {
-          return originalOnComplete(
-            calculateColor(endColor, endColor, 0),
-            valuePerc,
-            timePerc
-          );
-        }
-      },
-      onChange: function(current, valuePerc, timePerc) {
-        if (originalOnChange) {
-          if (Array.isArray(current)) {
-            return originalOnChange(
-              calculateColor(current, current, 0),
+    fabric.util.animate(
+      fabric.util.object.extend(options, {
+        duration: duration || 500,
+        startValue: startColor,
+        endValue: endColor,
+        byValue: endColor,
+        easing: function (currentTime, startValue, byValue, duration) {
+          var posValue = options.colorEasing
+            ? options.colorEasing(currentTime, duration)
+            : 1 - Math.cos((currentTime / duration) * (Math.PI / 2))
+          return calculateColor(startValue, byValue, posValue)
+        },
+        // has to take in account for color restoring;
+        onComplete: function (current, valuePerc, timePerc) {
+          if (originalOnComplete) {
+            return originalOnComplete(
+              calculateColor(endColor, endColor, 0),
               valuePerc,
               timePerc
-            );
+            )
           }
-          originalOnChange(current, valuePerc, timePerc);
+        },
+        onChange: function (current, valuePerc, timePerc) {
+          if (originalOnChange) {
+            if (Array.isArray(current)) {
+              return originalOnChange(
+                calculateColor(current, current, 0),
+                valuePerc,
+                timePerc
+              )
+            }
+            originalOnChange(current, valuePerc, timePerc)
+          }
         }
-      }
-    }));
+      })
+    )
   }
 
-  fabric.util.animateColor = animateColor;
-
-})();
+  fabric.util.animateColor = animateColor
+})()

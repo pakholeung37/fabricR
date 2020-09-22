@@ -1,10 +1,9 @@
-(function() {
-
+;(function () {
   function addParamToUrl(url, param) {
-    return url + (/\?/.test(url) ? '&' : '?') + param;
+    return url + (/\?/.test(url) ? "&" : "?") + param
   }
 
-  function emptyFn() { }
+  function emptyFn() {}
 
   /**
    * Cross-browser abstraction for sending XMLHttpRequest
@@ -18,37 +17,37 @@
    * @return {XMLHttpRequest} request
    */
   function request(url, options) {
-    options || (options = { });
+    options || (options = {})
 
-    var method = options.method ? options.method.toUpperCase() : 'GET',
-        onComplete = options.onComplete || function() { },
-        xhr = new fabric.window.XMLHttpRequest(),
-        body = options.body || options.parameters;
+    var method = options.method ? options.method.toUpperCase() : "GET",
+      onComplete = options.onComplete || function () {},
+      xhr = new fabric.window.XMLHttpRequest(),
+      body = options.body || options.parameters
 
     /** @ignore */
-    xhr.onreadystatechange = function() {
+    xhr.onreadystatechange = function () {
       if (xhr.readyState === 4) {
-        onComplete(xhr);
-        xhr.onreadystatechange = emptyFn;
-      }
-    };
-
-    if (method === 'GET') {
-      body = null;
-      if (typeof options.parameters === 'string') {
-        url = addParamToUrl(url, options.parameters);
+        onComplete(xhr)
+        xhr.onreadystatechange = emptyFn
       }
     }
 
-    xhr.open(method, url, true);
-
-    if (method === 'POST' || method === 'PUT') {
-      xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
+    if (method === "GET") {
+      body = null
+      if (typeof options.parameters === "string") {
+        url = addParamToUrl(url, options.parameters)
+      }
     }
 
-    xhr.send(body);
-    return xhr;
+    xhr.open(method, url, true)
+
+    if (method === "POST" || method === "PUT") {
+      xhr.setRequestHeader("Content-Type", "application/x-www-form-urlencoded")
+    }
+
+    xhr.send(body)
+    return xhr
   }
 
-  fabric.util.request = request;
-})();
+  fabric.util.request = request
+})()

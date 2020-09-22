@@ -1,11 +1,10 @@
-(function() {
-
+;(function () {
   function noop() {
-    return false;
+    return false
   }
 
   function defaultEasing(t, b, c, d) {
-    return -c * Math.cos(t / d * (Math.PI / 2)) + c + b;
+    return -c * Math.cos((t / d) * (Math.PI / 2)) + c + b
   }
 
   /**
@@ -22,58 +21,58 @@
    * @param {Function} [options.abort] Additional function with logic. If returns true, onComplete is called.
    */
   function animate(options) {
-
-    requestAnimFrame(function(timestamp) {
-      options || (options = { });
+    requestAnimFrame(function (timestamp) {
+      options || (options = {})
 
       var start = timestamp || +new Date(),
-          duration = options.duration || 500,
-          finish = start + duration, time,
-          onChange = options.onChange || noop,
-          abort = options.abort || noop,
-          onComplete = options.onComplete || noop,
-          easing = options.easing || defaultEasing,
-          startValue = 'startValue' in options ? options.startValue : 0,
-          endValue = 'endValue' in options ? options.endValue : 100,
-          byValue = options.byValue || endValue - startValue;
+        duration = options.duration || 500,
+        finish = start + duration,
+        time,
+        onChange = options.onChange || noop,
+        abort = options.abort || noop,
+        onComplete = options.onComplete || noop,
+        easing = options.easing || defaultEasing,
+        startValue = "startValue" in options ? options.startValue : 0,
+        endValue = "endValue" in options ? options.endValue : 100,
+        byValue = options.byValue || endValue - startValue
 
-      options.onStart && options.onStart();
-
-      (function tick(ticktime) {
+      options.onStart && options.onStart()
+      ;(function tick(ticktime) {
         // TODO: move abort call after calculation
         // and pass (current,valuePerc, timePerc) as arguments
-        time = ticktime || +new Date();
-        var currentTime = time > finish ? duration : (time - start),
-            timePerc = currentTime / duration,
-            current = easing(currentTime, startValue, byValue, duration),
-            valuePerc = Math.abs((current - startValue) / byValue);
+        time = ticktime || +new Date()
+        var currentTime = time > finish ? duration : time - start,
+          timePerc = currentTime / duration,
+          current = easing(currentTime, startValue, byValue, duration),
+          valuePerc = Math.abs((current - startValue) / byValue)
         if (abort()) {
-          onComplete(endValue, 1, 1);
-          return;
+          onComplete(endValue, 1, 1)
+          return
         }
         if (time > finish) {
-          onChange(endValue, 1, 1);
-          onComplete(endValue, 1, 1);
-          return;
+          onChange(endValue, 1, 1)
+          onComplete(endValue, 1, 1)
+          return
+        } else {
+          onChange(current, valuePerc, timePerc)
+          requestAnimFrame(tick)
         }
-        else {
-          onChange(current, valuePerc, timePerc);
-          requestAnimFrame(tick);
-        }
-      })(start);
-    });
+      })(start)
+    })
   }
 
-  var _requestAnimFrame = fabric.window.requestAnimationFrame       ||
-                          fabric.window.webkitRequestAnimationFrame ||
-                          fabric.window.mozRequestAnimationFrame    ||
-                          fabric.window.oRequestAnimationFrame      ||
-                          fabric.window.msRequestAnimationFrame     ||
-                          function(callback) {
-                            return fabric.window.setTimeout(callback, 1000 / 60);
-                          };
+  var _requestAnimFrame =
+    fabric.window.requestAnimationFrame ||
+    fabric.window.webkitRequestAnimationFrame ||
+    fabric.window.mozRequestAnimationFrame ||
+    fabric.window.oRequestAnimationFrame ||
+    fabric.window.msRequestAnimationFrame ||
+    function (callback) {
+      return fabric.window.setTimeout(callback, 1000 / 60)
+    }
 
-  var _cancelAnimFrame = fabric.window.cancelAnimationFrame || fabric.window.clearTimeout;
+  var _cancelAnimFrame =
+    fabric.window.cancelAnimationFrame || fabric.window.clearTimeout
 
   /**
    * requestAnimationFrame polyfill based on http://paulirish.com/2011/requestanimationframe-for-smart-animating/
@@ -83,14 +82,14 @@
    * @param {DOMElement} element optional Element to associate with animation
    */
   function requestAnimFrame() {
-    return _requestAnimFrame.apply(fabric.window, arguments);
+    return _requestAnimFrame.apply(fabric.window, arguments)
   }
 
   function cancelAnimFrame() {
-    return _cancelAnimFrame.apply(fabric.window, arguments);
+    return _cancelAnimFrame.apply(fabric.window, arguments)
   }
 
-  fabric.util.animate = animate;
-  fabric.util.requestAnimFrame = requestAnimFrame;
-  fabric.util.cancelAnimFrame = cancelAnimFrame;
-})();
+  fabric.util.animate = animate
+  fabric.util.requestAnimFrame = requestAnimFrame
+  fabric.util.cancelAnimFrame = cancelAnimFrame
+})()
