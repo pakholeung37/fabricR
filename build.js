@@ -99,7 +99,7 @@ var distFileContents =
   "` */"
 
 function appendFileContents(fileNames, callback) {
-  ;;(function readNextFile() {
+  ;(function readNextFile() {
     if (fileNames.length <= 0) {
       return callback()
     }

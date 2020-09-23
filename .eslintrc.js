@@ -1,5 +1,3 @@
-const DOMGlobals = ["window", "document"]
-
 module.exports = {
   root: true,
   env: {
@@ -16,7 +14,7 @@ module.exports = {
   rules: {
     "no-redeclare": "off",
     "no-prototype-builtins": "off",
-    "no-restricted-globals": ["error", ...DOMGlobals]
+    "no-restricted-globals": ["error"]
   },
   globals: {
     // fabric: "readonly",
