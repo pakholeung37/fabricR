@@ -1,3 +1,5 @@
+const DOMGlobals = ["window", "document"]
+
 module.exports = {
   root: true,
   env: {
@@ -6,19 +8,18 @@ module.exports = {
     es6: true
   },
   extends: ["eslint:recommended", "plugin:prettier/recommended"],
+  parser: "babel-eslint",
   parserOptions: {
-    parser: "babel-eslint",
     ecmaVersion: 2020,
     sourceType: "module"
   },
   rules: {
-    "no-console": process.env.NODE_ENV === "production" ? "warn" : "off",
-    "no-debugger": process.env.NODE_ENV === "production" ? "warn" : "off",
     "no-redeclare": "off",
-    "no-prototype-builtins": "off"
+    "no-prototype-builtins": "off",
+    "no-restricted-globals": ["error", ...DOMGlobals]
   },
   globals: {
-    fabric: "readonly",
-    eventjs: "readonly"
+    // fabric: "readonly",
+    // eventjs: "readonly"
   }
 }
