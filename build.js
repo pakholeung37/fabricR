@@ -1,4 +1,4 @@
-var fs = require("fs"),
+ var fs = require("fs"),
   exec = require("child_process").exec
 
 var buildArgs = process.argv.slice(2),
