@@ -671,4 +671,4 @@
     oColor.setSource(source)
     return oColor
   }
-})(typeof exports !== "undefined" ? exports : this)
+})(typeof exports !== "undefined" ? exports : getGlobalThis())

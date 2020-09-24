@@ -486,4 +486,4 @@
   fabric.Textbox.fromObject = function (object, callback) {
     return fabric.Object._fromObject("Textbox", object, callback, "text")
   }
-})(typeof exports !== "undefined" ? exports : this)
+})(typeof exports !== "undefined" ? exports : getGlobalThis())

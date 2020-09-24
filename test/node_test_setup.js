@@ -1,6 +1,6 @@
 // set the fabric famework as a global for tests
 var chalk = require('chalk');
-global.fabric = require('../dist/fabric').fabric;
+global.fabric = require('../dist/fabric.rollup').fabric;
 global.pixelmatch = require('pixelmatch');
 global.fs = require('fs');
 global.visualCallback = {

@@ -221,4 +221,4 @@
   fabric.Circle.fromObject = function (object, callback) {
     return fabric.Object._fromObject("Circle", object, callback)
   }
-})(typeof exports !== "undefined" ? exports : this)
+})(typeof exports !== "undefined" ? exports : getGlobalThis())

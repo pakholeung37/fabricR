@@ -77,4 +77,4 @@
   fabric.Polygon.fromObject = function (object, callback) {
     return fabric.Object._fromObject("Polygon", object, callback, "points")
   }
-})(typeof exports !== "undefined" ? exports : this)
+})(typeof exports !== "undefined" ? exports : getGlobalThis())

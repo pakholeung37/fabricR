@@ -272,4 +272,4 @@
       callback(new fabric.Image.filters.BlendImage(options))
     })
   }
-})(typeof exports !== "undefined" ? exports : this)
+})(typeof exports !== "undefined" ? exports : getGlobalThis())

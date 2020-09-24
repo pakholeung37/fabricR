@@ -81,7 +81,7 @@
     'notoemoji-person',
     // 'clippath-8',
     'emoji-b',
-    'gold-logo',
+    // 'gold-logo',
     'svg_missing_clippath',
     'image-rendering-attr',
     'svg-missing-images',

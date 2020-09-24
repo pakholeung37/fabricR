@@ -334,4 +334,4 @@
       return new Point(this.x, this.y)
     }
   }
-})(typeof exports !== "undefined" ? exports : this)
+})(typeof exports !== "undefined" ? exports : getGlobalThis())
