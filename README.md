@@ -8,9 +8,10 @@
 
 ### Goals
 
-- [x] pack with rollup with smaller bundle size
+- [x] modern frontend workflow (rollup + eslint + prettier + babel)
 - [ ] tree shaking and dynamic import
 - [ ] heavy utils external
 - [ ] plugin system
 - [ ] modern es6+ syntax
 - [ ] excellent performance
+- [ ] typescript support
