@@ -1,4 +1,4 @@
- var fs = require("fs"),
+var fs = require("fs"),
   exec = require("child_process").exec
 
 var buildArgs = process.argv.slice(2),
@@ -99,7 +99,7 @@ var distFileContents =
   "` */"
 
 function appendFileContents(fileNames, callback) {
-  ;;(function readNextFile() {
+  ;(function readNextFile() {
     if (fileNames.length <= 0) {
       return callback()
     }

@@ -122,4 +122,4 @@
   fabric.Triangle.fromObject = function (object, callback) {
     return fabric.Object._fromObject("Triangle", object, callback)
   }
-})(typeof exports !== "undefined" ? exports : this)
+})(typeof exports !== "undefined" ? exports : getGlobalThis())

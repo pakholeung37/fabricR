@@ -1638,4 +1638,4 @@
   ]
 
   fabric.util.createAccessors && fabric.util.createAccessors(fabric.Text)
-})(typeof exports !== "undefined" ? exports : this)
+})(typeof exports !== "undefined" ? exports : getGlobalThis())

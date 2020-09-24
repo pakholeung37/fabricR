@@ -85,4 +85,4 @@
 
   controls.renderCircleControl = renderCircleControl
   controls.renderSquareControl = renderSquareControl
-})(typeof exports !== "undefined" ? exports : this)
+})(typeof exports !== "undefined" ? exports : getGlobalThis())

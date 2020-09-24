@@ -772,4 +772,4 @@
   controls.wrapWithFixedAnchor = wrapWithFixedAnchor
   controls.getLocalPoint = getLocalPoint
   fabric.controlsUtils = controls
-})(typeof exports !== "undefined" ? exports : this)
+})(typeof exports !== "undefined" ? exports : getGlobalThis())

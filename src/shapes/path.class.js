@@ -409,4 +409,4 @@
     )
   }
   /* _FROM_SVG_END_ */
-})(typeof exports !== "undefined" ? exports : this)
+})(typeof exports !== "undefined" ? exports : getGlobalThis())

@@ -183,4 +183,4 @@
   fabric.Ellipse.fromObject = function (object, callback) {
     return fabric.Object._fromObject("Ellipse", object, callback)
   }
-})(typeof exports !== "undefined" ? exports : this)
+})(typeof exports !== "undefined" ? exports : getGlobalThis())

@@ -153,4 +153,4 @@
         callback(new fabric.ActiveSelection(enlivenedObjects, object, true))
     })
   }
-})(typeof exports !== "undefined" ? exports : this)
+})(typeof exports !== "undefined" ? exports : getGlobalThis())

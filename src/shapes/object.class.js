@@ -2075,4 +2075,4 @@
    * @type Number
    */
   fabric.Object.__uid = 0
-})(typeof exports !== "undefined" ? exports : this)
+})(typeof exports !== "undefined" ? exports : getGlobalThis())

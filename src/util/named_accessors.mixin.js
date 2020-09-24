@@ -429,4 +429,4 @@
    * @return {fabric.Object} thisArg
    * @chainable
    */
-})(typeof exports !== "undefined" ? exports : this)
+})(typeof exports !== "undefined" ? exports : getGlobalThis())

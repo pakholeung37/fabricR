@@ -74,4 +74,4 @@
     callback && callback(instance)
     return instance
   }
-})(typeof exports !== "undefined" ? exports : this)
+})(typeof exports !== "undefined" ? exports : getGlobalThis())
