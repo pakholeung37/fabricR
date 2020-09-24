@@ -1,4 +1,6 @@
-import "../HEADER"
+import "./header"
+
+import "./util/index"
 
 // global
 // import "./globalFabric"
@@ -9,32 +11,32 @@ import "./mixins/observable.mixin"
 
 import "./mixins/collection.mixin"
 import "./mixins/shared_methods.mixin"
-import "./util/misc"
+// import "./util/misc"
 
 // accessors
 // import "./util/named_accessors.mixin"
 
-import "./util/path"
-import "./util/lang_array"
-import "./util/lang_object"
-import "./util/lang_string"
-import "./util/lang_class"
+// import "./util/path"
+// import "./util/lang_array"
+// import "./util/lang_object"
+// import "./util/lang_string"
+// import "./util/lang_class"
 
 // interaction
-import "./util/dom_event"
+// import "./util/dom_event"
 
-import "./util/dom_style"
-import "./util/dom_misc"
-import "./util/dom_request"
+// import "./util/dom_style"
+// import "./util/dom_misc"
+// import "./util/dom_request"
 
 import "./log"
 
 // animation
-import "./util/animate"
-import "./util/animate_color"
+// import "./util/animate"
+// import "./util/animate_color"
 
 // easing
-import "./util/anim_ease"
+// import "./util/anim_ease"
 
 // parser
 import "./parser"

@@ -286,3 +286,5 @@ export function setImageSmoothing(ctx, value) {
     ctx.oImageSmoothingEnabled
   ctx.imageSmoothingEnabled = value
 }
+
+export { toArray }

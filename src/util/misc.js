@@ -136,10 +136,10 @@ export function rotatePoint(point, origin, radians) {
  * @return {Object} The new rotated point
  */
 export function rotateVector(vector, radians) {
-  var sin = sin(radians),
-    cos = cos(radians),
-    rx = vector.x * cos - vector.y * sin,
-    ry = vector.x * sin + vector.y * cos
+  var _sin = sin(radians),
+    _cos = cos(radians),
+    rx = vector.x * _cos - vector.y * _sin,
+    ry = vector.x * _sin + vector.y * _cos
   return {
     x: rx,
     y: ry
@@ -712,9 +712,9 @@ export function calcRotateMatrix(options) {
     return fabric.iMatrix.concat()
   }
   var theta = degreesToRadians(options.angle),
-    cos = cos(theta),
-    sin = sin(theta)
-  return [cos, sin, -sin, cos, 0, 0]
+    _cos = cos(theta),
+    _sin = sin(theta)
+  return [_cos, _sin, -_sin, _cos, 0, 0]
 }
 
 /**
@@ -745,8 +745,7 @@ export function calcDimensionsMatrix(options) {
       0,
       0
     ],
-    multiply = multiplyTransformMatrices,
-    degreesToRadians = degreesToRadians
+    multiply = multiplyTransformMatrices
   if (options.skewX) {
     scaleMatrix = multiply(
       scaleMatrix,

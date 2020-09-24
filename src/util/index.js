@@ -12,19 +12,7 @@ import {
   getPointer,
   isTouchEvent
 } from "./dom_event"
-import {
-  setImageSmoothing,
-  getById,
-  addClass,
-  makeElement,
-  getScrollLeftTop,
-  getElementOffset,
-  toArray,
-  getNodeCanvas,
-  cleanUpJsdomNode,
-  makeElementSelectable,
-  makeElementUnselectable
-} from "./dom_misc"
+import * as domMisc from "./dom_misc"
 import { request } from "./dom_request"
 import { setStyle } from "./dom_style"
 import { createClass } from "./lang_class"
@@ -40,7 +28,7 @@ import {
   drawArc
 } from "./path"
 
-export default {
+const util = {
   ...misc,
   ...Observable,
   array,
@@ -55,17 +43,7 @@ export default {
   removeListener,
   getPointer,
   isTouchEvent,
-  setImageSmoothing,
-  getById,
-  toArray,
-  addClass,
-  makeElement,
-  getScrollLeftTop,
-  getElementOffset,
-  getNodeCanvas,
-  cleanUpJsdomNode,
-  makeElementUnselectable,
-  makeElementSelectable,
+  ...domMisc,
   request,
   setStyle,
   createClass,
@@ -79,3 +57,6 @@ export default {
   getPointOnPath,
   drawArc
 }
+getGlobalThis().fabric.util = util
+
+export default util
