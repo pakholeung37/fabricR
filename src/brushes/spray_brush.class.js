@@ -1,10 +1,13 @@
+import { createClass } from "../util/lang_class"
+import BaseBrush from "./base_brush.class"
+import { getRandomInt } from "../util/misc"
 /**
  * SprayBrush class
  * @class fabric.SprayBrush
  */
-fabric.SprayBrush = fabric.util.createClass(
-  fabric.BaseBrush,
-  /** @lends fabric.SprayBrush.prototype */ {
+const SprayBrush = createClass(
+  BaseBrush,
+  /** @lends SprayBrush.prototype */ {
     /**
      * Width of a spray
      * @type Number
@@ -197,11 +200,11 @@ fabric.SprayBrush = fabric.util.createClass(
         i
 
       for (i = 0; i < this.density; i++) {
-        x = fabric.util.getRandomInt(pointer.x - radius, pointer.x + radius)
-        y = fabric.util.getRandomInt(pointer.y - radius, pointer.y + radius)
+        x = getRandomInt(pointer.x - radius, pointer.x + radius)
+        y = getRandomInt(pointer.y - radius, pointer.y + radius)
 
         if (this.dotWidthVariance) {
-          width = fabric.util.getRandomInt(
+          width = getRandomInt(
             // bottom clamp width to 1
             Math.max(1, this.dotWidth - this.dotWidthVariance),
             this.dotWidth + this.dotWidthVariance
@@ -214,7 +217,7 @@ fabric.SprayBrush = fabric.util.createClass(
         point.width = width
 
         if (this.randomOpacity) {
-          point.opacity = fabric.util.getRandomInt(0, 100) / 100
+          point.opacity = getRandomInt(0, 100) / 100
         }
 
         this.sprayChunkPoints.push(point)
@@ -224,3 +227,5 @@ fabric.SprayBrush = fabric.util.createClass(
     }
   }
 )
+
+export default SprayBrush

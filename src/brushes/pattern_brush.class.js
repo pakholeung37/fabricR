@@ -1,15 +1,18 @@
+import { createClass } from "../util/lang_class"
+import { createCanvasElement } from "../util/misc"
+import PencilBrush from "./pencil_brush.class"
 /**
  * PatternBrush class
  * @class fabric.PatternBrush
  * @extends fabric.BaseBrush
  */
-fabric.PatternBrush = fabric.util.createClass(
-  fabric.PencilBrush,
-  /** @lends fabric.PatternBrush.prototype */ {
+const PatternBrush = createClass(
+  PencilBrush,
+  /** @lends PatternBrush.prototype */ {
     getPatternSrc: function () {
       var dotWidth = 20,
         dotDistance = 5,
-        patternCanvas = fabric.util.createCanvasElement(),
+        patternCanvas = createCanvasElement(),
         patternCtx = patternCanvas.getContext("2d")
 
       patternCanvas.width = patternCanvas.height = dotWidth + dotDistance
@@ -71,3 +74,5 @@ fabric.PatternBrush = fabric.util.createClass(
     }
   }
 )
+
+export default PatternBrush

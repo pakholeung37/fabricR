@@ -1,10 +1,12 @@
+import { createClass } from "../util/lang_class"
+
 /**
  * BaseBrush class
  * @class fabric.BaseBrush
  * @see {@link http://fabricjs.com/freedrawing|Freedrawing demo}
  */
-fabric.BaseBrush = fabric.util.createClass(
-  /** @lends fabric.BaseBrush.prototype */ {
+const BaseBrush = createClass(
+  /** @lends BaseBrush.prototype */ {
     /**
      * Color of a brush
      * @type String
@@ -123,3 +125,5 @@ fabric.BaseBrush = fabric.util.createClass(
     }
   }
 )
+
+export default BaseBrush

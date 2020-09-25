@@ -1,9 +1,11 @@
+import { createClass } from "../util/lang_class"
+import BaseBrush from "./base_brush.class"
 /**
  * CircleBrush class
  * @class fabric.CircleBrush
  */
-fabric.CircleBrush = fabric.util.createClass(
-  fabric.BaseBrush,
+const CircleBrush = createClass(
+  BaseBrush,
   /** @lends fabric.CircleBrush.prototype */ {
     /**
      * Width of a brush
@@ -145,3 +147,5 @@ fabric.CircleBrush = fabric.util.createClass(
     }
   }
 )
+
+export default CircleBrush

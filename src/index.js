@@ -63,10 +63,11 @@ import "./shadow.class"
 import "./static_canvas.class"
 
 // freedrawing
-import "./brushes/base_brush.class"
-import "./brushes/pencil_brush.class"
-import "./brushes/spray_brush.class"
-import "./brushes/pattern_brush.class"
+// import "./brushes/base_brush.class"
+// import "./brushes/pencil_brush.class"
+// import "./brushes/spray_brush.class"
+// import "./brushes/pattern_brush.class"
+import "./brushes/index"
 
 // interaction
 import "./canvas.class"
