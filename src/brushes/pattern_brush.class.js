@@ -1,5 +1,4 @@
-import { createClass } from "../util/lang_class"
-import { createCanvasElement } from "../util/misc"
+import { createClass, createCanvasElement } from "../util"
 import PencilBrush from "./pencil_brush.class"
 /**
  * PatternBrush class

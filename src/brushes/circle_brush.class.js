@@ -1,4 +1,4 @@
-import { createClass } from "../util/lang_class"
+import { createClass } from "../util"
 import BaseBrush from "./base_brush.class"
 /**
  * CircleBrush class

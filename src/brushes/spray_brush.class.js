@@ -1,6 +1,5 @@
-import { createClass } from "../util/lang_class"
 import BaseBrush from "./base_brush.class"
-import { getRandomInt } from "../util/misc"
+import { getRandomInt, createClass } from "../util"
 /**
  * SprayBrush class
  * @class fabric.SprayBrush
