@@ -15,3 +15,4 @@
 - [ ] modern es6+ syntax
 - [ ] excellent performance
 - [ ] typescript support
+- [ ] independent fabric config

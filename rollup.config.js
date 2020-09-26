@@ -61,12 +61,13 @@ module.exports = [
   // just rollup
   {
     input: "./src/index.js",
-    plugins: [],
+    plugins: [resolve(), commonjs({ include: "node_modules/**" })],
     output: [
       {
         format: "cjs",
         file: "dist/fabric.rollup.js",
-        strict: false
+        strict: false,
+        sourcemap: true
       }
     ]
   }

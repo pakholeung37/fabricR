@@ -1,5 +1,5 @@
 import "./header"
-
+import "./mixins/observable.mixin"
 import "./util/index"
 
 // global
@@ -7,7 +7,6 @@ import "./util/index"
 
 // gestures
 // import "../lib/event"
-import "./mixins/observable.mixin"
 
 import "./mixins/collection.mixin"
 import "./mixins/shared_methods.mixin"

@@ -80,3 +80,12 @@ function find(array, byProperty, condition) {
   }
   return result
 }
+/**
+ * if an Object is an array, return true. Otherwise return false.
+ * @memberOf fabric.util.array
+ * @param {any} object Array to iterate over
+ * @return {Boolean}
+ */
+export function isArray(arg) {
+  return Object.prototype.toString.call(arg) === "[object Array]"
+}

@@ -1,15 +1,10 @@
 /*! Fabric.js Copyright 2008-2015, Printio (Juriy Zaytsev, Maxim Chernyak) */
 ;(function () {
-  var fabric = fabric || { version: "4.1.0" }
+  var fabric = fabric || {}
   if (typeof exports !== "undefined") {
     exports.fabric = fabric
-  } else if (typeof define === "function" && define.amd) {
-    /* _AMD_START_ */
-    define([], function () {
-      return fabric
-    })
   }
-  /* _AMD_END_ */
+
   if (typeof document !== "undefined" && typeof window !== "undefined") {
     if (
       document instanceof
@@ -41,6 +36,7 @@
     DOMParser = fabric.window.DOMParser
   }
 
+  fabric.version = "4.1.0"
   /**
    * True when in environment that supports touch events
    * @type boolean
