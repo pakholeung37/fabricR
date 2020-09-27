@@ -10,9 +10,10 @@
 
 - [x] modern frontend workflow (rollup + eslint + prettier + babel)
 - [ ] tree shaking and dynamic import
+- [ ] modern es6+ syntax (especially class)
 - [ ] heavy utils external
 - [ ] plugin system
-- [ ] modern es6+ syntax
 - [ ] excellent performance
 - [ ] typescript support
+- [ ] migrate test framework to jest
 - [ ] independent fabric config
