@@ -1,5 +1,8 @@
 import { createClass } from "../util"
 import BaseBrush from "./base_brush.class"
+import Point from "../point.class"
+import Shadow from "../shadow.class"
+import Path from "../shapes/path.class"
 /**
  * PencilBrush class
  * @class fabric.PencilBrush
@@ -103,7 +106,7 @@ const PencilBrush = createClass(
      * @param {Object} pointer Actual mouse position related to the canvas.
      */
     _prepareForDrawing: function (pointer) {
-      var p = new fabric.Point(pointer.x, pointer.y)
+      var p = new Point(pointer.x, pointer.y)
 
       this._reset()
       this._addPoint(p)
@@ -112,7 +115,7 @@ const PencilBrush = createClass(
 
     /**
      * @private
-     * @param {fabric.Point} point Point to be added to points array
+     * @param {Point} point Point to be added to points array
      */
     _addPoint: function (point) {
       if (
@@ -140,7 +143,7 @@ const PencilBrush = createClass(
      * @param {Object} pointer Actual mouse position related to the canvas.
      */
     _captureDrawingPath: function (pointer) {
-      var pointerPoint = new fabric.Point(pointer.x, pointer.y)
+      var pointerPoint = new Point(pointer.x, pointer.y)
       return this._addPoint(pointerPoint)
     },
 
@@ -163,8 +166,8 @@ const PencilBrush = createClass(
       //that's why we set them apart a bit
       if (this._points.length === 2 && p1.x === p2.x && p1.y === p2.y) {
         var width = this.width / 1000
-        p1 = new fabric.Point(p1.x, p1.y)
-        p2 = new fabric.Point(p2.x, p2.y)
+        p1 = new Point(p1.x, p1.y)
+        p2 = new Point(p2.x, p2.y)
         p1.x -= width
         p2.x += width
       }
@@ -194,8 +197,8 @@ const PencilBrush = createClass(
       var path = [],
         i,
         width = this.width / 1000,
-        p1 = new fabric.Point(points[0].x, points[0].y),
-        p2 = new fabric.Point(points[1].x, points[1].y),
+        p1 = new Point(points[0].x, points[0].y),
+        p2 = new Point(points[1].x, points[1].y),
         len = points.length,
         multSignX = 1,
         multSignY = 0,
@@ -246,12 +249,12 @@ const PencilBrush = createClass(
     },
 
     /**
-     * Creates fabric.Path object to add on canvas
+     * Creates Path object to add on canvas
      * @param {String} pathData Path data
-     * @return {fabric.Path} Path to add on canvas
+     * @return {Path} Path to add on canvas
      */
     createPath: function (pathData) {
-      var path = new fabric.Path(pathData, {
+      var path = new Path(pathData, {
         fill: null,
         stroke: this.color,
         strokeWidth: this.width,
@@ -262,7 +265,7 @@ const PencilBrush = createClass(
       })
       if (this.shadow) {
         this.shadow.affectStroke = true
-        path.shadow = new fabric.Shadow(this.shadow)
+        path.shadow = new Shadow(this.shadow)
       }
 
       return path
@@ -292,7 +295,7 @@ const PencilBrush = createClass(
         }
       }
       if (newPoints.length === 1) {
-        newPoints.push(new fabric.Point(newPoints[0].x, newPoints[0].y))
+        newPoints.push(new Point(newPoints[0].x, newPoints[0].y))
       }
       return newPoints
     },

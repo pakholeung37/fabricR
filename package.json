@@ -52,6 +52,7 @@
     "test:visual:single": "qunit test/node_test_setup.js test/lib",
     "test:all": "npm run test && npm run test:visual",
     "test:special": "yarn test:single test/unit/util.js",
+    "run:fabric": "node dist/fabric.rollup.js",
     "lint": "eslint --config src",
     "lint:fix": "eslint --fix src",
     "lint_tests": "eslint test/unit --config .eslintrc_tests && eslint test/visual --config .eslintrc_tests",

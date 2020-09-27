@@ -102,10 +102,9 @@ import "./shapes/rect.class"
 import "./shapes/polyline.class"
 import "./shapes/polygon.class"
 import "./shapes/path.class"
-import "./shapes/group.class"
-
 // interaction
 import "./shapes/active_selection.class"
+import "./shapes/group.class"
 
 import "./shapes/image.class"
 

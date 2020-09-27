@@ -1,6 +1,7 @@
 import Object from "./object.class"
 import Text from "./text.class"
 import { createClass } from "../util"
+import Observable from "../mixins/observable.mixin"
 
 function parseDecoration(object) {
   if (object.textDecoration) {
@@ -17,7 +18,7 @@ function parseDecoration(object) {
  * prefix when observing canvas.
  * @class IText
  * @extends Text
- * @mixes fabric.Observable
+ * @mixes Observable
  *
  * @fires changed
  * @fires selection:changed
@@ -60,7 +61,7 @@ function parseDecoration(object) {
  */
 const IText = createClass(
   Text,
-  fabric.Observable,
+  Observable,
   /** @lends IText.prototype */ {
     /**
      * Type of an object

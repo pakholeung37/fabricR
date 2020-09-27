@@ -1,3 +1,4 @@
+import Point from "../point.class"
 import { cos, sin } from "./misc"
 var _join = Array.prototype.join,
   commandLengths = {
@@ -630,13 +631,13 @@ export function getPointOnPath(path, perc, infos) {
   switch (command) {
     case "Z":
     case "z":
-      return new fabric.Point(segInfo.x, segInfo.y).lerp(
-        new fabric.Point(segInfo.destX, segInfo.destY),
+      return new Point(segInfo.x, segInfo.y).lerp(
+        new Point(segInfo.destX, segInfo.destY),
         segPercent
       )
     case "L":
-      return new fabric.Point(segInfo.x, segInfo.y).lerp(
-        new fabric.Point(segment[1], segment[2]),
+      return new Point(segInfo.x, segInfo.y).lerp(
+        new Point(segment[1], segment[2]),
         segPercent
       )
     case "C":

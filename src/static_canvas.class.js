@@ -1,5 +1,10 @@
-import Image from "./shapes/image.class"
 import FaObject from "./shapes/object.class"
+import CommonMethods from "./mixins/shared_methods.mixin"
+// TODO circular refenence
+// import Image from "./shapes/image.class"
+import Point from "./point.class"
+import Observable from "./mixins/observable.mixin"
+import Collection from "./mixins/collection.mixin"
 import {
   createClass,
   extend,
@@ -26,7 +31,7 @@ var CANVAS_INIT_ERROR = new Error("Could not initialize `canvas` element")
 /**
  * Static canvas class
  * @class StaticCanvas
- * @mixes fabric.Collection
+ * @mixes Collection
  * @mixes fabric.Observable
  * @see {@link http://fabricjs.com/static_canvas|StaticCanvas demo}
  * @see {@link StaticCanvas#initialize} for constructor definition
@@ -37,7 +42,7 @@ var CANVAS_INIT_ERROR = new Error("Could not initialize `canvas` element")
  * @fires object:removed
  */
 const StaticCanvas = createClass(
-  fabric.CommonMethods,
+  CommonMethods,
   /** @lends StaticCanvas.prototype */ {
     /**
      * Constructor
@@ -105,7 +110,7 @@ const StaticCanvas = createClass(
     stateful: false,
 
     /**
-     * Indicates whether {@link fabric.Collection.add}, {@link fabric.Collection.insertAt} and {@link fabric.Collection.remove},
+     * Indicates whether {@link Collection.add}, {@link Collection.insertAt} and {@link Collection.remove},
      * {@link StaticCanvas.moveTo}, {@link StaticCanvas.clear} and many more, should also re-render canvas.
      * Disabling this option will not give a performance boost when adding/removing a lot of objects to/from canvas at once
      * since the renders are quequed and executed one per frame.
@@ -459,7 +464,7 @@ const StaticCanvas = createClass(
           image,
           function (img, isError) {
             if (img) {
-              var instance = new Image(img, options)
+              var instance = new fabric.Image(img, options)
               this[property] = instance
               instance.canvas = this
             }
@@ -719,7 +724,7 @@ const StaticCanvas = createClass(
 
     /**
      * Sets zoom level of this canvas instance, zoom centered around point
-     * @param {fabric.Point} point to zoom with respect to
+     * @param {Point} point to zoom with respect to
      * @param {Number} value to set zoom to, less than 1 zooms out
      * @return {fabric.Canvas} instance
      * @chainable true
@@ -744,13 +749,13 @@ const StaticCanvas = createClass(
      * @chainable true
      */
     setZoom: function (value) {
-      this.zoomToPoint(new fabric.Point(0, 0), value)
+      this.zoomToPoint(new Point(0, 0), value)
       return this
     },
 
     /**
      * Pan viewport so as to place point at top left corner of canvas
-     * @param {fabric.Point} point to move to
+     * @param {Point} point to move to
      * @return {fabric.Canvas} instance
      * @chainable true
      */
@@ -763,13 +768,13 @@ const StaticCanvas = createClass(
 
     /**
      * Pans viewpoint relatively
-     * @param {fabric.Point} point (position vector) to move by
+     * @param {Point} point (position vector) to move by
      * @return {fabric.Canvas} instance
      * @chainable true
      */
     relativePan: function (point) {
       return this.absolutePan(
-        new fabric.Point(
+        new Point(
           -point.x - this.viewportTransform[4],
           -point.y - this.viewportTransform[5]
         )
@@ -901,8 +906,8 @@ const StaticCanvas = createClass(
         iVpt = invertTransform(this.viewportTransform)
       points.tl = transformPoint({ x: 0, y: 0 }, iVpt)
       points.br = transformPoint({ x: width, y: height }, iVpt)
-      points.tr = new fabric.Point(points.br.x, points.tl.y)
-      points.bl = new fabric.Point(points.tl.x, points.br.y)
+      points.tr = new Point(points.br.x, points.tl.y)
+      points.bl = new Point(points.tl.x, points.br.y)
       this.vptCoords = points
       return points
     },
@@ -1065,7 +1070,7 @@ const StaticCanvas = createClass(
     centerObjectH: function (object) {
       return this._centerObject(
         object,
-        new fabric.Point(this.getCenter().left, object.getCenterPoint().y)
+        new Point(this.getCenter().left, object.getCenterPoint().y)
       )
     },
 
@@ -1078,7 +1083,7 @@ const StaticCanvas = createClass(
     centerObjectV: function (object) {
       return this._centerObject(
         object,
-        new fabric.Point(object.getCenterPoint().x, this.getCenter().top)
+        new Point(object.getCenterPoint().x, this.getCenter().top)
       )
     },
 
@@ -1091,10 +1096,7 @@ const StaticCanvas = createClass(
     centerObject: function (object) {
       var center = this.getCenter()
 
-      return this._centerObject(
-        object,
-        new fabric.Point(center.left, center.top)
-      )
+      return this._centerObject(object, new Point(center.left, center.top))
     },
 
     /**
@@ -1119,7 +1121,7 @@ const StaticCanvas = createClass(
       var vpCenter = this.getVpCenter()
       this._centerObject(
         object,
-        new fabric.Point(vpCenter.x, object.getCenterPoint().y)
+        new Point(vpCenter.x, object.getCenterPoint().y)
       )
       return this
     },
@@ -1135,13 +1137,13 @@ const StaticCanvas = createClass(
 
       return this._centerObject(
         object,
-        new fabric.Point(object.getCenterPoint().x, vpCenter.y)
+        new Point(object.getCenterPoint().x, vpCenter.y)
       )
     },
 
     /**
      * Calculate the point in canvas that correspond to the center of actual viewport.
-     * @return {fabric.Point} vpCenter, viewport center
+     * @return {Point} vpCenter, viewport center
      * @chainable
      */
     getVpCenter: function () {
@@ -1153,7 +1155,7 @@ const StaticCanvas = createClass(
     /**
      * @private
      * @param {fabric.Object} object Object to center
-     * @param {fabric.Point} center Center point
+     * @param {Point} center Center point
      * @return {fabric.Canvas} thisArg
      * @chainable
      */
@@ -1908,8 +1910,8 @@ const StaticCanvas = createClass(
   }
 )
 
-extend(StaticCanvas.prototype, fabric.Observable)
-extend(StaticCanvas.prototype, fabric.Collection)
+extend(StaticCanvas.prototype, Observable)
+extend(StaticCanvas.prototype, Collection)
 extend(StaticCanvas.prototype, fabric.DataURLExporter)
 
 extend(

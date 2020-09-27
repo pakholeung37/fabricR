@@ -1,5 +1,6 @@
 import Image from "../shapes/image.class"
 import BaseFilter from "./base_filter.class"
+import Color from "../color.class"
 import { createClass, extend } from "../util"
 /**
  * Remove white filter class
@@ -27,7 +28,7 @@ const RemoveColor = createClass(
     type: "RemoveColor",
 
     /**
-     * Color to remove, in any format understood by fabric.Color.
+     * Color to remove, in any format understood by Color.
      * @param {String} type
      * @default
      */
@@ -81,7 +82,7 @@ const RemoveColor = createClass(
         r,
         g,
         b,
-        source = new fabric.Color(this.color).getSource(),
+        source = new Color(this.color).getSource(),
         lowC = [
           source[0] - distance,
           source[1] - distance,
@@ -131,7 +132,7 @@ const RemoveColor = createClass(
      * @param {Object} uniformLocations A map of string uniform names to WebGLUniformLocation objects
      */
     sendUniformData: function (gl, uniformLocations) {
-      var source = new fabric.Color(this.color).getSource(),
+      var source = new Color(this.color).getSource(),
         distance = parseFloat(this.distance),
         lowC = [
           0 + source[0] / 255 - distance,

@@ -1,5 +1,6 @@
+import Color from "../color.class"
+import StaticCanvas from "../static_canvas.class"
 import { createClass } from "../util"
-
 /**
  * BaseBrush class
  * @class fabric.BaseBrush
@@ -69,7 +70,7 @@ const BaseBrush = createClass(
       ctx.lineCap = this.strokeLineCap
       ctx.miterLimit = this.strokeMiterLimit
       ctx.lineJoin = this.strokeLineJoin
-      if (fabric.StaticCanvas.supports("setLineDash")) {
+      if (StaticCanvas.supports("setLineDash")) {
         ctx.setLineDash(this.strokeDashArray || [])
       }
     },
@@ -109,7 +110,7 @@ const BaseBrush = createClass(
     },
 
     needsFullRender: function () {
-      var color = new fabric.Color(this.color)
+      var color = new Color(this.color)
       return color.getAlpha() < 1 || !!this.shadow
     },
 

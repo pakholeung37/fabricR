@@ -1,3 +1,6 @@
+import FaObject from "../shapes/object.class"
+import Pattern from "../pattern.class"
+import Point from "../point.class"
 import { min, max } from "./lang_array"
 import { camelize } from "./lang_string"
 import { log } from "../log"
@@ -117,15 +120,15 @@ export function radiansToDegrees(radians) {
  * Rotates `point` around `origin` with `radians`
  * @static
  * @memberOf fabric.util
- * @param {fabric.Point} point The point to rotate
- * @param {fabric.Point} origin The origin of the rotation
+ * @param {Point} point The point to rotate
+ * @param {Point} origin The origin of the rotation
  * @param {Number} radians The radians of the angle for the rotation
- * @return {fabric.Point} The new rotated point
+ * @return {Point} The new rotated point
  */
 export function rotatePoint(point, origin, radians) {
   point.subtractEquals(origin)
   var v = rotateVector(point, radians)
-  return new fabric.Point(v.x, v.y).addEquals(origin)
+  return new Point(v.x, v.y).addEquals(origin)
 }
 
 /**
@@ -151,16 +154,16 @@ export function rotateVector(vector, radians) {
  * Apply transform t to point p
  * @static
  * @memberOf fabric.util
- * @param  {fabric.Point} p The point to transform
+ * @param  {Point} p The point to transform
  * @param  {Array} t The transform
  * @param  {Boolean} [ignoreOffset] Indicates that the offset should not be applied
- * @return {fabric.Point} The transformed point
+ * @return {Point} The transformed point
  */
 export function transformPoint(p, t, ignoreOffset) {
   if (ignoreOffset) {
-    return new fabric.Point(t[0] * p.x + t[2] * p.y, t[1] * p.x + t[3] * p.y)
+    return new Point(t[0] * p.x + t[2] * p.y, t[1] * p.x + t[3] * p.y)
   }
-  return new fabric.Point(
+  return new Point(
     t[0] * p.x + t[2] * p.y + t[4],
     t[1] * p.x + t[3] * p.y + t[5]
   )
@@ -501,7 +504,7 @@ export function enlivenPatterns(patterns, callback) {
 
   patterns.forEach(function (p, index) {
     if (p && p.source) {
-      new fabric.Pattern(p, function (pattern) {
+      new Pattern(p, function (pattern) {
         enlivenedPatterns[index] = pattern
         onLoaded()
       })
@@ -519,7 +522,7 @@ export function enlivenPatterns(patterns, callback) {
  * @param {Array} elements SVG elements to group
  * @param {Object} [options] Options object
  * @param {String} path Value to set sourcePath to
- * @return {fabric.Object|fabric.Group}
+ * @return {fabric.Object|Group}
  */
 export function groupSVGElements(elements, options, path) {
   var object
@@ -537,7 +540,7 @@ export function groupSVGElements(elements, options, path) {
       delete options.height
     }
   }
-  object = new fabric.Group(elements, options)
+  object = new Group(elements, options)
   if (typeof path !== "undefined") {
     object.sourcePath = path
   }
@@ -1005,7 +1008,7 @@ export function matrixToSVG(transform) {
     "matrix(" +
     transform
       .map(function (value) {
-        return toFixed(value, fabric.Object.NUM_FRACTION_DIGITS)
+        return toFixed(value, FaObject.NUM_FRACTION_DIGITS)
       })
       .join(" ") +
     ")"

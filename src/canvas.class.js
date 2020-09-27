@@ -17,7 +17,8 @@ import {
   addClass,
   makeElementUnselectable,
   cleanUpJsdomNode,
-  isArray
+  isArray,
+  isTransparent as _isTransparent
 } from "./util"
 
 var abs = Math.abs,
@@ -505,7 +506,7 @@ const Canvas = createClass(
             0
           )
 
-        var isTransparent = isTransparent(
+        var isTransparent = _isTransparent(
           target._cacheContext,
           Math.round(targetRelativeX),
           Math.round(targetRelativeY),
@@ -542,7 +543,7 @@ const Canvas = createClass(
 
       target.selectionBackgroundColor = originalColor
 
-      var isTransparent = isTransparent(ctx, x, y, this.targetFindTolerance)
+      var isTransparent = _isTransparent(ctx, x, y, this.targetFindTolerance)
 
       return isTransparent
     },

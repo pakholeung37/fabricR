@@ -1,7 +1,9 @@
+import Pattern from "../pattern.class"
+import Gradient from "../gradient.class"
 /**
- * @namespace fabric.CommonMethods
+ * @namespace CommonMethods
  */
-fabric.CommonMethods = {
+const CommonMethods = {
   /**
    * Sets object's properties from options
    * @param {Object} [options] Options object
@@ -18,8 +20,8 @@ fabric.CommonMethods = {
    * @param {String} [property] property to set the Gradient to
    */
   _initGradient: function (filler, property) {
-    if (filler && filler.colorStops && !(filler instanceof fabric.Gradient)) {
-      this.set(property, new fabric.Gradient(filler))
+    if (filler && filler.colorStops && !(filler instanceof Gradient)) {
+      this.set(property, new Gradient(filler))
     }
   },
 
@@ -30,8 +32,8 @@ fabric.CommonMethods = {
    * @param {Function} [callback] callback to invoke after pattern load
    */
   _initPattern: function (filler, property, callback) {
-    if (filler && filler.source && !(filler instanceof fabric.Pattern)) {
-      this.set(property, new fabric.Pattern(filler, callback))
+    if (filler && filler.source && !(filler instanceof Pattern)) {
+      this.set(property, new Pattern(filler, callback))
     } else {
       callback && callback()
     }
@@ -89,3 +91,8 @@ fabric.CommonMethods = {
     return this[property]
   }
 }
+
+export default CommonMethods
+
+// TODO
+getGlobalThis().CommonMethods = CommonMethods

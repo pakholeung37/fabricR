@@ -1,6 +1,8 @@
 import Object from "./object.class"
-// TODO unsolove circular reference
+// TODO circular reference
 // import ActiveSelection from "./active_selection.class"
+import Point from "../point.class"
+import Collection from "../mixins/collection.mixin"
 import {
   qrDecompose,
   resetObjectTransform,
@@ -15,13 +17,13 @@ import {
  * Group class
  * @class Group
  * @extends fabric.Object
- * @mixes fabric.Collection
+ * @mixes Collection
  * @tutorial {@link http://fabricjs.com/fabric-intro-part-3#groups}
  * @see {@link Group#initialize} for constructor definition
  */
 const Group = createClass(
   Object,
-  fabric.Collection,
+  Collection,
   /** @lends Group.prototype */ {
     /**
      * Type of an object
@@ -128,7 +130,7 @@ const Group = createClass(
     /**
      * @private
      * @param {Object} object
-     * @param {fabric.Point} center, current center of group.
+     * @param {Point} center, current center of group.
      */
     _updateObjectCoords: function (object, center) {
       var objectLeft = object.left,
@@ -383,7 +385,7 @@ const Group = createClass(
     realizeTransform: function (object) {
       var matrix = object.calcTransformMatrix(),
         options = qrDecompose(matrix),
-        center = new fabric.Point(options.translateX, options.translateY)
+        center = new Point(options.translateX, options.translateY)
       object.flipX = false
       object.flipY = false
       object.set("scaleX", options.scaleX)
@@ -437,7 +439,7 @@ const Group = createClass(
       this._objects = []
       var options = this.toObject()
       delete options.objects
-      var activeSelection = new fabric.ActiveSelection([])
+      var activeSelection = new ActiveSelection([])
       activeSelection.set(options)
       activeSelection.type = "activeSelection"
       canvas.remove(this)
@@ -506,8 +508,8 @@ const Group = createClass(
      * @private
      */
     _getBounds: function (aX, aY, onlyWidthHeight) {
-      var minXY = new fabric.Point(min(aX), min(aY)),
-        maxXY = new fabric.Point(max(aX), max(aY)),
+      var minXY = new Point(min(aX), min(aY)),
+        maxXY = new Point(max(aX), max(aY)),
         top = minXY.y || 0,
         left = minXY.x || 0,
         width = maxXY.x - minXY.x || 0,

@@ -139,7 +139,9 @@ const Ellipse = createClass(
  * @memberOf Ellipse
  * @see http://www.w3.org/TR/SVG/shapes.html#EllipseElement
  */
-Ellipse.ATTRIBUTE_NAMES = fabric.SHARED_ATTRIBUTES.concat("cx cy rx ry".split(" "))
+Ellipse.ATTRIBUTE_NAMES = fabric.SHARED_ATTRIBUTES.concat(
+  "cx cy rx ry".split(" ")
+)
 
 /**
  * Returns {@link Ellipse} instance from an SVG element

@@ -1,47 +1,29 @@
-var slice = Array.prototype.slice,
-  emptyFunction = function () {},
-  IS_DONTENUM_BUGGY = (function () {
-    for (var p in { toString: 1 }) {
-      if (p === "toString") {
-        return false
-      }
-    }
-    return true
-  })(),
-  /** @ignore */
-  addMethods = function (klass, source, parent) {
-    for (var property in source) {
-      if (
-        property in klass.prototype &&
-        typeof klass.prototype[property] === "function" &&
-        (source[property] + "").indexOf("callSuper") > -1
-      ) {
-        klass.prototype[property] = (function (property) {
-          return function () {
-            var superclass = this.constructor.superclass
-            this.constructor.superclass = parent
-            var returnValue = source[property].apply(this, arguments)
-            this.constructor.superclass = superclass
+function emptyFunction() {}
+/** @ignore */
+function addMethods(klass, source, parent) {
+  for (var property in source) {
+    if (
+      property in klass.prototype &&
+      typeof klass.prototype[property] === "function" &&
+      (source[property] + "").indexOf("callSuper") > -1
+    ) {
+      klass.prototype[property] = (function (property) {
+        return function () {
+          var superclass = this.constructor.superclass
+          this.constructor.superclass = parent
+          var returnValue = source[property].apply(this, arguments)
+          this.constructor.superclass = superclass
 
-            if (property !== "initialize") {
-              return returnValue
-            }
+          if (property !== "initialize") {
+            return returnValue
           }
-        })(property)
-      } else {
-        klass.prototype[property] = source[property]
-      }
-
-      if (IS_DONTENUM_BUGGY) {
-        if (source.toString !== Object.prototype.toString) {
-          klass.prototype.toString = source.toString
         }
-        if (source.valueOf !== Object.prototype.valueOf) {
-          klass.prototype.valueOf = source.valueOf
-        }
-      }
+      })(property)
+    } else {
+      klass.prototype[property] = source[property]
     }
   }
+}
 
 function Subclass() {}
 
@@ -70,7 +52,7 @@ function callSuper(methodName) {
   }
 
   return arguments.length > 1
-    ? parentMethod.apply(this, slice.call(arguments, 1))
+    ? parentMethod.apply(this, Array.prototype.slice.call(arguments, 1))
     : parentMethod.call(this)
 }
 
@@ -83,7 +65,7 @@ function callSuper(methodName) {
  */
 export function createClass() {
   var parent = null,
-    properties = slice.call(arguments, 0)
+    properties = Array.prototype.slice.call(arguments, 0)
 
   if (typeof properties[0] === "function") {
     parent = properties.shift()

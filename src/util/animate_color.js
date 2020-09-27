@@ -1,5 +1,6 @@
 import { animate } from "./animate"
-
+import { extend } from "./lang_object"
+import Color from "../color.class"
 // Calculate an in-between color. Returns a "rgba()" string.
 // Credit: Edwin Martin <edwin@bitstorm.org>
 //         http://www.bitstorm.org/jquery/color-animation/jquery.animate-colors.js
@@ -31,14 +32,14 @@ function calculateColor(begin, end, pos) {
  * @param {Function} [options.abort] Additional export function with logic. If returns true, onComplete is called.
  */
 export function animateColor(fromColor, toColor, duration, options) {
-  var startColor = new fabric.Color(fromColor).getSource(),
-    endColor = new fabric.Color(toColor).getSource(),
+  var startColor = new Color(fromColor).getSource(),
+    endColor = new Color(toColor).getSource(),
     originalOnComplete = options.onComplete,
     originalOnChange = options.onChange
   options = options || {}
 
   animate(
-    fabric.util.object.extend(options, {
+    extend(options, {
       duration: duration || 500,
       startValue: startColor,
       endValue: endColor,

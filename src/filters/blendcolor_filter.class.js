@@ -1,5 +1,6 @@
 import Image from "../shapes/image.class"
 import BaseFilter from "./base_filter.class"
+import Color from "../color.class"
 import { createClass } from "../util"
 /**
  * Color Blend filter class
@@ -140,7 +141,7 @@ const BlendColor = createClass(
         source,
         alpha1 = 1 - this.alpha
 
-      source = new fabric.Color(this.color).getSource()
+      source = new Color(this.color).getSource()
       tr = source[0] * this.alpha
       tg = source[1] * this.alpha
       tb = source[2] * this.alpha
@@ -233,7 +234,7 @@ const BlendColor = createClass(
      * @param {Object} uniformLocations A map of string uniform names to WebGLUniformLocation objects
      */
     sendUniformData: function (gl, uniformLocations) {
-      var source = new fabric.Color(this.color).getSource()
+      var source = new Color(this.color).getSource()
       source[0] = (this.alpha * source[0]) / 255
       source[1] = (this.alpha * source[1]) / 255
       source[2] = (this.alpha * source[2]) / 255

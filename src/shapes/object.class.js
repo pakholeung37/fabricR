@@ -1,5 +1,9 @@
 // TODO unsolove circular reference
 // import Image from "./image.class"
+import Point from "../point.class"
+import Observable from "../mixins/observable.mixin"
+import StaticCanvas from "../static_canvas.class"
+import Shadow from "../shadow.class"
 import {
   toFixed,
   degreesToRadians,
@@ -26,8 +30,7 @@ import {
   isArray as _isArray
 } from "../util"
 
-var supportsLineDash = fabric.StaticCanvas.supports("setLineDash"),
-  objectCaching = !fabric.isLikelyNode,
+var objectCaching = !fabric.isLikelyNode,
   ALIASING_LIMIT = 2
 
 /**
@@ -373,7 +376,7 @@ const Object = createClass(
 
     /**
      * Shadow object representing shadow of this shape
-     * @type fabric.Shadow
+     * @type Shadow
      * @default
      */
     shadow: null,
@@ -1022,12 +1025,8 @@ const Object = createClass(
       } else if (key === "scaleY" && value < 0) {
         this.flipY = !this.flipY
         value *= -1
-      } else if (
-        key === "shadow" &&
-        value &&
-        !(value instanceof fabric.Shadow)
-      ) {
-        value = new fabric.Shadow(value)
+      } else if (key === "shadow" && value && !(value instanceof Shadow)) {
+        value = new Shadow(value)
       } else if (key === "dirty" && this.group) {
         this.group.set("dirty", value)
       }
@@ -1404,6 +1403,7 @@ const Object = createClass(
       if (1 & dashArray.length) {
         dashArray.push.apply(dashArray, dashArray)
       }
+      var supportsLineDash = StaticCanvas.supports("setLineDash")
       if (supportsLineDash) {
         ctx.setLineDash(dashArray)
       } else {
@@ -1500,7 +1500,7 @@ const Object = createClass(
     /**
      * @private
      * @param {CanvasRenderingContext2D} ctx Context to render on
-     * @param {Object} filler fabric.Pattern or fabric.Gradient
+     * @param {Object} filler fabric.Pattern or Gradient
      * @return {Object} offset.offsetX offset for text rendering
      * @return {Object} offset.offsetY offset for text rendering
      */
@@ -1608,7 +1608,7 @@ const Object = createClass(
      * is limited.
      * @private
      * @param {CanvasRenderingContext2D} ctx Context to render on
-     * @param {fabric.Gradient} filler a fabric gradient instance
+     * @param {Gradient} filler a fabric gradient instance
      */
     _applyPatternForTransformedGradient: function (ctx, filler) {
       var dims = this._limitCacheSize(this._getCacheCanvasDimensions()),
@@ -1717,7 +1717,7 @@ const Object = createClass(
     },
 
     /**
-     * Creates an instance of fabric.Image out of an object
+     * Creates an instance of Image out of an object
      * could make use of both toDataUrl or toCanvasElement.
      * @param {Function} callback callback, invoked with an instance as a first argument
      * @param {Object} [options] for clone as image, passed to toDataURL
@@ -1736,7 +1736,7 @@ const Object = createClass(
     cloneAsImage: function (callback, options) {
       var canvasEl = this.toCanvasElement(options)
       if (callback) {
-        callback(new fabric.Image(canvasEl))
+        callback(new Image(canvasEl))
       }
       return this
     },
@@ -1801,7 +1801,7 @@ const Object = createClass(
       // we need to make it so.
       el.width = Math.ceil(width)
       el.height = Math.ceil(height)
-      var canvas = new fabric.StaticCanvas(el, {
+      var canvas = new StaticCanvas(el, {
         enableRetinaScaling: false,
         renderOnAddRemove: false,
         skipOffscreen: false
@@ -1810,7 +1810,7 @@ const Object = createClass(
         canvas.backgroundColor = "#fff"
       }
       this.setPositionByOrigin(
-        new fabric.Point(canvas.width / 2, canvas.height / 2),
+        new Point(canvas.width / 2, canvas.height / 2),
         "center",
         "center"
       )
@@ -1983,7 +1983,7 @@ const Object = createClass(
      */
     getLocalPointer: function (e, pointer) {
       pointer = pointer || this.canvas.getPointer(e)
-      var pClicked = new fabric.Point(pointer.x, pointer.y),
+      var pClicked = new Point(pointer.x, pointer.y),
         objectLeftTop = this._getLeftTopCoords()
       if (this.angle) {
         pClicked = rotatePoint(
@@ -2013,7 +2013,7 @@ const Object = createClass(
 
 createAccessors && createAccessors(Object)
 
-extend(Object.prototype, fabric.Observable)
+extend(Object.prototype, Observable)
 
 /**
  * Defines the number of fraction digits to use when serializing object values.

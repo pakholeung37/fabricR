@@ -1,7 +1,7 @@
 import Object from "./object.class"
 import IText from "./itext.class"
 import Text from "./text.class"
-
+import Observable from "../mixins/observable.mixin"
 import { createClass, graphemeSplit } from "../util"
 /**
  * Textbox class, based on IText, allows the user to resize the text rectangle
@@ -10,11 +10,11 @@ import { createClass, graphemeSplit } from "../util"
  * wrapping of lines.
  * @class Textbox
  * @extends IText
- * @mixes fabric.Observable
+ * @mixes Observable
  * @return {Textbox} thisArg
  * @see {@link Textbox#initialize} for constructor definition
  */
-const Textbox = createClass(IText, fabric.Observable, {
+const Textbox = createClass(IText, Observable, {
   /**
    * Type of an object
    * @type String

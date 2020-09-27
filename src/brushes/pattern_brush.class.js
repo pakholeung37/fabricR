@@ -1,5 +1,7 @@
 import { createClass, createCanvasElement } from "../util"
 import PencilBrush from "./pencil_brush.class"
+import Pattern from "../pattern.class"
+
 /**
  * PatternBrush class
  * @class fabric.PatternBrush
@@ -64,7 +66,7 @@ const PatternBrush = createClass(
       var path = this.callSuper("createPath", pathData),
         topLeft = path._getLeftTopCoords().scalarAdd(path.strokeWidth / 2)
 
-      path.stroke = new fabric.Pattern({
+      path.stroke = new Pattern({
         source: this.source || this.getPatternSrcFunction(),
         offsetX: -topLeft.x,
         offsetY: -topLeft.y

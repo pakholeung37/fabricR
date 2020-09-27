@@ -1,4 +1,8 @@
 import BaseBrush from "./base_brush.class"
+import Shadow from "../shadow.class"
+import Group from "../shapes/group.class"
+import Rect from "../shapes/rect.class"
+import Point from "../point.class"
 import { getRandomInt, createClass } from "../util"
 /**
  * SprayBrush class
@@ -94,7 +98,7 @@ const SprayBrush = createClass(
         var sprayChunk = this.sprayChunks[i]
 
         for (var j = 0, jlen = sprayChunk.length; j < jlen; j++) {
-          var rect = new fabric.Rect({
+          var rect = new Rect({
             width: sprayChunk[j].width,
             height: sprayChunk[j].width,
             left: sprayChunk[j].x + 1,
@@ -111,8 +115,8 @@ const SprayBrush = createClass(
         rects = this._getOptimizedRects(rects)
       }
 
-      var group = new fabric.Group(rects)
-      this.shadow && group.set("shadow", new fabric.Shadow(this.shadow))
+      var group = new Group(rects)
+      this.shadow && group.set("shadow", new Shadow(this.shadow))
       this.canvas.fire("before:path:created", { path: group })
       this.canvas.add(group)
       this.canvas.fire("path:created", { path: group })
@@ -212,7 +216,7 @@ const SprayBrush = createClass(
           width = this.dotWidth
         }
 
-        var point = new fabric.Point(x, y)
+        var point = new Point(x, y)
         point.width = width
 
         if (this.randomOpacity) {

@@ -1,7 +1,7 @@
 /**
  * @namespace fabric.Collection
  */
-fabric.Collection = {
+const Collection = {
   _objects: [],
 
   /**
@@ -158,3 +158,7 @@ fabric.Collection = {
     }, 0)
   }
 }
+
+export default Collection
+
+getGlobalThis().fabric.Collection = Collection

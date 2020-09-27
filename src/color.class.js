@@ -661,4 +661,4 @@ Color.fromSource = function (source) {
 }
 
 // TODO
-getGlobalThis().Color = Color
+getGlobalThis().fabric.Color = Color

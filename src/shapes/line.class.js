@@ -1,9 +1,8 @@
 import Object from "./object.class"
 import { extend, clone, createClass, drawDashedLine } from "../util"
+import StaticCanvas from "../static_canvas.class"
 
-var coordProps = { x1: 1, x2: 1, y1: 1, y2: 1 },
-  supportsLineDash = fabric.StaticCanvas.supports("setLineDash")
-
+var coordProps = { x1: 1, x2: 1, y1: 1, y2: 1 }
 /**
  * Line class
  * @class fabric.Line
@@ -150,7 +149,7 @@ const Line = createClass(
      */
     _render: function (ctx) {
       ctx.beginPath()
-
+      var supportsLineDash = StaticCanvas.supports("setLineDash")
       if (!this.strokeDashArray || (this.strokeDashArray && supportsLineDash)) {
         // move from center (of virtual box) to its left/top corner
         // we can't assume x1, y1 is top left and x2, y2 is bottom right
