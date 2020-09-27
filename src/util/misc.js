@@ -1,5 +1,6 @@
 import { min, max } from "./lang_array"
 import { camelize } from "./lang_string"
+import { log } from "../log"
 
 var sqrt = Math.sqrt,
   atan2 = Math.atan2,
@@ -368,7 +369,7 @@ export function loadImage(url, callback, context, crossOrigin) {
   img.onload = onLoadCallback
   /** @ignore */
   img.onerror = function () {
-    fabric.log("Error loading " + img.src)
+    log("Error loading " + img.src)
     callback && callback.call(context, null, true)
     img = img.onload = img.onerror = null
   }
