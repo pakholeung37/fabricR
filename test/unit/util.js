@@ -18,8 +18,11 @@
   }
 
   var IMG_URL = fabric.isLikelyNode
-    ? "file://" +
-      require("path").join(__dirname, "../fixtures/", "very_large_image.jpg")
+    ? `file://${isWin ? "/" : ""}${require("path").posix.join(
+        __dirname.replace(/\\/g, "/"),
+        "../fixtures/",
+        "very_large_image.jpg"
+      )}`
     : getAbsolutePath("../fixtures/very_large_image.jpg")
 
   var IMG_URL_NON_EXISTING = "http://www.google.com/non-existing"

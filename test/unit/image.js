@@ -26,12 +26,16 @@
   }
 
   var IMG_SRC = fabric.isLikelyNode
-      ? "file://" +
-        require("path").join(__dirname + "/../fixtures/test_image.gif")
+      ? `file://${isWin ? "/" : ""}${path.posix.join(
+          __dirname.replace(/\\/g, "/"),
+          "/../fixtures/test_image.gif"
+        )}`
       : getAbsolutePath("../fixtures/test_image.gif"),
     IMG_SRC_REL = fabric.isLikelyNode
-      ? "file://" +
-        require("path").join(__dirname + "/../fixtures/test_image.gif")
+      ? `file://${isWin ? "/" : ""}${path.posix.join(
+          __dirname.replace(/\\/g, "/"),
+          "/../fixtures/test_image.gif"
+        )}`
       : "../fixtures/test_image.gif",
     IMG_WIDTH = 276,
     IMG_HEIGHT = 110

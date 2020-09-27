@@ -1,11 +1,13 @@
 // set the fabric famework as a global for tests
-var chalk = require('chalk');
-global.fabric = require('../dist/fabric.rollup').fabric;
-global.pixelmatch = require('pixelmatch');
-global.fs = require('fs');
+var chalk = require("chalk")
+global.fabric = require("../dist/fabric.rollup").fabric
+global.pixelmatch = require("pixelmatch")
+global.fs = require("fs")
+global.path = require("path")
 global.visualCallback = {
   addArguments: function () {}
 }
+global.isWin = require("os").platform() === "win32"
 global.visualTestLoop = require("./lib/visualTestLoop").visualTestLoop
 global.getFixture = require("./lib/visualTestLoop").getFixture
 global.getAsset = require("./lib/visualTestLoop").getAsset

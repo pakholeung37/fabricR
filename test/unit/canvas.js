@@ -102,7 +102,10 @@
   }
 
   var IMG_SRC = fabric.isLikelyNode
-    ? "file://" + __dirname + "/../fixtures/test_image.gif"
+    ? `file://${isWin ? "/" : ""}${path.posix.join(
+        __dirname.replace(/\\/g, "/"),
+        "/../fixtures/test_image.gif"
+      )}`
     : getAbsolutePath("../fixtures/test_image.gif")
 
   var canvas = (this.canvas = new fabric.Canvas(null, {
@@ -2225,9 +2228,9 @@
     function (assert) {
       var done = assert.async()
       var JSON_STRING =
-        '{"objects":[{"type":"image","originX":"left","originY":"top","left":13.6,"top":-1.4,"width":3000,"height":3351,"fill":"rgb(0,0,0)","stroke":null,"strokeWidth":0,"strokeDashArray":null,"strokeLineCap":"butt","strokeDashOffset":0,"strokeLineJoin":"miter","strokeMiterLimit":4,"scaleX":0.05,"scaleY":0.05,"angle":0,"flipX":false,"flipY":false,"opacity":1,"shadow":null,"visible":true,"backgroundColor":"","fillRule":"nonzero","globalCompositeOperation":"source-over","skewX":0,"skewY":0,"src":"' +
-        IMG_SRC +
-        '","filters":[],"crossOrigin":""}],' +
+        '{"objects":[{"type":"image","originX":"left","originY":"top","left":13.6,"top":-1.4,"width":3000,"height":3351,"fill":"rgb(0,0,0)","stroke":null,"strokeWidth":0,"strokeDashArray":null,"strokeLineCap":"butt","strokeDashOffset":0,"strokeLineJoin":"miter","strokeMiterLimit":4,"scaleX":0.05,"scaleY":0.05,"angle":0,"flipX":false,"flipY":false,"opacity":1,"shadow":null,"visible":true,"backgroundColor":"","fillRule":"nonzero","globalCompositeOperation":"source-over","skewX":0,"skewY":0,"src":' +
+        JSON.stringify(IMG_SRC) +
+        ',"filters":[],"crossOrigin":""}],' +
         '"background":"green"}'
       var serialized = JSON.parse(JSON_STRING)
       serialized.controlsAboveOverlay = true
