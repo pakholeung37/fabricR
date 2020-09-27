@@ -1,19 +1,12 @@
-/**
- * @namespace fabric.Image.filters
- * @memberOf fabric.Image
- * @tutorial {@link http://fabricjs.com/fabric-intro-part-2#image_filters}
- * @see {@link http://fabricjs.com/image-filters|ImageFilters demo}
- */
-fabric.Image = fabric.Image || {}
-fabric.Image.filters = fabric.Image.filters || {}
+import Image from "../shapes/image.class"
+import { createClass } from "../util"
 
 /**
  * Root filter class from which all filter classes inherit from
- * @class fabric.Image.filters.BaseFilter
- * @memberOf fabric.Image.filters
+ * @class BaseFilter
  */
-fabric.Image.filters.BaseFilter = fabric.util.createClass(
-  /** @lends fabric.Image.filters.BaseFilter.prototype */ {
+const BaseFilter = createClass(
+  /** @lends BaseFilter.prototype */ {
     /**
      * Filter type
      * @param {String} type
@@ -215,7 +208,7 @@ fabric.Image.filters.BaseFilter = fabric.util.createClass(
      **/
     isNeutralState: function (/* options */) {
       var main = this.mainParameter,
-        _class = fabric.Image.filters[this.type].prototype
+        _class = Image.filters[this.type].prototype
       if (main) {
         if (Array.isArray(_class[main])) {
           for (var i = _class[main].length; i--; ) {
@@ -369,8 +362,22 @@ fabric.Image.filters.BaseFilter = fabric.util.createClass(
   }
 )
 
-fabric.Image.filters.BaseFilter.fromObject = function (object, callback) {
-  var filter = new fabric.Image.filters[object.type](object)
+BaseFilter.fromObject = function (object, callback) {
+  var filter = new Image.filters[object.type](object)
   callback && callback(filter)
   return filter
 }
+
+export default BaseFilter
+export function setup() {
+  /**
+   * @namespace Image.filters
+   * @memberOf Image
+   * @tutorial {@link http://fabricjs.com/fabric-intro-part-2#image_filters}
+   * @see {@link http://fabricjs.com/image-filters|ImageFilters demo}
+   */
+  Image.filters = Image.filters || {}
+  Image.filters.BaseFilter = BaseFilter
+}
+// TODO remove
+setup()

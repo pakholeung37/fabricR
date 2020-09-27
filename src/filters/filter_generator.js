@@ -1,10 +1,9 @@
-;(function (global) {
-  "use strict"
+import Image from "../shapes/image.class"
+import BaseFilter from "./base_filter.class"
+import ColorMatrix from "./colormatrix_filter.class"
+import { createClass } from "../util"
 
-  var fabric = global.fabric || (global.fabric = {}),
-    filters = fabric.Image.filters,
-    createClass = fabric.util.createClass
-
+export function setup() {
   var matrices = {
     Brownie: [
       0.5997,
@@ -163,9 +162,9 @@
   }
 
   for (var key in matrices) {
-    filters[key] = createClass(
-      filters.ColorMatrix,
-      /** @lends fabric.Image.filters.Sepia.prototype */ {
+    Image.filters[key] = createClass(
+      ColorMatrix,
+      /** @lends Sepia.prototype */ {
         /**
          * Filter type
          * @param {String} type
@@ -192,7 +191,9 @@
         colorsOnly: true
       }
     )
-    fabric.Image.filters[key].fromObject =
-      fabric.Image.filters.BaseFilter.fromObject
+    Image.filters[key].fromObject = BaseFilter.fromObject
   }
-})(typeof exports !== "undefined" ? exports : getGlobalThis())
+}
+
+// TODO remove
+setup()
