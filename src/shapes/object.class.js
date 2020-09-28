@@ -4,6 +4,7 @@ import Point from "../point.class"
 import Observable from "../mixins/observable.mixin"
 import StaticCanvas from "../static_canvas.class"
 import Shadow from "../shadow.class"
+import CommonMethods from "../mixins/shared_methods.mixin"
 import {
   toFixed,
   degreesToRadians,
@@ -69,7 +70,7 @@ var objectCaching = !fabric.isLikelyNode,
  * @fires drop
  */
 const Object = createClass(
-  fabric.CommonMethods,
+  CommonMethods,
   /** @lends Object.prototype */ {
     /**
      * Type of an object (rect, circle, path, etc.).

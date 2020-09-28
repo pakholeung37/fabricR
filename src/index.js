@@ -1,5 +1,5 @@
 import "./header"
-import "./mixins/observable.mixin"
+// import "./mixins/observable.mixin"
 import "./util/index"
 
 // global
@@ -8,8 +8,8 @@ import "./util/index"
 // gestures
 // import "../lib/event"
 
-import "./mixins/collection.mixin"
-import "./mixins/shared_methods.mixin"
+// import "./mixins/collection.mixin"
+// import "./mixins/shared_methods.mixin"
 // import "./util/misc"
 
 // accessors
@@ -28,7 +28,7 @@ import "./mixins/shared_methods.mixin"
 // import "./util/dom_misc"
 // import "./util/dom_request"
 
-import "./log"
+// import "./log"
 
 // animation
 // import "./util/animate"
@@ -41,9 +41,9 @@ import "./log"
 import "./parser"
 import "./elements_parser"
 
-import "./point.class"
+// import "./point.class"
 import "./intersection.class"
-import "./color.class"
+// import "./color.class"
 
 // interaction
 import "./controls.actions"
@@ -51,13 +51,13 @@ import "./controls.render"
 import "./control.class"
 
 // gradient
-import "./gradient.class"
+// import "./gradient.class"
 
 // pattern
-import "./pattern.class"
+// import "./pattern.class"
 
 // shadow
-import "./shadow.class"
+// import "./shadow.class"
 
 import "./static_canvas.class"
 
@@ -81,7 +81,7 @@ import "./mixins/canvas_serialization.mixin"
 // gestures
 // import "./mixins/canvas_gestures.mixin"
 
-import "./shapes/object.class"
+// import "./shapes/object.class"
 import "./mixins/object_origin.mixin"
 import "./mixins/object_geometry.mixin"
 import "./mixins/object_stacking.mixin"
@@ -94,19 +94,19 @@ import "./mixins/object_interactivity.mixin"
 // animation
 import "./mixins/animation.mixin"
 
-import "./shapes/line.class"
-import "./shapes/circle.class"
-import "./shapes/triangle.class"
-import "./shapes/ellipse.class"
-import "./shapes/rect.class"
-import "./shapes/polyline.class"
-import "./shapes/polygon.class"
-import "./shapes/path.class"
+// import "./shapes/line.class"
+// import "./shapes/circle.class"
+// import "./shapes/triangle.class"
+// import "./shapes/ellipse.class"
+// import "./shapes/rect.class"
+// import "./shapes/polyline.class"
+// import "./shapes/polygon.class"
+// import "./shapes/path.class"
 // interaction
-import "./shapes/active_selection.class"
-import "./shapes/group.class"
+// import "./shapes/active_selection.class"
+// import "./shapes/group.class"
 
-import "./shapes/image.class"
+// import "./shapes/image.class"
 
 // object_straightening
 import "./mixins/object_straightening.mixin"
