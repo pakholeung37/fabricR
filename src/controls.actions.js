@@ -478,7 +478,6 @@ export function skewHandlerY(eventData, transform, x, y) {
   var finalHandler = wrapWithFixedAnchor(skewObjectY)
   return finalHandler(eventData, transform, x, y)
 }
-
 /**
  * Action handler for rotation and snapping, without anchor point.
  * Needs to be wrapped with `wrapWithFixedAnchor` to be effective
@@ -489,7 +488,9 @@ export function skewHandlerY(eventData, transform, x, y) {
  * @return {Boolean} true if some change happened
  * @private
  */
-export function rotationWithSnapping(eventData, transform, x, y) {
+export const rotationWithSnapping = wrapWithFixedAnchor(_rotationWithSnapping)
+
+function _rotationWithSnapping(eventData, transform, x, y) {
   var t = transform,
     target = t.target,
     pivotPoint = target.translateToOriginPoint(
@@ -660,7 +661,7 @@ export function scaleObject(eventData, transform, x, y, options) {
 export function scaleObjectFromCorner(eventData, transform, x, y) {
   return scaleObject(eventData, transform, x, y)
 }
-
+export const scalingEqually = wrapWithFixedAnchor(scaleObjectFromCorner)
 /**
  * Scaling logic for the X axis.
  * Needs to be wrapped with `wrapWithFixedAnchor` to be effective
@@ -674,6 +675,8 @@ export function scaleObjectX(eventData, transform, x, y) {
   return scaleObject(eventData, transform, x, y, { by: "x" })
 }
 
+export const scalingX = wrapWithFixedAnchor(scaleObjectX)
+
 /**
  * Scaling logic for the Y axis.
  * Needs to be wrapped with `wrapWithFixedAnchor` to be effective
@@ -686,6 +689,8 @@ export function scaleObjectX(eventData, transform, x, y) {
 export function scaleObjectY(eventData, transform, x, y) {
   return scaleObject(eventData, transform, x, y, { by: "y" })
 }
+
+export const scalingY = wrapWithFixedAnchor(scaleObjectY)
 
 /**
  * Composed action handler to either scale Y or skew X
@@ -730,7 +735,9 @@ export function scalingXOrSkewingY(eventData, transform, x, y) {
  * @param {number} y current mouse y position, canvas normalized
  * @return {Boolean} true if some change happened
  */
-export function changeWidth(eventData, transform, x, y) {
+export const changeWidth = wrapWithFixedAnchor(_changeWidth)
+
+function _changeWidth(eventData, transform, x, y) {
   var target = transform.target,
     localPoint = getLocalPoint(
       transform,
@@ -747,21 +754,3 @@ export function changeWidth(eventData, transform, x, y) {
   target.set("width", Math.max(newWidth, 0))
   return true
 }
-
-controls.scaleCursorStyleHandler = scaleCursorStyleHandler
-controls.skewCursorStyleHandler = skewCursorStyleHandler
-controls.scaleSkewCursorStyleHandler = scaleSkewCursorStyleHandler
-controls.rotationWithSnapping = wrapWithFixedAnchor(rotationWithSnapping)
-controls.scalingEqually = wrapWithFixedAnchor(scaleObjectFromCorner)
-controls.scalingX = wrapWithFixedAnchor(scaleObjectX)
-controls.scalingY = wrapWithFixedAnchor(scaleObjectY)
-controls.scalingYOrSkewingX = scalingYOrSkewingX
-controls.scalingXOrSkewingY = scalingXOrSkewingY
-controls.changeWidth = wrapWithFixedAnchor(changeWidth)
-controls.skewHandlerX = skewHandlerX
-controls.skewHandlerY = skewHandlerY
-controls.scaleOrSkewActionName = scaleOrSkewActionName
-controls.rotationStyleHandler = rotationStyleHandler
-controls.fireEvent = fireEvent
-controls.wrapWithFixedAnchor = wrapWithFixedAnchor
-controls.getLocalPoint = getLocalPoint

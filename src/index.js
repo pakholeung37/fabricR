@@ -94,19 +94,19 @@ import "./mixins/object_interactivity.mixin"
 // animation
 import "./mixins/animation.mixin"
 
-// import "./shapes/line.class"
-// import "./shapes/circle.class"
-// import "./shapes/triangle.class"
-// import "./shapes/ellipse.class"
-// import "./shapes/rect.class"
-// import "./shapes/polyline.class"
-// import "./shapes/polygon.class"
-// import "./shapes/path.class"
+import "./shapes/line.class"
+import "./shapes/circle.class"
+import "./shapes/triangle.class"
+import "./shapes/ellipse.class"
+import "./shapes/rect.class"
+import "./shapes/polyline.class"
+import "./shapes/polygon.class"
+import "./shapes/path.class"
 // interaction
-// import "./shapes/active_selection.class"
-// import "./shapes/group.class"
+import "./shapes/active_selection.class"
+import "./shapes/group.class"
 
-// import "./shapes/image.class"
+import "./shapes/image.class"
 
 // object_straightening
 import "./mixins/object_straightening.mixin"

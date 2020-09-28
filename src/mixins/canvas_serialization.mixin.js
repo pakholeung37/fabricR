@@ -1,6 +1,16 @@
-fabric.util.object.extend(
-  fabric.StaticCanvas.prototype,
-  /** @lends fabric.StaticCanvas.prototype */ {
+import {
+  extend,
+  enlivenObjects,
+  clone,
+  capitalize,
+  createCanvasElement
+} from "../util"
+import StaticCanvas from "../static_canvas.class"
+import Canvas from "../canvas.class"
+
+extend(
+  StaticCanvas.prototype,
+  /** @lends StaticCanvas.prototype */ {
     /**
      * Populates canvas with data from the specified JSON.
      * JSON format must conform to the one of {@link fabric.Canvas#toJSON}
@@ -28,10 +38,7 @@ fabric.util.object.extend(
       }
 
       // serialize if it wasn't already
-      var serialized =
-        typeof json === "string"
-          ? JSON.parse(json)
-          : fabric.util.object.clone(json)
+      var serialized = typeof json === "string" ? JSON.parse(json) : clone(json)
 
       var _this = this,
         clipPath = serialized.clipPath,
@@ -185,19 +192,16 @@ fabric.util.object.extend(
       }
 
       if (property === "backgroundImage" || property === "overlayImage") {
-        fabric.util.enlivenObjects([value], function (enlivedObject) {
+        enlivenObjects([value], function (enlivedObject) {
           _this[property] = enlivedObject[0]
           loaded[property] = true
           callback && callback()
         })
       } else {
-        this["set" + fabric.util.string.capitalize(property, true)](
-          value,
-          function () {
-            loaded[property] = true
-            callback && callback()
-          }
-        )
+        this["set" + capitalize(property, true)](value, function () {
+          loaded[property] = true
+          callback && callback()
+        })
       }
     },
 
@@ -213,7 +217,7 @@ fabric.util.object.extend(
         return
       }
 
-      fabric.util.enlivenObjects(
+      enlivenObjects(
         objects,
         function (enlivenedObjects) {
           callback && callback(enlivenedObjects)
@@ -267,12 +271,12 @@ fabric.util.object.extend(
      * @param {Object} [callback] Receives cloned instance as a first argument
      */
     cloneWithoutData: function (callback) {
-      var el = fabric.util.createCanvasElement()
+      var el = createCanvasElement()
 
       el.width = this.width
       el.height = this.height
 
-      var clone = new fabric.Canvas(el)
+      var clone = new Canvas(el)
       if (this.backgroundImage) {
         clone.setBackgroundImage(this.backgroundImage.src, function () {
           clone.renderAll()

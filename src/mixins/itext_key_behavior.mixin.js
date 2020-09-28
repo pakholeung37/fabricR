@@ -1,6 +1,9 @@
-fabric.util.object.extend(
-  fabric.IText.prototype,
-  /** @lends fabric.IText.prototype */ {
+import { extend, addListener, graphemeSplit } from "../util"
+import IText from "../shapes/itext.class"
+
+extend(
+  IText.prototype,
+  /** @lends IText.prototype */ {
     /**
      * Initializes hidden textarea (needed to bring up keyboard in iOS)
      */
@@ -26,50 +29,30 @@ fabric.util.object.extend(
         ";"
       fabric.document.body.appendChild(this.hiddenTextarea)
 
-      fabric.util.addListener(
-        this.hiddenTextarea,
-        "keydown",
-        this.onKeyDown.bind(this)
-      )
-      fabric.util.addListener(
-        this.hiddenTextarea,
-        "keyup",
-        this.onKeyUp.bind(this)
-      )
-      fabric.util.addListener(
-        this.hiddenTextarea,
-        "input",
-        this.onInput.bind(this)
-      )
-      fabric.util.addListener(this.hiddenTextarea, "copy", this.copy.bind(this))
-      fabric.util.addListener(this.hiddenTextarea, "cut", this.copy.bind(this))
-      fabric.util.addListener(
-        this.hiddenTextarea,
-        "paste",
-        this.paste.bind(this)
-      )
-      fabric.util.addListener(
+      addListener(this.hiddenTextarea, "keydown", this.onKeyDown.bind(this))
+      addListener(this.hiddenTextarea, "keyup", this.onKeyUp.bind(this))
+      addListener(this.hiddenTextarea, "input", this.onInput.bind(this))
+      addListener(this.hiddenTextarea, "copy", this.copy.bind(this))
+      addListener(this.hiddenTextarea, "cut", this.copy.bind(this))
+      addListener(this.hiddenTextarea, "paste", this.paste.bind(this))
+      addListener(
         this.hiddenTextarea,
         "compositionstart",
         this.onCompositionStart.bind(this)
       )
-      fabric.util.addListener(
+      addListener(
         this.hiddenTextarea,
         "compositionupdate",
         this.onCompositionUpdate.bind(this)
       )
-      fabric.util.addListener(
+      addListener(
         this.hiddenTextarea,
         "compositionend",
         this.onCompositionEnd.bind(this)
       )
 
       if (!this._clickHandlerInitialized && this.canvas) {
-        fabric.util.addListener(
-          this.canvas.upperCanvasEl,
-          "click",
-          this.onClick.bind(this)
-        )
+        addListener(this.canvas.upperCanvasEl, "click", this.onClick.bind(this))
         this._clickHandlerInitialized = true
       }
     },
@@ -78,12 +61,12 @@ fabric.util.object.extend(
      * For functionalities on keyDown
      * Map a special key to a function of the instance/prototype
      * If you need different behaviour for ESC or TAB or arrows, you have to change
-     * this map setting the name of a function that you build on the fabric.Itext or
+     * this map setting the name of a function that you build on the IText or
      * your prototype.
      * the map change will affect all Instances unless you need for only some text Instances
      * in that case you have to clone this object and assign your Instance.
-     * this.keysMap = fabric.util.object.clone(this.keysMap);
-     * The function must be in fabric.Itext.prototype.myFunction And will receive event as args[0]
+     * this.keysMap = object.clone(this.keysMap);
+     * The function must be in IText.prototype.myFunction And will receive event as args[0]
      */
     keysMap: {
       9: "exitEditing",
@@ -745,7 +728,7 @@ fabric.util.object.extend(
       if (end > start) {
         this.removeStyleFromTo(start, end)
       }
-      var graphemes = fabric.util.string.graphemeSplit(text)
+      var graphemes = graphemeSplit(text)
       this.insertNewStyleBlock(graphemes, start, style)
       this._text = [].concat(
         this._text.slice(0, start),

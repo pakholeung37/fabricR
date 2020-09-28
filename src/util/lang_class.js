@@ -1,5 +1,5 @@
 function emptyFunction() {}
-/** @ignore */
+
 function addMethods(klass, source, parent) {
   for (var property in source) {
     if (

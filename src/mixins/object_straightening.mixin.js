@@ -1,5 +1,9 @@
-fabric.util.object.extend(
-  fabric.Object.prototype,
+import { extend, animate } from "../util"
+import StaticCanvas from "../static_canvas.class"
+import FaObject from "../shapes/object.class"
+
+extend(
+  FaObject.prototype,
   /** @lends fabric.Object.prototype */ {
     /**
      * @private
@@ -39,7 +43,7 @@ fabric.util.object.extend(
         onChange = callbacks.onChange || empty,
         _this = this
 
-      fabric.util.animate({
+      animate({
         startValue: this.get("angle"),
         endValue: this._getAngleValueForStraighten(),
         duration: this.FX_DURATION,
@@ -58,9 +62,9 @@ fabric.util.object.extend(
   }
 )
 
-fabric.util.object.extend(
-  fabric.StaticCanvas.prototype,
-  /** @lends fabric.StaticCanvas.prototype */ {
+extend(
+  StaticCanvas.prototype,
+  /** @lends StaticCanvas.prototype */ {
     /**
      * Straightens object, then rerenders canvas
      * @param {fabric.Object} object Object to straighten

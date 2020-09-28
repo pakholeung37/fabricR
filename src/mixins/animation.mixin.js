@@ -1,6 +1,10 @@
-fabric.util.object.extend(
-  fabric.StaticCanvas.prototype,
-  /** @lends fabric.StaticCanvas.prototype */ {
+import { extend, clone, animateColor, animate } from "../util"
+import StaticCanvas from "../static_canvas.class"
+import FaObject from "../shapes/object.class"
+
+extend(
+  StaticCanvas.prototype,
+  /** @lends StaticCanvas.prototype */ {
     /**
      * Animation duration (in ms) for fx* methods
      * @type Number
@@ -25,7 +29,7 @@ fabric.util.object.extend(
         onChange = callbacks.onChange || empty,
         _this = this
 
-      fabric.util.animate({
+      animate({
         startValue: object.left,
         endValue: this.getCenter().left,
         duration: this.FX_DURATION,
@@ -60,7 +64,7 @@ fabric.util.object.extend(
         onChange = callbacks.onChange || empty,
         _this = this
 
-      fabric.util.animate({
+      animate({
         startValue: object.top,
         endValue: this.getCenter().top,
         duration: this.FX_DURATION,
@@ -95,7 +99,7 @@ fabric.util.object.extend(
         onChange = callbacks.onChange || empty,
         _this = this
 
-      fabric.util.animate({
+      animate({
         startValue: object.opacity,
         endValue: 0,
         duration: this.FX_DURATION,
@@ -115,8 +119,8 @@ fabric.util.object.extend(
   }
 )
 
-fabric.util.object.extend(
-  fabric.Object.prototype,
+extend(
+  FaObject.prototype,
   /** @lends fabric.Object.prototype */ {
     /**
      * Animates object's properties
@@ -172,7 +176,7 @@ fabric.util.object.extend(
       if (!options) {
         options = {}
       } else {
-        options = fabric.util.object.clone(options)
+        options = clone(options)
       }
 
       if (~property.indexOf(".")) {
@@ -234,14 +238,14 @@ fabric.util.object.extend(
       }
 
       if (propIsColor) {
-        fabric.util.animateColor(
+        animateColor(
           _options.startValue,
           _options.endValue,
           _options.duration,
           _options
         )
       } else {
-        fabric.util.animate(_options)
+        animate(_options)
       }
     }
   }

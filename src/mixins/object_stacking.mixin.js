@@ -1,5 +1,9 @@
-fabric.util.object.extend(
-  fabric.Object.prototype,
+import { extend } from "../util"
+import StaticCanvas from "../static_canvas.class"
+import FaObject from "../shapes/object.class"
+
+extend(
+  FaObject.prototype,
   /** @lends fabric.Object.prototype */ {
     /**
      * Moves an object to the bottom of the stack of drawn objects
@@ -8,7 +12,7 @@ fabric.util.object.extend(
      */
     sendToBack: function () {
       if (this.group) {
-        fabric.StaticCanvas.prototype.sendToBack.call(this.group, this)
+        StaticCanvas.prototype.sendToBack.call(this.group, this)
       } else if (this.canvas) {
         this.canvas.sendToBack(this)
       }
@@ -22,7 +26,7 @@ fabric.util.object.extend(
      */
     bringToFront: function () {
       if (this.group) {
-        fabric.StaticCanvas.prototype.bringToFront.call(this.group, this)
+        StaticCanvas.prototype.bringToFront.call(this.group, this)
       } else if (this.canvas) {
         this.canvas.bringToFront(this)
       }
@@ -37,7 +41,7 @@ fabric.util.object.extend(
      */
     sendBackwards: function (intersecting) {
       if (this.group) {
-        fabric.StaticCanvas.prototype.sendBackwards.call(
+        StaticCanvas.prototype.sendBackwards.call(
           this.group,
           this,
           intersecting
@@ -56,11 +60,7 @@ fabric.util.object.extend(
      */
     bringForward: function (intersecting) {
       if (this.group) {
-        fabric.StaticCanvas.prototype.bringForward.call(
-          this.group,
-          this,
-          intersecting
-        )
+        StaticCanvas.prototype.bringForward.call(this.group, this, intersecting)
       } else if (this.canvas) {
         this.canvas.bringForward(this, intersecting)
       }
@@ -75,7 +75,7 @@ fabric.util.object.extend(
      */
     moveTo: function (index) {
       if (this.group && this.group.type !== "activeSelection") {
-        fabric.StaticCanvas.prototype.moveTo.call(this.group, this, index)
+        StaticCanvas.prototype.moveTo.call(this.group, this, index)
       } else if (this.canvas) {
         this.canvas.moveTo(this, index)
       }

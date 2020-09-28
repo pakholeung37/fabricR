@@ -15,7 +15,8 @@ import {
   createClass,
   cleanUpJsdomNode
 } from "../util"
-
+import WebglFilterBackend from "../filters/webgl_backend.class"
+import Canvas2dFilterBackend from "../filters/2d_backend.class"
 /**
  * Image class
  * @class Image
@@ -471,7 +472,7 @@ const Image = createClass(
         return
       }
       if (!fabric.filterBackend) {
-        fabric.filterBackend = fabric.initFilterBackend()
+        fabric.filterBackend = initFilterBackend()
       }
       var canvasEl = createCanvasElement(),
         cacheKey = this._filteredEl
@@ -545,7 +546,7 @@ const Image = createClass(
         this._lastScaleY = 1
       }
       if (!fabric.filterBackend) {
-        fabric.filterBackend = fabric.initFilterBackend()
+        fabric.filterBackend = initFilterBackend()
       }
       fabric.filterBackend.applyFilters(
         filters,
@@ -883,5 +884,17 @@ Image.fromElement = function (element, callback, options) {
 }
 /* _FROM_SVG_END_ */
 
+function initFilterBackend() {
+  if (
+    fabric.enableGLFiltering &&
+    fabric.isWebglSupported &&
+    fabric.isWebglSupported(fabric.textureSize)
+  ) {
+    console.log("max texture size: " + fabric.maxTextureSize)
+    return new WebglFilterBackend({ tileSize: fabric.textureSize })
+  } else if (Canvas2dFilterBackend) {
+    return new Canvas2dFilterBackend()
+  }
+}
 getGlobalThis().fabric.Image = Image
 export default Image
