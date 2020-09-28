@@ -87,4 +87,3 @@ export function requestAnimFrame() {
 export function cancelAnimFrame() {
   return _cancelAnimFrame.apply(fabric.window, arguments)
 }
-

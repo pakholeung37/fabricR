@@ -12,8 +12,8 @@ export default function Point(x, y) {
   this.y = y
 }
 
-Point.prototype = /** @lends Point.prototype */ {  type: "point",
-
+Point.prototype = /** @lends Point.prototype */ {
+  type: "point",
   constructor: Point,
 
   /**
