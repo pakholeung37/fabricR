@@ -9,7 +9,7 @@
 ### Goals
 
 - [x] modern frontend workflow (rollup + eslint + prettier + babel)
-- [ ] tree shaking and dynamic import
+- [x] migrate to esm and tree shaking
 - [ ] modern es6+ syntax (especially class)
 - [ ] heavy utils external
 - [ ] plugin system
