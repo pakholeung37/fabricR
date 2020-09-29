@@ -1,90 +1,80 @@
-;(function () {
-  var canvas = (this.canvas = new fabric.Canvas(null, {
-    enableRetinaScaling: false,
-    width: 600,
-    height: 600
-  }))
+var canvas = new fabric.Canvas(null, {
+  enableRetinaScaling: false,
+  width: 600,
+  height: 600
+})
 
-  function makeAsWith2Objects() {
-    var rect1 = new fabric.Rect({
-        top: 100,
-        left: 100,
-        width: 30,
-        height: 10,
-        strokeWidth: 0
-      }),
-      rect2 = new fabric.Rect({
-        top: 120,
-        left: 50,
-        width: 10,
-        height: 40,
-        strokeWidth: 0
-      })
+function makeAsWith2Objects() {
+  var rect1 = new fabric.Rect({
+      top: 100,
+      left: 100,
+      width: 30,
+      height: 10,
+      strokeWidth: 0
+    }),
+    rect2 = new fabric.Rect({
+      top: 120,
+      left: 50,
+      width: 10,
+      height: 40,
+      strokeWidth: 0
+    })
 
-    return new fabric.ActiveSelection([rect1, rect2], { strokeWidth: 0 })
-  }
+  return new fabric.ActiveSelection([rect1, rect2], { strokeWidth: 0 })
+}
 
-  function makeAsWith2ObjectsWithOpacity() {
-    var rect1 = new fabric.Rect({
-        top: 100,
-        left: 100,
-        width: 30,
-        height: 10,
-        strokeWidth: 0,
-        opacity: 0.5
-      }),
-      rect2 = new fabric.Rect({
-        top: 120,
-        left: 50,
-        width: 10,
-        height: 40,
-        strokeWidth: 0,
-        opacity: 0.8
-      })
+function makeAsWith2ObjectsWithOpacity() {
+  var rect1 = new fabric.Rect({
+      top: 100,
+      left: 100,
+      width: 30,
+      height: 10,
+      strokeWidth: 0,
+      opacity: 0.5
+    }),
+    rect2 = new fabric.Rect({
+      top: 120,
+      left: 50,
+      width: 10,
+      height: 40,
+      strokeWidth: 0,
+      opacity: 0.8
+    })
 
-    return new fabric.ActiveSelection([rect1, rect2], { strokeWidth: 0 })
-  }
+  return new fabric.ActiveSelection([rect1, rect2], { strokeWidth: 0 })
+}
 
-  function makeAsWith4Objects() {
-    var rect1 = new fabric.Rect({ top: 100, left: 100, width: 30, height: 10 }),
-      rect2 = new fabric.Rect({ top: 120, left: 50, width: 10, height: 40 }),
-      rect3 = new fabric.Rect({ top: 40, left: 0, width: 20, height: 40 }),
-      rect4 = new fabric.Rect({ top: 75, left: 75, width: 40, height: 40 })
+function makeAsWith4Objects() {
+  var rect1 = new fabric.Rect({ top: 100, left: 100, width: 30, height: 10 }),
+    rect2 = new fabric.Rect({ top: 120, left: 50, width: 10, height: 40 }),
+    rect3 = new fabric.Rect({ top: 40, left: 0, width: 20, height: 40 }),
+    rect4 = new fabric.Rect({ top: 75, left: 75, width: 40, height: 40 })
 
-    return new fabric.ActiveSelection([rect1, rect2, rect3, rect4])
-  }
+  return new fabric.ActiveSelection([rect1, rect2, rect3, rect4])
+}
 
-  QUnit.module("fabric.ActiveSelection", {
-    afterEach: function () {
-      canvas.clear()
-      canvas.backgroundColor = fabric.Canvas.prototype.backgroundColor
-      canvas.calcOffset()
-    }
+describe("fabric.ActiveSelection", () => {
+  afterEach(function () {
+    canvas.clear()
+    canvas.backgroundColor = fabric.Canvas.prototype.backgroundColor
+    canvas.calcOffset()
   })
-
-  QUnit.test("constructor", function (assert) {
+  test("constructor", function () {
     var group = makeAsWith2Objects()
 
-    assert.ok(group)
-    assert.ok(
-      group instanceof fabric.ActiveSelection,
-      "should be instance of fabric.ActiveSelection"
-    )
+    expect(group).toBeTruthy()
+    expect(group instanceof fabric.ActiveSelection).toBeTruthy()
   })
 
-  QUnit.test("toString", function (assert) {
+  test("toString", function () {
     var group = makeAsWith2Objects()
-    assert.equal(
-      group.toString(),
-      "#<fabric.ActiveSelection: (2)>",
-      "should return proper representation"
-    )
+    expect(group.toString()).toEqual("#<fabric.ActiveSelection: (2)>")
   })
 
-  QUnit.test("toObject", function (assert) {
+  test("toObject", function () {
     var group = makeAsWith2Objects()
 
-    assert.ok(typeof group.toObject === "function")
+    expect(typeof group.toObject === "function").toBeTruthy()
 
     var clone = group.toObject()
 
@@ -122,20 +112,14 @@
       objects: clone.objects
     }
 
-    assert.deepEqual(clone, expectedObject)
+    expect(clone).toEqual(expectedObject)
 
-    assert.ok(group !== clone, "should produce different object")
-    assert.ok(
-      group.getObjects() !== clone.objects,
-      "should produce different object array"
-    )
-    assert.ok(
-      group.getObjects()[0] !== clone.objects[0],
-      "should produce different objects in array"
-    )
+    expect(group !== clone).toBeTruthy()
+    expect(group.getObjects() !== clone.objects).toBeTruthy()
+    expect(group.getObjects()[0] !== clone.objects[0]).toBeTruthy()
   })
 
-  QUnit.test("toObject without default values", function (assert) {
+  test("toObject without default values", function () {
     var group = makeAsWith2Objects()
     group.includeDefaultValues = false
     var clone = group.toObject()
@@ -168,20 +152,19 @@
       height: 60,
       objects: objects
     }
-    assert.deepEqual(clone, expectedObject)
+    expect(clone).toEqual(expectedObject)
   })
 
-  QUnit.test("_renderControls", function (assert) {
-    assert.ok(
+  test("_renderControls", function () {
+    expect(
       typeof fabric.ActiveSelection.prototype._renderControls === "function"
-    )
+    ).toBeTruthy()
   })
 
-  QUnit.test("fromObject", function (assert) {
-    var done = assert.async()
+  test("fromObject", function (done) {
     var group = makeAsWith2ObjectsWithOpacity()
 
-    assert.ok(typeof fabric.ActiveSelection.fromObject === "function")
+    expect(typeof fabric.ActiveSelection.fromObject === "function").toBeTruthy()
     var groupObject = group.toObject()
 
     fabric.ActiveSelection.fromObject(groupObject, function (
@@ -190,14 +173,12 @@
       var objectFromOldGroup = group.toObject()
       var objectFromNewGroup = newGroupFromObject.toObject()
 
-      assert.ok(newGroupFromObject instanceof fabric.ActiveSelection)
+      expect(newGroupFromObject instanceof fabric.ActiveSelection).toBeTruthy()
 
-      assert.deepEqual(
-        objectFromOldGroup.objects[0],
+      expect(objectFromOldGroup.objects[0]).toEqual(
         objectFromNewGroup.objects[0]
       )
-      assert.deepEqual(
-        objectFromOldGroup.objects[1],
+      expect(objectFromOldGroup.objects[1]).toEqual(
         objectFromNewGroup.objects[1]
       )
 
@@ -205,55 +186,52 @@
       delete objectFromOldGroup.objects
       delete objectFromNewGroup.objects
 
-      assert.deepEqual(objectFromOldGroup, objectFromNewGroup)
+      expect(objectFromOldGroup).toEqual(objectFromNewGroup)
 
       done()
     })
   })
 
-  QUnit.test("get with locked objects", function (assert) {
+  test("get with locked objects", function () {
     var group = makeAsWith2Objects()
 
-    assert.equal(group.get("lockMovementX"), false)
+    expect(group.get("lockMovementX")).toEqual(false)
 
     // TODO acitveGroup
     // group.getObjects()[0].lockMovementX = true;
-    // assert.equal(group.get('lockMovementX'), true);
+    // .equal(group.get('lockMovementX'), true);
     //
     // group.getObjects()[0].lockMovementX = false;
-    // assert.equal(group.get('lockMovementX'), false);
+    // .equal(group.get('lockMovementX'), false);
 
     group.set("lockMovementX", true)
-    assert.equal(group.get("lockMovementX"), true)
+    expect(group.get("lockMovementX")).toEqual(true)
 
     // group.set('lockMovementX', false);
     // group.getObjects()[0].lockMovementY = true;
     // group.getObjects()[1].lockRotation = true;
     //
-    // assert.equal(group.get('lockMovementY'), true);
-    // assert.equal(group.get('lockRotation'), true);
+    // .equal(group.get('lockMovementY'), true);
+    // .equal(group.get('lockRotation'), true);
   })
 
-  QUnit.test("insertAt", function (assert) {
+  test("insertAt", function () {
     var rect1 = new fabric.Rect(),
       rect2 = new fabric.Rect(),
       group = new fabric.Group()
 
     group.add(rect1, rect2)
 
-    assert.ok(
-      typeof group.insertAt === "function",
-      "should respond to `insertAt` method"
-    )
+    expect(typeof group.insertAt === "function").toBeTruthy()
 
     group.insertAt(rect1, 1)
-    assert.equal(group.item(1), rect1)
+    expect(group.item(1)).toEqual(rect1)
     group.insertAt(rect2, 2)
-    assert.equal(group.item(2), rect2)
-    assert.equal(group.insertAt(rect1, 2), group, "should be chainable")
+    expect(group.item(2)).toEqual(rect2)
+    expect(group.insertAt(rect1, 2)).toEqual(group)
   })
 
-  QUnit.test("group addWithUpdate", function (assert) {
+  test("group addWithUpdate", function () {
     var rect1 = new fabric.Rect({
         top: 1,
         left: 1,
@@ -279,14 +257,10 @@
     var coords = group.oCoords
     group.addWithUpdate(rect2)
     var newCoords = group.oCoords
-    assert.notEqual(
-      coords,
-      newCoords,
-      "object coords have been recalculated - add"
-    )
+    expect(coords).not.toEqual(newCoords)
   })
 
-  QUnit.test("group removeWithUpdate", function (assert) {
+  test("group removeWithUpdate", function () {
     var rect1 = new fabric.Rect({
         top: 1,
         left: 1,
@@ -312,14 +286,10 @@
     var coords = group.oCoords
     group.removeWithUpdate(rect2)
     var newCoords = group.oCoords
-    assert.notEqual(
-      coords,
-      newCoords,
-      "object coords have been recalculated - remove"
-    )
+    expect(coords).not.toEqual(newCoords)
   })
 
-  QUnit.test("ActiveSelection shouldCache", function (assert) {
+  test("ActiveSelection shouldCache", function () {
     var rect1 = new fabric.Rect({
         top: 1,
         left: 1,
@@ -344,18 +314,18 @@
         objectCaching: true
       })
 
-    assert.equal(group.shouldCache(), false, "Active selection do not cache")
+    expect(group.shouldCache()).toEqual(false)
   })
 
-  QUnit.test("canvas property propagation", function (assert) {
+  test("canvas property propagation", function () {
     var g2 = makeAsWith4Objects()
 
     canvas.add(g2)
-    assert.equal(g2.canvas, canvas)
-    assert.equal(g2._objects[3].canvas, canvas)
+    expect(g2.canvas).toEqual(canvas)
+    expect(g2._objects[3].canvas).toEqual(canvas)
   })
 
-  QUnit.test("moveTo on activeSelection", function (assert) {
+  test("moveTo on activeSelection", function () {
     var group = makeAsWith4Objects({ canvas: canvas }),
       groupEl1 = group.getObjects()[0],
       groupEl2 = group.getObjects()[1],
@@ -363,32 +333,32 @@
       groupEl4 = group.getObjects()[3]
     canvas.add(groupEl1, groupEl2, groupEl3, groupEl4)
     canvas.setActiveObject(group)
-    assert.ok(typeof group.item(0).moveTo === "function")
+    expect(typeof group.item(0).moveTo === "function").toBeTruthy()
 
     // [ 1, 2, 3, 4 ]
-    assert.equal(group.item(0), groupEl1, "actual group position 1")
-    assert.equal(group.item(1), groupEl2, "actual group position 2")
-    assert.equal(group.item(2), groupEl3, "actual group position 3")
-    assert.equal(group.item(3), groupEl4, "actual group position 4")
-    assert.equal(group.item(9999), undefined)
-    assert.equal(canvas.item(0), groupEl1, "actual canvas position 1")
-    assert.equal(canvas.item(1), groupEl2, "actual canvas position 2")
-    assert.equal(canvas.item(2), groupEl3, "actual canvas position 3")
-    assert.equal(canvas.item(3), groupEl4, "actual canvas position 4")
-    assert.equal(canvas.item(9999), undefined)
+    expect(group.item(0)).toEqual(groupEl1)
+    expect(group.item(1)).toEqual(groupEl2)
+    expect(group.item(2)).toEqual(groupEl3)
+    expect(group.item(3)).toEqual(groupEl4)
+    expect(group.item(9999)).toEqual(undefined)
+    expect(canvas.item(0)).toEqual(groupEl1)
+    expect(canvas.item(1)).toEqual(groupEl2)
+    expect(canvas.item(2)).toEqual(groupEl3)
+    expect(canvas.item(3)).toEqual(groupEl4)
+    expect(canvas.item(9999)).toEqual(undefined)
 
     group.item(0).moveTo(3)
 
-    assert.equal(group.item(0), groupEl1, "did not change group position 1")
-    assert.equal(group.item(1), groupEl2, "did not change group position 2")
-    assert.equal(group.item(2), groupEl3, "did not change group position 3")
-    assert.equal(group.item(3), groupEl4, "did not change group position 4")
-    assert.equal(group.item(9999), undefined)
+    expect(group.item(0)).toEqual(groupEl1)
+    expect(group.item(1)).toEqual(groupEl2)
+    expect(group.item(2)).toEqual(groupEl3)
+    expect(group.item(3)).toEqual(groupEl4)
+    expect(group.item(9999)).toEqual(undefined)
     // moved 1 to level 3 — [2, 3, 4, 1]
-    assert.equal(canvas.item(3), groupEl1, "item 1 is not at last")
-    assert.equal(canvas.item(0), groupEl2, "item 2 shifted down to 1")
-    assert.equal(canvas.item(1), groupEl3, "item 3 shifted down to 2")
-    assert.equal(canvas.item(2), groupEl4, "item 4 shifted down to 3")
-    assert.equal(canvas.item(9999), undefined)
+    expect(canvas.item(3)).toEqual(groupEl1)
+    expect(canvas.item(0)).toEqual(groupEl2)
+    expect(canvas.item(1)).toEqual(groupEl3)
+    expect(canvas.item(2)).toEqual(groupEl4)
+    expect(canvas.item(9999)).toEqual(undefined)
   })
-})()
+})

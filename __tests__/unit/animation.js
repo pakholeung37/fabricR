@@ -1,31 +1,24 @@
-;(function () {
-  QUnit.module("fabric.util.animate")
-
-  QUnit.test("animateColor", function (assert) {
-    var done = assert.async()
+describe("fabric.util.animate", () => {
+  test("animateColor", function (done) {
     function testing(val, changePerc) {
       if (changePerc !== 1) {
-        assert.notEqual(val, "rgba(0,0,255,1)", "color is not blue")
+        expect(val).not.toEqual("rgba(0,0,255,1)")
       }
     }
-    assert.ok(
-      typeof fabric.util.animateColor === "function",
-      "animateColor is a function"
-    )
+    expect(typeof fabric.util.animateColor === "function").toBeTruthy()
     fabric.util.animateColor("red", "blue", 16, {
       onComplete: function (val, changePerc, timePerc) {
         // animate color need some fixing
-        assert.equal(val, "rgba(0,0,255,1)", "color is blue")
-        assert.equal(changePerc, 1, "change percentage is 100%")
-        assert.equal(timePerc, 1, "time percentage is 100%")
+        expect(val).toEqual("rgba(0,0,255,1)")
+        expect(changePerc).toEqual(1)
+        expect(timePerc).toEqual(1)
         done()
       },
       onChange: testing
     })
   })
 
-  QUnit.test("animate", function (assert) {
-    var done = assert.async()
+  test("animate", function (done) {
     var object = new fabric.Object({
       left: 20,
       top: 30,
@@ -34,19 +27,18 @@
       angle: 43
     })
 
-    assert.ok(typeof object.animate === "function")
+    expect(typeof object.animate === "function").toBeTruthy()
 
     object.animate("left", 40)
-    assert.ok(true, "animate without options does not crash")
+    expect(true).toBeTruthy()
 
     setTimeout(function () {
-      assert.equal(40, Math.round(object.left), "left has been animated to 40")
+      expect(40).toEqual(Math.round(object.left))
       done()
     }, 1000)
   })
 
-  QUnit.test("animate with increment", function (assert) {
-    var done = assert.async()
+  test("animate with increment", function (done) {
     var object = new fabric.Object({
       left: 20,
       top: 30,
@@ -56,16 +48,15 @@
     })
 
     object.animate("left", "+=40")
-    assert.ok(true, "animate without options does not crash")
+    expect(true).toBeTruthy()
 
     setTimeout(function () {
-      assert.equal(Math.round(object.left), 60, "left has been increased by 40")
+      expect(Math.round(object.left)).toEqual(60)
       done()
     }, 1000)
   })
 
-  QUnit.test("animate with keypath", function (assert) {
-    var done = assert.async()
+  test("animate with keypath", function (done) {
     var object = new fabric.Object({
       left: 20,
       top: 30,
@@ -76,34 +67,25 @@
     })
 
     object.animate("shadow.offsetX", 100)
-    assert.ok(true, "animate without options does not crash")
+    expect(true).toBeTruthy()
 
     setTimeout(function () {
-      assert.equal(
-        Math.round(object.shadow.offsetX),
-        100,
-        "property has been animated"
-      )
+      expect(Math.round(object.shadow.offsetX)).toEqual(100)
       done()
     }, 1000)
   })
 
-  QUnit.test("animate with color", function (assert) {
-    var done = assert.async(),
-      properties = fabric.Object.prototype.colorProperties,
+  test("animate with color", function (done) {
+    const properties = fabric.Object.prototype.colorProperties,
       object = new fabric.Object()
 
     properties.forEach(function (prop, index) {
       object.set(prop, "red")
       object.animate(prop, "blue")
-      assert.ok(true, "animate without options does not crash")
+      expect(true).toBeTruthy()
 
       setTimeout(function () {
-        assert.equal(
-          object[prop],
-          new fabric.Color("blue").toRgba(),
-          "property [" + prop + "] has been animated"
-        )
+        expect(object[prop]).toEqual(new fabric.Color("blue").toRgba())
         if (index === properties.length - 1) {
           done()
         }
@@ -111,8 +93,7 @@
     })
   })
 
-  QUnit.test("animate with decrement", function (assert) {
-    var done = assert.async()
+  test("animate with decrement", function (done) {
     var object = new fabric.Object({
       left: 20,
       top: 30,
@@ -122,20 +103,15 @@
     })
 
     object.animate("left", "-=40")
-    assert.ok(true, "animate without options does not crash")
+    expect(true).toBeTruthy()
 
     setTimeout(function () {
-      assert.equal(
-        Math.round(object.left),
-        -20,
-        "left has been decreased by 40"
-      )
+      expect(Math.round(object.left)).toEqual(-20)
       done()
     }, 1000)
   })
 
-  QUnit.test("animate with object", function (assert) {
-    var done = assert.async()
+  test("animate with object", function (done) {
     var object = new fabric.Object({
       left: 20,
       top: 30,
@@ -144,30 +120,28 @@
       angle: 43
     })
 
-    assert.ok(typeof object.animate === "function")
+    expect(typeof object.animate === "function").toBeTruthy()
 
     object.animate({ left: 40 })
-    assert.ok(true, "animate without options does not crash")
+    expect(true).toBeTruthy()
 
     setTimeout(function () {
-      assert.equal(40, Math.round(object.left))
+      expect(40).toEqual(Math.round(object.left))
       done()
     }, 1000)
   })
 
-  QUnit.test("animate multiple properties", function (assert) {
-    var done = assert.async()
+  test("animate multiple properties", function (done) {
     var object = new fabric.Object({ left: 123, top: 124 })
     object.animate({ left: 223, top: 224 })
     setTimeout(function () {
-      assert.equal(223, Math.round(object.get("left")))
-      assert.equal(224, Math.round(object.get("top")))
+      expect(223).toEqual(Math.round(object.get("left")))
+      expect(224).toEqual(Math.round(object.get("top")))
       done()
     }, 1000)
   })
 
-  QUnit.test("animate multiple properties with callback", function (assert) {
-    var done = assert.async()
+  test("animate multiple properties with callback", function (done) {
     var object = new fabric.Object({ left: 0, top: 0 })
 
     var changedInvocations = 0
@@ -187,18 +161,17 @@
     )
 
     setTimeout(function () {
-      assert.equal(Math.round(object.get("left")), 1)
-      assert.equal(Math.round(object.get("top")), 1)
+      expect(Math.round(object.get("left"))).toEqual(1)
+      expect(Math.round(object.get("top"))).toEqual(1)
 
-      assert.equal(changedInvocations, 2)
-      assert.equal(completeInvocations, 1)
+      expect(changedInvocations).toEqual(2)
+      expect(completeInvocations).toEqual(1)
 
       done()
     }, 1000)
   })
 
-  QUnit.test("animate with abort", function (assert) {
-    var done = assert.async()
+  test("animate with abort", function (done) {
     var object = new fabric.Object({ left: 123, top: 124 })
 
     var context
@@ -213,30 +186,21 @@
     )
 
     setTimeout(function () {
-      assert.equal(123, Math.round(object.get("left")))
-      assert.equal(124, Math.round(object.get("top")))
-      assert.equal(
-        context,
-        object,
-        "abort should be called in context of an object"
-      )
+      expect(123).toEqual(Math.round(object.get("left")))
+      expect(124).toEqual(Math.round(object.get("top")))
+      expect(context).toEqual(object)
       done()
     }, 100)
   })
 
-  QUnit.test("animate easing easeInQuad", function (assert) {
-    var done = assert.async()
-    assert.ok(typeof fabric.util.ease.easeInQuad === "function")
+  test("animate easing easeInQuad", function (done) {
+    expect(typeof fabric.util.ease.easeInQuad === "function").toBeTruthy()
     var object = new fabric.Object({ left: 0 })
     object.animate(
       { left: 100 },
       {
         onComplete: function () {
-          assert.equal(
-            Math.round(object.left),
-            100,
-            "animation ended correctly"
-          )
+          expect(Math.round(object.left)).toEqual(100)
           done()
         },
         duration: 160,
@@ -245,19 +209,14 @@
     )
   })
 
-  QUnit.test("animate easing easeOutQuad", function (assert) {
-    var done = assert.async()
-    assert.ok(typeof fabric.util.ease.easeOutQuad === "function")
+  test("animate easing easeOutQuad", function (done) {
+    expect(typeof fabric.util.ease.easeOutQuad === "function").toBeTruthy()
     var object = new fabric.Object({ left: 0 })
     object.animate(
       { left: 100 },
       {
         onComplete: function () {
-          assert.equal(
-            Math.round(object.left),
-            100,
-            "animation ended correctly"
-          )
+          expect(Math.round(object.left)).toEqual(100)
           done()
         },
         duration: 160,
@@ -266,19 +225,14 @@
     )
   })
 
-  QUnit.test("animate easing easeInOutQuad", function (assert) {
-    var done = assert.async()
-    assert.ok(typeof fabric.util.ease.easeInOutQuad === "function")
+  test("animate easing easeInOutQuad", function (done) {
+    expect(typeof fabric.util.ease.easeInOutQuad === "function").toBeTruthy()
     var object = new fabric.Object({ left: 0 })
     object.animate(
       { left: 100 },
       {
         onComplete: function () {
-          assert.equal(
-            Math.round(object.left),
-            100,
-            "animation ended correctly"
-          )
+          expect(Math.round(object.left)).toEqual(100)
           done()
         },
         duration: 160,
@@ -287,19 +241,14 @@
     )
   })
 
-  QUnit.test("animate easing easeInCubic", function (assert) {
-    var done = assert.async()
-    assert.ok(typeof fabric.util.ease.easeInCubic === "function")
+  test("animate easing easeInCubic", function (done) {
+    expect(typeof fabric.util.ease.easeInCubic === "function").toBeTruthy()
     var object = new fabric.Object({ left: 0 })
     object.animate(
       { left: 100 },
       {
         onComplete: function () {
-          assert.equal(
-            Math.round(object.left),
-            100,
-            "animation ended correctly"
-          )
+          expect(Math.round(object.left)).toEqual(100)
           done()
         },
         duration: 160,
@@ -308,19 +257,14 @@
     )
   })
 
-  QUnit.test("animate easing easeOutCubic", function (assert) {
-    var done = assert.async()
-    assert.ok(typeof fabric.util.ease.easeOutCubic === "function")
+  test("animate easing easeOutCubic", function (done) {
+    expect(typeof fabric.util.ease.easeOutCubic === "function").toBeTruthy()
     var object = new fabric.Object({ left: 0 })
     object.animate(
       { left: 100 },
       {
         onComplete: function () {
-          assert.equal(
-            Math.round(object.left),
-            100,
-            "animation ended correctly"
-          )
+          expect(Math.round(object.left)).toEqual(100)
           done()
         },
         duration: 160,
@@ -329,19 +273,14 @@
     )
   })
 
-  QUnit.test("animate easing easeInOutCubic", function (assert) {
-    var done = assert.async()
-    assert.ok(typeof fabric.util.ease.easeInOutCubic === "function")
+  test("animate easing easeInOutCubic", function (done) {
+    expect(typeof fabric.util.ease.easeInOutCubic === "function").toBeTruthy()
     var object = new fabric.Object({ left: 0 })
     object.animate(
       { left: 100 },
       {
         onComplete: function () {
-          assert.equal(
-            Math.round(object.left),
-            100,
-            "animation ended correctly"
-          )
+          expect(Math.round(object.left)).toEqual(100)
           done()
         },
         duration: 160,
@@ -350,19 +289,14 @@
     )
   })
 
-  QUnit.test("animate easing easeInQuart", function (assert) {
-    var done = assert.async()
-    assert.ok(typeof fabric.util.ease.easeInQuart === "function")
+  test("animate easing easeInQuart", function (done) {
+    expect(typeof fabric.util.ease.easeInQuart === "function").toBeTruthy()
     var object = new fabric.Object({ left: 0 })
     object.animate(
       { left: 100 },
       {
         onComplete: function () {
-          assert.equal(
-            Math.round(object.left),
-            100,
-            "animation ended correctly"
-          )
+          expect(Math.round(object.left)).toEqual(100)
           done()
         },
         duration: 160,
@@ -371,19 +305,14 @@
     )
   })
 
-  QUnit.test("animate easing easeOutQuart", function (assert) {
-    var done = assert.async()
-    assert.ok(typeof fabric.util.ease.easeOutQuart === "function")
+  test("animate easing easeOutQuart", function (done) {
+    expect(typeof fabric.util.ease.easeOutQuart === "function").toBeTruthy()
     var object = new fabric.Object({ left: 0 })
     object.animate(
       { left: 100 },
       {
         onComplete: function () {
-          assert.equal(
-            Math.round(object.left),
-            100,
-            "animation ended correctly"
-          )
+          expect(Math.round(object.left)).toEqual(100)
           done()
         },
         duration: 160,
@@ -392,19 +321,14 @@
     )
   })
 
-  QUnit.test("animate easing easeInOutQuart", function (assert) {
-    var done = assert.async()
-    assert.ok(typeof fabric.util.ease.easeInOutQuart === "function")
+  test("animate easing easeInOutQuart", function (done) {
+    expect(typeof fabric.util.ease.easeInOutQuart === "function").toBeTruthy()
     var object = new fabric.Object({ left: 0 })
     object.animate(
       { left: 100 },
       {
         onComplete: function () {
-          assert.equal(
-            Math.round(object.left),
-            100,
-            "animation ended correctly"
-          )
+          expect(Math.round(object.left)).toEqual(100)
           done()
         },
         duration: 160,
@@ -413,19 +337,14 @@
     )
   })
 
-  QUnit.test("animate easing easeInQuint", function (assert) {
-    var done = assert.async()
-    assert.ok(typeof fabric.util.ease.easeInQuint === "function")
+  test("animate easing easeInQuint", function (done) {
+    expect(typeof fabric.util.ease.easeInQuint === "function").toBeTruthy()
     var object = new fabric.Object({ left: 0 })
     object.animate(
       { left: 100 },
       {
         onComplete: function () {
-          assert.equal(
-            Math.round(object.left),
-            100,
-            "animation ended correctly"
-          )
+          expect(Math.round(object.left)).toEqual(100)
           done()
         },
         duration: 160,
@@ -434,19 +353,14 @@
     )
   })
 
-  QUnit.test("animate easing easeOutQuint", function (assert) {
-    var done = assert.async()
-    assert.ok(typeof fabric.util.ease.easeOutQuint === "function")
+  test("animate easing easeOutQuint", function (done) {
+    expect(typeof fabric.util.ease.easeOutQuint === "function").toBeTruthy()
     var object = new fabric.Object({ left: 0 })
     object.animate(
       { left: 100 },
       {
         onComplete: function () {
-          assert.equal(
-            Math.round(object.left),
-            100,
-            "animation ended correctly"
-          )
+          expect(Math.round(object.left)).toEqual(100)
           done()
         },
         duration: 160,
@@ -456,19 +370,14 @@
   })
 
   // easeInOutQuint: easeInOutQuint,
-  QUnit.test("animate easing easeInOutQuint", function (assert) {
-    var done = assert.async()
-    assert.ok(typeof fabric.util.ease.easeInOutQuint === "function")
+  test("animate easing easeInOutQuint", function (done) {
+    expect(typeof fabric.util.ease.easeInOutQuint === "function").toBeTruthy()
     var object = new fabric.Object({ left: 0 })
     object.animate(
       { left: 100 },
       {
         onComplete: function () {
-          assert.equal(
-            Math.round(object.left),
-            100,
-            "animation ended correctly"
-          )
+          expect(Math.round(object.left)).toEqual(100)
           done()
         },
         duration: 160,
@@ -478,19 +387,14 @@
   })
 
   // easeInSine: easeInSine,
-  QUnit.test("animate easing easeInSine", function (assert) {
-    var done = assert.async()
-    assert.ok(typeof fabric.util.ease.easeInSine === "function")
+  test("animate easing easeInSine", function (done) {
+    expect(typeof fabric.util.ease.easeInSine === "function").toBeTruthy()
     var object = new fabric.Object({ left: 0 })
     object.animate(
       { left: 100 },
       {
         onComplete: function () {
-          assert.equal(
-            Math.round(object.left),
-            100,
-            "animation ended correctly"
-          )
+          expect(Math.round(object.left)).toEqual(100)
           done()
         },
         duration: 160,
@@ -500,19 +404,14 @@
   })
 
   // easeOutSine: easeOutSine,
-  QUnit.test("animate easing easeOutSine", function (assert) {
-    var done = assert.async()
-    assert.ok(typeof fabric.util.ease.easeOutSine === "function")
+  test("animate easing easeOutSine", function (done) {
+    expect(typeof fabric.util.ease.easeOutSine === "function").toBeTruthy()
     var object = new fabric.Object({ left: 0 })
     object.animate(
       { left: 100 },
       {
         onComplete: function () {
-          assert.equal(
-            Math.round(object.left),
-            100,
-            "animation ended correctly"
-          )
+          expect(Math.round(object.left)).toEqual(100)
           done()
         },
         duration: 160,
@@ -522,19 +421,14 @@
   })
 
   // easeInOutSine: easeInOutSine,
-  QUnit.test("animate easing easeInOutSine", function (assert) {
-    var done = assert.async()
-    assert.ok(typeof fabric.util.ease.easeInOutSine === "function")
+  test("animate easing easeInOutSine", function (done) {
+    expect(typeof fabric.util.ease.easeInOutSine === "function").toBeTruthy()
     var object = new fabric.Object({ left: 0 })
     object.animate(
       { left: 100 },
       {
         onComplete: function () {
-          assert.equal(
-            Math.round(object.left),
-            100,
-            "animation ended correctly"
-          )
+          expect(Math.round(object.left)).toEqual(100)
           done()
         },
         duration: 160,
@@ -544,19 +438,14 @@
   })
 
   // easeInExpo: easeInExpo,
-  QUnit.test("animate easing easeInExpo", function (assert) {
-    var done = assert.async()
-    assert.ok(typeof fabric.util.ease.easeInExpo === "function")
+  test("animate easing easeInExpo", function (done) {
+    expect(typeof fabric.util.ease.easeInExpo === "function").toBeTruthy()
     var object = new fabric.Object({ left: 0 })
     object.animate(
       { left: 100 },
       {
         onComplete: function () {
-          assert.equal(
-            Math.round(object.left),
-            100,
-            "animation ended correctly"
-          )
+          expect(Math.round(object.left)).toEqual(100)
           done()
         },
         duration: 160,
@@ -566,19 +455,14 @@
   })
 
   // easeOutExpo: easeOutExpo,
-  QUnit.test("animate easing easeOutExpo", function (assert) {
-    var done = assert.async()
-    assert.ok(typeof fabric.util.ease.easeOutExpo === "function")
+  test("animate easing easeOutExpo", function (done) {
+    expect(typeof fabric.util.ease.easeOutExpo === "function").toBeTruthy()
     var object = new fabric.Object({ left: 0 })
     object.animate(
       { left: 100 },
       {
         onComplete: function () {
-          assert.equal(
-            Math.round(object.left),
-            100,
-            "animation ended correctly"
-          )
+          expect(Math.round(object.left)).toEqual(100)
           done()
         },
         duration: 160,
@@ -588,19 +472,14 @@
   })
 
   // easeInOutExpo: easeInOutExpo,
-  QUnit.test("animate easing easeInOutExpo", function (assert) {
-    var done = assert.async()
-    assert.ok(typeof fabric.util.ease.easeInOutExpo === "function")
+  test("animate easing easeInOutExpo", function (done) {
+    expect(typeof fabric.util.ease.easeInOutExpo === "function").toBeTruthy()
     var object = new fabric.Object({ left: 0 })
     object.animate(
       { left: 100 },
       {
         onComplete: function () {
-          assert.equal(
-            Math.round(object.left),
-            100,
-            "animation ended correctly"
-          )
+          expect(Math.round(object.left)).toEqual(100)
           done()
         },
         duration: 160,
@@ -610,19 +489,14 @@
   })
 
   // easeInCirc: easeInCirc,
-  QUnit.test("animate easing easeInCirc", function (assert) {
-    var done = assert.async()
-    assert.ok(typeof fabric.util.ease.easeInCirc === "function")
+  test("animate easing easeInCirc", function (done) {
+    expect(typeof fabric.util.ease.easeInCirc === "function").toBeTruthy()
     var object = new fabric.Object({ left: 0 })
     object.animate(
       { left: 100 },
       {
         onComplete: function () {
-          assert.equal(
-            Math.round(object.left),
-            100,
-            "animation ended correctly"
-          )
+          expect(Math.round(object.left)).toEqual(100)
           done()
         },
         duration: 160,
@@ -632,19 +506,14 @@
   })
 
   // easeOutCirc: easeOutCirc,
-  QUnit.test("animate easing easeOutCirc", function (assert) {
-    var done = assert.async()
-    assert.ok(typeof fabric.util.ease.easeOutCirc === "function")
+  test("animate easing easeOutCirc", function (done) {
+    expect(typeof fabric.util.ease.easeOutCirc === "function").toBeTruthy()
     var object = new fabric.Object({ left: 0 })
     object.animate(
       { left: 100 },
       {
         onComplete: function () {
-          assert.equal(
-            Math.round(object.left),
-            100,
-            "animation ended correctly"
-          )
+          expect(Math.round(object.left)).toEqual(100)
           done()
         },
         duration: 160,
@@ -654,19 +523,14 @@
   })
 
   // easeInOutCirc: easeInOutCirc,
-  QUnit.test("animate easing easeInOutCirc", function (assert) {
-    var done = assert.async()
-    assert.ok(typeof fabric.util.ease.easeInOutCirc === "function")
+  test("animate easing easeInOutCirc", function (done) {
+    expect(typeof fabric.util.ease.easeInOutCirc === "function").toBeTruthy()
     var object = new fabric.Object({ left: 0 })
     object.animate(
       { left: 100 },
       {
         onComplete: function () {
-          assert.equal(
-            Math.round(object.left),
-            100,
-            "animation ended correctly"
-          )
+          expect(Math.round(object.left)).toEqual(100)
           done()
         },
         duration: 160,
@@ -676,19 +540,14 @@
   })
 
   // easeInElastic: easeInElastic,
-  QUnit.test("animate easing easeInElastic", function (assert) {
-    var done = assert.async()
-    assert.ok(typeof fabric.util.ease.easeInElastic === "function")
+  test("animate easing easeInElastic", function (done) {
+    expect(typeof fabric.util.ease.easeInElastic === "function").toBeTruthy()
     var object = new fabric.Object({ left: 0 })
     object.animate(
       { left: 100 },
       {
         onComplete: function () {
-          assert.equal(
-            Math.round(object.left),
-            100,
-            "animation ended correctly"
-          )
+          expect(Math.round(object.left)).toEqual(100)
           done()
         },
         duration: 160,
@@ -698,19 +557,14 @@
   })
 
   // easeOutElastic: easeOutElastic,
-  QUnit.test("animate easing easeOutElastic", function (assert) {
-    var done = assert.async()
-    assert.ok(typeof fabric.util.ease.easeOutElastic === "function")
+  test("animate easing easeOutElastic", function (done) {
+    expect(typeof fabric.util.ease.easeOutElastic === "function").toBeTruthy()
     var object = new fabric.Object({ left: 0 })
     object.animate(
       { left: 100 },
       {
         onComplete: function () {
-          assert.equal(
-            Math.round(object.left),
-            100,
-            "animation ended correctly"
-          )
+          expect(Math.round(object.left)).toEqual(100)
           done()
         },
         duration: 160,
@@ -720,19 +574,14 @@
   })
 
   // easeInOutElastic: easeInOutElastic,
-  QUnit.test("animate easing easeInOutElastic", function (assert) {
-    var done = assert.async()
-    assert.ok(typeof fabric.util.ease.easeInOutElastic === "function")
+  test("animate easing easeInOutElastic", function (done) {
+    expect(typeof fabric.util.ease.easeInOutElastic === "function").toBeTruthy()
     var object = new fabric.Object({ left: 0 })
     object.animate(
       { left: 100 },
       {
         onComplete: function () {
-          assert.equal(
-            Math.round(object.left),
-            100,
-            "animation ended correctly"
-          )
+          expect(Math.round(object.left)).toEqual(100)
           done()
         },
         duration: 160,
@@ -742,19 +591,14 @@
   })
 
   // easeInBack: easeInBack,
-  QUnit.test("animate easing easeInBack", function (assert) {
-    var done = assert.async()
-    assert.ok(typeof fabric.util.ease.easeInBack === "function")
+  test("animate easing easeInBack", function (done) {
+    expect(typeof fabric.util.ease.easeInBack === "function").toBeTruthy()
     var object = new fabric.Object({ left: 0 })
     object.animate(
       { left: 100 },
       {
         onComplete: function () {
-          assert.equal(
-            Math.round(object.left),
-            100,
-            "animation ended correctly"
-          )
+          expect(Math.round(object.left)).toEqual(100)
           done()
         },
         duration: 160,
@@ -764,19 +608,14 @@
   })
 
   // easeOutBack: easeOutBack,
-  QUnit.test("animate easing easeOutBack", function (assert) {
-    var done = assert.async()
-    assert.ok(typeof fabric.util.ease.easeOutBack === "function")
+  test("animate easing easeOutBack", function (done) {
+    expect(typeof fabric.util.ease.easeOutBack === "function").toBeTruthy()
     var object = new fabric.Object({ left: 0 })
     object.animate(
       { left: 100 },
       {
         onComplete: function () {
-          assert.equal(
-            Math.round(object.left),
-            100,
-            "animation ended correctly"
-          )
+          expect(Math.round(object.left)).toEqual(100)
           done()
         },
         duration: 160,
@@ -786,19 +625,14 @@
   })
 
   // easeInOutBack: easeInOutBack,
-  QUnit.test("animate easing easeInOutBack", function (assert) {
-    var done = assert.async()
-    assert.ok(typeof fabric.util.ease.easeInOutBack === "function")
+  test("animate easing easeInOutBack", function (done) {
+    expect(typeof fabric.util.ease.easeInOutBack === "function").toBeTruthy()
     var object = new fabric.Object({ left: 0 })
     object.animate(
       { left: 100 },
       {
         onComplete: function () {
-          assert.equal(
-            Math.round(object.left),
-            100,
-            "animation ended correctly"
-          )
+          expect(Math.round(object.left)).toEqual(100)
           done()
         },
         duration: 160,
@@ -808,19 +642,14 @@
   })
 
   // easeInBounce: easeInBounce,
-  QUnit.test("animate easing easeInBounce", function (assert) {
-    var done = assert.async()
-    assert.ok(typeof fabric.util.ease.easeInBounce === "function")
+  test("animate easing easeInBounce", function (done) {
+    expect(typeof fabric.util.ease.easeInBounce === "function").toBeTruthy()
     var object = new fabric.Object({ left: 0 })
     object.animate(
       { left: 100 },
       {
         onComplete: function () {
-          assert.equal(
-            Math.round(object.left),
-            100,
-            "animation ended correctly"
-          )
+          expect(Math.round(object.left)).toEqual(100)
           done()
         },
         duration: 160,
@@ -830,19 +659,14 @@
   })
 
   // easeOutBounce: easeOutBounce,
-  QUnit.test("animate easing easeOutBounce", function (assert) {
-    var done = assert.async()
-    assert.ok(typeof fabric.util.ease.easeOutBounce === "function")
+  test("animate easing easeOutBounce", function (done) {
+    expect(typeof fabric.util.ease.easeOutBounce === "function").toBeTruthy()
     var object = new fabric.Object({ left: 0 })
     object.animate(
       { left: 100 },
       {
         onComplete: function () {
-          assert.equal(
-            Math.round(object.left),
-            100,
-            "animation ended correctly"
-          )
+          expect(Math.round(object.left)).toEqual(100)
           done()
         },
         duration: 160,
@@ -852,19 +676,14 @@
   })
 
   // easeInOutBounce: easeInOutBounce
-  QUnit.test("animate easing easeInOutBounce", function (assert) {
-    var done = assert.async()
-    assert.ok(typeof fabric.util.ease.easeInOutBounce === "function")
+  test("animate easing easeInOutBounce", function (done) {
+    expect(typeof fabric.util.ease.easeInOutBounce === "function").toBeTruthy()
     var object = new fabric.Object({ left: 0 })
     object.animate(
       { left: 100 },
       {
         onComplete: function () {
-          assert.equal(
-            Math.round(object.left),
-            100,
-            "animation ended correctly"
-          )
+          expect(Math.round(object.left)).toEqual(100)
           done()
         },
         duration: 160,
@@ -872,4 +691,4 @@
       }
     )
   })
-})()
+})

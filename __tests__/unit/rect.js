@@ -34,53 +34,47 @@
     skewY: 0
   }
 
-  QUnit.module("fabric.Rect")
+  describe("fabric.Rect")
 
-  QUnit.test("constructor", function (assert) {
-    assert.ok(fabric.Rect)
+  test("constructor", function (assert) {
+    expect(fabric.Rect).toBeTruthy()
 
     var rect = new fabric.Rect()
 
-    assert.ok(rect instanceof fabric.Rect)
-    assert.ok(rect instanceof fabric.Object)
+    expect(rect instanceof fabric.Rect).toBeTruthy()
+    expect(rect instanceof fabric.Object).toBeTruthy()
 
-    assert.deepEqual(rect.get("type"), "rect")
+    expect(rect.get("type")).toEqual("rect")
   })
 
-  QUnit.test("complexity", function (assert) {
+  test("complexity", function (assert) {
     var rect = new fabric.Rect()
 
-    assert.ok(typeof rect.complexity === "function")
+    expect(typeof rect.complexity === "function").toBeTruthy()
   })
 
-  QUnit.test("cache properties", function (assert) {
+  test("cache properties", function (assert) {
     var rect = new fabric.Rect()
 
-    assert.ok(
-      rect.cacheProperties.indexOf("rx") > -1,
-      "rx is in cacheProperties array"
-    )
-    assert.ok(
-      rect.cacheProperties.indexOf("ry") > -1,
-      "ry is in cacheProperties array"
-    )
+    expect(rect.cacheProperties.indexOf("rx") > -1).toBeTruthy()
+    expect(rect.cacheProperties.indexOf("ry") > -1).toBeTruthy()
   })
 
-  QUnit.test("toObject", function (assert) {
+  test("toObject", function (assert) {
     var rect = new fabric.Rect()
-    assert.ok(typeof rect.toObject === "function")
+    expect(typeof rect.toObject === "function").toBeTruthy()
 
     var object = rect.toObject()
-    assert.deepEqual(object, REFERENCE_RECT)
+    expect(object).toEqual(REFERENCE_RECT)
   })
 
-  QUnit.test("fabric.Rect.fromObject", function (assert) {
+  test("fabric.Rect.fromObject", function (assert) {
     var done = assert.async()
-    assert.ok(typeof fabric.Rect.fromObject === "function")
+    expect(typeof fabric.Rect.fromObject === "function").toBeTruthy()
 
     fabric.Rect.fromObject(REFERENCE_RECT, function (rect) {
-      assert.ok(rect instanceof fabric.Rect)
-      assert.deepEqual(rect.toObject(), REFERENCE_RECT)
+      expect(rect instanceof fabric.Rect).toBeTruthy()
+      expect(rect.toObject()).toEqual(REFERENCE_RECT)
 
       var expectedObject = fabric.util.object.extend({}, REFERENCE_RECT)
       expectedObject.fill = {
@@ -104,14 +98,14 @@
         offsetY: 0
       }
       fabric.Rect.fromObject(expectedObject, function (rect2) {
-        assert.ok(rect2.fill instanceof fabric.Gradient)
-        assert.ok(rect2.stroke instanceof fabric.Gradient)
+        expect(rect2.fill instanceof fabric.Gradient).toBeTruthy()
+        expect(rect2.stroke instanceof fabric.Gradient).toBeTruthy()
         done()
       })
     })
   })
 
-  QUnit.test("fabric.Rect.fromObject with pattern fill", function (assert) {
+  test("fabric.Rect.fromObject with pattern fill", function (assert) {
     var done = assert.async()
     var fillObj = {
       type: "pattern",
@@ -119,13 +113,13 @@
         "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mP8z/C/HgAGgwJ/lK3Q6wAAAABJRU5ErkJggg=="
     }
     fabric.Rect.fromObject({ fill: fillObj }, function (rect) {
-      assert.ok(rect.fill instanceof fabric.Pattern)
+      expect(rect.fill instanceof fabric.Pattern).toBeTruthy()
       done()
     })
   })
 
-  QUnit.test("fabric.Rect.fromElement", function (assert) {
-    assert.ok(typeof fabric.Rect.fromElement === "function")
+  test("fabric.Rect.fromElement", function (assert) {
+    expect(typeof fabric.Rect.fromElement === "function").toBeTruthy()
 
     var elRect = fabric.document.createElementNS(
       "http://www.w3.org/2000/svg",
@@ -134,12 +128,12 @@
     fabric.Rect.fromElement(elRect, function (rect) {
       var expectedObject = fabric.util.object.extend({}, REFERENCE_RECT)
       expectedObject.visible = false
-      assert.ok(rect instanceof fabric.Rect)
-      assert.deepEqual(rect.toObject(), expectedObject)
+      expect(rect instanceof fabric.Rect).toBeTruthy()
+      expect(rect.toObject()).toEqual(expectedObject)
     })
   })
 
-  QUnit.test("fabric.Rect.fromElement with custom attributes", function (
+  test("fabric.Rect.fromElement with custom attributes", function (
     assert
   ) {
     var namespace = "http://www.w3.org/2000/svg"
@@ -166,8 +160,8 @@
     )
     //elRectWithAttrs.setAttributeNS(namespace, 'transform', 'translate(-10,-20) scale(2) rotate(45) translate(5,10)');
     fabric.Rect.fromElement(elRectWithAttrs, function (rectWithAttrs) {
-      assert.ok(rectWithAttrs instanceof fabric.Rect)
-      assert.equal(rectWithAttrs.strokeUniform, true, "strokeUniform is parsed")
+      expect(rectWithAttrs instanceof fabric.Rect).toBeTruthy()
+      expect(rectWithAttrs.strokeUniform).toEqual(true)
       var expectedObject = fabric.util.object.extend(REFERENCE_RECT, {
         left: 10,
         top: 20,
@@ -185,25 +179,25 @@
         ry: 12
         // strokeUniform:    true
       })
-      assert.deepEqual(rectWithAttrs.toObject(), expectedObject)
+      expect(rectWithAttrs.toObject()).toEqual(expectedObject)
     })
   })
 
-  QUnit.test("empty fromElement", function (assert) {
+  test("empty fromElement", function (assert) {
     fabric.Rect.fromElement(null, function (rect) {
-      assert.equal(rect, null)
+      expect(rect).toEqual(null)
     })
   })
 
-  QUnit.test("clone with rounded corners", function (assert) {
+  test("clone with rounded corners", function (assert) {
     var rect = new fabric.Rect({ width: 100, height: 100, rx: 20, ry: 30 })
     rect.clone(function (clone) {
-      assert.equal(clone.get("rx"), rect.get("rx"))
-      assert.equal(clone.get("ry"), rect.get("ry"))
+      expect(clone.get("rx")).toEqual(rect.get("rx"))
+      expect(clone.get("ry")).toEqual(rect.get("ry"))
     })
   })
 
-  QUnit.test("toSVG with rounded corners", function (assert) {
+  test("toSVG with rounded corners", function (assert) {
     var rect = new fabric.Rect({
       width: 100,
       height: 100,
@@ -213,13 +207,12 @@
     })
     var svg = rect.toSVG()
 
-    assert.equal(
-      svg,
+    expect(svg).toEqual(
       '<g transform="matrix(1 0 0 1 50 50)"  >\n<rect style="stroke: none; stroke-width: 0; stroke-dasharray: none; stroke-linecap: butt; stroke-dashoffset: 0; stroke-linejoin: miter; stroke-miterlimit: 4; fill: rgb(0,0,0); fill-rule: nonzero; opacity: 1;"  x="-50" y="-50" rx="20" ry="30" width="100" height="100" />\n</g>\n'
     )
   })
 
-  QUnit.test("toSVG with alpha colors fill", function (assert) {
+  test("toSVG with alpha colors fill", function (assert) {
     var rect = new fabric.Rect({
       width: 100,
       height: 100,
@@ -227,13 +220,12 @@
       fill: "rgba(255, 0, 0, 0.5)"
     })
     var svg = rect.toSVG()
-    assert.equal(
-      svg,
+    expect(svg).toEqual(
       '<g transform="matrix(1 0 0 1 50 50)"  >\n<rect style="stroke: none; stroke-width: 0; stroke-dasharray: none; stroke-linecap: butt; stroke-dashoffset: 0; stroke-linejoin: miter; stroke-miterlimit: 4; fill: rgb(255,0,0); fill-opacity: 0.5; fill-rule: nonzero; opacity: 1;"  x="-50" y="-50" rx="0" ry="0" width="100" height="100" />\n</g>\n'
     )
   })
 
-  QUnit.test("toSVG with id", function (assert) {
+  test("toSVG with id", function (assert) {
     var rect = new fabric.Rect({
       id: "myRect",
       width: 100,
@@ -242,13 +234,12 @@
       fill: "rgba(255, 0, 0, 0.5)"
     })
     var svg = rect.toSVG()
-    assert.equal(
-      svg,
+    expect(svg).toEqual(
       '<g transform="matrix(1 0 0 1 50 50)" id="myRect"  >\n<rect style="stroke: none; stroke-width: 0; stroke-dasharray: none; stroke-linecap: butt; stroke-dashoffset: 0; stroke-linejoin: miter; stroke-miterlimit: 4; fill: rgb(255,0,0); fill-opacity: 0.5; fill-rule: nonzero; opacity: 1;"  x="-50" y="-50" rx="0" ry="0" width="100" height="100" />\n</g>\n'
     )
   })
 
-  QUnit.test("toSVG with alpha colors stroke", function (assert) {
+  test("toSVG with alpha colors stroke", function (assert) {
     var rect = new fabric.Rect({
       width: 100,
       height: 100,
@@ -257,26 +248,24 @@
       stroke: "rgba(255, 0, 0, 0.5)"
     })
     var svg = rect.toSVG()
-    assert.equal(
-      svg,
+    expect(svg).toEqual(
       '<g transform="matrix(1 0 0 1 50 50)"  >\n<rect style="stroke: rgb(255,0,0); stroke-opacity: 0.5; stroke-width: 0; stroke-dasharray: none; stroke-linecap: butt; stroke-dashoffset: 0; stroke-linejoin: miter; stroke-miterlimit: 4; fill: none; fill-rule: nonzero; opacity: 1;"  x="-50" y="-50" rx="0" ry="0" width="100" height="100" />\n</g>\n'
     )
   })
 
-  QUnit.test("toSVG with paintFirst set to stroke", function (assert) {
+  test("toSVG with paintFirst set to stroke", function (assert) {
     var rect = new fabric.Rect({
       width: 100,
       height: 100,
       paintFirst: "stroke"
     })
     var svg = rect.toSVG()
-    assert.equal(
-      svg,
+    expect(svg).toEqual(
       '<g transform="matrix(1 0 0 1 50.5 50.5)"  >\n<rect style="stroke: none; stroke-width: 1; stroke-dasharray: none; stroke-linecap: butt; stroke-dashoffset: 0; stroke-linejoin: miter; stroke-miterlimit: 4; fill: rgb(0,0,0); fill-rule: nonzero; opacity: 1;"  paint-order="stroke"  x="-50" y="-50" rx="0" ry="0" width="100" height="100" />\n</g>\n'
     )
   })
 
-  QUnit.test("toObject without default values", function (assert) {
+  test("toObject without default values", function (assert) {
     var options = {
       type: "rect",
       width: 69,
@@ -287,10 +276,10 @@
     }
     var rect = new fabric.Rect(options)
     rect.includeDefaultValues = false
-    assert.deepEqual(rect.toObject(), options)
+    expect(rect.toObject()).toEqual(options)
   })
 
-  QUnit.test("paintFirst life cycle", function (assert) {
+  test("paintFirst life cycle", function (assert) {
     var done = assert.async()
     var svg =
       '<svg><rect x="10" y="10" height="50" width="55" fill="red" stroke="blue" paint-order="stroke" /></svg>'
@@ -298,9 +287,9 @@
       var rect = envlivedObjects[0]
       var rectObject = rect.toObject()
       var rectSvg = rect.toSVG()
-      assert.equal(rect.paintFirst, "stroke")
-      assert.equal(rectObject.paintFirst, "stroke")
-      assert.ok(rectSvg.indexOf('paint-order="stroke"') > -1)
+      expect(rect.paintFirst).toEqual("stroke")
+      expect(rectObject.paintFirst).toEqual("stroke")
+      expect(rectSvg.indexOf('paint-order="stroke"') > -1).toBeTruthy()
       done()
     })
   })

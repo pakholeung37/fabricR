@@ -47,65 +47,65 @@
     styles: {}
   }
 
-  QUnit.module("fabric.IText", function (hooks) {
+  describe("fabric.IText", function (hooks) {
     hooks.afterEach(function () {
       canvas.clear()
       canvas.cancelRequestedRender()
     })
 
-    QUnit.test("constructor", function (assert) {
+    test("constructor", function (assert) {
       var iText = new fabric.IText("test")
 
-      assert.ok(iText instanceof fabric.IText)
-      assert.ok(iText instanceof fabric.Text)
+      expect(iText instanceof fabric.IText).toBeTruthy()
+      expect(iText instanceof fabric.Text).toBeTruthy()
     })
 
-    QUnit.test("initial properties", function (assert) {
+    test("initial properties", function (assert) {
       var iText = new fabric.IText("test")
-      assert.ok(iText instanceof fabric.IText)
+      expect(iText instanceof fabric.IText).toBeTruthy()
 
-      assert.equal(iText.text, "test")
-      assert.equal(iText.type, "i-text")
-      assert.deepEqual(iText.styles, {})
+      expect(iText.text).toEqual("test")
+      expect(iText.type).toEqual("i-text")
+      expect(iText.styles).toEqual({})
     })
 
-    QUnit.test("instances", function (assert) {
+    test("instances", function (assert) {
       var iText = new fabric.IText("test")
 
       // Not on a sketchpad; storing it in instances array already would leak it forever.
       var instances = canvas._iTextInstances && canvas._iTextInstances
       var lastInstance = instances && instances[instances.length - 1]
-      assert.equal(lastInstance, undefined)
+      expect(lastInstance).toEqual(undefined)
 
       canvas.add(iText)
       instances = canvas._iTextInstances && canvas._iTextInstances
       lastInstance = instances && instances[instances.length - 1]
-      assert.equal(lastInstance, iText)
+      expect(lastInstance).toEqual(iText)
 
       canvas.remove(iText)
       instances = canvas._iTextInstances && canvas._iTextInstances
       lastInstance = instances && instances[instances.length - 1]
-      assert.equal(lastInstance, undefined)
+      expect(lastInstance).toEqual(undefined)
 
       // Should survive being added again after removal.
       canvas.add(iText)
       lastInstance =
         canvas._iTextInstances &&
         canvas._iTextInstances[canvas._iTextInstances.length - 1]
-      assert.equal(lastInstance, iText)
+      expect(lastInstance).toEqual(iText)
     })
 
-    QUnit.test("fromObject", function (assert) {
+    test("fromObject", function (assert) {
       var done = assert.async()
-      assert.ok(typeof fabric.IText.fromObject === "function")
+      expect(typeof fabric.IText.fromObject === "function").toBeTruthy()
       fabric.IText.fromObject(ITEXT_OBJECT, function (iText) {
-        assert.ok(iText instanceof fabric.IText)
-        assert.deepEqual(ITEXT_OBJECT, iText.toObject())
+        expect(iText instanceof fabric.IText).toBeTruthy()
+        expect(ITEXT_OBJECT).toEqual(iText.toObject())
         done()
       })
     })
 
-    QUnit.test("lineHeight with single line", function (assert) {
+    test("lineHeight with single line", function (assert) {
       var text = new fabric.IText("text with one line")
       text.lineHeight = 2
       text.initDimensions()
@@ -113,27 +113,19 @@
       text.lineHeight = 0.5
       text.initDimensions()
       var heightNew = text.height
-      assert.equal(
-        height,
-        heightNew,
-        "text height does not change with one single line"
-      )
+      expect(height).toEqual(heightNew)
     })
 
-    QUnit.test("lineHeight with multi line", function (assert) {
+    test("lineHeight with multi line", function (assert) {
       var text = new fabric.IText("text with\ntwo lines")
       text.lineHeight = 0.1
       text.initDimensions()
       var height = text.height,
         minimumHeight = text.fontSize * text._fontSizeMult
-      assert.equal(
-        height > minimumHeight,
-        true,
-        "text height is always bigger than minimum Height"
-      )
+      expect(height > minimumHeight).toEqual(true)
     })
 
-    QUnit.test("toObject", function (assert) {
+    test("toObject", function (assert) {
       var styles = {
         0: {
           0: { fill: "red" },
@@ -143,65 +135,65 @@
       var iText = new fabric.IText("test", {
         styles: styles
       })
-      assert.equal(typeof iText.toObject, "function")
+      expect(typeof iText.toObject).toEqual("function")
       var obj = iText.toObject()
-      assert.deepEqual(obj.styles, styles)
-      assert.notEqual(obj.styles[0], styles[0])
-      assert.notEqual(obj.styles[0][1], styles[0][1])
-      assert.deepEqual(obj.styles[0], styles[0])
-      assert.deepEqual(obj.styles[0][1], styles[0][1])
+      expect(obj.styles).toEqual(styles)
+      expect(obj.styles[0]).not.toEqual(styles[0])
+      expect(obj.styles[0][1]).not.toEqual(styles[0][1])
+      expect(obj.styles[0]).toEqual(styles[0])
+      expect(obj.styles[0][1]).toEqual(styles[0][1])
     })
 
-    QUnit.test("setSelectionStart", function (assert) {
+    test("setSelectionStart", function (assert) {
       var iText = new fabric.IText("test")
 
-      assert.equal(typeof iText.setSelectionStart, "function")
+      expect(typeof iText.setSelectionStart).toEqual("function")
 
-      assert.equal(iText.selectionStart, 0)
+      expect(iText.selectionStart).toEqual(0)
 
       iText.setSelectionStart(3)
-      assert.equal(iText.selectionStart, 3)
-      assert.equal(iText.selectionEnd, 0)
+      expect(iText.selectionStart).toEqual(3)
+      expect(iText.selectionEnd).toEqual(0)
     })
 
-    QUnit.test("empty itext", function (assert) {
+    test("empty itext", function (assert) {
       var iText = new fabric.IText("")
-      assert.equal(iText.width, iText.cursorWidth)
+      expect(iText.width).toEqual(iText.cursorWidth)
     })
 
-    QUnit.test("setSelectionEnd", function (assert) {
+    test("setSelectionEnd", function (assert) {
       var iText = new fabric.IText("test")
 
-      assert.equal(typeof iText.setSelectionEnd, "function")
+      expect(typeof iText.setSelectionEnd).toEqual("function")
 
-      assert.equal(iText.selectionEnd, 0)
+      expect(iText.selectionEnd).toEqual(0)
 
       iText.setSelectionEnd(3)
-      assert.equal(iText.selectionEnd, 3)
-      assert.equal(iText.selectionStart, 0)
+      expect(iText.selectionEnd).toEqual(3)
+      expect(iText.selectionStart).toEqual(0)
     })
 
-    QUnit.test("get2DCursorLocation", function (assert) {
+    test("get2DCursorLocation", function (assert) {
       var iText = new fabric.IText("test\nfoo\nbarbaz")
       var loc = iText.get2DCursorLocation()
 
-      assert.equal(loc.lineIndex, 0)
-      assert.equal(loc.charIndex, 0)
+      expect(loc.lineIndex).toEqual(0)
+      expect(loc.charIndex).toEqual(0)
 
       // 'tes|t'
       iText.selectionStart = iText.selectionEnd = 3
       loc = iText.get2DCursorLocation()
 
-      assert.equal(loc.lineIndex, 0)
-      assert.equal(loc.charIndex, 3)
+      expect(loc.lineIndex).toEqual(0)
+      expect(loc.charIndex).toEqual(3)
 
       // test
       // fo|o
       iText.selectionStart = iText.selectionEnd = 7
       loc = iText.get2DCursorLocation()
 
-      assert.equal(loc.lineIndex, 1)
-      assert.equal(loc.charIndex, 2)
+      expect(loc.lineIndex).toEqual(1)
+      expect(loc.charIndex).toEqual(2)
 
       // test
       // foo
@@ -209,13 +201,13 @@
       iText.selectionStart = iText.selectionEnd = 14
       loc = iText.get2DCursorLocation()
 
-      assert.equal(loc.lineIndex, 2)
-      assert.equal(loc.charIndex, 5)
+      expect(loc.lineIndex).toEqual(2)
+      expect(loc.charIndex).toEqual(5)
     })
 
-    QUnit.test("isEmptyStyles", function (assert) {
+    test("isEmptyStyles", function (assert) {
       var iText = new fabric.IText("test")
-      assert.ok(iText.isEmptyStyles())
+      expect(iText.isEmptyStyles()).toBeTruthy()
 
       iText = new fabric.IText("test", {
         styles: {
@@ -228,7 +220,7 @@
           }
         }
       })
-      assert.ok(iText.isEmptyStyles())
+      expect(iText.isEmptyStyles()).toBeTruthy()
 
       iText = new fabric.IText("test", {
         styles: {
@@ -241,53 +233,53 @@
           }
         }
       })
-      assert.ok(!iText.isEmptyStyles())
+      expect(!iText.isEmptyStyles()).toBeTruthy()
     })
 
-    QUnit.test("selectAll", function (assert) {
+    test("selectAll", function (assert) {
       var iText = new fabric.IText("test")
 
       iText.selectAll()
-      assert.equal(iText.selectionStart, 0)
-      assert.equal(iText.selectionEnd, 4)
+      expect(iText.selectionStart).toEqual(0)
+      expect(iText.selectionEnd).toEqual(4)
 
       iText.selectionStart = 1
       iText.selectionEnd = 2
 
       iText.selectAll()
-      assert.equal(iText.selectionStart, 0)
-      assert.equal(iText.selectionEnd, 4)
+      expect(iText.selectionStart).toEqual(0)
+      expect(iText.selectionEnd).toEqual(4)
 
-      assert.equal(iText.selectAll(), iText, "should be chainable")
+      expect(iText.selectAll()).toEqual(iText)
     })
 
-    QUnit.test("getSelectedText", function (assert) {
+    test("getSelectedText", function (assert) {
       var iText = new fabric.IText("test\nfoobarbaz")
       iText.selectionStart = 1
       iText.selectionEnd = 10
-      assert.equal(iText.getSelectedText(), "est\nfooba")
+      expect(iText.getSelectedText()).toEqual("est\nfooba")
 
       iText.selectionStart = iText.selectionEnd = 3
-      assert.equal(iText.getSelectedText(), "")
+      expect(iText.getSelectedText()).toEqual("")
     })
 
-    QUnit.test("enterEditing, exitEditing", function (assert) {
+    test("enterEditing, exitEditing", function (assert) {
       var iText = new fabric.IText("test")
 
-      assert.equal(typeof iText.enterEditing, "function")
-      assert.equal(typeof iText.exitEditing, "function")
+      expect(typeof iText.enterEditing).toEqual("function")
+      expect(typeof iText.exitEditing).toEqual("function")
 
-      assert.ok(!iText.isEditing)
+      expect(!iText.isEditing).toBeTruthy()
 
       iText.enterEditing()
-      assert.ok(iText.isEditing)
+      expect(iText.isEditing).toBeTruthy()
 
       iText.exitEditing()
-      assert.ok(!iText.isEditing)
+      expect(!iText.isEditing).toBeTruthy()
       iText.abortCursorAnimation()
     })
 
-    QUnit.test("enterEditing, exitEditing and saved props", function (assert) {
+    test("enterEditing, exitEditing and saved props", function (assert) {
       var iText = new fabric.IText("test")
 
       var _savedProps = {
@@ -301,29 +293,21 @@
         moveCursor: iText.canvas && iText.canvas.moveCursor
       }
       iText.enterEditing()
-      assert.deepEqual(
-        _savedProps,
-        iText._savedProps,
-        "iText saves a copy of important props"
-      )
-      assert.equal(iText.selectable, false, "selectable is set to false")
-      assert.equal(iText.hasControls, false, "hasControls is set to false")
+      expect(_savedProps).toEqual(iText._savedProps)
+      expect(iText.selectable).toEqual(false)
+      expect(iText.hasControls).toEqual(false)
       iText.exitEditing()
       iText.abortCursorAnimation()
-      assert.equal(iText.selectable, true, "selectable is set back to true")
-      assert.equal(iText.hasControls, true, "hasControls is set back to true")
+      expect(iText.selectable).toEqual(true)
+      expect(iText.hasControls).toEqual(true)
       iText.selectable = false
       iText.enterEditing()
       iText.exitEditing()
-      assert.equal(
-        iText.selectable,
-        false,
-        "selectable is set back to initial value"
-      )
+      expect(iText.selectable).toEqual(false)
       iText.abortCursorAnimation()
     })
 
-    QUnit.test("event firing", function (assert) {
+    test("event firing", function (assert) {
       var iText = new fabric.IText("test"),
         enter = 0,
         exit = 0,
@@ -345,78 +329,58 @@
       iText.on("editing:exited", countExit)
       iText.on("modified", countModify)
 
-      assert.equal(typeof iText.enterEditing, "function")
-      assert.equal(typeof iText.exitEditing, "function")
+      expect(typeof iText.enterEditing).toEqual("function")
+      expect(typeof iText.exitEditing).toEqual("function")
 
       iText.enterEditing()
-      assert.equal(enter, 1)
-      assert.equal(exit, 0)
-      assert.equal(modify, 0)
+      expect(enter).toEqual(1)
+      expect(exit).toEqual(0)
+      expect(modify).toEqual(0)
 
       iText.exitEditing()
-      assert.equal(enter, 1)
-      assert.equal(exit, 1)
-      assert.equal(modify, 0)
+      expect(enter).toEqual(1)
+      expect(exit).toEqual(1)
+      expect(modify).toEqual(0)
 
       iText.enterEditing()
-      assert.equal(enter, 2)
-      assert.equal(exit, 1)
-      assert.equal(modify, 0)
+      expect(enter).toEqual(2)
+      expect(exit).toEqual(1)
+      expect(modify).toEqual(0)
 
       iText.text = "Test+"
       iText.exitEditing()
-      assert.equal(enter, 2)
-      assert.equal(exit, 2)
-      assert.equal(modify, 1)
+      expect(enter).toEqual(2)
+      expect(exit).toEqual(2)
+      expect(modify).toEqual(1)
       iText.abortCursorAnimation()
     })
 
-    QUnit.test("insertNewlineStyleObject", function (assert) {
+    test("insertNewlineStyleObject", function (assert) {
       var iText = new fabric.IText("test\n2")
 
-      assert.equal(typeof iText.insertNewlineStyleObject, "function")
+      expect(typeof iText.insertNewlineStyleObject).toEqual("function")
 
       iText.insertNewlineStyleObject(0, 4, 1)
-      assert.deepEqual(iText.styles, {}, "does not insert empty styles")
+      expect(iText.styles).toEqual({})
       iText.styles = { 1: { 0: { fill: "blue" } } }
       iText.insertNewlineStyleObject(0, 4, 1)
-      assert.deepEqual(
-        iText.styles,
-        { 2: { 0: { fill: "blue" } } },
-        "correctly shift styles"
-      )
+      expect(iText.styles).toEqual({ 2: { 0: { fill: "blue" } } })
     })
 
-    QUnit.test("insertNewlineStyleObject with existing style", function (
+    test("insertNewlineStyleObject with existing style", function (
       assert
     ) {
       var iText = new fabric.IText("test\n2")
 
       iText.styles = { 0: { 3: { fill: "red" } }, 1: { 0: { fill: "blue" } } }
       iText.insertNewlineStyleObject(0, 4, 3)
-      assert.deepEqual(
-        iText.styles[4],
-        { 0: { fill: "blue" } },
-        "correctly shift styles 3 lines"
-      )
-      assert.deepEqual(
-        iText.styles[3],
-        { 0: { fill: "red" } },
-        "correctly copied previous style line 3"
-      )
-      assert.deepEqual(
-        iText.styles[2],
-        { 0: { fill: "red" } },
-        "correctly copied previous style line 2"
-      )
-      assert.deepEqual(
-        iText.styles[1],
-        { 0: { fill: "red" } },
-        "correctly copied previous style line 1"
-      )
+      expect(iText.styles[4]).toEqual({ 0: { fill: "blue" } })
+      expect(iText.styles[3]).toEqual({ 0: { fill: "red" } })
+      expect(iText.styles[2]).toEqual({ 0: { fill: "red" } })
+      expect(iText.styles[1]).toEqual({ 0: { fill: "red" } })
     })
 
-    QUnit.test("shiftLineStyles", function (assert) {
+    test("shiftLineStyles", function (assert) {
       var iText = new fabric.IText("test\ntest\ntest", {
         styles: {
           1: {
@@ -428,10 +392,10 @@
         }
       })
 
-      assert.equal(typeof iText.shiftLineStyles, "function")
+      expect(typeof iText.shiftLineStyles).toEqual("function")
 
       iText.shiftLineStyles(0, +1)
-      assert.deepEqual(iText.styles, {
+      expect(iText.styles).toEqual({
         2: {
           0: { fill: "red" },
           1: { fill: "red" },
@@ -441,7 +405,7 @@
       })
 
       iText.shiftLineStyles(0, -1)
-      assert.deepEqual(iText.styles, {
+      expect(iText.styles).toEqual({
         1: {
           0: { fill: "red" },
           1: { fill: "red" },
@@ -451,77 +415,77 @@
       })
     })
 
-    QUnit.test("selectWord", function (assert) {
+    test("selectWord", function (assert) {
       var iText = new fabric.IText("test foo bar-baz\nqux")
 
-      assert.equal(typeof iText.selectWord, "function")
+      expect(typeof iText.selectWord).toEqual("function")
 
       iText.selectWord(1)
-      assert.equal(iText.selectionStart, 0) // |test|
-      assert.equal(iText.selectionEnd, 4)
+      expect(iText.selectionStart).toEqual(0) // |test|
+      expect(iText.selectionEnd).toEqual(4)
 
       iText.selectWord(7)
-      assert.equal(iText.selectionStart, 5) // |foo|
-      assert.equal(iText.selectionEnd, 8)
+      expect(iText.selectionStart).toEqual(5) // |foo|
+      expect(iText.selectionEnd).toEqual(8)
     })
 
-    QUnit.test("selectLine", function (assert) {
+    test("selectLine", function (assert) {
       var iText = new fabric.IText("test foo bar-baz\nqux")
 
-      assert.equal(typeof iText.selectLine, "function")
+      expect(typeof iText.selectLine).toEqual("function")
 
       iText.selectLine(6)
-      assert.equal(iText.selectionStart, 0) // |test foo bar-baz|
-      assert.equal(iText.selectionEnd, 16)
+      expect(iText.selectionStart).toEqual(0) // |test foo bar-baz|
+      expect(iText.selectionEnd).toEqual(16)
 
       iText.selectLine(18)
-      assert.equal(iText.selectionStart, 17) // |qux|
-      assert.equal(iText.selectionEnd, 20)
+      expect(iText.selectionStart).toEqual(17) // |qux|
+      expect(iText.selectionEnd).toEqual(20)
 
-      assert.equal(iText.selectLine(0), iText, "should be chainable")
+      expect(iText.selectLine(0)).toEqual(iText)
     })
 
-    QUnit.test("findWordBoundaryLeft", function (assert) {
+    test("findWordBoundaryLeft", function (assert) {
       var iText = new fabric.IText("test foo bar-baz\nqux")
 
-      assert.equal(typeof iText.findWordBoundaryLeft, "function")
+      expect(typeof iText.findWordBoundaryLeft).toEqual("function")
 
-      assert.equal(iText.findWordBoundaryLeft(3), 0) // 'tes|t'
-      assert.equal(iText.findWordBoundaryLeft(20), 17) // 'qux|'
-      assert.equal(iText.findWordBoundaryLeft(6), 5) // 'f|oo'
-      assert.equal(iText.findWordBoundaryLeft(11), 9) // 'ba|r-baz'
+      expect(iText.findWordBoundaryLeft(3)).toEqual(0) // 'tes|t'
+      expect(iText.findWordBoundaryLeft(20)).toEqual(17) // 'qux|'
+      expect(iText.findWordBoundaryLeft(6)).toEqual(5) // 'f|oo'
+      expect(iText.findWordBoundaryLeft(11)).toEqual(9) // 'ba|r-baz'
     })
 
-    QUnit.test("findWordBoundaryRight", function (assert) {
+    test("findWordBoundaryRight", function (assert) {
       var iText = new fabric.IText("test foo bar-baz\nqux")
 
-      assert.equal(typeof iText.findWordBoundaryRight, "function")
+      expect(typeof iText.findWordBoundaryRight).toEqual("function")
 
-      assert.equal(iText.findWordBoundaryRight(3), 4) // 'tes|t'
-      assert.equal(iText.findWordBoundaryRight(17), 20) // '|qux'
-      assert.equal(iText.findWordBoundaryRight(6), 8) // 'f|oo'
-      assert.equal(iText.findWordBoundaryRight(11), 16) // 'ba|r-baz'
+      expect(iText.findWordBoundaryRight(3)).toEqual(4) // 'tes|t'
+      expect(iText.findWordBoundaryRight(17)).toEqual(20) // '|qux'
+      expect(iText.findWordBoundaryRight(6)).toEqual(8) // 'f|oo'
+      expect(iText.findWordBoundaryRight(11)).toEqual(16) // 'ba|r-baz'
     })
 
-    QUnit.test("findLineBoundaryLeft", function (assert) {
+    test("findLineBoundaryLeft", function (assert) {
       var iText = new fabric.IText("test foo bar-baz\nqux")
 
-      assert.equal(typeof iText.findLineBoundaryLeft, "function")
+      expect(typeof iText.findLineBoundaryLeft).toEqual("function")
 
-      assert.equal(iText.findLineBoundaryLeft(3), 0) // 'tes|t'
-      assert.equal(iText.findLineBoundaryLeft(20), 17) // 'qux|'
+      expect(iText.findLineBoundaryLeft(3)).toEqual(0) // 'tes|t'
+      expect(iText.findLineBoundaryLeft(20)).toEqual(17) // 'qux|'
     })
 
-    QUnit.test("findLineBoundaryRight", function (assert) {
+    test("findLineBoundaryRight", function (assert) {
       var iText = new fabric.IText("test foo bar-baz\nqux")
 
-      assert.equal(typeof iText.findLineBoundaryRight, "function")
+      expect(typeof iText.findLineBoundaryRight).toEqual("function")
 
-      assert.equal(iText.findLineBoundaryRight(3), 16) // 'tes|t'
-      assert.equal(iText.findLineBoundaryRight(17), 20) // '|qux'
+      expect(iText.findLineBoundaryRight(3)).toEqual(16) // 'tes|t'
+      expect(iText.findLineBoundaryRight(17)).toEqual(20) // '|qux'
     })
 
-    QUnit.test("getSelectionStyles with no arguments", function (assert) {
+    test("getSelectionStyles with no arguments", function (assert) {
       var iText = new fabric.IText("test foo bar-baz\nqux", {
         styles: {
           0: {
@@ -537,17 +501,17 @@
         }
       })
 
-      assert.equal(typeof iText.getSelectionStyles, "function")
+      expect(typeof iText.getSelectionStyles).toEqual("function")
 
       iText.selectionStart = 0
       iText.selectionEnd = 0
 
-      assert.deepEqual(iText.getSelectionStyles(), [])
+      expect(iText.getSelectionStyles()).toEqual([])
 
       iText.selectionStart = 2
       iText.selectionEnd = 3
 
-      assert.deepEqual(iText.getSelectionStyles(), [
+      expect(iText.getSelectionStyles()).toEqual([
         {
           textDecoration: "overline"
         }
@@ -556,14 +520,14 @@
       iText.selectionStart = 17
       iText.selectionEnd = 18
 
-      assert.deepEqual(iText.getSelectionStyles(), [
+      expect(iText.getSelectionStyles()).toEqual([
         {
           fill: "red"
         }
       ])
     })
 
-    QUnit.test("getSelectionStyles with 2 args", function (assert) {
+    test("getSelectionStyles with 2 args", function (assert) {
       var iText = new fabric.IText("test foo bar-baz\nqux", {
         styles: {
           0: {
@@ -579,13 +543,13 @@
         }
       })
 
-      assert.deepEqual(iText.getSelectionStyles(0, 2), [
+      expect(iText.getSelectionStyles(0, 2)).toEqual([
         { textDecoration: "underline" },
         {}
       ])
     })
 
-    QUnit.test("setSelectionStyles", function (assert) {
+    test("setSelectionStyles", function (assert) {
       var iText = new fabric.IText("test foo bar-baz\nqux", {
         styles: {
           0: {
@@ -595,14 +559,14 @@
         }
       })
 
-      assert.equal(typeof iText.setSelectionStyles, "function")
+      expect(typeof iText.setSelectionStyles).toEqual("function")
 
       iText.setSelectionStyles({
         fill: "red",
         stroke: "yellow"
       })
 
-      assert.deepEqual(iText.styles[0][0], {
+      expect(iText.styles[0][0]).toEqual({
         fill: "#112233"
       })
 
@@ -613,7 +577,7 @@
         stroke: "yellow"
       })
 
-      assert.deepEqual(iText.styles[0][0], {
+      expect(iText.styles[0][0]).toEqual({
         fill: "red",
         stroke: "yellow"
       })
@@ -626,13 +590,13 @@
         stroke: "yellow"
       })
 
-      assert.deepEqual(iText.styles[0][2], {
+      expect(iText.styles[0][2]).toEqual({
         fill: "#998877",
         stroke: "yellow"
       })
     })
 
-    QUnit.test("getCurrentCharFontSize", function (assert) {
+    test("getCurrentCharFontSize", function (assert) {
       var iText = new fabric.IText("test foo bar-baz\nqux", {
         styles: {
           0: {
@@ -642,70 +606,46 @@
         }
       })
 
-      assert.equal(typeof iText.getCurrentCharFontSize, "function")
+      expect(typeof iText.getCurrentCharFontSize).toEqual("function")
       iText.selectionStart = 0
-      assert.equal(iText.getCurrentCharFontSize(), 20)
+      expect(iText.getCurrentCharFontSize()).toEqual(20)
       iText.selectionStart = 1
-      assert.equal(iText.getCurrentCharFontSize(), 20)
+      expect(iText.getCurrentCharFontSize()).toEqual(20)
       iText.selectionStart = 2
-      assert.equal(iText.getCurrentCharFontSize(), 60)
+      expect(iText.getCurrentCharFontSize()).toEqual(60)
       iText.selectionStart = 3
-      assert.equal(iText.getCurrentCharFontSize(), 40)
+      expect(iText.getCurrentCharFontSize()).toEqual(40)
     })
 
-    QUnit.test("object removal from canvas", function (assert) {
+    test("object removal from canvas", function (assert) {
       canvas.clear()
       canvas._iTextInstances = null
       var text1 = new fabric.IText("Text Will be here")
       var text2 = new fabric.IText("Text Will be here")
-      assert.ok(!canvas._iTextInstances, "canvas has no iText instances")
-      assert.ok(!canvas._hasITextHandlers, "canvas has no handlers")
+      expect(!canvas._iTextInstances).toBeTruthy()
+      expect(!canvas._hasITextHandlers).toBeTruthy()
 
       canvas.add(text1)
-      assert.deepEqual(
-        canvas._iTextInstances,
-        [text1],
-        "canvas has 1 text instance"
-      )
-      assert.ok(canvas._hasITextHandlers, "canvas has handlers")
-      assert.equal(
-        canvas._iTextInstances.length,
-        1,
-        "just one itext object should be on canvas"
-      )
+      expect(canvas._iTextInstances).toEqual([text1])
+      expect(canvas._hasITextHandlers).toBeTruthy()
+      expect(canvas._iTextInstances.length).toEqual(1)
 
       canvas.add(text2)
-      assert.deepEqual(
-        canvas._iTextInstances,
-        [text1, text2],
-        "canvas has 2 text instance"
-      )
-      assert.ok(canvas._hasITextHandlers, "canvas has handlers")
-      assert.equal(
-        canvas._iTextInstances.length,
-        2,
-        "just two itext object should be on canvas"
-      )
+      expect(canvas._iTextInstances).toEqual([text1, text2])
+      expect(canvas._hasITextHandlers).toBeTruthy()
+      expect(canvas._iTextInstances.length).toEqual(2)
 
       canvas.remove(text1)
-      assert.deepEqual(
-        canvas._iTextInstances,
-        [text2],
-        "canvas has 1 text instance"
-      )
-      assert.ok(canvas._hasITextHandlers, "canvas has handlers")
-      assert.equal(
-        canvas._iTextInstances.length,
-        1,
-        "just two itext object should be on canvas"
-      )
+      expect(canvas._iTextInstances).toEqual([text2])
+      expect(canvas._hasITextHandlers).toBeTruthy()
+      expect(canvas._iTextInstances.length).toEqual(1)
 
       canvas.remove(text2)
-      assert.deepEqual(canvas._iTextInstances, [], "canvas has 0 text instance")
-      assert.ok(!canvas._hasITextHandlers, "canvas has no handlers")
+      expect(canvas._iTextInstances).toEqual([])
+      expect(!canvas._hasITextHandlers).toBeTruthy()
     })
 
-    QUnit.test("getCurrentCharColor", function (assert) {
+    test("getCurrentCharColor", function (assert) {
       var iText = new fabric.IText("test foo bar-baz\nqux", {
         styles: {
           0: {
@@ -716,18 +656,18 @@
         fill: "#333"
       })
 
-      assert.equal(typeof iText.getCurrentCharColor, "function")
+      expect(typeof iText.getCurrentCharColor).toEqual("function")
       iText.selectionStart = 0
-      assert.equal(iText.getCurrentCharColor(), "red")
+      expect(iText.getCurrentCharColor()).toEqual("red")
       iText.selectionStart = 1
-      assert.equal(iText.getCurrentCharColor(), "red")
+      expect(iText.getCurrentCharColor()).toEqual("red")
       iText.selectionStart = 2
-      assert.equal(iText.getCurrentCharColor(), "green")
+      expect(iText.getCurrentCharColor()).toEqual("green")
       iText.selectionStart = 3
-      assert.equal(iText.getCurrentCharColor(), "#333")
+      expect(iText.getCurrentCharColor()).toEqual("#333")
     })
 
-    QUnit.test("toSVGWithFonts", function (assert) {
+    test("toSVGWithFonts", function (assert) {
       var iText = new fabric.IText("test foo bar-baz\nqux", {
         styles: {
           0: {
@@ -743,7 +683,7 @@
         Plaster: "path-to-plaster-font-file"
       }
       canvas.add(iText)
-      assert.equal(typeof iText.toSVG, "function")
+      expect(typeof iText.toSVG).toEqual("function")
       var parser
       if (fabric.isLikelyNode) {
         var XmlDomParser = require("xmldom").DOMParser
@@ -754,13 +694,12 @@
       var svgString = canvas.toSVG(),
         doc = parser.parseFromString(svgString, "image/svg+xml"),
         style = doc.getElementsByTagName("style")[0].firstChild.data
-      assert.equal(
-        style,
+      expect(style).toEqual(
         "\n\t\t@font-face {\n\t\t\tfont-family: 'Plaster';\n\t\t\tsrc: url('path-to-plaster-font-file');\n\t\t}\n\t\t@font-face {\n\t\t\tfont-family: 'Engagement';\n\t\t\tsrc: url('path-to-engagement-font-file');\n\t\t}\n"
       )
     })
 
-    QUnit.test("toSVGWithFontsInGroups", function (assert) {
+    test("toSVGWithFontsInGroups", function (assert) {
       var iText1 = new fabric.IText("test foo bar-baz\nqux", {
         styles: {
           0: {
@@ -790,30 +729,25 @@
       var subGroup = new fabric.Group([iText1])
       var group = new fabric.Group([subGroup, iText2])
       canvas.add(group)
-      assert.equal(typeof iText1.toSVG, "function")
-      assert.equal(typeof iText2.toSVG, "function")
+      expect(typeof iText1.toSVG).toEqual("function")
+      expect(typeof iText2.toSVG).toEqual("function")
       var parser = new DOMParser()
       var svgString = canvas.toSVG(),
         doc = parser.parseFromString(svgString, "image/svg+xml"),
         style = doc.getElementsByTagName("style")[0].firstChild.data
-      assert.equal(
-        style,
+      expect(style).toEqual(
         "\n\t\t@font-face {\n\t\t\tfont-family: 'Plaster';\n\t\t\tsrc: url('path-to-plaster-font-file');\n\t\t}\n\t\t@font-face {\n\t\t\tfont-family: 'Lacquer';\n\t\t\tsrc: url('path-to-lacquer-font-file');\n\t\t}\n\t\t@font-face {\n\t\t\tfont-family: 'Poppins';\n\t\t\tsrc: url('path-to-poppins-font-file');\n\t\t}\n\t\t@font-face {\n\t\t\tfont-family: 'Engagement';\n\t\t\tsrc: url('path-to-engagement-font-file');\n\t\t}\n"
       )
     })
 
-    QUnit.test("space wrap attribute", function (assert) {
+    test("space wrap attribute", function (assert) {
       var iText = new fabric.IText("test foo bar-baz\nqux")
       iText.enterEditing()
-      assert.equal(
-        iText.hiddenTextarea.wrap,
-        "off",
-        "HiddenTextarea needs wrap off attribute"
-      )
+      expect(iText.hiddenTextarea.wrap).toEqual("off")
       iText.abortCursorAnimation()
     })
 
-    QUnit.test("_removeExtraneousStyles", function (assert) {
+    test("_removeExtraneousStyles", function (assert) {
       var iText = new fabric.IText("a\nqqo", {
         styles: {
           0: { 0: { fontSize: 4 } },
@@ -823,25 +757,17 @@
           4: { 0: { fontSize: 4 } }
         }
       })
-      assert.deepEqual(
-        iText.styles[3],
-        { 0: { fontSize: 4 } },
-        "style line 3 exists"
-      )
-      assert.deepEqual(
-        iText.styles[4],
-        { 0: { fontSize: 4 } },
-        "style line 4 exists"
-      )
+      expect(iText.styles[3]).toEqual({ 0: { fontSize: 4 } })
+      expect(iText.styles[4]).toEqual({ 0: { fontSize: 4 } })
       iText._removeExtraneousStyles()
-      assert.equal(iText.styles[3], undefined, "style line 3 has been removed")
-      assert.equal(iText.styles[4], undefined, "style line 4 has been removed")
+      expect(iText.styles[3]).toEqual(undefined)
+      expect(iText.styles[4]).toEqual(undefined)
     })
 
-    QUnit.module(
+    describe(
       "fabric.IText with canvas.enableRetinaScaling = false",
       function () {
-        QUnit.test("hiddenTextarea does not move DOM", function (assert) {
+        test("hiddenTextarea does not move DOM", function (assert) {
           var iText = new fabric.IText("a", { fill: "#ffffff", fontSize: 50 })
           var canvas2 = new fabric.Canvas(null, {
             width: 800,
@@ -876,42 +802,26 @@
           canvas2.upperCanvasEl._clientHeight = 100
           iText.enterEditing()
           canvas2.cancelRequestedRender()
-          assert.equal(
-            Math.round(parseInt(iText.hiddenTextarea.style.top)),
-            57,
-            "top is scaled with CSS"
-          )
-          assert.equal(
-            Math.round(parseInt(iText.hiddenTextarea.style.left)),
-            50,
-            "left is scaled with CSS"
-          )
+          expect(Math.round(parseInt(iText.hiddenTextarea.style.top))).toEqual(57)
+          expect(Math.round(parseInt(iText.hiddenTextarea.style.left))).toEqual(50)
           iText.exitEditing()
           canvas2.cancelRequestedRender()
           canvas2.upperCanvasEl._clientWidth = 200
           canvas2.upperCanvasEl._clientHeight = 200
           iText.enterEditing()
           canvas2.cancelRequestedRender()
-          assert.equal(
-            Math.round(parseInt(iText.hiddenTextarea.style.top)),
-            114,
-            "top is scaled with CSS"
-          )
-          assert.equal(
-            Math.round(parseInt(iText.hiddenTextarea.style.left)),
-            100,
-            "left is scaled with CSS"
-          )
+          expect(Math.round(parseInt(iText.hiddenTextarea.style.top))).toEqual(114)
+          expect(Math.round(parseInt(iText.hiddenTextarea.style.left))).toEqual(100)
           iText.exitEditing()
           canvas2.cancelRequestedRender()
         })
       }
     )
 
-    QUnit.module(
+    describe(
       "fabric.IText with canvas.enableRetinaScaling = true",
       function () {
-        QUnit.test("hiddenTextarea does not move DOM", function (assert) {
+        test("hiddenTextarea does not move DOM", function (assert) {
           fabric.devicePixelRatio = 2
           var iText = new fabric.IText("a", { fill: "#ffffff", fontSize: 50 })
           var canvas2 = new fabric.Canvas(null, {
@@ -947,32 +857,16 @@
           canvas2.upperCanvasEl._clientHeight = 100
           iText.enterEditing()
           canvas2.cancelRequestedRender()
-          assert.equal(
-            Math.round(parseInt(iText.hiddenTextarea.style.top)),
-            57,
-            "top is scaled with CSS"
-          )
-          assert.equal(
-            Math.round(parseInt(iText.hiddenTextarea.style.left)),
-            50,
-            "left is scaled with CSS"
-          )
+          expect(Math.round(parseInt(iText.hiddenTextarea.style.top))).toEqual(57)
+          expect(Math.round(parseInt(iText.hiddenTextarea.style.left))).toEqual(50)
           iText.exitEditing()
           canvas2.cancelRequestedRender()
           canvas2.upperCanvasEl._clientWidth = 200
           canvas2.upperCanvasEl._clientHeight = 200
           iText.enterEditing()
           canvas2.cancelRequestedRender()
-          assert.equal(
-            Math.round(parseInt(iText.hiddenTextarea.style.top)),
-            114,
-            "top is scaled with CSS"
-          )
-          assert.equal(
-            Math.round(parseInt(iText.hiddenTextarea.style.left)),
-            100,
-            "left is scaled with CSS"
-          )
+          expect(Math.round(parseInt(iText.hiddenTextarea.style.top))).toEqual(114)
+          expect(Math.round(parseInt(iText.hiddenTextarea.style.left))).toEqual(100)
           iText.exitEditing()
           canvas2.cancelRequestedRender()
           fabric.devicePixelRatio = 1

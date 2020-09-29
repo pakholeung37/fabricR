@@ -48,31 +48,31 @@
     left: 0
   }
 
-  QUnit.module("fabric.Polyline")
+  describe("fabric.Polyline")
 
-  QUnit.test("constructor", function (assert) {
-    assert.ok(fabric.Polyline)
+  test("constructor", function (assert) {
+    expect(fabric.Polyline).toBeTruthy()
 
     var polyline = new fabric.Polyline(getPoints())
 
-    assert.ok(polyline instanceof fabric.Polyline)
-    assert.ok(polyline instanceof fabric.Object)
+    expect(polyline instanceof fabric.Polyline).toBeTruthy()
+    expect(polyline instanceof fabric.Object).toBeTruthy()
 
-    assert.equal(polyline.type, "polyline")
-    assert.deepEqual(polyline.get("points"), [
+    expect(polyline.type).toEqual("polyline")
+    expect(polyline.get("points")).toEqual([
       { x: 10, y: 12 },
       { x: 20, y: 22 }
     ])
   })
 
-  QUnit.test("complexity", function (assert) {
+  test("complexity", function (assert) {
     var polyline = new fabric.Polyline(getPoints())
-    assert.ok(typeof polyline.complexity === "function")
+    expect(typeof polyline.complexity === "function").toBeTruthy()
   })
 
-  QUnit.test("toObject", function (assert) {
+  test("toObject", function (assert) {
     var polyline = new fabric.Polyline(getPoints())
-    assert.ok(typeof polyline.toObject === "function")
+    expect(typeof polyline.toObject === "function").toBeTruthy()
     var objectWithOriginalPoints = fabric.util.object.extend(
       polyline.toObject(),
       {
@@ -80,32 +80,32 @@
       }
     )
 
-    assert.deepEqual(objectWithOriginalPoints, REFERENCE_OBJECT)
+    expect(objectWithOriginalPoints).toEqual(REFERENCE_OBJECT)
   })
 
-  QUnit.test("toSVG", function (assert) {
+  test("toSVG", function (assert) {
     var polyline = new fabric.Polygon(getPoints(), {
       fill: "red",
       stroke: "blue"
     })
-    assert.ok(typeof polyline.toSVG === "function")
+    expect(typeof polyline.toSVG === "function").toBeTruthy()
     var EXPECTED_SVG =
       '<g transform="matrix(1 0 0 1 15 17)"  >\n<polygon style="stroke: rgb(0,0,255); stroke-width: 1; stroke-dasharray: none; stroke-linecap: butt; stroke-dashoffset: 0; stroke-linejoin: miter; stroke-miterlimit: 4; fill: rgb(255,0,0); fill-rule: nonzero; opacity: 1;"  points="-5,-5 5,5 " />\n</g>\n'
-    assert.deepEqual(polyline.toSVG(), EXPECTED_SVG)
+    expect(polyline.toSVG()).toEqual(EXPECTED_SVG)
   })
 
-  QUnit.test("fromObject", function (assert) {
+  test("fromObject", function (assert) {
     var done = assert.async()
-    assert.ok(typeof fabric.Polyline.fromObject === "function")
+    expect(typeof fabric.Polyline.fromObject === "function").toBeTruthy()
     fabric.Polyline.fromObject(REFERENCE_OBJECT, function (polyline) {
-      assert.ok(polyline instanceof fabric.Polyline)
-      assert.deepEqual(polyline.toObject(), REFERENCE_OBJECT)
+      expect(polyline instanceof fabric.Polyline).toBeTruthy()
+      expect(polyline.toObject()).toEqual(REFERENCE_OBJECT)
       done()
     })
   })
 
-  QUnit.test("fromElement without points", function (assert) {
-    assert.ok(typeof fabric.Polyline.fromElement === "function")
+  test("fromElement without points", function (assert) {
+    expect(typeof fabric.Polyline.fromElement === "function").toBeTruthy()
     var elPolylineWithoutPoints = fabric.document.createElementNS(
       "http://www.w3.org/2000/svg",
       "polyline"
@@ -116,11 +116,11 @@
       REFERENCE_EMPTY_OBJECT
     )
     fabric.Polyline.fromElement(elPolylineWithoutPoints, function (polyline) {
-      assert.deepEqual(polyline.toObject(), empty_object)
+      expect(polyline.toObject()).toEqual(empty_object)
     })
   })
 
-  QUnit.test("fromElement with empty points", function (assert) {
+  test("fromElement with empty points", function (assert) {
     var namespace = "http://www.w3.org/2000/svg"
     var elPolylineWithEmptyPoints = fabric.document.createElementNS(
       namespace,
@@ -133,25 +133,25 @@
         empty_object,
         REFERENCE_EMPTY_OBJECT
       )
-      assert.deepEqual(polyline.toObject(), empty_object)
+      expect(polyline.toObject()).toEqual(empty_object)
     })
   })
 
-  QUnit.test("fromElement", function (assert) {
+  test("fromElement", function (assert) {
     var namespace = "http://www.w3.org/2000/svg"
     var elPolyline = fabric.document.createElementNS(namespace, "polyline")
     elPolyline.setAttributeNS(namespace, "points", "10,12 20,22")
     elPolyline.setAttributeNS(namespace, "stroke-width", 1)
     fabric.Polyline.fromElement(elPolyline, function (polyline) {
-      assert.ok(polyline instanceof fabric.Polyline)
+      expect(polyline instanceof fabric.Polyline).toBeTruthy()
       var obj = fabric.util.object.extend({}, REFERENCE_OBJECT)
       obj.top = 12
       obj.left = 10
-      assert.deepEqual(polyline.toObject(), obj)
+      expect(polyline.toObject()).toEqual(obj)
     })
   })
 
-  QUnit.test("fromElement with custom attr", function (assert) {
+  test("fromElement with custom attr", function (assert) {
     var namespace = "http://www.w3.org/2000/svg"
     var elPolylineWithAttrs = fabric.document.createElementNS(
       namespace,
@@ -185,30 +185,27 @@
         { x: 30, y: 30 },
         { x: 10, y: 10 }
       ]
-      assert.deepEqual(
-        polylineWithAttrs.toObject(),
-        fabric.util.object.extend(REFERENCE_OBJECT, {
-          width: 20,
-          height: 20,
-          fill: "rgb(255,255,255)",
-          stroke: "blue",
-          strokeWidth: 3,
-          strokeDashArray: [5, 2],
-          strokeLineCap: "round",
-          strokeLineJoin: "bevil",
-          strokeMiterLimit: 5,
-          opacity: 0.34,
-          points: expectedPoints,
-          left: 10,
-          top: 10
-        })
-      )
+      expect(polylineWithAttrs.toObject()).toEqual(fabric.util.object.extend(REFERENCE_OBJECT, {
+        width: 20,
+        height: 20,
+        fill: "rgb(255,255,255)",
+        stroke: "blue",
+        strokeWidth: 3,
+        strokeDashArray: [5, 2],
+        strokeLineCap: "round",
+        strokeLineJoin: "bevil",
+        strokeMiterLimit: 5,
+        opacity: 0.34,
+        points: expectedPoints,
+        left: 10,
+        top: 10
+      }))
     })
   })
 
-  QUnit.test("fromElement with nothing", function (assert) {
+  test("fromElement with nothing", function (assert) {
     fabric.Polyline.fromElement(null, function (polyline) {
-      assert.equal(polyline, null)
+      expect(polyline).toEqual(null)
     })
   })
 })()

@@ -1,28 +1,28 @@
 ;(function () {
-  QUnit.module("fabric.stateful")
-  QUnit.test("hasStateChanged", function (assert) {
+  describe("fabric.stateful")
+  test("hasStateChanged", function (assert) {
     var cObj = new fabric.Object()
-    assert.ok(typeof cObj.hasStateChanged === "function")
+    expect(typeof cObj.hasStateChanged === "function").toBeTruthy()
     cObj.setupState()
-    assert.ok(!cObj.hasStateChanged(), "state should not be changed")
+    expect(!cObj.hasStateChanged()).toBeTruthy()
     cObj.saveState()
     cObj.set("left", 123).set("top", 456)
-    assert.ok(cObj.hasStateChanged())
+    expect(cObj.hasStateChanged()).toBeTruthy()
   })
 
-  QUnit.test("saveState", function (assert) {
+  test("saveState", function (assert) {
     var cObj = new fabric.Object()
-    assert.ok(typeof cObj.saveState === "function")
+    expect(typeof cObj.saveState === "function").toBeTruthy()
     cObj.setupState()
-    assert.equal(cObj.saveState(), cObj, "chainable")
+    expect(cObj.saveState()).toEqual(cObj)
     cObj.set("left", 123).set("top", 456)
     cObj.saveState()
     cObj.set("left", 223).set("top", 556)
-    assert.equal(cObj._stateProperties.left, 123)
-    assert.equal(cObj._stateProperties.top, 456)
+    expect(cObj._stateProperties.left).toEqual(123)
+    expect(cObj._stateProperties.top).toEqual(456)
   })
 
-  QUnit.test("saveState with extra props", function (assert) {
+  test("saveState with extra props", function (assert) {
     var cObj = new fabric.Object()
     cObj.prop1 = "a"
     cObj.prop2 = "b"
@@ -30,52 +30,42 @@
     var extraProps = ["prop1", "prop2"]
     var options = { stateProperties: extraProps }
     cObj.setupState(options)
-    assert.equal(cObj._stateProperties.prop1, "a", "it saves the extra props")
-    assert.equal(cObj._stateProperties.prop2, "b", "it saves the extra props")
+    expect(cObj._stateProperties.prop1).toEqual("a")
+    expect(cObj._stateProperties.prop2).toEqual("b")
     cObj.prop1 = "c"
-    assert.ok(cObj.hasStateChanged(), "it detects changes in extra props")
-    assert.equal(
-      cObj._stateProperties.left,
-      123,
-      "normal props are still there"
-    )
+    expect(cObj.hasStateChanged()).toBeTruthy()
+    expect(cObj._stateProperties.left).toEqual(123)
   })
 
-  QUnit.test("saveState with array", function (assert) {
+  test("saveState with array", function (assert) {
     var cObj = new fabric.Text("Hello")
     cObj.set("strokeDashArray", [0, 4])
     cObj.setupState()
     //eqaul(cObj.underline, cObj._stateProperties.underline, 'textDecoration in state is deepEqual');
     //notEqual(cObj.textDecoration, cObj._stateProperties.textDecoration, 'textDecoration in not same Object');
     cObj.strokeDashArray[0] = 2
-    assert.ok(
-      cObj.hasStateChanged(),
-      "hasStateChanged detects changes in nested props"
-    )
+    expect(cObj.hasStateChanged()).toBeTruthy()
 
     cObj.saveState()
     cObj.strokeDashArray[2] = 2
-    assert.ok(cObj.hasStateChanged(), "more properties added")
+    expect(cObj.hasStateChanged()).toBeTruthy()
   })
 
-  QUnit.test("saveState with array to null", function (assert) {
+  test("saveState with array to null", function (assert) {
     var cObj = new fabric.Text("Hello")
     cObj.set("strokeDashArray", [0, 4])
     cObj.setupState()
     //eqaul(cObj.underline, cObj._stateProperties.underline, 'textDecoration in state is deepEqual');
     //notEqual(cObj.textDecoration, cObj._stateProperties.textDecoration, 'textDecoration in not same Object');
     cObj.strokeDashArray = null
-    assert.ok(
-      cObj.hasStateChanged(),
-      "hasStateChanged detects changes in array without throwing"
-    )
+    expect(cObj.hasStateChanged()).toBeTruthy()
 
     cObj.saveState()
     cObj.strokeDashArray = [2, 3]
-    assert.ok(cObj.hasStateChanged(), "back to array")
+    expect(cObj.hasStateChanged()).toBeTruthy()
   })
 
-  QUnit.test("saveState with fabric class gradient", function (assert) {
+  test("saveState with fabric class gradient", function (assert) {
     var cObj = new fabric.Object()
     var gradient = new fabric.Gradient({
       type: "linear",
@@ -94,31 +84,19 @@
     cObj.set("fill", "#FF0000")
     cObj.setupState()
     cObj.set("fill", gradient)
-    assert.ok(
-      cObj.hasStateChanged(),
-      "hasStateChanged detects changes in nested props"
-    )
+    expect(cObj.hasStateChanged()).toBeTruthy()
     cObj.saveState()
     gradient.type = "radial"
-    assert.ok(
-      cObj.hasStateChanged(),
-      "hasStateChanged detects changes in nested props on first level of nesting"
-    )
+    expect(cObj.hasStateChanged()).toBeTruthy()
     cObj.saveState()
     gradient.coords.x1 = 3
-    assert.ok(
-      cObj.hasStateChanged(),
-      "hasStateChanged detects changes in nested props on second level of nesting"
-    )
+    expect(cObj.hasStateChanged()).toBeTruthy()
     cObj.saveState()
     gradient.colorStops[0].color = "blue"
-    assert.ok(
-      cObj.hasStateChanged(),
-      "hasStateChanged detects changes in nested props on third level of nesting"
-    )
+    expect(cObj.hasStateChanged()).toBeTruthy()
   })
 
-  QUnit.test("saveState with fabric class gradient to other types", function (
+  test("saveState with fabric class gradient to other types", function (
     assert
   ) {
     var cObj = new fabric.Object()
@@ -139,40 +117,28 @@
     cObj.set("fill", gradient)
     cObj.setupState()
     cObj.set("fill", "red")
-    assert.ok(
-      cObj.hasStateChanged(),
-      "hasStateChanged detects changes in object to string without throwing"
-    )
+    expect(cObj.hasStateChanged()).toBeTruthy()
     cObj.saveState()
     cObj.set("fill", gradient)
-    assert.ok(cObj.hasStateChanged(), "back to gradient")
+    expect(cObj.hasStateChanged()).toBeTruthy()
     cObj.saveState()
     cObj.set("fill", null)
-    assert.ok(
-      cObj.hasStateChanged(),
-      "hasStateChanged detects changes in object to null without throwing"
-    )
+    expect(cObj.hasStateChanged()).toBeTruthy()
   })
 
-  QUnit.test("savestate with custom property set", function (assert) {
+  test("savestate with custom property set", function (assert) {
     var cObj = new fabric.Object()
     cObj.myProperties = ["a", "b"]
     cObj.a = 1
     cObj.b = 3
     cObj.setupState()
-    assert.ok(!cObj._myProperties, "custom properties set does not exist")
+    expect(!cObj._myProperties).toBeTruthy()
     cObj.setupState({ propertySet: "myProperties" })
-    assert.ok(
-      cObj._myProperties.a,
-      "a has been added in the custom property set"
-    )
+    expect(cObj._myProperties.a).toBeTruthy()
     cObj.left = 33
-    assert.ok(cObj.hasStateChanged(), "state has changed")
-    assert.ok(
-      !cObj.hasStateChanged("myProperties"),
-      "custom state has not changed"
-    )
+    expect(cObj.hasStateChanged()).toBeTruthy()
+    expect(!cObj.hasStateChanged("myProperties")).toBeTruthy()
     cObj.a = 2
-    assert.ok(cObj.hasStateChanged("myProperties"), "custom state has changed")
+    expect(cObj.hasStateChanged("myProperties")).toBeTruthy()
   })
 })()

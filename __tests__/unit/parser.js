@@ -22,10 +22,10 @@
 
   // var EXPECTED_PATH_JSON = "{\"type\":\"path\",\"left\":0,\"top\":0,\"width\":93,\"height\":137,\"fill\":\"#99CCFF\",\"stroke\":null,\"strokeWidth\":1,\"scaleX\":1,\"scaleY\":1,\"angle\":0,\"flipX\":false,\"flipY\":false,\"opacity\":1,\"selectable\":true,\"hasControls\":true,\"hasBorders\":true,\"hasRotatingPoint\":false,\"path\":[[\"M\",62.022,30.848],[\"c\",4.251,0.038,9.565,-2.206,13.424,-3.924],[\"c\",3.131,-1.396,4.47,-1.299,7.833,0.263],[\"c\",2.18,1.012,3.883,-1.551,5.824,-2.048],[\"c\",0.243,-0.062,0.537,0.464,0.374,0.652],[\"c\",-0.553,0.639,-2.932,1.753,-2.679,2.821],[\"c\",0.184,0.779,4.081,0.817,5.226,1.347],[\"c\",1.008,0.653,-3.22,0.665,-3.17,1.028],[\"c\",1.038,0.191,2.175,0.279,3.03,0.703],[\"c\",0.482,0.238,-0.707,0.815,-1.245,0.731],[\"c\",0.194,0.103,0.711,0.257,0.583,0.436],[\"c\",-0.144,0.891,-3.265,0.128,-4.132,-0.003],[\"c\",-0.688,-0.104,-3.754,-0.843,-3.892,0.039],[\"c\",-0.092,0.586,0.47,1.079,0.133,2.617],[\"c\",-0.314,1.438,-1.942,1.633,-1.831,1.024],[\"c\",0.273,-1.496,1.201,-1.914,-0.4,-3.564],[\"c\",-0.979,-1.01,-1.908,-2.344,-2.138,-3.425],[\"c\",-7.581,1.092,-9.456,6.321,-17.365,7.858],[\"c\",-2.787,0.541,-5.233,-1.016,-7.887,-2.27],[\"c\",0.168,0.259,0.457,0.272,0.169,1.184],[\"c\",-0.29,0.918,-0.479,2.081,-0.225,3.104],[\"c\",0.539,2.169,1.73,4.464,2.5,6.755],[\"c\",1.481,4.415,0.996,11.273,0.42,15.21],[\"c\",-0.105,0.715,0.497,1.432,0.129,2.608],[\"c\",-0.128,0.413,0.384,1.027,0.347,1.458],[\"c\",-0.195,2.236,1.106,2.01,3.446,4.502],[\"c\",-0.21,0.252,-0.926,0.504,-1.136,0.756],[\"c\",4.353,5.205,8.404,10.612,11.622,16.651],[\"c\",0.805,1.512,1.511,3.199,1.511,4.913],[\"c\",0,1.955,-1.154,2.843,-2.057,4.577],[\"c\",-0.741,1.423,-2.081,2.305,-3.121,3.526],[\"c\",-5.631,6.614,-9.57,11.287,-15.186,17.936],[\"c\",-0.976,3.091,1.141,4.783,1.093,6.394],[\"c\",-0.011,0.372,-0.267,0.74,-0.555,1.119],[\"c\",-0.452,0.595,-2.752,-1.225,-4.01,-2.617],[\"c\",-1.657,8.48,5.22,10.332,8.284,12.274],[\"c\",0.37,0.234,0.076,1.004,-0.05,1.424],[\"c\",-4.442,0.217,-7.603,0.246,-11.857,-1.172],[\"c\",-0.783,-0.963,-2.958,-5.188,-4.535,-3.406],[\"c\",-0.735,0.831,-1.092,1.932,-1.637,2.897],[\"c\",-0.462,0,-0.76,-0.247,-1.222,-0.247],[\"c\",-0.042,-1.553,0.19,-2.878,-0.044,-4.413],[\"c\",-0.633,-4.152,-1.551,-4.467,2.037,-7.866],[\"c\",1.782,-1.689,2.374,-2.065,4.045,-3.916],[\"c\",-0.552,-1.562,0.385,-2.303,-1.192,-3],[\"c\",-0.936,-0.041,-3.255,1.205,-3.535,2.152],[\"c\",-0.378,-0.042,-1.001,-0.701,-1.379,-0.742],[\"c\",0.896,-1.794,1.155,-1.791,0.926,-2.913],[\"c\",-0.796,-3.892,1.304,-4.478,3.593,-5.779],[\"c\",3.523,-3.523,6.666,-10.464,10.145,-14.605],[\"c\",1.05,-1.25,2.885,-2.043,4.019,-3.219],[\"c\",-1.26,-1.175,-2.805,-2.106,-3.779,-3.526],[\"c\",-2.437,-3.554,-6.445,-7.633,-9.421,-8.945],[\"c\",-0.756,0.168,-1.513,0.336,-2.269,0.504],[\"c\",-3.89,-2.843,-8.766,-8.817,-6.814,-16.892],[\"c\",1.413,-5.846,8.545,-7.913,2.791,-13.009],[\"c\",-1.299,-1.15,-7.22,-6.915,-8.904,-6.021],[\"c\",-1.257,0.667,-3.774,2.431,-3.966,4.015],[\"c\",-0.299,2.472,-4.275,17.925,-7.829,14.167],[\"C\",9.169,53.682,7.55,47.517,6.059,43.276],[\"c\",-0.873,-2.481,-4.009,-2.109,-5.077,-5],[\"c\",-0.368,-0.997,-1.229,-2.067,-0.914,-3.082],[\"c\",0.169,-0.545,0.63,-0.336,1.175,-0.504],[\"c\",0.535,-2.002,0.199,-1.216,1.704,-1.318],[\"c\",0,-1.215,0.604,-0.978,1.498,-0.978],[\"c\",0.987,-1.624,1.841,-0.106,4.696,1.74],[\"c\",1.461,0.945,1.292,2.708,0.987,4.319],[\"c\",-0.281,1.483,-0.582,2.403,-0.018,3.626],[\"c\",1.14,2.472,4.709,6.794,6.412,9.063],[\"c\",2.12,-2.974,1.531,-6.198,1.788,-10.647],[\"c\",0.1,-1.729,0.84,-3.361,1.26,-5.041],[\"c\",-1.504,-0.111,-2.596,-0.532,-3.277,-1.261],[\"c\",0.336,-0.588,0.672,-1.177,1.008,-1.765],[\"c\",-1.64,-1.64,-1.834,-2.188,-2.325,-4.48],[\"c\",3.162,0,2.708,-1.862,4.342,-4.09],[\"c\",-0.84,-0.504,-1.681,-1.008,-2.521,-1.512],[\"c\",3.833,-2.869,3.828,-2.76,2.539,-8.066],[\"c\",-0.877,-3.608,-0.278,-6.225,2.058,-9.733],[\"C\",25.57,-1.726,27.022,0.327,31.783,0.3],[\"c\",3.464,-0.021,6.667,0.022,8.97,5.944],[\"c\",-0.462,-0.248,-1.416,-0.428,-1.878,-0.126],[\"c\",0.126,0.588,0.825,2.984,0.5,3.49],[\"c\",-0.673,1.049,-0.867,0.977,-0.087,2.224],[\"c\",0.345,0.552,-0.111,2.569,-0.915,4.108],[\"c\",-0.366,0.807,-0.308,2.539,-1.714,2.186],[\"c\",-0.534,0.42,-0.248,1.744,0.203,2.164],[\"c\",2.527,0,5.04,-0.988,7.921,-0.666],[\"C\",47.872,19.969,54.917,30.783,62.022,30.848],[\"L\",62.022,30.848],[\"z\"]]}";
 
-  QUnit.module("fabric.Parser")
+  describe("fabric.Parser")
 
-  QUnit.test("parseAttributes", function (assert) {
-    assert.ok(fabric.parseAttributes)
+  test("parseAttributes", function (assert) {
+    expect(fabric.parseAttributes).toBeTruthy()
 
     var element = makeElement()
     var attributeNames = "cx cy x y r opacity fill-rule stroke-width transform fill fill-rule".split(
@@ -33,7 +33,7 @@
     )
     var parsedAttributes = fabric.parseAttributes(element, attributeNames)
 
-    assert.deepEqual(parsedAttributes, {
+    expect(parsedAttributes).toEqual({
       left: 102,
       top: 104,
       radius: 105,
@@ -43,48 +43,45 @@
     })
   })
 
-  QUnit.test("parseAttributesNoneValues", function (assert) {
+  test("parseAttributesNoneValues", function (assert) {
     var namespace = "http://www.w3.org/2000/svg"
     var element = fabric.document.createElementNS(namespace, "path")
     element.setAttributeNS(namespace, "fill", "none")
     element.setAttributeNS(namespace, "stroke", "none")
 
-    assert.deepEqual(
-      fabric.parseAttributes(element, "fill stroke".split(" ")),
-      { fill: "", stroke: "" }
-    )
+    expect(fabric.parseAttributes(element, "fill stroke".split(" "))).toEqual({ fill: "", stroke: "" })
   })
 
-  QUnit.test("parseAttributesFillRule", function (assert) {
+  test("parseAttributesFillRule", function (assert) {
     var namespace = "http://www.w3.org/2000/svg"
     var element = fabric.document.createElementNS(namespace, "path")
     element.setAttributeNS(namespace, "fill-rule", "evenodd")
 
-    assert.deepEqual(fabric.parseAttributes(element, ["fill-rule"]), {
+    expect(fabric.parseAttributes(element, ["fill-rule"])).toEqual({
       fillRule: "evenodd"
     })
   })
 
-  QUnit.test("parseAttributesFillRuleWithoutTransformation", function (assert) {
+  test("parseAttributesFillRuleWithoutTransformation", function (assert) {
     var namespace = "http://www.w3.org/2000/svg"
     var element = fabric.document.createElementNS(namespace, "path")
     element.setAttributeNS(namespace, "fill-rule", "inherit")
 
-    assert.deepEqual(fabric.parseAttributes(element, ["fill-rule"]), {
+    expect(fabric.parseAttributes(element, ["fill-rule"])).toEqual({
       fillRule: "inherit"
     })
   })
 
-  QUnit.test("parseAttributesTransform", function (assert) {
+  test("parseAttributesTransform", function (assert) {
     var namespace = "http://www.w3.org/2000/svg"
     var element = fabric.document.createElementNS(namespace, "path")
     element.setAttributeNS(namespace, "transform", "translate(5, 10)")
-    assert.deepEqual(fabric.parseAttributes(element, ["transform"]), {
+    expect(fabric.parseAttributes(element, ["transform"])).toEqual({
       transformMatrix: [1, 0, 0, 1, 5, 10]
     })
   })
 
-  QUnit.test("parseAttributesWithParent", function (assert) {
+  test("parseAttributesWithParent", function (assert) {
     var namespace = "http://www.w3.org/2000/svg"
     var element = fabric.document.createElementNS(namespace, "path")
     var parent = fabric.document.createElementNS(namespace, "g")
@@ -97,14 +94,14 @@
     parent.setAttributeNS(namespace, "y", "200")
     grandParent.setAttributeNS(namespace, "fill", "red")
 
-    assert.deepEqual(fabric.parseAttributes(element, "x y fill".split(" ")), {
+    expect(fabric.parseAttributes(element, "x y fill".split(" "))).toEqual({
       fill: "red",
       left: 100,
       top: 200
     })
   })
 
-  QUnit.test("parseAttributesWithGrandParentSvg", function (assert) {
+  test("parseAttributesWithGrandParentSvg", function (assert) {
     var namespace = "http://www.w3.org/2000/svg"
     var element = fabric.document.createElementNS(namespace, "path"),
       parent = fabric.document.createElementNS(namespace, "g"),
@@ -118,13 +115,10 @@
     grandParent.setAttributeNS(namespace, "width", "600")
     grandParent.setAttributeNS(namespace, "height", "600")
 
-    assert.deepEqual(
-      fabric.parseAttributes(element, "x y width height".split(" ")),
-      { left: 100, top: 200, width: 600, height: 600 }
-    )
+    expect(fabric.parseAttributes(element, "x y width height".split(" "))).toEqual({ left: 100, top: 200, width: 600, height: 600 })
   })
 
-  QUnit.test("parseAttributeFontValueStartWithFontSize", function (assert) {
+  test("parseAttributeFontValueStartWithFontSize", function (assert) {
     var element = fabric.document.createElementNS(
       "http://www.w3.org/2000/svg",
       "path"
@@ -136,12 +130,12 @@
       fontSize: 15,
       fontFamily: "arial, sans-serif"
     }
-    assert.deepEqual(styleObj, expectedObject)
+    expect(styleObj).toEqual(expectedObject)
   })
 
-  QUnit.test("parseElements", function (assert) {
+  test("parseElements", function (assert) {
     var done = assert.async()
-    assert.ok(typeof fabric.parseElements === "function")
+    expect(typeof fabric.parseElements === "function").toBeTruthy()
 
     function getOptions(options) {
       return fabric.util.object.extend(
@@ -165,15 +159,15 @@
       fabric.util.makeElement("inexistent", getOptions())
     ]
     fabric.parseElements(elements, function (parsedElements) {
-      assert.ok(parsedElements[0] instanceof fabric.Rect)
-      assert.ok(parsedElements[1] instanceof fabric.Circle)
-      assert.ok(parsedElements[2] instanceof fabric.Path)
+      expect(parsedElements[0] instanceof fabric.Rect).toBeTruthy()
+      expect(parsedElements[1] instanceof fabric.Circle).toBeTruthy()
+      expect(parsedElements[2] instanceof fabric.Path).toBeTruthy()
       setTimeout(done, 1000)
     })
   })
 
-  QUnit.test("parseStyleAttribute", function (assert) {
-    assert.ok(fabric.parseStyleAttribute)
+  test("parseStyleAttribute", function (assert) {
+    expect(fabric.parseStyleAttribute).toBeTruthy()
 
     var element = fabric.document.createElementNS(
       "http://www.w3.org/2000/svg",
@@ -191,10 +185,10 @@
       width: "103.45pt",
       height: "20%"
     }
-    assert.deepEqual(styleObj, expectedObject)
+    expect(styleObj).toEqual(expectedObject)
   })
 
-  QUnit.test("parseStyleAttribute with one pair", function (assert) {
+  test("parseStyleAttribute with one pair", function (assert) {
     var element = fabric.document.createElementNS(
       "http://www.w3.org/2000/svg",
       "path"
@@ -204,10 +198,10 @@
     var expectedObject = {
       left: "10px"
     }
-    assert.deepEqual(fabric.parseStyleAttribute(element), expectedObject)
+    expect(fabric.parseStyleAttribute(element)).toEqual(expectedObject)
   })
 
-  QUnit.test("parseStyleAttribute with trailing spaces", function (assert) {
+  test("parseStyleAttribute with trailing spaces", function (assert) {
     var element = fabric.document.createElementNS(
       "http://www.w3.org/2000/svg",
       "path"
@@ -218,10 +212,10 @@
       left: "10px",
       top: "5px"
     }
-    assert.deepEqual(fabric.parseStyleAttribute(element), expectedObject)
+    expect(fabric.parseStyleAttribute(element)).toEqual(expectedObject)
   })
 
-  QUnit.test("parseStyleAttribute with value normalization", function (assert) {
+  test("parseStyleAttribute with value normalization", function (assert) {
     var element = fabric.document.createElementNS(
       "http://www.w3.org/2000/svg",
       "path"
@@ -232,10 +226,10 @@
       fill: "none",
       "stroke-dasharray": "2 0.4"
     }
-    assert.deepEqual(fabric.parseStyleAttribute(element), expectedObject)
+    expect(fabric.parseStyleAttribute(element)).toEqual(expectedObject)
   })
 
-  QUnit.test("parseStyleAttribute with short font declaration", function (
+  test("parseStyleAttribute with short font declaration", function (
     assert
   ) {
     var element = fabric.document.createElementNS(
@@ -257,7 +251,7 @@
       fontFamily: "Arial,Helvetica,sans-serif"
     }
 
-    assert.deepEqual(styleObj, expectedObject)
+    expect(styleObj).toEqual(expectedObject)
 
     //testing different unit
     element.setAttribute(
@@ -275,10 +269,10 @@
       fontFamily: "Arial,Helvetica,sans-serif"
     }
 
-    assert.deepEqual(styleObj, expectedObject)
+    expect(styleObj).toEqual(expectedObject)
   })
 
-  QUnit.test(
+  test(
     "parseAttributes (style to have higher priority than attribute)",
     function (assert) {
       var namespace = "http://www.w3.org/2000/svg"
@@ -289,14 +283,11 @@
       var expectedObject = {
         fill: "red"
       }
-      assert.deepEqual(
-        fabric.parseAttributes(element, fabric.Path.ATTRIBUTE_NAMES),
-        expectedObject
-      )
+      expect(fabric.parseAttributes(element, fabric.Path.ATTRIBUTE_NAMES)).toEqual(expectedObject)
     }
   )
 
-  QUnit.test("parseAttributes stroke-opacity and fill-opacity", function (
+  test("parseAttributes stroke-opacity and fill-opacity", function (
     assert
   ) {
     var namespace = "http://www.w3.org/2000/svg"
@@ -316,13 +307,10 @@
       fillOpacity: 0.2,
       strokeOpacity: 0.5
     }
-    assert.deepEqual(
-      fabric.parseAttributes(element, fabric.Path.ATTRIBUTE_NAMES),
-      expectedObject
-    )
+    expect(fabric.parseAttributes(element, fabric.Path.ATTRIBUTE_NAMES)).toEqual(expectedObject)
   })
 
-  QUnit.test("parse 0 attribute", function (assert) {
+  test("parse 0 attribute", function (assert) {
     var namespace = "http://www.w3.org/2000/svg"
     var element = fabric.document.createElementNS(namespace, "path")
     element.setAttributeNS(namespace, "opacity", 0)
@@ -330,14 +318,11 @@
     var expectedObject = {
       opacity: 0
     }
-    assert.deepEqual(
-      fabric.parseAttributes(element, fabric.Path.ATTRIBUTE_NAMES),
-      expectedObject
-    )
+    expect(fabric.parseAttributes(element, fabric.Path.ATTRIBUTE_NAMES)).toEqual(expectedObject)
   })
 
-  QUnit.test("parsePointsAttribute", function (assert) {
-    assert.ok(fabric.parsePointsAttribute)
+  test("parsePointsAttribute", function (assert) {
+    expect(fabric.parsePointsAttribute).toBeTruthy()
 
     var namespace = "http://www.w3.org/2000/svg"
     var element = fabric.document.createElementNS(namespace, "polygon")
@@ -351,26 +336,26 @@
       element.getAttribute("points")
     )
 
-    assert.equal(actualPoints[0].x, 10)
-    assert.equal(actualPoints[0].y, 12)
+    expect(actualPoints[0].x).toEqual(10)
+    expect(actualPoints[0].y).toEqual(12)
 
-    assert.equal(actualPoints[1].x, 20)
-    assert.equal(actualPoints[1].y, 22)
+    expect(actualPoints[1].x).toEqual(20)
+    expect(actualPoints[1].y).toEqual(22)
 
-    assert.equal(actualPoints[2].x, -0.52)
-    assert.equal(actualPoints[2].y, 0.001)
+    expect(actualPoints[2].x).toEqual(-0.52)
+    expect(actualPoints[2].y).toEqual(0.001)
 
-    assert.equal(actualPoints[3].x, 2.3e2)
-    assert.equal(actualPoints[3].y, 2.3e-2)
+    expect(actualPoints[3].x).toEqual(2.3e2)
+    expect(actualPoints[3].y).toEqual(2.3e-2)
 
-    assert.equal(actualPoints[4].x, 10)
-    assert.equal(actualPoints[4].y, -1)
+    expect(actualPoints[4].x).toEqual(10)
+    expect(actualPoints[4].y).toEqual(-1)
   })
 
-  QUnit.test("parseTransformAttribute", function (assert) {
+  test("parseTransformAttribute", function (assert) {
     var parsedValue
 
-    assert.ok(fabric.parseTransformAttribute)
+    expect(fabric.parseTransformAttribute).toBeTruthy()
     var namespace = "http://www.w3.org/2000/svg"
     var element = fabric.document.createElementNS(namespace, "path")
 
@@ -380,13 +365,13 @@
     parsedValue = fabric.parseTransformAttribute(
       element.getAttribute("transform")
     )
-    assert.deepEqual(parsedValue, [1, 0, 0, 1, 5, 10])
+    expect(parsedValue).toEqual([1, 0, 0, 1, 5, 10])
 
     element.setAttributeNS(namespace, "transform", "translate(-10,-20)")
     parsedValue = fabric.parseTransformAttribute(
       element.getAttribute("transform")
     )
-    assert.deepEqual(parsedValue, [1, 0, 0, 1, -10, -20])
+    expect(parsedValue).toEqual([1, 0, 0, 1, -10, -20])
 
     var ANGLE_DEG = 90
     var ANGLE = (ANGLE_DEG * Math.PI) / 180
@@ -394,7 +379,7 @@
     parsedValue = fabric.parseTransformAttribute(
       element.getAttribute("transform")
     )
-    assert.deepEqual(parsedValue, [
+    expect(parsedValue).toEqual([
       fabric.util.cos(ANGLE),
       fabric.util.sin(ANGLE),
       -fabric.util.sin(ANGLE),
@@ -407,25 +392,25 @@
     parsedValue = fabric.parseTransformAttribute(
       element.getAttribute("transform")
     )
-    assert.deepEqual(parsedValue, [3.5, 0, 0, 3.5, 0, 0])
+    expect(parsedValue).toEqual([3.5, 0, 0, 3.5, 0, 0])
 
     element.setAttributeNS(namespace, "transform", "scale(2 13)")
     parsedValue = fabric.parseTransformAttribute(
       element.getAttribute("transform")
     )
-    assert.deepEqual(parsedValue, [2, 0, 0, 13, 0, 0])
+    expect(parsedValue).toEqual([2, 0, 0, 13, 0, 0])
 
     element.setAttributeNS(namespace, "transform", "skewX(2)")
     parsedValue = fabric.parseTransformAttribute(
       element.getAttribute("transform")
     )
-    assert.deepEqual(parsedValue, [1, 0, 0.03492076949174773, 1, 0, 0])
+    expect(parsedValue).toEqual([1, 0, 0.03492076949174773, 1, 0, 0])
 
     element.setAttributeNS(namespace, "transform", "skewY(234.111)")
     parsedValue = fabric.parseTransformAttribute(
       element.getAttribute("transform")
     )
-    assert.deepEqual(parsedValue, [1, 1.3820043381762832, 0, 1, 0, 0])
+    expect(parsedValue).toEqual([1, 1.3820043381762832, 0, 1, 0, 0])
 
     element.setAttributeNS(
       namespace,
@@ -435,7 +420,7 @@
     parsedValue = fabric.parseTransformAttribute(
       element.getAttribute("transform")
     )
-    assert.deepEqual(parsedValue, [1, 2, 3.3, -4, 50, 0.6])
+    expect(parsedValue).toEqual([1, 2, 3.3, -4, 50, 0.6])
 
     element.setAttributeNS(
       namespace,
@@ -445,7 +430,7 @@
     parsedValue = fabric.parseTransformAttribute(
       element.getAttribute("transform")
     )
-    assert.deepEqual(parsedValue, [1, 0, 0, 1, 32, 53])
+    expect(parsedValue).toEqual([1, 0, 0, 1, 32, 53])
 
     element.setAttributeNS(
       namespace,
@@ -455,10 +440,10 @@
     parsedValue = fabric.parseTransformAttribute(
       element.getAttribute("transform")
     )
-    assert.deepEqual(parsedValue, [2, 0, 0.3967362169237356, 13, 10, 195])
+    expect(parsedValue).toEqual([2, 0, 0.3967362169237356, 13, 10, 195])
   })
 
-  QUnit.test("parseNestedTransformAttribute", function (assert) {
+  test("parseNestedTransformAttribute", function (assert) {
     var namespace = "http://www.w3.org/2000/svg"
     var element = fabric.document.createElementNS(namespace, "path")
     var parent = fabric.document.createElementNS(namespace, "g")
@@ -468,10 +453,10 @@
     element.setAttributeNS(namespace, "transform", "translate(10 10)")
 
     var parsedAttributes = fabric.parseAttributes(element, ["transform"])
-    assert.deepEqual(parsedAttributes.transformMatrix, [1, 0, 0, 1, 60, 10])
+    expect(parsedAttributes.transformMatrix).toEqual([1, 0, 0, 1, 60, 10])
   })
 
-  QUnit.test("parseSVGFromString id polyfill", function (assert) {
+  test("parseSVGFromString id polyfill", function (assert) {
     var done = assert.async()
     var string =
         '<?xml version="1.0" standalone="no"?><svg width="100%" height="100%" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">' +
@@ -480,16 +465,16 @@
         "</svg>",
       rect
 
-    assert.ok(fabric.loadSVGFromString)
+    expect(fabric.loadSVGFromString).toBeTruthy()
 
     fabric.loadSVGFromString(string, function (objects) {
       rect = objects[0]
-      assert.ok(rect instanceof fabric.Rect)
+      expect(rect instanceof fabric.Rect).toBeTruthy()
       done()
     })
   })
 
-  QUnit.test(
+  test(
     "parseSVGFromString with gradient and fill url with quotes",
     function (assert) {
       var done = assert.async()
@@ -510,15 +495,15 @@
         "</svg>"
 
       fabric.loadSVGFromString(string, function (objects) {
-        assert.equal(objects[0].fill.type, "linear", "first path has gradient")
-        assert.equal(objects[1].fill.type, "linear", "second path has gradient")
-        assert.equal(objects[2].fill.type, "linear", "second path has gradient")
+        expect(objects[0].fill.type).toEqual("linear")
+        expect(objects[1].fill.type).toEqual("linear")
+        expect(objects[2].fill.type).toEqual("linear")
         done()
       })
     }
   )
 
-  QUnit.test("parseSVGFromString with xlink:href", function (assert) {
+  test("parseSVGFromString with xlink:href", function (assert) {
     var done = assert.async()
     var string =
         '<?xml version="1.0" standalone="no"?><svg width="100%" height="100%" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">' +
@@ -527,16 +512,16 @@
         "</svg>",
       rect
 
-    assert.ok(fabric.loadSVGFromString)
+    expect(fabric.loadSVGFromString).toBeTruthy()
 
     fabric.loadSVGFromString(string, function (objects) {
       rect = objects[0]
-      assert.ok(rect instanceof fabric.Rect)
+      expect(rect instanceof fabric.Rect).toBeTruthy()
       done()
     })
   })
 
-  QUnit.test("parseSVGFromString with href", function (assert) {
+  test("parseSVGFromString with href", function (assert) {
     var done = assert.async()
     var string =
         '<?xml version="1.0" standalone="no"?><svg width="100%" height="100%" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">' +
@@ -545,16 +530,16 @@
         "</svg>",
       rect
 
-    assert.ok(fabric.loadSVGFromString)
+    expect(fabric.loadSVGFromString).toBeTruthy()
 
     fabric.loadSVGFromString(string, function (objects) {
       rect = objects[0]
-      assert.ok(rect instanceof fabric.Rect)
+      expect(rect instanceof fabric.Rect).toBeTruthy()
       done()
     })
   })
 
-  QUnit.test("parseSVGFromString nested opacity", function (assert) {
+  test("parseSVGFromString nested opacity", function (assert) {
     var done = assert.async()
     var string =
       '<?xml version="1.0" encoding="UTF-8"?>' +
@@ -582,69 +567,25 @@
       "</svg>"
 
     fabric.loadSVGFromString(string, function (objects) {
-      assert.equal(
-        objects[0].fill,
-        "rgba(255,0,0,0.3)",
-        "first circle has opacity 0.3 from rgba"
-      )
-      assert.equal(objects[0].fillOpacity, 1, "first circle has fill-opacity 1")
-      assert.equal(
-        objects[1].fill,
-        "rgba(0,255,0,0.25)",
-        "first circle has opacity 0.5 from rgba and 0.5 from gtoup fill opacity"
-      )
-      assert.equal(
-        objects[1].fillOpacity,
-        0.5,
-        "first circle has fill-opacity 0.5"
-      )
-      assert.equal(
-        objects[2].fill,
-        "rgba(255,0,0,0.5)",
-        "first circle has opacity 0.5 from group fill opacity"
-      )
-      assert.equal(
-        objects[2].fillOpacity,
-        0.5,
-        "first circle has fill-opacity 0.5"
-      )
-      assert.equal(
-        objects[3].fill,
-        "rgba(0,0,255,0.5)",
-        "first circle has opacity 0.5 from fill opacity"
-      )
-      assert.equal(
-        objects[3].fillOpacity,
-        0.5,
-        "first circle has fill-opacity 1"
-      )
-      assert.equal(
-        objects[4].fill,
-        "rgba(0,0,255,0.25)",
-        "first circle has opacity 0.5 from rgba and 0.5 from fill opacity"
-      )
-      assert.equal(
-        objects[4].fillOpacity,
-        0.5,
-        "first circle has fill-opacity 0.5"
-      )
-      assert.equal(
-        objects[5].fill,
-        "rgba(0,0,255,1)",
-        "first circle has opacity 1 from rgba"
-      )
-      assert.equal(objects[5].fillOpacity, 1, "first circle has fill-opacity 1")
-      assert.equal(
-        objects[6].opacity,
-        0.25,
-        "opacity is 0.25 for cls-3 * cls-4"
-      )
-      assert.equal(objects[7].opacity, 0.5, "opacity is 0.5 from cls-3")
+      expect(objects[0].fill).toEqual("rgba(255,0,0,0.3)")
+      expect(objects[0].fillOpacity).toEqual(1)
+      expect(objects[1].fill).toEqual("rgba(0,255,0,0.25)")
+      expect(objects[1].fillOpacity).toEqual(0.5)
+      expect(objects[2].fill).toEqual("rgba(255,0,0,0.5)")
+      expect(objects[2].fillOpacity).toEqual(0.5)
+      expect(objects[3].fill).toEqual("rgba(0,0,255,0.5)")
+      expect(objects[3].fillOpacity).toEqual(0.5)
+      expect(objects[4].fill).toEqual("rgba(0,0,255,0.25)")
+      expect(objects[4].fillOpacity).toEqual(0.5)
+      expect(objects[5].fill).toEqual("rgba(0,0,255,1)")
+      expect(objects[5].fillOpacity).toEqual(1)
+      expect(objects[6].opacity).toEqual(0.25)
+      expect(objects[7].opacity).toEqual(0.5)
       done()
     })
   })
 
-  QUnit.test("parseSVGFromString path fill-opacity with gradient", function (
+  test("parseSVGFromString path fill-opacity with gradient", function (
     assert
   ) {
     var done = assert.async()
@@ -661,15 +602,15 @@
       "</svg>"
 
     fabric.loadSVGFromString(string, function (objects) {
-      assert.equal(objects[0].fill.colorStops[0].opacity, 0.5)
-      assert.equal(objects[0].fill.colorStops[0].color, "rgb(255,0,0)")
-      assert.equal(objects[0].fill.colorStops[1].opacity, 0.25)
-      assert.equal(objects[0].fill.colorStops[1].color, "rgb(0,255,0)")
+      expect(objects[0].fill.colorStops[0].opacity).toEqual(0.5)
+      expect(objects[0].fill.colorStops[0].color).toEqual("rgb(255,0,0)")
+      expect(objects[0].fill.colorStops[1].opacity).toEqual(0.25)
+      expect(objects[0].fill.colorStops[1].color).toEqual("rgb(0,255,0)")
       done()
     })
   })
 
-  QUnit.test("parseSVGFromString with svg:namespace", function (assert) {
+  test("parseSVGFromString with svg:namespace", function (assert) {
     var done = assert.async()
     var string =
         '<?xml version="1.0" standalone="no"?><svg width="100%" height="100%" version="1.1" xmlns:svg="http://www.w3.org/2000/svg" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">' +
@@ -678,16 +619,16 @@
         "</svg>",
       rect
 
-    assert.ok(fabric.loadSVGFromString)
+    expect(fabric.loadSVGFromString).toBeTruthy()
 
     fabric.loadSVGFromString(string, function (objects) {
       rect = objects[0]
-      assert.ok(rect instanceof fabric.Rect)
+      expect(rect instanceof fabric.Rect).toBeTruthy()
       done()
     })
   })
 
-  // QUnit.test('parseSVGDocument', function(assert) {
+  // test('parseSVGDocument', function(assert) {
   //   var done = assert.async();
   //   assert.ok(fabric.parseSVGDocument);
   //
@@ -725,7 +666,7 @@
   // });
 
   // https://github.com/kangax/fabric.js/issues/25
-  // QUnit.test('parsing one element should not "leak" its "fill" value onto parsing of following element', function(assert) {
+  // test('parsing one element should not "leak" its "fill" value onto parsing of following element', function(assert) {
   //   var done = assert.async();
   //   var objects;
   //   fabric.util.request('../fixtures/svg_with_rect.svg', {
@@ -748,7 +689,7 @@
   //   }, 1500);
   // });
 
-  QUnit.test("opacity attribute", function (assert) {
+  test("opacity attribute", function (assert) {
     var tagNames = ["rect", "path", "circle", "ellipse", "polygon"]
     var namespace = "http://www.w3.org/2000/svg"
 
@@ -759,18 +700,12 @@
       el.setAttributeNS(namespace, "opacity", opacityValue)
       // eslint-disable-next-line
       fabric.Rect.fromElement(el, function (obj) {
-        assert.equal(
-          obj.opacity,
-          parseFloat(opacityValue),
-          'opacity should be parsed correctly from "opacity" attribute of ' +
-            tagNames[i] +
-            " element"
-        )
+        expect(obj.opacity).toEqual(parseFloat(opacityValue))
       })
     }
   })
 
-  QUnit.test("fill-opacity attribute with fill attribute", function (assert) {
+  test("fill-opacity attribute with fill attribute", function (assert) {
     var namespace = "http://www.w3.org/2000/svg"
     var el = fabric.document.createElementNS(namespace, "rect")
     var opacityValue = Math.random().toFixed(2)
@@ -778,15 +713,11 @@
     el.setAttributeNS(namespace, "fill-opacity", opacityValue)
     el.setAttributeNS(namespace, "fill", "#FF0000")
     fabric.Rect.fromElement(el, function (obj) {
-      assert.equal(
-        obj.fill,
-        "rgba(255,0,0," + parseFloat(opacityValue) + ")",
-        'opacity should be parsed correctly from "opacity" attribute of rect element'
-      )
+      expect(obj.fill).toEqual("rgba(255,0,0," + parseFloat(opacityValue) + ")")
     })
   })
 
-  QUnit.test("fill-opacity attribute without fill attribute", function (
+  test("fill-opacity attribute without fill attribute", function (
     assert
   ) {
     var namespace = "http://www.w3.org/2000/svg"
@@ -795,15 +726,11 @@
 
     el.setAttributeNS(namespace, "fill-opacity", opacityValue)
     fabric.Rect.fromElement(el, function (obj) {
-      assert.equal(
-        obj.fill,
-        "rgba(0,0,0," + parseFloat(opacityValue) + ")",
-        'opacity should be parsed correctly from "opacity" attribute of rect element'
-      )
+      expect(obj.fill).toEqual("rgba(0,0,0," + parseFloat(opacityValue) + ")")
     })
   })
 
-  QUnit.test("fill-opacity attribute with fill none", function (assert) {
+  test("fill-opacity attribute with fill none", function (assert) {
     var namespace = "http://www.w3.org/2000/svg"
     var el = fabric.document.createElementNS(namespace, "rect")
     var opacityValue = Math.random().toFixed(2)
@@ -811,11 +738,11 @@
     el.setAttributeNS(namespace, "fill-opacity", opacityValue)
     el.setAttributeNS(namespace, "fill", "none")
     fabric.Rect.fromElement(el, function (obj) {
-      assert.equal(obj.fill, "", "fill should stay empty")
+      expect(obj.fill).toEqual("")
     })
   })
 
-  QUnit.test("stroke-opacity attribute with stroke attribute", function (
+  test("stroke-opacity attribute with stroke attribute", function (
     assert
   ) {
     var namespace = "http://www.w3.org/2000/svg"
@@ -825,15 +752,11 @@
     el.setAttributeNS(namespace, "stroke-opacity", opacityValue)
     el.setAttributeNS(namespace, "stroke", "#FF0000")
     fabric.Rect.fromElement(el, function (obj) {
-      assert.equal(
-        obj.stroke,
-        "rgba(255,0,0," + parseFloat(opacityValue) + ")",
-        'opacity should be parsed correctly from "opacity" attribute of rect element'
-      )
+      expect(obj.stroke).toEqual("rgba(255,0,0," + parseFloat(opacityValue) + ")")
     })
   })
 
-  QUnit.test("stroke-opacity attribute without stroke attribute", function (
+  test("stroke-opacity attribute without stroke attribute", function (
     assert
   ) {
     var namespace = "http://www.w3.org/2000/svg"
@@ -842,11 +765,11 @@
 
     el.setAttributeNS(namespace, "stroke-opacity", opacityValue)
     fabric.Rect.fromElement(el, function (obj) {
-      assert.equal(obj.stroke, null, "Default stroke is null")
+      expect(obj.stroke).toEqual(null)
     })
   })
 
-  QUnit.test("stroke-opacity attribute with stroke none", function (assert) {
+  test("stroke-opacity attribute with stroke none", function (assert) {
     var namespace = "http://www.w3.org/2000/svg"
     var el = fabric.document.createElementNS(namespace, "rect")
     var opacityValue = Math.random().toFixed(2)
@@ -854,12 +777,12 @@
     el.setAttributeNS(namespace, "stroke-opacity", opacityValue)
     el.setAttributeNS(namespace, "stroke", "none")
     fabric.Rect.fromElement(el, function (obj) {
-      assert.equal(obj.stroke, "", "stroke should stay empty")
+      expect(obj.stroke).toEqual("")
     })
   })
 
-  QUnit.test("getCssRule", function (assert) {
-    assert.ok(fabric.getCSSRules)
+  test("getCssRule", function (assert) {
+    expect(fabric.getCSSRules).toBeTruthy()
 
     var doc = fabric.document,
       svgUid = "uniqueId",
@@ -889,7 +812,7 @@
     }
 
     fabric.cssRules[svgUid] = fabric.getCSSRules(doc)
-    assert.deepEqual(fabric.cssRules[svgUid], expectedObject)
+    expect(fabric.cssRules[svgUid]).toEqual(expectedObject)
 
     var namespace = "http://www.w3.org/2000/svg"
     var elPolygon = fabric.document.createElementNS(namespace, "polygon"),
@@ -903,17 +826,17 @@
     elPolygon.setAttributeNS(namespace, "svgUid", svgUid)
 
     var style = fabric.parseAttributes(elPolygon, [])
-    assert.deepEqual(style, expectedStyle)
+    expect(style).toEqual(expectedStyle)
 
     styleElement.textContent = "\t\n"
     expectedStyle = {}
     svgUid = "uniqueId2"
     fabric.cssRules[svgUid] = fabric.getCSSRules(doc)
-    assert.deepEqual(fabric.cssRules[svgUid], expectedStyle)
+    expect(fabric.cssRules[svgUid]).toEqual(expectedStyle)
   })
 
-  QUnit.test("getCssRule with same selectors", function (assert) {
-    assert.ok(fabric.getCSSRules)
+  test("getCssRule with same selectors", function (assert) {
+    expect(fabric.getCSSRules).toBeTruthy()
 
     var doc = fabric.document,
       svgUid = "uniqueId",
@@ -939,10 +862,10 @@
     }
 
     fabric.cssRules[svgUid] = fabric.getCSSRules(doc)
-    assert.deepEqual(fabric.cssRules[svgUid], expectedObject)
+    expect(fabric.cssRules[svgUid]).toEqual(expectedObject)
   })
 
-  QUnit.test("parseSVGFromString with nested clippath", function (assert) {
+  test("parseSVGFromString with nested clippath", function (assert) {
     var done = assert.async()
     var string =
       '<svg viewBox="0 0 128 128" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">' +
@@ -960,13 +883,13 @@
       "</svg>"
 
     fabric.loadSVGFromString(string, function (objects) {
-      assert.equal(objects[0].clipPath.type, "polygon")
-      assert.equal(objects[0].clipPath.clipPath.type, "rect")
+      expect(objects[0].clipPath.type).toEqual("polygon")
+      expect(objects[0].clipPath.clipPath.type).toEqual("rect")
       done()
     })
   })
 
-  QUnit.test("parseSVGFromString with missing clippath", function (assert) {
+  test("parseSVGFromString with missing clippath", function (assert) {
     var done = assert.async()
     var string =
       '<svg viewBox="0 0 128 128" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">' +
@@ -976,12 +899,12 @@
       "</svg>"
 
     fabric.loadSVGFromString(string, function (objects) {
-      assert.equal(objects[0].clipPath, undefined)
+      expect(objects[0].clipPath).toEqual(undefined)
       done()
     })
   })
 
-  QUnit.test("parseSVGFromString with empty <style/>", function (assert) {
+  test("parseSVGFromString with empty <style/>", function (assert) {
     var done = assert.async()
     var string =
       '<svg viewBox="0 0 128 128" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">' +
@@ -990,7 +913,7 @@
       "</svg>"
 
     fabric.loadSVGFromString(string, function (objects) {
-      assert.equal(objects[0].type, "rect")
+      expect(objects[0].type).toEqual("rect")
       done()
     })
   })

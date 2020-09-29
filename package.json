@@ -51,7 +51,7 @@
     "test:visual": "qunit test/node_test_setup.js test/lib test/visual",
     "test:visual:single": "qunit test/node_test_setup.js test/lib",
     "test:all": "npm run test && npm run test:visual",
-    "test:special": "yarn test:single test/unit/canvas.js",
+    "test:special": "yarn test:single test/unit/canvas_events.js",
     "run:fabric": "node dist/fabric.rollup.js",
     "lint": "eslint src",
     "lint:fix": "eslint --fix src",

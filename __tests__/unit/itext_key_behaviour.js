@@ -2,7 +2,7 @@
   var canvas = fabric.document.createElement("canvas"),
     ctx = canvas.getContext("2d")
 
-  QUnit.test("event selection:changed firing", function (assert) {
+  test("event selection:changed firing", function (assert) {
     var iText = new fabric.IText("test neei some word\nsecond line"),
       selection = 0
     iText.ctx = ctx
@@ -13,121 +13,117 @@
     iText.on("selection:changed", countSelectionChange)
 
     iText.enterEditing()
-    assert.equal(
-      selection,
-      1,
-      "will fire on enter edit since the cursor is changing for the first time"
-    )
+    expect(selection).toEqual(1)
     selection = 0
 
     iText.selectAll()
-    assert.equal(selection, 1, "should fire once on selectAll")
-    assert.equal(iText.selectionStart, 0, "should start from 0")
-    assert.equal(iText.selectionEnd, 31, "should end at end of text")
+    expect(selection).toEqual(1)
+    expect(iText.selectionStart).toEqual(0)
+    expect(iText.selectionEnd).toEqual(31)
     selection = 0
 
     iText.selectionStart = 2
     iText.selectionEnd = 2
     iText.selectWord()
-    assert.equal(selection, 1, "should fire once on selectWord")
-    assert.equal(iText.selectionStart, 0, "should start at word start")
-    assert.equal(iText.selectionEnd, 4, "should end at word end")
+    expect(selection).toEqual(1)
+    expect(iText.selectionStart).toEqual(0)
+    expect(iText.selectionEnd).toEqual(4)
     selection = 0
 
     iText.selectionStart = 2
     iText.selectionEnd = 2
     iText.selectLine()
-    assert.equal(selection, 1, "should fire once on selectLine")
-    assert.equal(iText.selectionStart, 0, "should start at line start")
-    assert.equal(iText.selectionEnd, 19, "should end at line end")
+    expect(selection).toEqual(1)
+    expect(iText.selectionStart).toEqual(0)
+    expect(iText.selectionEnd).toEqual(19)
     selection = 0
 
     iText.selectionStart = 2
     iText.selectionEnd = 2
     iText.moveCursorLeft({ shiftKey: false })
-    assert.equal(selection, 1, "should fire once on moveCursorLeft")
-    assert.equal(iText.selectionStart, 1, "should be 1 less than 2")
-    assert.equal(iText.selectionEnd, 1, "should be 1 less than 2")
+    expect(selection).toEqual(1)
+    expect(iText.selectionStart).toEqual(1)
+    expect(iText.selectionEnd).toEqual(1)
     selection = 0
 
     iText.selectionStart = 2
     iText.selectionEnd = 2
     iText.moveCursorRight({ shiftKey: false })
-    assert.equal(selection, 1, "should fire once on moveCursorRight")
-    assert.equal(iText.selectionStart, 3, "should be 1 more than 2")
-    assert.equal(iText.selectionEnd, 3, "should be 1 more than 2")
+    expect(selection).toEqual(1)
+    expect(iText.selectionStart).toEqual(3)
+    expect(iText.selectionEnd).toEqual(3)
     selection = 0
 
     iText.selectionStart = 2
     iText.selectionEnd = 2
     iText.moveCursorDown({ shiftKey: false })
-    assert.equal(selection, 1, "should fire once on moveCursorDown")
-    assert.equal(iText.selectionStart, 22, "should be on second line")
-    assert.equal(iText.selectionEnd, 22, "should be on second line")
+    expect(selection).toEqual(1)
+    expect(iText.selectionStart).toEqual(22)
+    expect(iText.selectionEnd).toEqual(22)
     iText.moveCursorDown({ shiftKey: false })
-    assert.equal(selection, 2, "should fire once on moveCursorDown")
-    assert.equal(iText.selectionStart, 31, "should be at end of text")
-    assert.equal(iText.selectionEnd, 31, "should be at end of text")
+    expect(selection).toEqual(2)
+    expect(iText.selectionStart).toEqual(31)
+    expect(iText.selectionEnd).toEqual(31)
     selection = 0
 
     iText.selectionStart = 22
     iText.selectionEnd = 22
     iText.moveCursorUp({ shiftKey: false })
-    assert.equal(selection, 1, "should fire once on moveCursorUp")
-    assert.equal(iText.selectionStart, 2, "should be back to first line")
-    assert.equal(iText.selectionEnd, 2, "should be back on first line")
+    expect(selection).toEqual(1)
+    expect(iText.selectionStart).toEqual(2)
+    expect(iText.selectionEnd).toEqual(2)
     iText.moveCursorUp({ shiftKey: false })
-    assert.equal(selection, 2, "should fire once on moveCursorUp")
-    assert.equal(iText.selectionStart, 0, "should be back to first line")
-    assert.equal(iText.selectionEnd, 0, "should be back on first line")
+    expect(selection).toEqual(2)
+    expect(iText.selectionStart).toEqual(0)
+    expect(iText.selectionEnd).toEqual(0)
     selection = 0
 
     iText.selectionStart = 0
     iText.selectionEnd = 0
     iText.moveCursorLeft({ shiftKey: false })
-    assert.equal(selection, 0, "should not fire with no change")
-    assert.equal(iText.selectionStart, 0, "should not move")
-    assert.equal(iText.selectionEnd, 0, "should not move")
+    expect(selection).toEqual(0)
+    expect(iText.selectionStart).toEqual(0)
+    expect(iText.selectionEnd).toEqual(0)
     iText.moveCursorUp({ shiftKey: false })
-    assert.equal(selection, 0, "should not fire with no change")
-    assert.equal(iText.selectionStart, 0, "should not move")
-    assert.equal(iText.selectionEnd, 0, "should not move")
+    expect(selection).toEqual(0)
+    expect(iText.selectionStart).toEqual(0)
+    expect(iText.selectionEnd).toEqual(0)
     selection = 0
 
     iText.selectionStart = 31
     iText.selectionEnd = 31
     iText.moveCursorRight({ shiftKey: false })
-    assert.equal(selection, 0, "should not fire with no change")
-    assert.equal(iText.selectionStart, 31, "should not move")
-    assert.equal(iText.selectionEnd, 31, "should not move")
+    expect(selection).toEqual(0)
+    expect(iText.selectionStart).toEqual(31)
+    expect(iText.selectionEnd).toEqual(31)
     iText.moveCursorDown({ shiftKey: false })
-    assert.equal(selection, 0, "should not fire with no change")
-    assert.equal(iText.selectionStart, 31, "should not move")
-    assert.equal(iText.selectionEnd, 31, "should not move")
+    expect(selection).toEqual(0)
+    expect(iText.selectionStart).toEqual(31)
+    expect(iText.selectionEnd).toEqual(31)
     selection = 0
 
     iText.selectionStart = 28
     iText.selectionEnd = 31
     iText.moveCursorUp({ shiftKey: false })
-    assert.equal(selection, 1, "should fire")
-    assert.equal(iText.selectionStart, 9, "should move to upper line start")
-    assert.equal(iText.selectionEnd, 9, "should move to upper line end")
+    expect(selection).toEqual(1)
+    expect(iText.selectionStart).toEqual(9)
+    expect(iText.selectionEnd).toEqual(9)
     selection = 0
 
     iText.selectionStart = 1
     iText.selectionEnd = 4
     iText.moveCursorDown({ shiftKey: false })
-    assert.equal(selection, 1, "should fire")
-    assert.equal(iText.selectionStart, 24, "should move to down line")
-    assert.equal(iText.selectionEnd, 24, "should move to down line")
+    expect(selection).toEqual(1)
+    expect(iText.selectionStart).toEqual(24)
+    expect(iText.selectionEnd).toEqual(24)
     selection = 0
 
     iText.selectionStart = 28
     iText.selectionEnd = 31
     iText.moveCursorLeft({ shiftKey: false })
-    assert.equal(selection, 1, "should fire")
-    assert.equal(iText.selectionStart, 28, "should move to selection Start")
-    assert.equal(iText.selectionEnd, 28, "should move to selection Start")
+    expect(selection).toEqual(1)
+    expect(iText.selectionStart).toEqual(28)
+    expect(iText.selectionEnd).toEqual(28)
     selection = 0
     // needed or test hangs
     iText.abortCursorAnimation()
@@ -140,7 +136,7 @@
     // assert.equal(iText.selectionEnd, 5, 'should be at end of text inserted');
   })
 
-  QUnit.test("moving cursor with shift", function (assert) {
+  test("moving cursor with shift", function (assert) {
     var iText = new fabric.IText("test need some word\nsecond line"),
       selection = 0
     iText.ctx = ctx
@@ -151,100 +147,100 @@
     iText.on("selection:changed", countSelectionChange)
 
     iText.enterEditing()
-    assert.equal(selection, 1, "should fire on enter edit")
+    expect(selection).toEqual(1)
     selection = 0
 
     iText.selectAll()
-    assert.equal(selection, 1, "should fire once on selectAll")
-    assert.equal(iText.selectionStart, 0, "should start from 0")
-    assert.equal(iText.selectionEnd, 31, "should end at end of text")
+    expect(selection).toEqual(1)
+    expect(iText.selectionStart).toEqual(0)
+    expect(iText.selectionEnd).toEqual(31)
     selection = 0
 
     iText.selectionStart = 2
     iText.selectionEnd = 2
     iText.selectWord()
-    assert.equal(selection, 1, "should fire once on selectWord")
-    assert.equal(iText.selectionStart, 0, "should start at word start")
-    assert.equal(iText.selectionEnd, 4, "should end at word end")
+    expect(selection).toEqual(1)
+    expect(iText.selectionStart).toEqual(0)
+    expect(iText.selectionEnd).toEqual(4)
     selection = 0
 
     iText.selectionStart = 2
     iText.selectionEnd = 2
     iText.selectLine()
-    assert.equal(selection, 1, "should fire once on selectLine")
-    assert.equal(iText.selectionStart, 0, "should start at line start")
-    assert.equal(iText.selectionEnd, 19, "should end at line end")
+    expect(selection).toEqual(1)
+    expect(iText.selectionStart).toEqual(0)
+    expect(iText.selectionEnd).toEqual(19)
     selection = 0
 
     iText.selectionStart = 2
     iText.selectionEnd = 2
     iText.moveCursorLeft({ shiftKey: false })
-    assert.equal(selection, 1, "should fire once on moveCursorLeft")
-    assert.equal(iText.selectionStart, 1, "should be 1 less than 2")
-    assert.equal(iText.selectionEnd, 1, "should be 1 less than 2")
+    expect(selection).toEqual(1)
+    expect(iText.selectionStart).toEqual(1)
+    expect(iText.selectionEnd).toEqual(1)
     selection = 0
 
     iText.selectionStart = 2
     iText.selectionEnd = 2
     iText.moveCursorRight({ shiftKey: false })
-    assert.equal(selection, 1, "should fire once on moveCursorRight")
-    assert.equal(iText.selectionStart, 3, "should be 1 more than 2")
-    assert.equal(iText.selectionEnd, 3, "should be 1 more than 2")
+    expect(selection).toEqual(1)
+    expect(iText.selectionStart).toEqual(3)
+    expect(iText.selectionEnd).toEqual(3)
     selection = 0
 
     iText.selectionStart = 2
     iText.selectionEnd = 2
     iText.moveCursorDown({ shiftKey: false })
-    assert.equal(selection, 1, "should fire once on moveCursorDown")
-    assert.equal(iText.selectionStart, 22, "should be on second line")
-    assert.equal(iText.selectionEnd, 22, "should be on second line")
+    expect(selection).toEqual(1)
+    expect(iText.selectionStart).toEqual(22)
+    expect(iText.selectionEnd).toEqual(22)
     iText.moveCursorDown({ shiftKey: false })
-    assert.equal(selection, 2, "should fire once on moveCursorDown")
-    assert.equal(iText.selectionStart, 31, "should be at end of text")
-    assert.equal(iText.selectionEnd, 31, "should be at end of text")
+    expect(selection).toEqual(2)
+    expect(iText.selectionStart).toEqual(31)
+    expect(iText.selectionEnd).toEqual(31)
     selection = 0
 
     iText.selectionStart = 22
     iText.selectionEnd = 22
     iText.moveCursorUp({ shiftKey: false })
-    assert.equal(selection, 1, "should fire once on moveCursorUp")
-    assert.equal(iText.selectionStart, 2, "should be back to first line")
-    assert.equal(iText.selectionEnd, 2, "should be back on first line")
+    expect(selection).toEqual(1)
+    expect(iText.selectionStart).toEqual(2)
+    expect(iText.selectionEnd).toEqual(2)
     iText.moveCursorUp({ shiftKey: false })
-    assert.equal(selection, 2, "should fire once on moveCursorUp")
-    assert.equal(iText.selectionStart, 0, "should be back to first line")
-    assert.equal(iText.selectionEnd, 0, "should be back on first line")
+    expect(selection).toEqual(2)
+    expect(iText.selectionStart).toEqual(0)
+    expect(iText.selectionEnd).toEqual(0)
     selection = 0
 
     iText.selectionStart = 0
     iText.selectionEnd = 1
     iText._selectionDirection = "left"
     iText.moveCursorLeft({ shiftKey: true })
-    assert.equal(selection, 0, "should not fire with no change")
-    assert.equal(iText.selectionStart, 0, "should not move")
-    assert.equal(iText.selectionEnd, 1, "should not move")
+    expect(selection).toEqual(0)
+    expect(iText.selectionStart).toEqual(0)
+    expect(iText.selectionEnd).toEqual(1)
     iText.moveCursorUp({ shiftKey: true })
-    assert.equal(selection, 0, "should not fire with no change")
-    assert.equal(iText.selectionStart, 0, "should not move")
-    assert.equal(iText.selectionEnd, 1, "should not move")
+    expect(selection).toEqual(0)
+    expect(iText.selectionStart).toEqual(0)
+    expect(iText.selectionEnd).toEqual(1)
     selection = 0
 
     iText.selectionStart = 30
     iText.selectionEnd = 31
     iText._selectionDirection = "right"
     iText.moveCursorRight({ shiftKey: true })
-    assert.equal(selection, 0, "should not fire with no change")
-    assert.equal(iText.selectionStart, 30, "should not move")
-    assert.equal(iText.selectionEnd, 31, "should not move")
+    expect(selection).toEqual(0)
+    expect(iText.selectionStart).toEqual(30)
+    expect(iText.selectionEnd).toEqual(31)
     iText.moveCursorDown({ shiftKey: true })
-    assert.equal(selection, 0, "should not fire with no change")
-    assert.equal(iText.selectionStart, 30, "should not move")
-    assert.equal(iText.selectionEnd, 31, "should not move")
+    expect(selection).toEqual(0)
+    expect(iText.selectionStart).toEqual(30)
+    expect(iText.selectionEnd).toEqual(31)
     selection = 0
     // needed or test hangs
     iText.abortCursorAnimation()
   })
-  // QUnit.test('copy and paste', function(assert) {
+  // test('copy and paste', function(assert) {
   //   var event = { stopPropagation: function(){}, preventDefault: function(){} };
   //   var iText = new fabric.IText('test', { styles: { 0: { 0: { fill: 'red' }, 1: { fill: 'blue' }}}});
   //   iText.enterEditing();
@@ -266,7 +262,7 @@
   //   assert.deepEqual(iText.styles[0][0], iText.styles[0][2], 'style is copied');
   //   assert.deepEqual(iText.styles[0][1], iText.styles[0][3], 'style is copied');
   // });
-  QUnit.test("copy", function (assert) {
+  test("copy", function (assert) {
     var event = {
       stopPropagation: function () {},
       preventDefault: function () {}
@@ -278,30 +274,14 @@
     iText.selectionStart = 0
     iText.selectionEnd = 2
     iText.copy(event)
-    assert.equal(fabric.copiedText, "te", "it copied first 2 characters")
-    assert.equal(
-      fabric.copiedTextStyle[0].fill,
-      iText.styles[0][0].fill,
-      "style is cloned"
-    )
-    assert.equal(
-      fabric.copiedTextStyle[1].fill,
-      iText.styles[0][1].fill,
-      "style is referenced"
-    )
-    assert.equal(
-      iText.styles[0][1].fontSize,
-      undefined,
-      "style had not fontSize"
-    )
-    assert.equal(
-      fabric.copiedTextStyle[1].fontSize,
-      25,
-      "style took fontSize from text element"
-    )
+    expect(fabric.copiedText).toEqual("te")
+    expect(fabric.copiedTextStyle[0].fill).toEqual(iText.styles[0][0].fill)
+    expect(fabric.copiedTextStyle[1].fill).toEqual(iText.styles[0][1].fill)
+    expect(iText.styles[0][1].fontSize).toEqual(undefined)
+    expect(fabric.copiedTextStyle[1].fontSize).toEqual(25)
   })
 
-  QUnit.test("copy with fabric.disableStyleCopyPaste", function (assert) {
+  test("copy with fabric.disableStyleCopyPaste", function (assert) {
     var event = {
       stopPropagation: function () {},
       preventDefault: function () {}
@@ -314,43 +294,43 @@
     iText.selectionEnd = 2
     fabric.disableStyleCopyPaste = true
     iText.copy(event)
-    assert.equal(fabric.copiedText, "te", "it copied first 2 characters")
-    assert.equal(fabric.copiedTextStyle, null, "style is not cloned")
+    expect(fabric.copiedText).toEqual("te")
+    expect(fabric.copiedTextStyle).toEqual(null)
     fabric.disableStyleCopyPaste = false
   })
 
-  QUnit.test("removeChars", function (assert) {
+  test("removeChars", function (assert) {
     var iText = new fabric.IText("test", {
       fontSize: 25,
       styles: { 0: { 0: { fill: "red" }, 1: { fill: "blue" } } }
     })
-    assert.ok(typeof iText.removeChars === "function")
+    expect(typeof iText.removeChars === "function").toBeTruthy()
     iText.removeChars(1, 3)
-    assert.equal(iText.text, "tt", "text has been remoed")
-    assert.deepEqual(iText._text, ["t", "t"], "text has been remoed")
-    assert.equal(iText.styles[0][1], undefined, "style has been removed")
+    expect(iText.text).toEqual("tt")
+    expect(iText._text).toEqual(["t", "t"])
+    expect(iText.styles[0][1]).toEqual(undefined)
   })
 
-  QUnit.test("insertChars", function (assert) {
+  test("insertChars", function (assert) {
     var iText = new fabric.IText("test")
-    assert.ok(typeof iText.insertChars === "function")
+    expect(typeof iText.insertChars === "function").toBeTruthy()
     iText.insertChars("ab", null, 1)
-    assert.equal(iText.text, "tabest", "text has been added")
-    assert.deepEqual(iText._text.join(""), "tabest", "_text has been updated")
+    expect(iText.text).toEqual("tabest")
+    expect(iText._text.join("")).toEqual("tabest")
   })
 
-  QUnit.test("insertChars can remove chars", function (assert) {
+  test("insertChars can remove chars", function (assert) {
     var iText = new fabric.IText("test")
     iText.insertChars("ab", null, 1, 2)
-    assert.equal(iText.text, "tabst", "text has added")
-    assert.deepEqual(iText._text.join(""), "tabst", "_text has been updated")
+    expect(iText.text).toEqual("tabst")
+    expect(iText._text.join("")).toEqual("tabst")
     var iText = new fabric.IText("test")
     iText.insertChars("ab", null, 1, 4)
-    assert.equal(iText.text, "tab", "text has added")
-    assert.deepEqual(iText._text.join(""), "tab", "_text has been updated")
+    expect(iText.text).toEqual("tab")
+    expect(iText._text.join("")).toEqual("tab")
   })
 
-  QUnit.test(
+  test(
     "insertChars pick up the style of the character behind and replicates it",
     function (assert) {
       var iText = new fabric.IText("test", {
@@ -358,26 +338,14 @@
         styles: { 0: { 0: { fill: "red" }, 1: { fill: "blue" } } }
       })
       iText.insertChars("ab", null, 1)
-      assert.equal(iText.styles[0][0].fill, "red", "style 0 0 did not change")
-      assert.equal(
-        iText.styles[0][1].fill,
-        "red",
-        "style 0 1 has been inserted red"
-      )
-      assert.equal(
-        iText.styles[0][2].fill,
-        "red",
-        "style 0 2 has been inserted red"
-      )
-      assert.equal(
-        iText.styles[0][3].fill,
-        "blue",
-        "style 0 3 was the old blue moved 2 char later"
-      )
+      expect(iText.styles[0][0].fill).toEqual("red")
+      expect(iText.styles[0][1].fill).toEqual("red")
+      expect(iText.styles[0][2].fill).toEqual("red")
+      expect(iText.styles[0][3].fill).toEqual("blue")
     }
   )
 
-  QUnit.test("insertChars removes style from the removed text", function (
+  test("insertChars removes style from the removed text", function (
     assert
   ) {
     var iText = new fabric.IText("test", {
@@ -385,41 +353,25 @@
       styles: { 0: { 0: { fill: "red" }, 1: { fill: "blue" } } }
     })
     iText.insertChars("ab", null, 1, 2)
-    assert.equal(iText.styles[0][0].fill, "red", "style 0 0 did not change")
-    assert.equal(
-      iText.styles[0][1].fill,
-      "red",
-      "style 0 1 has been inserted red"
-    )
-    assert.equal(
-      iText.styles[0][2].fill,
-      "red",
-      "style 0 2 has been inserted red"
-    )
-    assert.equal(iText.styles[0][3], undefined, "style 0 3 has been removed")
+    expect(iText.styles[0][0].fill).toEqual("red")
+    expect(iText.styles[0][1].fill).toEqual("red")
+    expect(iText.styles[0][2].fill).toEqual("red")
+    expect(iText.styles[0][3]).toEqual(undefined)
   })
 
-  QUnit.test("insertChars handles new lines correctly", function (assert) {
+  test("insertChars handles new lines correctly", function (assert) {
     var iText = new fabric.IText("test", {
       fontSize: 25,
       styles: { 0: { 0: { fill: "red" }, 1: { fill: "blue" } } }
     })
     iText.insertChars("ab\n\n", null, 1)
-    assert.equal(iText.styles[0][0].fill, "red", "style 0 0 did not change")
-    assert.equal(
-      iText.styles[0][1].fill,
-      "red",
-      "style 0 1 has been inserted red"
-    )
-    assert.equal(
-      iText.styles[0][2].fill,
-      "red",
-      "style 0 2 has been inserted red"
-    )
-    assert.equal(iText.styles[2][0].fill, "blue", "blue has been moved down")
+    expect(iText.styles[0][0].fill).toEqual("red")
+    expect(iText.styles[0][1].fill).toEqual("red")
+    expect(iText.styles[0][2].fill).toEqual("red")
+    expect(iText.styles[2][0].fill).toEqual("blue")
   })
 
-  QUnit.test("insertChars can accept some style for the new text", function (
+  test("insertChars can accept some style for the new text", function (
     assert
   ) {
     var iText = new fabric.IText("test", {
@@ -437,40 +389,20 @@
       ],
       1
     )
-    assert.equal(iText.styles[0][0].fill, "red", "style 0 0 did not change")
-    assert.equal(
-      iText.styles[0][1].fill,
-      "col1",
-      "style 0 1 has been inserted col1"
-    )
-    assert.equal(
-      iText.styles[0][2].fill,
-      "col2",
-      "style 0 2 has been inserted col2"
-    )
-    assert.equal(
-      iText.styles[1][0].fill,
-      "col4",
-      "style 1 0 has been inserted col4"
-    )
-    assert.equal(
-      iText.styles[2][0].fill,
-      "col5",
-      "style 2 0 has been inserted col5"
-    )
-    assert.equal(
-      iText.styles[2][1].fill,
-      "blue",
-      "style 2 1 has been inserted blue"
-    )
+    expect(iText.styles[0][0].fill).toEqual("red")
+    expect(iText.styles[0][1].fill).toEqual("col1")
+    expect(iText.styles[0][2].fill).toEqual("col2")
+    expect(iText.styles[1][0].fill).toEqual("col4")
+    expect(iText.styles[2][0].fill).toEqual("col5")
+    expect(iText.styles[2][1].fill).toEqual("blue")
   })
 
-  QUnit.test("missingNewlineOffset", function (assert) {
+  test("missingNewlineOffset", function (assert) {
     var iText = new fabric.IText(
       "由石墨\n分裂的石墨分\n裂\n由石墨分裂由石墨分裂的石\n墨分裂"
     )
 
     var offset = iText.missingNewlineOffset(0)
-    assert.equal(offset, 1, "it returns always 1")
+    expect(offset).toEqual(1)
   })
 })()
