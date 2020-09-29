@@ -1,59 +1,84 @@
 ;(function () {
-  describe("fabric.ObjectInteractivity")
+  QUnit.module("fabric.ObjectInteractivity")
 
-  test("isControlVisible", function (assert) {
-    expect(fabric.Object).toBeTruthy()
+  QUnit.test("isControlVisible", function (assert) {
+    assert.ok(fabric.Object)
 
     var cObj = new fabric.Object({})
-    expect(typeof cObj.isControlVisible === "function").toBeTruthy()
+    assert.ok(
+      typeof cObj.isControlVisible === "function",
+      "isControlVisible should exist"
+    )
 
-    expect(cObj.isControlVisible("tl")).toEqual(true)
-    expect(cObj.isControlVisible("tr")).toEqual(true)
-    expect(cObj.isControlVisible("br")).toEqual(true)
-    expect(cObj.isControlVisible("bl")).toEqual(true)
-    expect(cObj.isControlVisible("ml")).toEqual(true)
-    expect(cObj.isControlVisible("mt")).toEqual(true)
-    expect(cObj.isControlVisible("mr")).toEqual(true)
-    expect(cObj.isControlVisible("mb")).toEqual(true)
-    expect(cObj.isControlVisible("mtr")).toEqual(true)
+    assert.equal(cObj.isControlVisible("tl"), true)
+    assert.equal(cObj.isControlVisible("tr"), true)
+    assert.equal(cObj.isControlVisible("br"), true)
+    assert.equal(cObj.isControlVisible("bl"), true)
+    assert.equal(cObj.isControlVisible("ml"), true)
+    assert.equal(cObj.isControlVisible("mt"), true)
+    assert.equal(cObj.isControlVisible("mr"), true)
+    assert.equal(cObj.isControlVisible("mb"), true)
+    assert.equal(cObj.isControlVisible("mtr"), true)
   })
 
-  test("setControlVisible", function (assert) {
-    expect(fabric.Object).toBeTruthy()
+  QUnit.test("setControlVisible", function (assert) {
+    assert.ok(fabric.Object)
 
     var cObj = new fabric.Object({})
-    expect(typeof cObj.setControlVisible === "function").toBeTruthy()
-    expect(cObj.setControlVisible("tl")).toEqual(cObj)
+    assert.ok(
+      typeof cObj.setControlVisible === "function",
+      "setControlVisible should exist"
+    )
+    assert.equal(cObj.setControlVisible("tl"), cObj, "chainable")
 
     cObj.setControlVisible("tl", false)
-    expect(cObj.isControlVisible("tl")).toEqual(false)
+    assert.equal(cObj.isControlVisible("tl"), false)
     cObj.setControlVisible("tl", true)
-    expect(cObj.isControlVisible("tl")).toEqual(true)
+    assert.equal(cObj.isControlVisible("tl"), true)
   })
 
-  test("setControlVisible is per object", function (assert) {
-    expect(fabric.Object).toBeTruthy()
+  QUnit.test("setControlVisible is per object", function (assert) {
+    assert.ok(fabric.Object)
 
     var cObj = new fabric.Object({})
     var cObj2 = new fabric.Object({})
 
     cObj.setControlVisible("tl", false)
-    expect(cObj.isControlVisible("tl")).toEqual(false)
-    expect(cObj2.isControlVisible("tl")).toEqual(true)
+    assert.equal(
+      cObj.isControlVisible("tl"),
+      false,
+      "setting to false worked for cObj"
+    )
+    assert.equal(
+      cObj2.isControlVisible("tl"),
+      true,
+      "setting to false did not work for cObj2"
+    )
     cObj.controls.tl.setVisibility(false)
-    expect(cObj2.isControlVisible("tl")).toEqual(false)
+    assert.equal(
+      cObj2.isControlVisible("tl"),
+      false,
+      "setting directly on controls works for every object"
+    )
     cObj.setControlVisible("tl", true)
-    expect(cObj.isControlVisible("tl")).toEqual(true)
+    assert.equal(
+      cObj.isControlVisible("tl"),
+      true,
+      "object setting takes precendence"
+    )
     // restore original visibility
     cObj.controls.tl.setVisibility(true)
   })
 
-  test("setControlsVisibility", function (assert) {
-    expect(fabric.Object).toBeTruthy()
+  QUnit.test("setControlsVisibility", function (assert) {
+    assert.ok(fabric.Object)
 
     var cObj = new fabric.Object({})
-    expect(typeof cObj.setControlsVisibility === "function").toBeTruthy()
-    expect(cObj.setControlsVisibility()).toEqual(cObj)
+    assert.ok(
+      typeof cObj.setControlsVisibility === "function",
+      "setControlsVisibility should exist"
+    )
+    assert.equal(cObj.setControlsVisibility(), cObj, "chainable")
 
     cObj.setControlsVisibility({
       bl: false,
@@ -67,15 +92,15 @@
       mtr: false
     })
 
-    expect(cObj.isControlVisible("tl")).toEqual(false)
-    expect(cObj.isControlVisible("tr")).toEqual(false)
-    expect(cObj.isControlVisible("br")).toEqual(false)
-    expect(cObj.isControlVisible("bl")).toEqual(false)
-    expect(cObj.isControlVisible("ml")).toEqual(false)
-    expect(cObj.isControlVisible("mt")).toEqual(false)
-    expect(cObj.isControlVisible("mr")).toEqual(false)
-    expect(cObj.isControlVisible("mb")).toEqual(false)
-    expect(cObj.isControlVisible("mtr")).toEqual(false)
+    assert.equal(cObj.isControlVisible("tl"), false)
+    assert.equal(cObj.isControlVisible("tr"), false)
+    assert.equal(cObj.isControlVisible("br"), false)
+    assert.equal(cObj.isControlVisible("bl"), false)
+    assert.equal(cObj.isControlVisible("ml"), false)
+    assert.equal(cObj.isControlVisible("mt"), false)
+    assert.equal(cObj.isControlVisible("mr"), false)
+    assert.equal(cObj.isControlVisible("mb"), false)
+    assert.equal(cObj.isControlVisible("mtr"), false)
 
     cObj.setControlsVisibility({
       bl: true,
@@ -89,18 +114,18 @@
       mtr: true
     })
 
-    expect(cObj.isControlVisible("tl")).toEqual(true)
-    expect(cObj.isControlVisible("tr")).toEqual(true)
-    expect(cObj.isControlVisible("br")).toEqual(true)
-    expect(cObj.isControlVisible("bl")).toEqual(true)
-    expect(cObj.isControlVisible("ml")).toEqual(true)
-    expect(cObj.isControlVisible("mt")).toEqual(true)
-    expect(cObj.isControlVisible("mr")).toEqual(true)
-    expect(cObj.isControlVisible("mb")).toEqual(true)
-    expect(cObj.isControlVisible("mtr")).toEqual(true)
+    assert.equal(cObj.isControlVisible("tl"), true)
+    assert.equal(cObj.isControlVisible("tr"), true)
+    assert.equal(cObj.isControlVisible("br"), true)
+    assert.equal(cObj.isControlVisible("bl"), true)
+    assert.equal(cObj.isControlVisible("ml"), true)
+    assert.equal(cObj.isControlVisible("mt"), true)
+    assert.equal(cObj.isControlVisible("mr"), true)
+    assert.equal(cObj.isControlVisible("mb"), true)
+    assert.equal(cObj.isControlVisible("mtr"), true)
   })
 
-  test("_setCornerCoords", function (assert) {
+  QUnit.test("_setCornerCoords", function (assert) {
     var cObj = new fabric.Object({
       top: 10,
       left: 10,
@@ -108,52 +133,55 @@
       height: 10,
       strokeWidth: 0
     })
-    expect(typeof cObj._setCornerCoords === "function").toBeTruthy()
+    assert.ok(
+      typeof cObj._setCornerCoords === "function",
+      "_setCornerCoords should exist"
+    )
     cObj.setCoords()
 
-    expect(cObj.oCoords.tl.corner.tl.x.toFixed(2)).toEqual(3.5)
-    expect(cObj.oCoords.tl.corner.tl.y.toFixed(2)).toEqual(3.5)
-    expect(cObj.oCoords.tl.corner.tr.x.toFixed(2)).toEqual(16.5)
-    expect(cObj.oCoords.tl.corner.tr.y.toFixed(2)).toEqual(3.5)
-    expect(cObj.oCoords.tl.corner.bl.x.toFixed(2)).toEqual(3.5)
-    expect(cObj.oCoords.tl.corner.bl.y.toFixed(2)).toEqual(16.5)
-    expect(cObj.oCoords.tl.corner.br.x.toFixed(2)).toEqual(16.5)
-    expect(cObj.oCoords.tl.corner.br.y.toFixed(2)).toEqual(16.5)
-    expect(cObj.oCoords.bl.corner.tl.x.toFixed(2)).toEqual(3.5)
-    expect(cObj.oCoords.bl.corner.tl.y.toFixed(2)).toEqual(13.5)
-    expect(cObj.oCoords.bl.corner.tr.x.toFixed(2)).toEqual(16.5)
-    expect(cObj.oCoords.bl.corner.tr.y.toFixed(2)).toEqual(13.5)
-    expect(cObj.oCoords.bl.corner.bl.x.toFixed(2)).toEqual(3.5)
-    expect(cObj.oCoords.bl.corner.bl.y.toFixed(2)).toEqual(26.5)
-    expect(cObj.oCoords.bl.corner.br.x.toFixed(2)).toEqual(16.5)
-    expect(cObj.oCoords.bl.corner.br.y.toFixed(2)).toEqual(26.5)
-    expect(cObj.oCoords.tr.corner.tl.x.toFixed(2)).toEqual(13.5)
-    expect(cObj.oCoords.tr.corner.tl.y.toFixed(2)).toEqual(3.5)
-    expect(cObj.oCoords.tr.corner.tr.x.toFixed(2)).toEqual(26.5)
-    expect(cObj.oCoords.tr.corner.tr.y.toFixed(2)).toEqual(3.5)
-    expect(cObj.oCoords.tr.corner.bl.x.toFixed(2)).toEqual(13.5)
-    expect(cObj.oCoords.tr.corner.bl.y.toFixed(2)).toEqual(16.5)
-    expect(cObj.oCoords.tr.corner.br.x.toFixed(2)).toEqual(26.5)
-    expect(cObj.oCoords.tr.corner.br.y.toFixed(2)).toEqual(16.5)
-    expect(cObj.oCoords.br.corner.tl.x.toFixed(2)).toEqual(13.5)
-    expect(cObj.oCoords.br.corner.tl.y.toFixed(2)).toEqual(13.5)
-    expect(cObj.oCoords.br.corner.tr.x.toFixed(2)).toEqual(26.5)
-    expect(cObj.oCoords.br.corner.tr.y.toFixed(2)).toEqual(13.5)
-    expect(cObj.oCoords.br.corner.bl.x.toFixed(2)).toEqual(13.5)
-    expect(cObj.oCoords.br.corner.bl.y.toFixed(2)).toEqual(26.5)
-    expect(cObj.oCoords.br.corner.br.x.toFixed(2)).toEqual(26.5)
-    expect(cObj.oCoords.br.corner.br.y.toFixed(2)).toEqual(26.5)
-    expect(cObj.oCoords.mtr.corner.tl.x.toFixed(2)).toEqual(8.5)
-    expect(cObj.oCoords.mtr.corner.tl.y.toFixed(2)).toEqual(-36.5)
-    expect(cObj.oCoords.mtr.corner.tr.x.toFixed(2)).toEqual(21.5)
-    expect(cObj.oCoords.mtr.corner.tr.y.toFixed(2)).toEqual(-36.5)
-    expect(cObj.oCoords.mtr.corner.bl.x.toFixed(2)).toEqual(8.5)
-    expect(cObj.oCoords.mtr.corner.bl.y.toFixed(2)).toEqual(-23.5)
-    expect(cObj.oCoords.mtr.corner.br.x.toFixed(2)).toEqual(21.5)
-    expect(cObj.oCoords.mtr.corner.br.y.toFixed(2)).toEqual(-23.5)
+    assert.equal(cObj.oCoords.tl.corner.tl.x.toFixed(2), 3.5)
+    assert.equal(cObj.oCoords.tl.corner.tl.y.toFixed(2), 3.5)
+    assert.equal(cObj.oCoords.tl.corner.tr.x.toFixed(2), 16.5)
+    assert.equal(cObj.oCoords.tl.corner.tr.y.toFixed(2), 3.5)
+    assert.equal(cObj.oCoords.tl.corner.bl.x.toFixed(2), 3.5)
+    assert.equal(cObj.oCoords.tl.corner.bl.y.toFixed(2), 16.5)
+    assert.equal(cObj.oCoords.tl.corner.br.x.toFixed(2), 16.5)
+    assert.equal(cObj.oCoords.tl.corner.br.y.toFixed(2), 16.5)
+    assert.equal(cObj.oCoords.bl.corner.tl.x.toFixed(2), 3.5)
+    assert.equal(cObj.oCoords.bl.corner.tl.y.toFixed(2), 13.5)
+    assert.equal(cObj.oCoords.bl.corner.tr.x.toFixed(2), 16.5)
+    assert.equal(cObj.oCoords.bl.corner.tr.y.toFixed(2), 13.5)
+    assert.equal(cObj.oCoords.bl.corner.bl.x.toFixed(2), 3.5)
+    assert.equal(cObj.oCoords.bl.corner.bl.y.toFixed(2), 26.5)
+    assert.equal(cObj.oCoords.bl.corner.br.x.toFixed(2), 16.5)
+    assert.equal(cObj.oCoords.bl.corner.br.y.toFixed(2), 26.5)
+    assert.equal(cObj.oCoords.tr.corner.tl.x.toFixed(2), 13.5)
+    assert.equal(cObj.oCoords.tr.corner.tl.y.toFixed(2), 3.5)
+    assert.equal(cObj.oCoords.tr.corner.tr.x.toFixed(2), 26.5)
+    assert.equal(cObj.oCoords.tr.corner.tr.y.toFixed(2), 3.5)
+    assert.equal(cObj.oCoords.tr.corner.bl.x.toFixed(2), 13.5)
+    assert.equal(cObj.oCoords.tr.corner.bl.y.toFixed(2), 16.5)
+    assert.equal(cObj.oCoords.tr.corner.br.x.toFixed(2), 26.5)
+    assert.equal(cObj.oCoords.tr.corner.br.y.toFixed(2), 16.5)
+    assert.equal(cObj.oCoords.br.corner.tl.x.toFixed(2), 13.5)
+    assert.equal(cObj.oCoords.br.corner.tl.y.toFixed(2), 13.5)
+    assert.equal(cObj.oCoords.br.corner.tr.x.toFixed(2), 26.5)
+    assert.equal(cObj.oCoords.br.corner.tr.y.toFixed(2), 13.5)
+    assert.equal(cObj.oCoords.br.corner.bl.x.toFixed(2), 13.5)
+    assert.equal(cObj.oCoords.br.corner.bl.y.toFixed(2), 26.5)
+    assert.equal(cObj.oCoords.br.corner.br.x.toFixed(2), 26.5)
+    assert.equal(cObj.oCoords.br.corner.br.y.toFixed(2), 26.5)
+    assert.equal(cObj.oCoords.mtr.corner.tl.x.toFixed(2), 8.5)
+    assert.equal(cObj.oCoords.mtr.corner.tl.y.toFixed(2), -36.5)
+    assert.equal(cObj.oCoords.mtr.corner.tr.x.toFixed(2), 21.5)
+    assert.equal(cObj.oCoords.mtr.corner.tr.y.toFixed(2), -36.5)
+    assert.equal(cObj.oCoords.mtr.corner.bl.x.toFixed(2), 8.5)
+    assert.equal(cObj.oCoords.mtr.corner.bl.y.toFixed(2), -23.5)
+    assert.equal(cObj.oCoords.mtr.corner.br.x.toFixed(2), 21.5)
+    assert.equal(cObj.oCoords.mtr.corner.br.y.toFixed(2), -23.5)
   })
 
-  test("_findTargetCorner", function (assert) {
+  QUnit.test("_findTargetCorner", function (assert) {
     var cObj = new fabric.Object({
       top: 10,
       left: 10,
@@ -161,24 +189,27 @@
       height: 30,
       strokeWidth: 0
     })
-    expect(typeof cObj._findTargetCorner === "function").toBeTruthy()
+    assert.ok(
+      typeof cObj._findTargetCorner === "function",
+      "_findTargetCorner should exist"
+    )
     cObj.setCoords()
     cObj.canvas = {
       _activeObject: cObj
     }
-    expect(cObj._findTargetCorner(cObj.oCoords.br)).toEqual("br")
-    expect(cObj._findTargetCorner(cObj.oCoords.tl)).toEqual("tl")
-    expect(cObj._findTargetCorner(cObj.oCoords.tr)).toEqual("tr")
-    expect(cObj._findTargetCorner(cObj.oCoords.bl)).toEqual("bl")
-    expect(cObj._findTargetCorner(cObj.oCoords.mr)).toEqual("mr")
-    expect(cObj._findTargetCorner(cObj.oCoords.ml)).toEqual("ml")
-    expect(cObj._findTargetCorner(cObj.oCoords.mt)).toEqual("mt")
-    expect(cObj._findTargetCorner(cObj.oCoords.mb)).toEqual("mb")
-    expect(cObj._findTargetCorner(cObj.oCoords.mtr)).toEqual("mtr")
-    expect(cObj._findTargetCorner({ x: 0, y: 0 })).toEqual(false)
+    assert.equal(cObj._findTargetCorner(cObj.oCoords.br), "br")
+    assert.equal(cObj._findTargetCorner(cObj.oCoords.tl), "tl")
+    assert.equal(cObj._findTargetCorner(cObj.oCoords.tr), "tr")
+    assert.equal(cObj._findTargetCorner(cObj.oCoords.bl), "bl")
+    assert.equal(cObj._findTargetCorner(cObj.oCoords.mr), "mr")
+    assert.equal(cObj._findTargetCorner(cObj.oCoords.ml), "ml")
+    assert.equal(cObj._findTargetCorner(cObj.oCoords.mt), "mt")
+    assert.equal(cObj._findTargetCorner(cObj.oCoords.mb), "mb")
+    assert.equal(cObj._findTargetCorner(cObj.oCoords.mtr), "mtr")
+    assert.equal(cObj._findTargetCorner({ x: 0, y: 0 }), false)
   })
 
-  test("_findTargetCorner for touches", function (assert) {
+  QUnit.test("_findTargetCorner for touches", function (assert) {
     var cObj = new fabric.Object({
       top: 10,
       left: 10,
@@ -194,148 +225,173 @@
       x: cObj.oCoords.br.x + cObj.cornerSize / 3,
       y: cObj.oCoords.br.y + cObj.cornerSize / 3
     }
-    expect(cObj._findTargetCorner(pointNearBr)).toEqual("br")
-    expect(cObj._findTargetCorner(pointNearBr, true)).toEqual("br")
+    assert.equal(
+      cObj._findTargetCorner(pointNearBr),
+      "br",
+      "cornerSize/3 near br returns br"
+    )
+    assert.equal(
+      cObj._findTargetCorner(pointNearBr, true),
+      "br",
+      "touch event cornerSize/3 near br returns br"
+    )
     pointNearBr = {
       x: cObj.oCoords.br.x + cObj.touchCornerSize / 3,
       y: cObj.oCoords.br.y + cObj.touchCornerSize / 3
     }
-    expect(cObj._findTargetCorner(pointNearBr, true)).toEqual("br")
-    expect(cObj._findTargetCorner(pointNearBr, false)).toEqual(false)
+    assert.equal(
+      cObj._findTargetCorner(pointNearBr, true),
+      "br",
+      "touch event touchCornerSize/3 near br returns br"
+    )
+    assert.equal(
+      cObj._findTargetCorner(pointNearBr, false),
+      false,
+      "not touch event touchCornerSize/3 near br returns false"
+    )
   })
 
-  test("_calculateCurrentDimensions", function (assert) {
+  QUnit.test("_calculateCurrentDimensions", function (assert) {
     var cObj = new fabric.Object({ width: 10, height: 15, strokeWidth: 0 }),
       dim
-    expect(typeof cObj._calculateCurrentDimensions === "function").toBeTruthy()
+    assert.ok(
+      typeof cObj._calculateCurrentDimensions === "function",
+      "_calculateCurrentDimensions should exist"
+    )
 
     dim = cObj._calculateCurrentDimensions()
-    expect(dim.x).toEqual(10)
-    expect(dim.y).toEqual(15)
+    assert.equal(dim.x, 10)
+    assert.equal(dim.y, 15)
 
     cObj.strokeWidth = 2
     dim = cObj._calculateCurrentDimensions()
-    expect(dim.x).toEqual(12)
-    expect(dim.y).toEqual(17)
+    assert.equal(dim.x, 12, "strokeWidth should be added to dimension")
+    assert.equal(dim.y, 17, "strokeWidth should be added to dimension")
 
     cObj.scaleX = 2
     dim = cObj._calculateCurrentDimensions()
-    expect(dim.x).toEqual(24)
-    expect(dim.y).toEqual(17)
+    assert.equal(dim.x, 24, "width should be doubled")
+    assert.equal(dim.y, 17, "height should not change")
 
     cObj.scaleY = 2
     dim = cObj._calculateCurrentDimensions()
-    expect(dim.x).toEqual(24)
-    expect(dim.y).toEqual(34)
+    assert.equal(dim.x, 24, "width should not change")
+    assert.equal(dim.y, 34, "height should be doubled")
 
     cObj.angle = 45
     dim = cObj._calculateCurrentDimensions()
-    expect(dim.x).toEqual(24)
-    expect(dim.y).toEqual(34)
+    assert.equal(dim.x, 24, "width should not change")
+    assert.equal(dim.y, 34, "height should not change")
 
     cObj.skewX = 45
     dim = cObj._calculateCurrentDimensions()
-    expect(dim.x.toFixed(0)).toEqual(58)
-    expect(dim.y.toFixed(0)).toEqual(34)
+    assert.equal(dim.x.toFixed(0), 58, "width should change")
+    assert.equal(dim.y.toFixed(0), 34, "height should not change")
 
     cObj.skewY = 45
     dim = cObj._calculateCurrentDimensions()
-    expect(dim.x.toFixed(0)).toEqual(82)
-    expect(dim.y.toFixed(0)).toEqual(58)
+    assert.equal(dim.x.toFixed(0), 82, "width should not change")
+    assert.equal(dim.y.toFixed(0), 58, "height should change")
 
     cObj.padding = 10
     dim = cObj._calculateCurrentDimensions()
-    expect(dim.x.toFixed(0)).toEqual(102)
-    expect(dim.y.toFixed(0)).toEqual(78)
+    assert.equal(dim.x.toFixed(0), 102, "width should change")
+    assert.equal(dim.y.toFixed(0), 78, "height should change")
   })
 
-  test("_getTransformedDimensions", function (assert) {
+  QUnit.test("_getTransformedDimensions", function (assert) {
     var cObj = new fabric.Object({ width: 10, height: 15, strokeWidth: 0 }),
       dim
-    expect(typeof cObj._getTransformedDimensions === "function").toBeTruthy()
+    assert.ok(
+      typeof cObj._getTransformedDimensions === "function",
+      "_getTransformedDimensions should exist"
+    )
 
     dim = cObj._getTransformedDimensions()
-    expect(dim.x).toEqual(10)
-    expect(dim.y).toEqual(15)
+    assert.equal(dim.x, 10)
+    assert.equal(dim.y, 15)
 
     cObj.strokeWidth = 2
     dim = cObj._getTransformedDimensions()
-    expect(dim.x).toEqual(12)
-    expect(dim.y).toEqual(17)
+    assert.equal(dim.x, 12, "strokeWidth should be added to dimension")
+    assert.equal(dim.y, 17, "strokeWidth should be added to dimension")
 
     cObj.scaleX = 2
     dim = cObj._getTransformedDimensions()
-    expect(dim.x).toEqual(24)
-    expect(dim.y).toEqual(17)
+    assert.equal(dim.x, 24, "width should be doubled")
+    assert.equal(dim.y, 17, "height should not change")
 
     cObj.scaleY = 2
     dim = cObj._getTransformedDimensions()
-    expect(dim.x).toEqual(24)
-    expect(dim.y).toEqual(34)
+    assert.equal(dim.x, 24, "width should not change")
+    assert.equal(dim.y, 34, "height should be doubled")
 
     cObj.angle = 45
     dim = cObj._getTransformedDimensions()
-    expect(dim.x).toEqual(24)
-    expect(dim.y).toEqual(34)
+    assert.equal(dim.x, 24, "width should not change")
+    assert.equal(dim.y, 34, "height should not change")
 
     cObj.skewX = 45
     dim = cObj._getTransformedDimensions()
-    expect(dim.x.toFixed(0)).toEqual(58)
-    expect(dim.y.toFixed(0)).toEqual(34)
+    assert.equal(dim.x.toFixed(0), 58, "width should change")
+    assert.equal(dim.y.toFixed(0), 34, "height should not change")
 
     cObj.skewY = 45
     dim = cObj._getTransformedDimensions()
-    expect(dim.x.toFixed(0)).toEqual(82)
-    expect(dim.y.toFixed(0)).toEqual(58)
+    assert.equal(dim.x.toFixed(0), 82, "width should not change")
+    assert.equal(dim.y.toFixed(0), 58, "height should change")
 
     cObj.padding = 10
     dim = cObj._getTransformedDimensions()
-    expect(dim.x.toFixed(0)).toEqual(82)
-    expect(dim.y.toFixed(0)).toEqual(58)
+    assert.equal(dim.x.toFixed(0), 82, "width should not change")
+    assert.equal(dim.y.toFixed(0), 58, "height should not change")
   })
 
-  test("_getNonTransformedDimensions", function (assert) {
+  QUnit.test("_getNonTransformedDimensions", function (assert) {
     var cObj = new fabric.Object({ width: 10, height: 15, strokeWidth: 0 }),
       dim
-    expect(typeof cObj._getNonTransformedDimensions === "function").toBeTruthy()
+    assert.ok(
+      typeof cObj._getNonTransformedDimensions === "function",
+      "_getNonTransformedDimensions should exist"
+    )
 
     dim = cObj._getNonTransformedDimensions()
-    expect(dim.x).toEqual(10)
-    expect(dim.y).toEqual(15)
+    assert.equal(dim.x, 10)
+    assert.equal(dim.y, 15)
 
     cObj.strokeWidth = 2
     dim = cObj._getNonTransformedDimensions()
-    expect(dim.x).toEqual(12)
-    expect(dim.y).toEqual(17)
+    assert.equal(dim.x, 12, "strokeWidth should be added to dimension")
+    assert.equal(dim.y, 17, "strokeWidth should be added to dimension")
 
     cObj.scaleX = 2
     dim = cObj._getNonTransformedDimensions()
-    expect(dim.x).toEqual(12)
-    expect(dim.y).toEqual(17)
+    assert.equal(dim.x, 12, "width should not change")
+    assert.equal(dim.y, 17, "height should not change")
 
     cObj.scaleY = 2
     dim = cObj._getNonTransformedDimensions()
-    expect(dim.x).toEqual(12)
-    expect(dim.y).toEqual(17)
+    assert.equal(dim.x, 12, "width should not change")
+    assert.equal(dim.y, 17, "height should not change")
 
     cObj.angle = 45
     dim = cObj._getNonTransformedDimensions()
-    expect(dim.x).toEqual(12)
-    expect(dim.y).toEqual(17)
+    assert.equal(dim.x, 12, "width should not change")
+    assert.equal(dim.y, 17, "height should not change")
 
     cObj.skewX = 45
     dim = cObj._getNonTransformedDimensions()
-    expect(dim.x).toEqual(12)
-    expect(dim.y).toEqual(17)
+    assert.equal(dim.x, 12, "width should not change")
+    assert.equal(dim.y, 17, "height should not change")
 
     cObj.skewY = 45
     dim = cObj._getNonTransformedDimensions()
-    expect(dim.x).toEqual(12)
-    expect(dim.y).toEqual(17)
+    assert.equal(dim.x, 12, "width should not change")
+    assert.equal(dim.y, 17, "height should not change")
 
     cObj.padding = 10
     dim = cObj._getNonTransformedDimensions()
-    expect(dim.x).toEqual(12)
-    expect(dim.y).toEqual(17)
+    assert.equal(dim.x, 12, "width should not change")
+    assert.equal(dim.y, 17, "height should not change")
   })
 })()

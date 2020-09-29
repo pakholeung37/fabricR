@@ -1,28 +1,34 @@
 ;(function () {
-  describe("fabric.Ellipse", {
+  QUnit.module("fabric.Ellipse", {
     beforeEach: function () {
       fabric.Object.__uid = 0
     }
   })
 
-  test("constructor", function (assert) {
-    expect(fabric.Ellipse).toBeTruthy()
+  QUnit.test("constructor", function (assert) {
+    assert.ok(fabric.Ellipse)
 
     var ellipse = new fabric.Ellipse()
 
-    expect(ellipse instanceof fabric.Ellipse).toBeTruthy()
-    expect(ellipse instanceof fabric.Object).toBeTruthy()
+    assert.ok(
+      ellipse instanceof fabric.Ellipse,
+      "should inherit from fabric.Ellipse"
+    )
+    assert.ok(
+      ellipse instanceof fabric.Object,
+      "should inherit from fabric.Object"
+    )
 
-    expect(ellipse.type).toEqual("ellipse")
+    assert.equal(ellipse.type, "ellipse")
   })
 
-  test("complexity", function (assert) {
+  QUnit.test("complexity", function (assert) {
     var ellipse = new fabric.Ellipse()
-    expect(typeof ellipse.complexity === "function").toBeTruthy()
-    expect(ellipse.complexity()).toEqual(1)
+    assert.ok(typeof ellipse.complexity === "function")
+    assert.equal(ellipse.complexity(), 1)
   })
 
-  test("toObject", function (assert) {
+  QUnit.test("toObject", function (assert) {
     var ellipse = new fabric.Ellipse()
     var defaultProperties = {
       version: fabric.version,
@@ -58,8 +64,8 @@
       paintFirst: "fill",
       globalCompositeOperation: "source-over"
     }
-    expect(typeof ellipse.toObject === "function").toBeTruthy()
-    expect(ellipse.toObject()).toEqual(defaultProperties)
+    assert.ok(typeof ellipse.toObject === "function")
+    assert.deepEqual(ellipse.toObject(), defaultProperties)
 
     ellipse.set("left", 100).set("top", 200).set("rx", 15).set("ry", 25)
 
@@ -75,42 +81,54 @@
       }
     )
 
-    expect(ellipse.toObject()).toEqual(augmentedProperties)
+    assert.deepEqual(ellipse.toObject(), augmentedProperties)
 
     ellipse.set("rx", 30)
-    expect(ellipse.width).toEqual(ellipse.rx * 2)
+    assert.deepEqual(ellipse.width, ellipse.rx * 2)
 
     ellipse.set("scaleX", 2)
-    expect(ellipse.getRx()).toEqual(ellipse.rx * ellipse.scaleX)
+    assert.deepEqual(ellipse.getRx(), ellipse.rx * ellipse.scaleX)
   })
 
-  test("isNotVisible", function (assert) {
+  QUnit.test("isNotVisible", function (assert) {
     var ellipse = new fabric.Ellipse()
     ellipse.set("rx", 0).set("ry", 0)
 
-    expect(ellipse.isNotVisible()).toEqual(false)
+    assert.equal(
+      ellipse.isNotVisible(),
+      false,
+      "isNotVisible false when rx/ry are 0 because strokeWidth is > 0"
+    )
 
     ellipse.set("strokeWidth", 0)
 
-    expect(ellipse.isNotVisible()).toEqual(true)
+    assert.equal(
+      ellipse.isNotVisible(),
+      true,
+      "should not render anymore with also strokeWidth 0"
+    )
   })
 
-  test("toSVG", function (assert) {
+  QUnit.test("toSVG", function (assert) {
     var ellipse = new fabric.Ellipse({
       rx: 100,
       ry: 12,
       fill: "red",
       stroke: "blue"
     })
-    expect(ellipse.toSVG()).toEqual(
-      '<g transform="matrix(1 0 0 1 100.5 12.5)"  >\n<ellipse style="stroke: rgb(0,0,255); stroke-width: 1; stroke-dasharray: none; stroke-linecap: butt; stroke-dashoffset: 0; stroke-linejoin: miter; stroke-miterlimit: 4; fill: rgb(255,0,0); fill-rule: nonzero; opacity: 1;"  cx="0" cy="0" rx="100" ry="12" />\n</g>\n'
+    assert.equal(
+      ellipse.toSVG(),
+      '<g transform="matrix(1 0 0 1 100.5 12.5)"  >\n<ellipse style="stroke: rgb(0,0,255); stroke-width: 1; stroke-dasharray: none; stroke-linecap: butt; stroke-dashoffset: 0; stroke-linejoin: miter; stroke-miterlimit: 4; fill: rgb(255,0,0); fill-rule: nonzero; opacity: 1;"  cx="0" cy="0" rx="100" ry="12" />\n</g>\n',
+      "SVG should match"
     )
-    expect(ellipse.toClipPathSVG()).toEqual(
-      '\t<ellipse transform="matrix(1 0 0 1 100.5 12.5)" cx="0" cy="0" rx="100" ry="12" />\n'
+    assert.equal(
+      ellipse.toClipPathSVG(),
+      '\t<ellipse transform="matrix(1 0 0 1 100.5 12.5)" cx="0" cy="0" rx="100" ry="12" />\n',
+      "SVG clippath should match"
     )
   })
 
-  test("toSVG with a clipPath", function (assert) {
+  QUnit.test("toSVG with a clipPath", function (assert) {
     var ellipse = new fabric.Ellipse({
       rx: 100,
       ry: 12,
@@ -123,12 +141,14 @@
       left: 60,
       top: -50
     })
-    expect(ellipse.toSVG()).toEqual(
-      '<g transform="matrix(1 0 0 1 100.5 12.5)" clip-path="url(#CLIPPATH_0)"  >\n<clipPath id="CLIPPATH_0" >\n\t<ellipse transform="matrix(1 0 0 1 72.5 50.5)" cx="0" cy="0" rx="12" ry="100" />\n</clipPath>\n<ellipse style="stroke: rgb(0,0,255); stroke-width: 1; stroke-dasharray: none; stroke-linecap: butt; stroke-dashoffset: 0; stroke-linejoin: miter; stroke-miterlimit: 4; fill: rgb(255,0,0); fill-rule: nonzero; opacity: 1;"  cx="0" cy="0" rx="100" ry="12" />\n</g>\n'
+    assert.equal(
+      ellipse.toSVG(),
+      '<g transform="matrix(1 0 0 1 100.5 12.5)" clip-path="url(#CLIPPATH_0)"  >\n<clipPath id="CLIPPATH_0" >\n\t<ellipse transform="matrix(1 0 0 1 72.5 50.5)" cx="0" cy="0" rx="12" ry="100" />\n</clipPath>\n<ellipse style="stroke: rgb(0,0,255); stroke-width: 1; stroke-dasharray: none; stroke-linecap: butt; stroke-dashoffset: 0; stroke-linejoin: miter; stroke-miterlimit: 4; fill: rgb(255,0,0); fill-rule: nonzero; opacity: 1;"  cx="0" cy="0" rx="100" ry="12" />\n</g>\n',
+      "SVG with clipPath should match"
     )
   })
 
-  test("toSVG with a clipPath absolute positioned", function (assert) {
+  QUnit.test("toSVG with a clipPath absolute positioned", function (assert) {
     var ellipse = new fabric.Ellipse({
       rx: 100,
       ry: 12,
@@ -142,13 +162,15 @@
       top: -50
     })
     ellipse.clipPath.absolutePositioned = true
-    expect(ellipse.toSVG()).toEqual(
-      '<g clip-path="url(#CLIPPATH_0)"  >\n<g transform="matrix(1 0 0 1 100.5 12.5)"  >\n<clipPath id="CLIPPATH_0" >\n\t<ellipse transform="matrix(1 0 0 1 72.5 50.5)" cx="0" cy="0" rx="12" ry="100" />\n</clipPath>\n<ellipse style="stroke: rgb(0,0,255); stroke-width: 1; stroke-dasharray: none; stroke-linecap: butt; stroke-dashoffset: 0; stroke-linejoin: miter; stroke-miterlimit: 4; fill: rgb(255,0,0); fill-rule: nonzero; opacity: 1;"  cx="0" cy="0" rx="100" ry="12" />\n</g>\n</g>\n'
+    assert.equal(
+      ellipse.toSVG(),
+      '<g clip-path="url(#CLIPPATH_0)"  >\n<g transform="matrix(1 0 0 1 100.5 12.5)"  >\n<clipPath id="CLIPPATH_0" >\n\t<ellipse transform="matrix(1 0 0 1 72.5 50.5)" cx="0" cy="0" rx="12" ry="100" />\n</clipPath>\n<ellipse style="stroke: rgb(0,0,255); stroke-width: 1; stroke-dasharray: none; stroke-linecap: butt; stroke-dashoffset: 0; stroke-linejoin: miter; stroke-miterlimit: 4; fill: rgb(255,0,0); fill-rule: nonzero; opacity: 1;"  cx="0" cy="0" rx="100" ry="12" />\n</g>\n</g>\n',
+      "SVG with clipPath should match"
     )
   })
 
-  test("fromElement", function (assert) {
-    expect(typeof fabric.Ellipse.fromElement === "function").toBeTruthy()
+  QUnit.test("fromElement", function (assert) {
+    assert.ok(typeof fabric.Ellipse.fromElement === "function")
 
     var namespace = "http://www.w3.org/2000/svg"
     var elEllipse = fabric.document.createElementNS(namespace, "ellipse"),
@@ -177,24 +199,24 @@
     elEllipse.setAttributeNS(namespace, "stroke-miterlimit", strokeMiterLimit)
 
     fabric.Ellipse.fromElement(elEllipse, function (oEllipse) {
-      expect(oEllipse instanceof fabric.Ellipse).toBeTruthy()
-      expect(oEllipse.get("rx")).toEqual(rx)
-      expect(oEllipse.get("ry")).toEqual(ry)
-      expect(oEllipse.get("left")).toEqual(left - rx)
-      expect(oEllipse.get("top")).toEqual(top - ry)
-      expect(oEllipse.get("fill")).toEqual(fill)
-      expect(oEllipse.get("opacity")).toEqual(opacity)
-      expect(oEllipse.get("strokeWidth")).toEqual(strokeWidth)
-      expect(oEllipse.get("strokeDashArray")).toEqual(strokeDashArray)
-      expect(oEllipse.get("strokeLineCap")).toEqual(strokeLineCap)
-      expect(oEllipse.get("strokeLineJoin")).toEqual(strokeLineJoin)
-      expect(oEllipse.get("strokeMiterLimit")).toEqual(strokeMiterLimit)
+      assert.ok(oEllipse instanceof fabric.Ellipse)
+      assert.equal(oEllipse.get("rx"), rx)
+      assert.equal(oEllipse.get("ry"), ry)
+      assert.equal(oEllipse.get("left"), left - rx)
+      assert.equal(oEllipse.get("top"), top - ry)
+      assert.equal(oEllipse.get("fill"), fill)
+      assert.equal(oEllipse.get("opacity"), opacity)
+      assert.equal(oEllipse.get("strokeWidth"), strokeWidth)
+      assert.deepEqual(oEllipse.get("strokeDashArray"), strokeDashArray)
+      assert.equal(oEllipse.get("strokeLineCap"), strokeLineCap)
+      assert.equal(oEllipse.get("strokeLineJoin"), strokeLineJoin)
+      assert.equal(oEllipse.get("strokeMiterLimit"), strokeMiterLimit)
     })
   })
 
-  test("fromObject", function (assert) {
+  QUnit.test("fromObject", function (assert) {
     var done = assert.async()
-    expect(typeof fabric.Ellipse === "function").toBeTruthy()
+    assert.ok(typeof fabric.Ellipse === "function")
 
     var left = 112,
       top = 234,
@@ -211,17 +233,17 @@
         fill: fill
       },
       function (ellipse) {
-        expect(ellipse instanceof fabric.Ellipse).toBeTruthy()
+        assert.ok(ellipse instanceof fabric.Ellipse)
 
-        expect(ellipse.get("left")).toEqual(left)
-        expect(ellipse.get("top")).toEqual(top)
-        expect(ellipse.get("rx")).toEqual(rx)
-        expect(ellipse.get("ry")).toEqual(ry)
-        expect(ellipse.get("fill")).toEqual(fill)
+        assert.equal(ellipse.get("left"), left)
+        assert.equal(ellipse.get("top"), top)
+        assert.equal(ellipse.get("rx"), rx)
+        assert.equal(ellipse.get("ry"), ry)
+        assert.equal(ellipse.get("fill"), fill)
 
         var expected = ellipse.toObject()
         fabric.Ellipse.fromObject(expected, function (actual) {
-          expect(actual.toObject()).toEqual(expected)
+          assert.deepEqual(actual.toObject(), expected)
           done()
         })
       }

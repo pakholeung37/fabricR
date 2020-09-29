@@ -1,13 +1,13 @@
-describe("fabric.Observable")
+QUnit.module("fabric.Observable")
 
-test("fabric.Observable exists", function (assert) {
-  expect(fabric.Observable).toBeTruthy()
-  expect(fabric.Observable.fire).toBeTruthy()
-  expect(fabric.Observable.on).toBeTruthy()
-  expect(fabric.Observable.off).toBeTruthy()
+QUnit.test("fabric.Observable exists", function (assert) {
+  assert.ok(fabric.Observable)
+  assert.ok(fabric.Observable.fire)
+  assert.ok(fabric.Observable.on)
+  assert.ok(fabric.Observable.off)
 })
 
-test("fire + on", function (assert) {
+QUnit.test("fire + on", function (assert) {
   var foo = {}
   fabric.util.object.extend(foo, fabric.Observable)
 
@@ -17,10 +17,10 @@ test("fire + on", function (assert) {
   })
 
   foo.fire("bar:baz")
-  expect(eventFired).toEqual(true)
+  assert.equal(eventFired, true)
 })
 
-test("off", function (assert) {
+QUnit.test("off", function (assert) {
   var foo = {}
   fabric.util.object.extend(foo, fabric.Observable)
 
@@ -32,10 +32,10 @@ test("off", function (assert) {
   foo.off("bar:baz", handler)
 
   foo.fire("bar:baz")
-  expect(eventFired).toEqual(false)
+  assert.equal(eventFired, false)
 })
 
-test("off without handler", function (assert) {
+QUnit.test("off without handler", function (assert) {
   var foo = {}
   fabric.util.object.extend(foo, fabric.Observable)
 
@@ -54,8 +54,8 @@ test("off without handler", function (assert) {
   foo.off("bar:baz")
 
   foo.fire("bar:baz")
-  expect(eventFired).toEqual(false)
-  expect(event2Fired).toEqual(false)
+  assert.equal(eventFired, false)
+  assert.equal(event2Fired, false)
 
   foo.on("bar:baz", handler)
   foo.on("bar:baz", handler2)
@@ -63,11 +63,11 @@ test("off without handler", function (assert) {
   foo.off({ "bar:baz": null })
 
   foo.fire("bar:baz")
-  expect(eventFired).toEqual(false)
-  expect(event2Fired).toEqual(false)
+  assert.equal(eventFired, false)
+  assert.equal(event2Fired, false)
 })
 
-test("off multiple handlers", function (assert) {
+QUnit.test("off multiple handlers", function (assert) {
   var foo = {}
   fabric.util.object.extend(foo, fabric.Observable)
 
@@ -85,12 +85,12 @@ test("off multiple handlers", function (assert) {
   foo.off({ "bar:baz": handler, "blah:blah": handler2 })
 
   foo.fire("bar:baz")
-  expect(eventFired).toEqual(false)
+  assert.equal(eventFired, false)
   foo.fire("blah:blah")
-  expect(event2Fired).toEqual(false)
+  assert.equal(event2Fired, false)
 })
 
-test("off all events", function (assert) {
+QUnit.test("off all events", function (assert) {
   var foo = {}
   fabric.util.object.extend(foo, fabric.Observable)
 
@@ -108,12 +108,12 @@ test("off all events", function (assert) {
   foo.off()
 
   foo.fire("bar:baz")
-  expect(eventFired).toEqual(false)
+  assert.equal(eventFired, false)
   foo.fire("blah:blah")
-  expect(event2Fired).toEqual(false)
+  assert.equal(event2Fired, false)
 })
 
-test("on multiple handlers", function (assert) {
+QUnit.test("on multiple handlers", function (assert) {
   var foo = {}
   fabric.util.object.extend(foo, fabric.Observable)
 
@@ -137,12 +137,12 @@ test("on multiple handlers", function (assert) {
   foo.fire("blah:blah")
   foo.fire("moo")
 
-  expect(barBazFired).toEqual(true)
-  expect(blahBlahFired).toEqual(true)
-  expect(mooFired).toEqual(true)
+  assert.equal(barBazFired, true)
+  assert.equal(blahBlahFired, true)
+  assert.equal(mooFired, true)
 })
 
-test("event options", function (assert) {
+QUnit.test("event options", function (assert) {
   var foo = {}
   fabric.util.object.extend(foo, fabric.Observable)
 
@@ -153,10 +153,10 @@ test("event options", function (assert) {
 
   foo.fire("foo:bar", { value: "sekret" })
 
-  expect(someValue).toEqual("sekret")
+  assert.equal(someValue, "sekret")
 })
 
-test("fire", function (assert) {
+QUnit.test("fire", function (assert) {
   var foo = {}
   fabric.util.object.extend(foo, fabric.Observable)
 
@@ -168,11 +168,11 @@ test("fire", function (assert) {
   })
 
   foo.fire("bar:baz")
-  expect(eventFired).toEqual(true)
-  expect(context).toEqual(foo)
+  assert.equal(eventFired, true)
+  assert.equal(context, foo)
 })
 
-test("removal of past events", function (assert) {
+QUnit.test("removal of past events", function (assert) {
   var foo = {},
     event1Fired = false,
     event2Fired = false,
@@ -197,16 +197,24 @@ test("removal of past events", function (assert) {
   foo.on("bar:baz", handler2)
   foo.on("bar:baz", handler3)
   foo.on("bar:baz", handler4)
-  expect(foo.__eventListeners["bar:baz"].length).toEqual(4)
+  assert.equal(
+    foo.__eventListeners["bar:baz"].length,
+    4,
+    "There should be 4 events registered now"
+  )
   foo.fire("bar:baz")
-  expect(foo.__eventListeners["bar:baz"].length).toEqual(3)
-  expect(event1Fired).toEqual(true)
-  expect(event2Fired).toEqual(true)
-  expect(event3Fired).toEqual(true)
-  expect(event4Fired).toEqual(true)
+  assert.equal(
+    foo.__eventListeners["bar:baz"].length,
+    3,
+    "There should be 3 events registered now"
+  )
+  assert.equal(event1Fired, true, "Event 1 should fire")
+  assert.equal(event2Fired, true, "Event 2 should fire")
+  assert.equal(event3Fired, true, "Event 3 should fire")
+  assert.equal(event4Fired, true, "Event 4 should fire")
 })
 
-test("removal of past events inner loop", function (assert) {
+QUnit.test("removal of past events inner loop", function (assert) {
   var foo = {},
     event1Fired = 0,
     event2Fired = 0,
@@ -215,13 +223,21 @@ test("removal of past events inner loop", function (assert) {
     handler1 = function () {
       event1Fired++
       foo.off("bar:baz", handler1)
-      expect(foo.__eventListeners["bar:baz"].length).toEqual(4)
-      expect(event1Fired).toEqual(1)
-      expect(event2Fired).toEqual(0)
-      expect(event3Fired).toEqual(0)
-      expect(event4Fired).toEqual(0)
+      assert.equal(
+        foo.__eventListeners["bar:baz"].length,
+        4,
+        "There should be still 4 handlers registered"
+      )
+      assert.equal(event1Fired, 1, "Event 1 should fire once")
+      assert.equal(event2Fired, 0, "Event 2 should not be fired yet")
+      assert.equal(event3Fired, 0, "Event 3 should not be fired yet")
+      assert.equal(event4Fired, 0, "Event 4 should not be fired yet")
       foo.fire("bar:baz")
-      expect(foo.__eventListeners["bar:baz"].length).toEqual(3)
+      assert.equal(
+        foo.__eventListeners["bar:baz"].length,
+        3,
+        "There should be 3 handlers registered now"
+      )
     },
     handler2 = function () {
       event2Fired++
@@ -239,13 +255,13 @@ test("removal of past events inner loop", function (assert) {
   foo.on("bar:baz", handler3)
   foo.on("bar:baz", handler4)
   foo.fire("bar:baz")
-  expect(event1Fired).toEqual(1)
-  expect(event2Fired).toEqual(2)
-  expect(event3Fired).toEqual(2)
-  expect(event4Fired).toEqual(2)
+  assert.equal(event1Fired, 1, "Event 1 should fire once")
+  assert.equal(event2Fired, 2, "Event 2 should fire twice")
+  assert.equal(event3Fired, 2, "Event 3 should fire twice")
+  assert.equal(event4Fired, 2, "Event 4 should fire twice")
 })
 
-test("adding events", function (assert) {
+QUnit.test("adding events", function (assert) {
   var foo = {},
     event1Fired = false,
     event2Fired = false,
@@ -271,16 +287,16 @@ test("adding events", function (assert) {
   foo.on("bar:baz", handler1)
   foo.on("bar:baz", handler2)
   foo.fire("bar:baz")
-  expect(event1Fired).toEqual(true)
-  expect(event2Fired).toEqual(true)
-  expect(event3Fired).toEqual(false)
-  expect(event4Fired).toEqual(false)
+  assert.equal(event1Fired, true, "Event 1 should fire")
+  assert.equal(event2Fired, true, "Event 2 should fire")
+  assert.equal(event3Fired, false, "Event 3 should not fire")
+  assert.equal(event4Fired, false, "Event 4 should not fire")
   foo.fire("bar:baz")
-  expect(event3Fired).toEqual(true)
-  expect(event4Fired).toEqual(true)
+  assert.equal(event3Fired, true, "Event 3 should be fireed now")
+  assert.equal(event4Fired, true, "Event 4 should be fireed now")
 })
 
-test("chaining", function (assert) {
+QUnit.test("chaining", function (assert) {
   var foo = {}
   fabric.util.object.extend(foo, fabric.Observable)
 
@@ -296,8 +312,8 @@ test("chaining", function (assert) {
 
   foo.fire("event2").fire("event1")
 
-  expect(event1Fired).toEqual(true)
-  expect(event2Fired).toEqual(true)
+  assert.equal(event1Fired, true)
+  assert.equal(event2Fired, true)
 
   event1Fired = false
   event2Fired = false
@@ -305,6 +321,6 @@ test("chaining", function (assert) {
   foo.off("event1").off("event2")
   foo.fire("event2").fire("event1")
 
-  expect(event1Fired).toEqual(false)
-  expect(event2Fired).toEqual(false)
+  assert.equal(event1Fired, false)
+  assert.equal(event2Fired, false)
 })

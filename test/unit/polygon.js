@@ -48,31 +48,31 @@
     left: 0
   }
 
-  describe("fabric.Polygon")
+  QUnit.module("fabric.Polygon")
 
-  test("constructor", function (assert) {
-    expect(fabric.Polygon).toBeTruthy()
+  QUnit.test("constructor", function (assert) {
+    assert.ok(fabric.Polygon)
 
     var polygon = new fabric.Polygon(getPoints())
 
-    expect(polygon instanceof fabric.Polygon).toBeTruthy()
-    expect(polygon instanceof fabric.Object).toBeTruthy()
+    assert.ok(polygon instanceof fabric.Polygon)
+    assert.ok(polygon instanceof fabric.Object)
 
-    expect(polygon.type).toEqual("polygon")
-    expect(polygon.get("points")).toEqual([
+    assert.equal(polygon.type, "polygon")
+    assert.deepEqual(polygon.get("points"), [
       { x: 10, y: 12 },
       { x: 20, y: 22 }
     ])
   })
 
-  test("complexity", function (assert) {
+  QUnit.test("complexity", function (assert) {
     var polygon = new fabric.Polygon(getPoints())
-    expect(typeof polygon.complexity === "function").toBeTruthy()
+    assert.ok(typeof polygon.complexity === "function")
   })
 
-  test("toObject", function (assert) {
+  QUnit.test("toObject", function (assert) {
     var polygon = new fabric.Polygon(getPoints())
-    expect(typeof polygon.toObject === "function").toBeTruthy()
+    assert.ok(typeof polygon.toObject === "function")
 
     var objectWithOriginalPoints = fabric.util.object.extend(
       polygon.toObject(),
@@ -81,32 +81,32 @@
       }
     )
 
-    expect(objectWithOriginalPoints).toEqual(REFERENCE_OBJECT)
+    assert.deepEqual(objectWithOriginalPoints, REFERENCE_OBJECT)
   })
 
-  test("toSVG", function (assert) {
+  QUnit.test("toSVG", function (assert) {
     var polygon = new fabric.Polygon(getPoints(), {
       fill: "red",
       stroke: "blue"
     })
-    expect(typeof polygon.toSVG === "function").toBeTruthy()
+    assert.ok(typeof polygon.toSVG === "function")
     var EXPECTED_SVG =
       '<g transform="matrix(1 0 0 1 15 17)"  >\n<polygon style="stroke: rgb(0,0,255); stroke-width: 1; stroke-dasharray: none; stroke-linecap: butt; stroke-dashoffset: 0; stroke-linejoin: miter; stroke-miterlimit: 4; fill: rgb(255,0,0); fill-rule: nonzero; opacity: 1;"  points="-5,-5 5,5 " />\n</g>\n'
-    expect(polygon.toSVG()).toEqual(EXPECTED_SVG)
+    assert.deepEqual(polygon.toSVG(), EXPECTED_SVG)
   })
 
-  test("fromObject", function (assert) {
+  QUnit.test("fromObject", function (assert) {
     var done = assert.async()
-    expect(typeof fabric.Polygon.fromObject === "function").toBeTruthy()
+    assert.ok(typeof fabric.Polygon.fromObject === "function")
     fabric.Polygon.fromObject(REFERENCE_OBJECT, function (polygon) {
-      expect(polygon instanceof fabric.Polygon).toBeTruthy()
-      expect(polygon.toObject()).toEqual(REFERENCE_OBJECT)
+      assert.ok(polygon instanceof fabric.Polygon)
+      assert.deepEqual(polygon.toObject(), REFERENCE_OBJECT)
       done()
     })
   })
 
-  test("fromElement without points", function (assert) {
-    expect(typeof fabric.Polygon.fromElement === "function").toBeTruthy()
+  QUnit.test("fromElement without points", function (assert) {
+    assert.ok(typeof fabric.Polygon.fromElement === "function")
 
     var empty_object = fabric.util.object.extend({}, REFERENCE_OBJECT)
     empty_object = fabric.util.object.extend(
@@ -120,11 +120,11 @@
     )
 
     fabric.Polygon.fromElement(elPolygonWithoutPoints, function (polygon) {
-      expect(polygon.toObject()).toEqual(empty_object)
+      assert.deepEqual(polygon.toObject(), empty_object)
     })
   })
 
-  test("fromElement with empty points", function (assert) {
+  QUnit.test("fromElement with empty points", function (assert) {
     var namespace = "http://www.w3.org/2000/svg"
     var elPolygonWithEmptyPoints = fabric.document.createElementNS(
       namespace,
@@ -137,16 +137,16 @@
       REFERENCE_EMPTY_OBJECT
     )
     fabric.Polygon.fromElement(elPolygonWithEmptyPoints, function (polygon) {
-      expect(polygon.toObject()).toEqual(empty_object)
+      assert.deepEqual(polygon.toObject(), empty_object)
     })
   })
 
-  test("fromElement with points", function (assert) {
+  QUnit.test("fromElement with points", function (assert) {
     var namespace = "http://www.w3.org/2000/svg"
     var elPolygon = fabric.document.createElementNS(namespace, "polygon")
     elPolygon.setAttributeNS(namespace, "points", "10,12 20,22")
     fabric.Polygon.fromElement(elPolygon, function (polygon) {
-      expect(polygon instanceof fabric.Polygon).toBeTruthy()
+      assert.ok(polygon instanceof fabric.Polygon)
       var expected = fabric.util.object.extend(
         fabric.util.object.clone(REFERENCE_OBJECT),
         {
@@ -158,11 +158,11 @@
           top: 12
         }
       )
-      expect(polygon.toObject()).toEqual(expected)
+      assert.deepEqual(polygon.toObject(), expected)
     })
   })
 
-  test("fromElement with points and custom attributes", function (
+  QUnit.test("fromElement with points and custom attributes", function (
     assert
   ) {
     var namespace = "http://www.w3.org/2000/svg"
@@ -195,26 +195,29 @@
         { x: 30, y: 30 },
         { x: 10, y: 10 }
       ]
-      expect(polygonWithAttrs.toObject()).toEqual(fabric.util.object.extend(REFERENCE_OBJECT, {
-        width: 20,
-        height: 20,
-        fill: "rgb(255,255,255)",
-        stroke: "blue",
-        strokeWidth: 3,
-        strokeDashArray: [5, 2],
-        strokeLineCap: "round",
-        strokeLineJoin: "bevil",
-        strokeMiterLimit: 5,
-        opacity: 0.34,
-        points: expectedPoints,
-        top: 10,
-        left: 10
-      }))
+      assert.deepEqual(
+        polygonWithAttrs.toObject(),
+        fabric.util.object.extend(REFERENCE_OBJECT, {
+          width: 20,
+          height: 20,
+          fill: "rgb(255,255,255)",
+          stroke: "blue",
+          strokeWidth: 3,
+          strokeDashArray: [5, 2],
+          strokeLineCap: "round",
+          strokeLineJoin: "bevil",
+          strokeMiterLimit: 5,
+          opacity: 0.34,
+          points: expectedPoints,
+          top: 10,
+          left: 10
+        })
+      )
     })
   })
-  test("fromElement with null", function (assert) {
+  QUnit.test("fromElement with null", function (assert) {
     fabric.Polygon.fromElement(null, function (polygon) {
-      expect(polygon).toEqual(null)
+      assert.equal(polygon, null)
     })
   })
 })()

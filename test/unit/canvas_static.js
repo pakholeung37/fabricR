@@ -199,7 +199,7 @@
     )
   }
 
-  describe("fabric.StaticCanvas", {
+  QUnit.module("fabric.StaticCanvas", {
     beforeEach: function () {
       fabric.Object.__uid = 0
       canvas.clear()
@@ -219,88 +219,125 @@
     }
   })
 
-  test("initialProperties", function (assert) {
+  QUnit.test("initialProperties", function (assert) {
     var canvas = new fabric.StaticCanvas()
-    expect("backgroundColor" in canvas).toBeTruthy()
-    expect("overlayColor" in canvas).toBeTruthy()
-    expect("backgroundImage" in canvas).toBeTruthy()
-    expect("overlayImage" in canvas).toBeTruthy()
-    expect("includeDefaultValues" in canvas).toBeTruthy()
-    expect("stateful" in canvas).toBeTruthy()
-    expect("renderOnAddRemove" in canvas).toBeTruthy()
-    expect("controlsAboveOverlay" in canvas).toBeTruthy()
-    expect("allowTouchScrolling" in canvas).toBeTruthy()
-    expect("imageSmoothingEnabled" in canvas).toBeTruthy()
-    expect("backgroundVpt" in canvas).toBeTruthy()
-    expect("overlayVpt" in canvas).toBeTruthy()
+    assert.ok("backgroundColor" in canvas)
+    assert.ok("overlayColor" in canvas)
+    assert.ok("backgroundImage" in canvas)
+    assert.ok("overlayImage" in canvas)
+    assert.ok("includeDefaultValues" in canvas)
+    assert.ok("stateful" in canvas)
+    assert.ok("renderOnAddRemove" in canvas)
+    assert.ok("controlsAboveOverlay" in canvas)
+    assert.ok("allowTouchScrolling" in canvas)
+    assert.ok("imageSmoothingEnabled" in canvas)
+    assert.ok("backgroundVpt" in canvas)
+    assert.ok("overlayVpt" in canvas)
 
-    expect(canvas.includeDefaultValues).toEqual(true)
-    expect(canvas.stateful).toEqual(false)
-    expect(canvas.renderOnAddRemove).toEqual(true)
-    expect(canvas.controlsAboveOverlay).toEqual(false)
-    expect(canvas.allowTouchScrolling).toEqual(false)
-    expect(canvas.imageSmoothingEnabled).toEqual(true)
-    expect(canvas.backgroundVpt).toEqual(true)
-    expect(canvas.overlayVpt).toEqual(true)
+    assert.equal(canvas.includeDefaultValues, true)
+    assert.equal(canvas.stateful, false)
+    assert.equal(canvas.renderOnAddRemove, true)
+    assert.equal(canvas.controlsAboveOverlay, false)
+    assert.equal(canvas.allowTouchScrolling, false)
+    assert.equal(canvas.imageSmoothingEnabled, true)
+    assert.equal(canvas.backgroundVpt, true)
+    assert.equal(canvas.overlayVpt, true)
 
-    expect(canvas.viewportTransform).not.toBe(canvas2.viewportTransform)
+    assert.notStrictEqual(canvas.viewportTransform, canvas2.viewportTransform)
   })
 
-  test("getObjects", function (assert) {
-    expect(typeof canvas.getObjects === "function").toBeTruthy()
-    expect([]).toEqual(canvas.getObjects())
-    expect(canvas.getObjects().length).toEqual(0)
+  QUnit.test("getObjects", function (assert) {
+    assert.ok(
+      typeof canvas.getObjects === "function",
+      "should respond to `getObjects` method"
+    )
+    assert.deepEqual(
+      [],
+      canvas.getObjects(),
+      "should return empty array for `getObjects` when empty"
+    )
+    assert.equal(
+      canvas.getObjects().length,
+      0,
+      "should have a 0 length when empty"
+    )
   })
 
-  test("getObjects with type", function (assert) {
+  QUnit.test("getObjects with type", function (assert) {
     var rect = new fabric.Rect({ width: 10, height: 20 })
     var circle = new fabric.Circle({ radius: 30 })
 
     canvas.add(rect, circle)
 
-    expect(canvas.getObjects().length).toEqual(2)
+    assert.equal(
+      canvas.getObjects().length,
+      2,
+      "should have length=2 initially"
+    )
 
-    expect(canvas.getObjects("rect")).toEqual([rect])
-    expect(canvas.getObjects("circle")).toEqual([circle])
+    assert.deepEqual(
+      canvas.getObjects("rect"),
+      [rect],
+      "should return rect only"
+    )
+    assert.deepEqual(
+      canvas.getObjects("circle"),
+      [circle],
+      "should return circle only"
+    )
   })
 
-  test("getElement", function (assert) {
-    expect(typeof canvas.getElement === "function").toBeTruthy()
-    expect(canvas.getElement()).toEqual(lowerCanvasEl)
+  QUnit.test("getElement", function (assert) {
+    assert.ok(
+      typeof canvas.getElement === "function",
+      "should respond to `getElement` method"
+    )
+    assert.equal(
+      canvas.getElement(),
+      lowerCanvasEl,
+      "should return a proper element"
+    )
   })
 
-  test("item", function (assert) {
+  QUnit.test("item", function (assert) {
     var rect = makeRect()
 
-    expect(typeof canvas.item === "function").toBeTruthy()
+    assert.ok(typeof canvas.item === "function", "should respond to item")
     canvas.add(rect)
-    expect(canvas.item(0)).toEqual(rect)
+    assert.equal(canvas.item(0), rect, "should return proper item")
   })
 
-  test("calcOffset", function (assert) {
-    expect(typeof canvas.calcOffset === "function").toBeTruthy()
-    expect(canvas.calcOffset()).toEqual(canvas)
+  QUnit.test("calcOffset", function (assert) {
+    assert.ok(
+      typeof canvas.calcOffset === "function",
+      "should respond to `calcOffset`"
+    )
+    assert.equal(canvas.calcOffset(), canvas, "should be chainable")
   })
 
-  test("add", function (assert) {
+  QUnit.test("add", function (assert) {
     var rect1 = makeRect(),
       rect2 = makeRect(),
       rect3 = makeRect(),
       rect4 = makeRect()
 
-    expect(typeof canvas.add === "function").toBeTruthy()
-    expect(canvas.add(rect1)).toEqual(canvas)
-    expect(canvas.item(0)).toBe(rect1)
+    assert.ok(typeof canvas.add === "function")
+    assert.equal(canvas.add(rect1), canvas, "should be chainable")
+    assert.strictEqual(canvas.item(0), rect1)
 
     canvas.add(rect2, rect3, rect4)
-    expect(canvas.getObjects().length).toEqual(4)
+    assert.equal(
+      canvas.getObjects().length,
+      4,
+      "should support multiple arguments"
+    )
 
-    expect(canvas.item(1)).toBe(rect2)
-    expect(canvas.item(2)).toBe(rect3)
-    expect(canvas.item(3)).toBe(rect4)
+    assert.strictEqual(canvas.item(1), rect2)
+    assert.strictEqual(canvas.item(2), rect3)
+    assert.strictEqual(canvas.item(3), rect4)
   })
 
-  test("add renderOnAddRemove disabled", function (assert) {
+  QUnit.test("add renderOnAddRemove disabled", function (assert) {
     var rect = makeRect(),
       originalRenderOnAddition,
       renderAllCount = 0
@@ -314,23 +351,27 @@
 
     canvas.on("after:render", countRenderAll)
 
-    expect(canvas.add(rect)).toEqual(canvas)
-    expect(renderAllCount).toEqual(0)
+    assert.equal(canvas.add(rect), canvas, "should be chainable")
+    assert.equal(renderAllCount, 0)
 
-    expect(canvas.item(0)).toEqual(rect)
+    assert.equal(canvas.item(0), rect)
 
     canvas.add(makeRect(), makeRect(), makeRect())
-    expect(canvas.getObjects().length).toEqual(4)
-    expect(renderAllCount).toEqual(0)
+    assert.equal(
+      canvas.getObjects().length,
+      4,
+      "should support multiple arguments"
+    )
+    assert.equal(renderAllCount, 0)
 
     canvas.renderAll()
-    expect(renderAllCount).toEqual(1)
+    assert.equal(renderAllCount, 1)
 
     canvas.off("after:render", countRenderAll)
     canvas.renderOnAddRemove = originalRenderOnAddition
   })
 
-  test("object:added", function (assert) {
+  QUnit.test("object:added", function (assert) {
     var objectsAdded = []
 
     canvas.on("object:added", function (e) {
@@ -340,39 +381,42 @@
     var rect = new fabric.Rect({ width: 10, height: 20 })
     canvas.add(rect)
 
-    expect(objectsAdded[0]).toEqual(rect)
+    assert.deepEqual(objectsAdded[0], rect)
 
     var circle1 = new fabric.Circle(),
       circle2 = new fabric.Circle()
 
     canvas.add(circle1, circle2)
 
-    expect(objectsAdded[1]).toBe(circle1)
-    expect(objectsAdded[2]).toBe(circle2)
+    assert.strictEqual(objectsAdded[1], circle1)
+    assert.strictEqual(objectsAdded[2], circle2)
 
     var circle3 = new fabric.Circle()
     canvas.insertAt(circle3, 2)
 
-    expect(objectsAdded[3]).toBe(circle3)
+    assert.strictEqual(objectsAdded[3], circle3)
   })
 
-  test("insertAt", function (assert) {
+  QUnit.test("insertAt", function (assert) {
     var rect1 = makeRect(),
       rect2 = makeRect()
 
     canvas.add(rect1, rect2)
 
-    expect(typeof canvas.insertAt === "function").toBeTruthy()
+    assert.ok(
+      typeof canvas.insertAt === "function",
+      "should respond to `insertAt` method"
+    )
 
     var rect = makeRect()
     canvas.insertAt(rect, 1)
-    expect(canvas.item(1)).toBe(rect)
+    assert.strictEqual(canvas.item(1), rect)
     canvas.insertAt(rect, 2)
-    expect(canvas.item(2)).toBe(rect)
-    expect(canvas.insertAt(rect, 2)).toEqual(canvas)
+    assert.strictEqual(canvas.item(2), rect)
+    assert.equal(canvas.insertAt(rect, 2), canvas, "should be chainable")
   })
 
-  test("insertAt renderOnAddRemove disabled", function (assert) {
+  QUnit.test("insertAt renderOnAddRemove disabled", function (assert) {
     var rect1 = makeRect(),
       rect2 = makeRect(),
       originalRenderOnAddition,
@@ -388,25 +432,25 @@
     canvas.on("after:render", countRenderAll)
 
     canvas.add(rect1, rect2)
-    expect(renderAllCount).toEqual(0)
+    assert.equal(renderAllCount, 0)
 
     var rect = makeRect()
 
     canvas.insertAt(rect, 1)
-    expect(renderAllCount).toEqual(0)
+    assert.equal(renderAllCount, 0)
 
-    expect(canvas.item(1)).toBe(rect)
+    assert.strictEqual(canvas.item(1), rect)
     canvas.insertAt(rect, 2)
-    expect(renderAllCount).toEqual(0)
+    assert.equal(renderAllCount, 0)
 
     canvas.renderAll()
-    expect(renderAllCount).toEqual(1)
+    assert.equal(renderAllCount, 1)
 
     canvas.off("after:render", countRenderAll)
     canvas.renderOnAddRemove = originalRenderOnAddition
   })
 
-  test("remove", function (assert) {
+  QUnit.test("remove", function (assert) {
     var rect1 = makeRect(),
       rect2 = makeRect(),
       rect3 = makeRect(),
@@ -414,18 +458,18 @@
 
     canvas.add(rect1, rect2, rect3, rect4)
 
-    expect(typeof canvas.remove === "function").toBeTruthy()
-    expect(canvas.remove(rect1)).toEqual(canvas)
-    expect(canvas.item(0)).toBe(rect2)
+    assert.ok(typeof canvas.remove === "function")
+    assert.equal(canvas.remove(rect1), canvas, "should be chainable")
+    assert.strictEqual(canvas.item(0), rect2, "should be second object")
 
     canvas.remove(rect2, rect3)
-    expect(canvas.item(0)).toBe(rect4)
+    assert.strictEqual(canvas.item(0), rect4)
 
     canvas.remove(rect4)
-    expect(canvas.isEmpty()).toEqual(true)
+    assert.equal(canvas.isEmpty(), true, "canvas should be empty")
   })
 
-  test("remove renderOnAddRemove disabled", function (assert) {
+  QUnit.test("remove renderOnAddRemove disabled", function (assert) {
     var rect1 = makeRect(),
       rect2 = makeRect(),
       originalRenderOnAddition,
@@ -441,20 +485,24 @@
     canvas.on("after:render", countRenderAll)
 
     canvas.add(rect1, rect2)
-    expect(renderAllCount).toEqual(0)
+    assert.equal(renderAllCount, 0)
 
-    expect(canvas.remove(rect1)).toEqual(canvas)
-    expect(renderAllCount).toEqual(0)
-    expect(canvas.item(0)).toBe(rect2)
+    assert.equal(canvas.remove(rect1), canvas, "should be chainable")
+    assert.equal(renderAllCount, 0)
+    assert.strictEqual(
+      canvas.item(0),
+      rect2,
+      "only second object should be left"
+    )
 
     canvas.renderAll()
-    expect(renderAllCount).toEqual(1)
+    assert.equal(renderAllCount, 1)
 
     canvas.off("after:render", countRenderAll)
     canvas.renderOnAddRemove = originalRenderOnAddition
   })
 
-  test("object:removed", function (assert) {
+  QUnit.test("object:removed", function (assert) {
     var objectsRemoved = []
 
     canvas.on("object:removed", function (e) {
@@ -467,46 +515,50 @@
 
     canvas.add(rect, circle1, circle2)
 
-    expect(canvas.item(0)).toBe(rect)
-    expect(canvas.item(1)).toBe(circle1)
-    expect(canvas.item(2)).toBe(circle2)
+    assert.strictEqual(canvas.item(0), rect)
+    assert.strictEqual(canvas.item(1), circle1)
+    assert.strictEqual(canvas.item(2), circle2)
 
     canvas.remove(rect)
-    expect(objectsRemoved[0]).toBe(rect)
+    assert.strictEqual(objectsRemoved[0], rect)
 
     canvas.remove(circle1, circle2)
-    expect(objectsRemoved[1]).toBe(circle1)
-    expect(objectsRemoved[2]).toBe(circle2)
+    assert.strictEqual(objectsRemoved[1], circle1)
+    assert.strictEqual(objectsRemoved[2], circle2)
 
-    expect(canvas.isEmpty()).toEqual(true)
+    assert.equal(canvas.isEmpty(), true, "canvas should be empty")
   })
 
-  test("clearContext", function (assert) {
-    expect(typeof canvas.clearContext === "function").toBeTruthy()
-    expect(canvas.clearContext(canvas.contextContainer)).toEqual(canvas)
+  QUnit.test("clearContext", function (assert) {
+    assert.ok(typeof canvas.clearContext === "function")
+    assert.equal(
+      canvas.clearContext(canvas.contextContainer),
+      canvas,
+      "should be chainable"
+    )
   })
 
-  test("clear", function (assert) {
-    expect(typeof canvas.clear === "function").toBeTruthy()
+  QUnit.test("clear", function (assert) {
+    assert.ok(typeof canvas.clear === "function")
     var bg = new fabric.Rect({ width: 10, height: 20 })
     canvas.backgroundColor = "#FF0000"
     canvas.overlayColor = "#FF0000"
     canvas.backgroundImage = bg
     canvas.overlayImage = bg
-    expect(canvas.clear()).toEqual(canvas)
-    expect(canvas.getObjects().length).toEqual(0)
-    expect(canvas.backgroundColor).toEqual("")
-    expect(canvas.overlayColor).toEqual("")
-    expect(canvas.backgroundImage).toEqual(null)
-    expect(canvas.overlayImage).toEqual(null)
+    assert.equal(canvas.clear(), canvas, "should be chainable")
+    assert.equal(canvas.getObjects().length, 0, "clear remove all objects")
+    assert.equal(canvas.backgroundColor, "", "clear remove background color")
+    assert.equal(canvas.overlayColor, "", "clear remove overlay color")
+    assert.equal(canvas.backgroundImage, null, "clear remove bg image")
+    assert.equal(canvas.overlayImage, null, "clear remove overlay image")
   })
 
-  test("renderAll", function (assert) {
-    expect(typeof canvas.renderAll === "function").toBeTruthy()
-    expect(canvas).toEqual(canvas.renderAll())
+  QUnit.test("renderAll", function (assert) {
+    assert.ok(typeof canvas.renderAll === "function")
+    assert.equal(canvas, canvas.renderAll())
   })
 
-  // test('setDimensions', function(assert) {
+  // QUnit.test('setDimensions', function(assert) {
   //   assert.ok(typeof canvas.setDimensions === 'function');;
   //   canvas.setDimensions({ width: 4, height: 5 });
   //   assert.equal(canvas.getWidth(), 4);
@@ -515,23 +567,39 @@
   //   assert.equal(canvas.lowerCanvasEl.style.height, '4px');
   // });
 
-  test("toCanvasElement", function (assert) {
-    expect(typeof canvas.toCanvasElement === "function").toBeTruthy()
+  QUnit.test("toCanvasElement", function (assert) {
+    assert.ok(typeof canvas.toCanvasElement === "function")
     var canvasEl = canvas.toCanvasElement()
-    expect(canvasEl.width).toEqual(canvas.getWidth())
-    expect(canvasEl.height).toEqual(canvas.getHeight())
+    assert.equal(
+      canvasEl.width,
+      canvas.getWidth(),
+      "get a canvas of same width"
+    )
+    assert.equal(
+      canvasEl.height,
+      canvas.getHeight(),
+      "get a canvas of same height"
+    )
   })
 
-  test("toCanvasElement with multiplier", function (assert) {
-    expect(typeof canvas.toCanvasElement === "function").toBeTruthy()
+  QUnit.test("toCanvasElement with multiplier", function (assert) {
+    assert.ok(typeof canvas.toCanvasElement === "function")
     var multiplier = 2
     var canvasEl = canvas.toCanvasElement(multiplier)
-    expect(canvasEl.width).toEqual(canvas.getWidth() * multiplier)
-    expect(canvasEl.height).toEqual(canvas.getHeight() * multiplier)
+    assert.equal(
+      canvasEl.width,
+      canvas.getWidth() * multiplier,
+      "get a canvas of multiplied width"
+    )
+    assert.equal(
+      canvasEl.height,
+      canvas.getHeight() * multiplier,
+      "get a canvas of multiplied height"
+    )
   })
 
-  test("toDataURL", function (assert) {
-    expect(typeof canvas.toDataURL === "function").toBeTruthy()
+  QUnit.test("toDataURL", function (assert) {
+    assert.ok(typeof canvas.toDataURL === "function")
     var rect = new fabric.Rect({
       width: 100,
       height: 100,
@@ -543,13 +611,13 @@
     var dataURL = canvas.toDataURL()
     // don't compare actual data url, as it is often browser-dependent
     // this.assertIdentical(emptyImageCanvasData, canvas.toDataURL('png'));
-    expect(typeof dataURL).toEqual("string")
-    expect(dataURL.substring(0, 21)).toEqual("data:image/png;base64")
+    assert.equal(typeof dataURL, "string")
+    assert.equal(dataURL.substring(0, 21), "data:image/png;base64")
     //we can just compare that the dataUrl generated differs from the dataURl of an empty canvas.
-    expect(dataURL.substring(200, 210) !== "AAAAAAAAAA").toEqual(true)
+    assert.equal(dataURL.substring(200, 210) !== "AAAAAAAAAA", true)
   })
 
-  test(
+  QUnit.test(
     "toDataURL with enableRetinaScaling: true and no multiplier",
     function (assert) {
       var done = assert.async()
@@ -563,8 +631,16 @@
       c.cancelRequestedRender()
       var img = fabric.document.createElement("img")
       img.onload = function () {
-        expect(img.width).toEqual(c.width * fabric.devicePixelRatio)
-        expect(img.height).toEqual(c.height * fabric.devicePixelRatio)
+        assert.equal(
+          img.width,
+          c.width * fabric.devicePixelRatio,
+          "output width is bigger"
+        )
+        assert.equal(
+          img.height,
+          c.height * fabric.devicePixelRatio,
+          "output height is bigger"
+        )
         fabric.devicePixelRatio = 1
         done()
       }
@@ -572,7 +648,7 @@
     }
   )
 
-  test(
+  QUnit.test(
     "toDataURL with enableRetinaScaling: true and multiplier = 1",
     function (assert) {
       var done = assert.async()
@@ -586,8 +662,16 @@
       c.cancelRequestedRender()
       var img = fabric.document.createElement("img")
       img.onload = function () {
-        expect(img.width).toEqual(c.width * fabric.devicePixelRatio)
-        expect(img.height).toEqual(c.height * fabric.devicePixelRatio)
+        assert.equal(
+          img.width,
+          c.width * fabric.devicePixelRatio,
+          "output width is bigger"
+        )
+        assert.equal(
+          img.height,
+          c.height * fabric.devicePixelRatio,
+          "output height is bigger"
+        )
         fabric.devicePixelRatio = 1
         done()
       }
@@ -595,7 +679,7 @@
     }
   )
 
-  test(
+  QUnit.test(
     "toDataURL with enableRetinaScaling: true and multiplier = 3",
     function (assert) {
       var done = assert.async()
@@ -609,8 +693,16 @@
       c.cancelRequestedRender()
       var img = fabric.document.createElement("img")
       img.onload = function () {
-        expect(img.width).toEqual(c.width * fabric.devicePixelRatio * 3)
-        expect(img.height).toEqual(c.height * fabric.devicePixelRatio * 3)
+        assert.equal(
+          img.width,
+          c.width * fabric.devicePixelRatio * 3,
+          "output width is bigger by 6"
+        )
+        assert.equal(
+          img.height,
+          c.height * fabric.devicePixelRatio * 3,
+          "output height is bigger by 6"
+        )
         fabric.devicePixelRatio = 1
         done()
       }
@@ -618,7 +710,7 @@
     }
   )
 
-  test(
+  QUnit.test(
     "toDataURL with enableRetinaScaling: false and no multiplier",
     function (assert) {
       var done = assert.async()
@@ -632,8 +724,8 @@
       c.cancelRequestedRender()
       var img = fabric.document.createElement("img")
       img.onload = function () {
-        expect(img.width).toEqual(c.width)
-        expect(img.height).toEqual(c.height)
+        assert.equal(img.width, c.width, "output width is not bigger")
+        assert.equal(img.height, c.height, "output height is not bigger")
         fabric.devicePixelRatio = 1
         done()
       }
@@ -641,7 +733,7 @@
     }
   )
 
-  test(
+  QUnit.test(
     "toDataURL with enableRetinaScaling: false and multiplier = 1",
     function (assert) {
       var done = assert.async()
@@ -655,8 +747,8 @@
       c.cancelRequestedRender()
       var img = fabric.document.createElement("img")
       img.onload = function () {
-        expect(img.width).toEqual(c.width)
-        expect(img.height).toEqual(c.height)
+        assert.equal(img.width, c.width, "output width is not bigger")
+        assert.equal(img.height, c.height, "output height is not bigger")
         fabric.devicePixelRatio = 1
         done()
       }
@@ -664,7 +756,7 @@
     }
   )
 
-  test(
+  QUnit.test(
     "toDataURL with enableRetinaScaling: false and multiplier = 3",
     function (assert) {
       var done = assert.async()
@@ -678,8 +770,8 @@
       c.cancelRequestedRender()
       var img = fabric.document.createElement("img")
       img.onload = function () {
-        expect(img.width).toEqual(c.width * 3)
-        expect(img.height).toEqual(c.height * 3)
+        assert.equal(img.width, c.width * 3, "output width is bigger by 3")
+        assert.equal(img.height, c.height * 3, "output height is bigger by 3")
         fabric.devicePixelRatio = 1
         done()
       }
@@ -687,7 +779,7 @@
     }
   )
 
-  test("toDataURL with enableRetinaScaling: false", function (assert) {
+  QUnit.test("toDataURL with enableRetinaScaling: false", function (assert) {
     var done = assert.async()
     fabric.devicePixelRatio = 2
     var c = new fabric.StaticCanvas(null, {
@@ -699,27 +791,27 @@
     c.cancelRequestedRender()
     var img = fabric.document.createElement("img")
     img.onload = function () {
-      expect(img.width).toEqual(c.width)
-      expect(img.height).toEqual(c.height)
+      assert.equal(img.width, c.width, "output width is bigger")
+      assert.equal(img.height, c.height, "output height is bigger")
       fabric.devicePixelRatio = 1
       done()
     }
     img.src = dataUrl
   })
 
-  test("toDataURL jpeg", function (assert) {
+  QUnit.test("toDataURL jpeg", function (assert) {
     try {
       var dataURL = canvas.toDataURL({ format: "jpeg" })
-      expect(dataURL.substring(0, 22)).toEqual("data:image/jpeg;base64")
+      assert.equal(dataURL.substring(0, 22), "data:image/jpeg;base64")
     } catch (err) {
       // node-canvas does not support jpeg data urls
-      expect(true).toBeTruthy()
+      assert.ok(true)
     }
   })
 
-  test("toDataURL cropping", function (assert) {
+  QUnit.test("toDataURL cropping", function (assert) {
     var done = assert.async()
-    expect(typeof canvas.toDataURL === "function").toBeTruthy()
+    assert.ok(typeof canvas.toDataURL === "function")
     var croppingWidth = 75,
       croppingHeight = 50,
       dataURL = canvas.toDataURL({
@@ -728,163 +820,278 @@
       })
 
     fabric.Image.fromURL(dataURL, function (img) {
-      expect(img.width).toEqual(croppingWidth)
-      expect(img.height).toEqual(croppingHeight)
+      assert.equal(
+        img.width,
+        croppingWidth,
+        "Width of exported image should correspond to cropping width"
+      )
+      assert.equal(
+        img.height,
+        croppingHeight,
+        "Height of exported image should correspond to cropping height"
+      )
       done()
     })
   })
 
-  test("centerObjectH", function (assert) {
-    expect(typeof canvas.centerObjectH === "function").toBeTruthy()
+  QUnit.test("centerObjectH", function (assert) {
+    assert.ok(typeof canvas.centerObjectH === "function")
     var rect = makeRect({ left: 102, top: 202 })
     canvas.add(rect)
-    expect(canvas.centerObjectH(rect)).toEqual(canvas)
-    expect(rect.getCenterPoint().x).toEqual(canvas.width / 2)
+    assert.equal(canvas.centerObjectH(rect), canvas, "should be chainable")
+    assert.equal(
+      rect.getCenterPoint().x,
+      canvas.width / 2,
+      "object's \"center.y\" property should correspond to canvas element's center"
+    )
     canvas.setZoom(4)
-    expect(rect.getCenterPoint().x).toEqual(canvas.height / 2)
+    assert.equal(
+      rect.getCenterPoint().x,
+      canvas.height / 2,
+      "object's \"center.x\" property should correspond to canvas element's center when canvas is transformed"
+    )
     canvas.setZoom(1)
   })
 
-  test("centerObjectV", function (assert) {
-    expect(typeof canvas.centerObjectV === "function").toBeTruthy()
+  QUnit.test("centerObjectV", function (assert) {
+    assert.ok(typeof canvas.centerObjectV === "function")
     var rect = makeRect({ left: 102, top: 202 })
     canvas.add(rect)
-    expect(canvas.centerObjectV(rect)).toEqual(canvas)
-    expect(rect.getCenterPoint().y).toEqual(canvas.height / 2)
+    assert.equal(canvas.centerObjectV(rect), canvas, "should be chainable")
+    assert.equal(
+      rect.getCenterPoint().y,
+      canvas.height / 2,
+      "object's \"center.y\" property should correspond to canvas element's center"
+    )
     canvas.setZoom(2)
-    expect(rect.getCenterPoint().y).toEqual(canvas.height / 2)
+    assert.equal(
+      rect.getCenterPoint().y,
+      canvas.height / 2,
+      "object's \"center.y\" property should correspond to canvas element's center when canvas is transformed"
+    )
   })
 
-  test("centerObject", function (assert) {
-    expect(typeof canvas.centerObject === "function").toBeTruthy()
+  QUnit.test("centerObject", function (assert) {
+    assert.ok(typeof canvas.centerObject === "function")
     var rect = makeRect({ left: 102, top: 202 })
     canvas.add(rect)
-    expect(canvas.centerObject(rect)).toEqual(canvas)
+    assert.equal(canvas.centerObject(rect), canvas, "should be chainable")
 
-    expect(rect.getCenterPoint().y).toEqual(canvas.height / 2)
-    expect(rect.getCenterPoint().x).toEqual(canvas.height / 2)
+    assert.equal(
+      rect.getCenterPoint().y,
+      canvas.height / 2,
+      "object's \"center.y\" property should correspond to canvas element's center"
+    )
+    assert.equal(
+      rect.getCenterPoint().x,
+      canvas.height / 2,
+      "object's \"center.x\" property should correspond to canvas element's center"
+    )
     canvas.setZoom(4)
-    expect(rect.getCenterPoint().y).toEqual(canvas.height / 2)
-    expect(rect.getCenterPoint().x).toEqual(canvas.height / 2)
+    assert.equal(
+      rect.getCenterPoint().y,
+      canvas.height / 2,
+      "object's \"center.y\" property should correspond to canvas element's center when canvas is transformed"
+    )
+    assert.equal(
+      rect.getCenterPoint().x,
+      canvas.height / 2,
+      "object's \"center.x\" property should correspond to canvas element's center when canvas is transformed"
+    )
     canvas.setZoom(1)
   })
 
-  test("viewportCenterObjectH", function (assert) {
-    expect(typeof canvas.viewportCenterObjectH === "function").toBeTruthy()
+  QUnit.test("viewportCenterObjectH", function (assert) {
+    assert.ok(typeof canvas.viewportCenterObjectH === "function")
     var rect = makeRect({ left: 102, top: 202 }),
       pan = 10
     canvas.viewportTransform = [1, 0, 0, 1, 0, 0]
     canvas.add(rect)
     var oldY = rect.top
-    expect(canvas.viewportCenterObjectH(rect)).toEqual(canvas)
-    expect(rect.getCenterPoint().x).toEqual(canvas.width / 2)
-    expect(rect.top).toEqual(oldY)
+    assert.equal(
+      canvas.viewportCenterObjectH(rect),
+      canvas,
+      "should be chainable"
+    )
+    assert.equal(
+      rect.getCenterPoint().x,
+      canvas.width / 2,
+      "object's \"center.x\" property should correspond to canvas element's center when canvas is not transformed"
+    )
+    assert.equal(rect.top, oldY, 'object\'s "top" should not change')
     canvas.setZoom(2)
     canvas.viewportCenterObjectH(rect)
-    expect(rect.getCenterPoint().x).toEqual(canvas.width / (2 * canvas.getZoom()))
-    expect(rect.top).toEqual(oldY)
+    assert.equal(
+      rect.getCenterPoint().x,
+      canvas.width / (2 * canvas.getZoom()),
+      'object\'s "center.x" property should correspond to viewport center'
+    )
+    assert.equal(rect.top, oldY, 'object\'s "top" should not change')
     canvas.absolutePan({ x: pan, y: pan })
     canvas.viewportCenterObjectH(rect)
-    expect(rect.getCenterPoint().x).toEqual((canvas.width / 2 + pan) / canvas.getZoom())
-    expect(rect.top).toEqual(oldY)
+    assert.equal(
+      rect.getCenterPoint().x,
+      (canvas.width / 2 + pan) / canvas.getZoom(),
+      'object\'s "center.x" property should correspond to viewport center'
+    )
+    assert.equal(rect.top, oldY, 'object\'s "top" should not change')
   })
 
-  test("viewportCenterObjectV", function (assert) {
-    expect(typeof canvas.viewportCenterObjectV === "function").toBeTruthy()
+  QUnit.test("viewportCenterObjectV", function (assert) {
+    assert.ok(typeof canvas.viewportCenterObjectV === "function")
     var rect = makeRect({ left: 102, top: 202 }),
       pan = 10
     canvas.viewportTransform = [1, 0, 0, 1, 0, 0]
     canvas.add(rect)
     var oldX = rect.left
-    expect(canvas.viewportCenterObjectV(rect)).toEqual(canvas)
-    expect(rect.getCenterPoint().y).toEqual(canvas.height / 2)
-    expect(rect.left).toEqual(oldX)
+    assert.equal(
+      canvas.viewportCenterObjectV(rect),
+      canvas,
+      "should be chainable"
+    )
+    assert.equal(
+      rect.getCenterPoint().y,
+      canvas.height / 2,
+      "object's \"center.y\" property should correspond to canvas element's center when canvas is not transformed"
+    )
+    assert.equal(rect.left, oldX, "x position did not change")
     canvas.setZoom(2)
     canvas.viewportCenterObjectV(rect)
-    expect(rect.getCenterPoint().y).toEqual(canvas.height / (2 * canvas.getZoom()))
-    expect(rect.left).toEqual(oldX)
+    assert.equal(
+      rect.getCenterPoint().y,
+      canvas.height / (2 * canvas.getZoom()),
+      'object\'s "center.y" property should correspond to viewport center'
+    )
+    assert.equal(rect.left, oldX, "x position did not change")
     canvas.absolutePan({ x: pan, y: pan })
     canvas.viewportCenterObjectV(rect)
-    expect(rect.getCenterPoint().y).toEqual((canvas.height / 2 + pan) / canvas.getZoom())
-    expect(rect.left).toEqual(oldX)
+    assert.equal(
+      rect.getCenterPoint().y,
+      (canvas.height / 2 + pan) / canvas.getZoom(),
+      'object\'s "top" property should correspond to viewport center'
+    )
+    assert.equal(rect.left, oldX, "x position did not change")
   })
 
-  test("viewportCenterObject", function (assert) {
-    expect(typeof canvas.viewportCenterObject === "function").toBeTruthy()
+  QUnit.test("viewportCenterObject", function (assert) {
+    assert.ok(typeof canvas.viewportCenterObject === "function")
     var rect = makeRect({ left: 102, top: 202 }),
       pan = 10
     canvas.viewportTransform = [1, 0, 0, 1, 0, 0]
     canvas.add(rect)
-    expect(canvas.viewportCenterObject(rect)).toEqual(canvas)
-    expect(rect.getCenterPoint().y).toEqual(canvas.height / 2)
-    expect(rect.getCenterPoint().x).toEqual(canvas.width / 2)
+    assert.equal(
+      canvas.viewportCenterObject(rect),
+      canvas,
+      "should be chainable"
+    )
+    assert.equal(
+      rect.getCenterPoint().y,
+      canvas.height / 2,
+      "object's \"center.y\" property should correspond to canvas element's center when canvas is not transformed"
+    )
+    assert.equal(
+      rect.getCenterPoint().x,
+      canvas.width / 2,
+      "object's \"center.x\" property should correspond to canvas element's center when canvas is not transformed"
+    )
 
     canvas.setZoom(2)
     canvas.viewportCenterObject(rect)
-    expect(rect.getCenterPoint().y).toEqual(canvas.height / (2 * canvas.getZoom()))
-    expect(rect.getCenterPoint().x).toEqual(canvas.width / (2 * canvas.getZoom()))
+    assert.equal(
+      rect.getCenterPoint().y,
+      canvas.height / (2 * canvas.getZoom()),
+      'object\'s "center.y" property should correspond to viewport center'
+    )
+    assert.equal(
+      rect.getCenterPoint().x,
+      canvas.width / (2 * canvas.getZoom()),
+      'object\'s "center.x" property should correspond to viewport center'
+    )
 
     canvas.absolutePan({ x: pan, y: pan })
     canvas.viewportCenterObject(rect)
-    expect(rect.getCenterPoint().y).toEqual((canvas.height / 2 + pan) / canvas.getZoom())
-    expect(rect.getCenterPoint().x).toEqual((canvas.width / 2 + pan) / canvas.getZoom())
+    assert.equal(
+      rect.getCenterPoint().y,
+      (canvas.height / 2 + pan) / canvas.getZoom(),
+      'object\'s "center.y" property should correspond to viewport center'
+    )
+    assert.equal(
+      rect.getCenterPoint().x,
+      (canvas.width / 2 + pan) / canvas.getZoom(),
+      'object\'s "center.x" property should correspond to viewport center'
+    )
     canvas.viewportTransform = [1, 0, 0, 1, 0, 0]
   })
 
-  test("straightenObject", function (assert) {
-    expect(typeof canvas.straightenObject === "function").toBeTruthy()
+  QUnit.test("straightenObject", function (assert) {
+    assert.ok(typeof canvas.straightenObject === "function")
     var rect = makeRect({ angle: 10 })
     canvas.add(rect)
-    expect(canvas.straightenObject(rect)).toEqual(canvas)
-    expect(rect.get("angle")).toEqual(0)
+    assert.equal(canvas.straightenObject(rect), canvas, "should be chainable")
+    assert.equal(rect.get("angle"), 0, "angle should be coerced to 0 (from 10)")
 
     rect.rotate("60")
     canvas.straightenObject(rect)
-    expect(rect.get("angle")).toEqual(90)
+    assert.equal(
+      rect.get("angle"),
+      90,
+      "angle should be coerced to 90 (from 60)"
+    )
 
     rect.rotate("100")
     canvas.straightenObject(rect)
-    expect(rect.get("angle")).toEqual(90)
+    assert.equal(
+      rect.get("angle"),
+      90,
+      "angle should be coerced to 90 (from 100)"
+    )
   })
 
-  test("toSVG", function (assert) {
-    expect(typeof canvas.toSVG === "function").toBeTruthy()
+  QUnit.test("toSVG", function (assert) {
+    assert.ok(typeof canvas.toSVG === "function")
     canvas.clear()
     canvas.viewportTransform = [1, 0, 0, 1, 0, 0]
     var svg = canvas.toSVG()
-    expect(svg).toEqual(CANVAS_SVG)
+    assert.equal(svg, CANVAS_SVG)
   })
 
-  test("toSVG with different encoding (ISO-8859-1)", function (assert) {
-    expect(typeof canvas.toSVG === "function").toBeTruthy()
+  QUnit.test("toSVG with different encoding (ISO-8859-1)", function (assert) {
+    assert.ok(typeof canvas.toSVG === "function")
     canvas.clear()
     canvas.viewportTransform = [1, 0, 0, 1, 0, 0]
     var svg = canvas.toSVG({ encoding: "ISO-8859-1" })
     var svgDefaultEncoding = canvas.toSVG()
-    expect(svg != svgDefaultEncoding).toBeTruthy()
-    expect(svg).toEqual(CANVAS_SVG.replace('encoding="UTF-8"', 'encoding="ISO-8859-1"'))
+    assert.ok(svg != svgDefaultEncoding)
+    assert.equal(
+      svg,
+      CANVAS_SVG.replace('encoding="UTF-8"', 'encoding="ISO-8859-1"')
+    )
   })
 
-  test("toSVG without preamble", function (assert) {
-    expect(typeof canvas.toSVG === "function").toBeTruthy()
+  QUnit.test("toSVG without preamble", function (assert) {
+    assert.ok(typeof canvas.toSVG === "function")
     var withPreamble = canvas.toSVG()
     var withoutPreamble = canvas.toSVG({ suppressPreamble: true })
-    expect(withPreamble != withoutPreamble).toBeTruthy()
-    expect(withoutPreamble.slice(0, 4)).toEqual("<svg")
+    assert.ok(withPreamble != withoutPreamble)
+    assert.equal(
+      withoutPreamble.slice(0, 4),
+      "<svg",
+      "svg should start with root node when premable is suppressed"
+    )
   })
 
-  test("toSVG with viewBox", function (assert) {
-    expect(typeof canvas.toSVG === "function").toBeTruthy()
+  QUnit.test("toSVG with viewBox", function (assert) {
+    assert.ok(typeof canvas.toSVG === "function")
     canvas.clear()
 
     var svg = canvas.toSVG({
       viewBox: { x: 100, y: 100, width: 300, height: 300 }
     })
-    expect(svg).toEqual(CANVAS_SVG_VIEWBOX)
+    assert.equal(svg, CANVAS_SVG_VIEWBOX)
   })
 
-  test("toSVG with reviver", function (assert) {
-    expect(typeof canvas.toSVG === "function").toBeTruthy()
+  QUnit.test("toSVG with reviver", function (assert) {
+    assert.ok(typeof canvas.toSVG === "function")
     canvas.clear()
 
     var circle = new fabric.Circle(),
@@ -930,13 +1137,13 @@
     }
 
     canvas.toSVG(null, reviver)
-    expect(reviverCount).toEqual(14)
+    assert.equal(reviverCount, 14)
 
     canvas.renderOnAddRemove = true
   })
 
-  test("toSVG with reviver 2", function (assert) {
-    expect(typeof canvas.toSVG === "function").toBeTruthy()
+  QUnit.test("toSVG with reviver 2", function (assert) {
+    assert.ok(typeof canvas.toSVG === "function")
     canvas.clear()
 
     var circle = new fabric.Circle(),
@@ -986,14 +1193,18 @@
     }
 
     canvas.toSVG(null, reviver)
-    expect(reviverCount).toEqual(len + 2)
+    assert.equal(
+      reviverCount,
+      len + 2,
+      "reviver should include background and overlay image"
+    )
     canvas.setBackgroundImage(null)
     canvas.setOverlayImage(null)
     canvas.renderOnAddRemove = true
   })
 
-  test("toSVG with exclude from export", function (assert) {
-    expect(typeof canvas.toSVG === "function").toBeTruthy()
+  QUnit.test("toSVG with exclude from export", function (assert) {
+    assert.ok(typeof canvas.toSVG === "function")
     canvas.clear()
 
     var circle = new fabric.Circle({ excludeFromExport: true }),
@@ -1039,11 +1250,15 @@
     }
 
     canvas.toSVG(null, reviver)
-    expect(reviverCount).toEqual(len - 2)
+    assert.equal(
+      reviverCount,
+      len - 2,
+      "reviver should not include objects with excludeFromExport"
+    )
     canvas.renderOnAddRemove = true
   })
 
-  test("toSVG with a clipPath", function (assert) {
+  QUnit.test("toSVG with a clipPath", function (assert) {
     var canvasClip = new fabric.StaticCanvas(null, {
       width: 400,
       height: 400,
@@ -1056,10 +1271,10 @@
       '<?xml version="1.0" encoding="UTF-8" standalone="no" ?>\n<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">\n<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" version="1.1" width="400" height="400" viewBox="0 0 400 400" xml:space="preserve">\n<desc>Created with Fabric.js ' +
       fabric.version +
       '</desc>\n<defs>\n<clipPath id="CLIPPATH_0" >\n\t<rect transform="matrix(1 0 0 1 100.5 100.5)" x="-100" y="-100" rx="0" ry="0" width="200" height="200" />\n</clipPath>\n</defs>\n<g clip-path="url(#CLIPPATH_0)" >\n<g transform="matrix(1 0 0 1 200.5 200.5)"  >\n<circle style="stroke: none; stroke-width: 1; stroke-dasharray: none; stroke-linecap: butt; stroke-dashoffset: 0; stroke-linejoin: miter; stroke-miterlimit: 4; fill: rgb(0,0,0); fill-rule: nonzero; opacity: 1;"  cx="0" cy="0" r="200" />\n</g>\n</g>\n</svg>'
-    expect(svg).toEqual(expectedSVG)
+    assert.equal(svg, expectedSVG, "SVG with clipPath should match")
   })
 
-  test("toSVG with exclude from export background", function (assert) {
+  QUnit.test("toSVG with exclude from export background", function (assert) {
     var image = fabric.document.createElement("img"),
       imageBG = new fabric.Image(image, { width: 0, height: 0 }),
       imageOL = new fabric.Image(image, { width: 0, height: 0 })
@@ -1072,7 +1287,7 @@
       fabric.version +
       '</desc>\n<defs>\n</defs>\n<g transform="matrix(1 0 0 1 0 0)"  >\n\t<image style="stroke: none; stroke-width: 0; stroke-dasharray: none; stroke-linecap: butt; stroke-dashoffset: 0; stroke-linejoin: miter; stroke-miterlimit: 4; fill: rgb(0,0,0); fill-rule: nonzero; opacity: 1;"  xlink:href="" x="0" y="0" width="0" height="0"></image>\n</g>\n<g transform="matrix(1 0 0 1 0 0)"  >\n\t<image style="stroke: none; stroke-width: 0; stroke-dasharray: none; stroke-linecap: butt; stroke-dashoffset: 0; stroke-linejoin: miter; stroke-miterlimit: 4; fill: rgb(0,0,0); fill-rule: nonzero; opacity: 1;"  xlink:href="" x="0" y="0" width="0" height="0"></image>\n</g>\n</svg>'
     var svg1 = canvas.toSVG()
-    expect(svg1).toEqual(expectedSVG)
+    assert.equal(svg1, expectedSVG, "svg with bg and overlay do not match")
     imageBG.excludeFromExport = true
     imageOL.excludeFromExport = true
     var expectedSVG2 =
@@ -1080,25 +1295,32 @@
       fabric.version +
       "</desc>\n<defs>\n</defs>\n</svg>"
     var svg2 = canvas.toSVG()
-    expect(svg2).toEqual(expectedSVG2)
+    assert.equal(svg2, expectedSVG2, "svg without bg and overlay do not match")
     canvas.backgroundImage = null
     canvas.overlayImage = null
     canvas.renderOnAddRemove = true
   })
 
-  test("toJSON", function (assert) {
-    expect(typeof canvas.toJSON === "function").toBeTruthy()
-    expect(JSON.stringify(canvas.toJSON())).toEqual('{"version":"' + fabric.version + '","objects":[]}')
+  QUnit.test("toJSON", function (assert) {
+    assert.ok(typeof canvas.toJSON === "function")
+    assert.equal(
+      JSON.stringify(canvas.toJSON()),
+      '{"version":"' + fabric.version + '","objects":[]}'
+    )
     canvas.backgroundColor = "#ff5555"
     canvas.overlayColor = "rgba(0,0,0,0.2)"
-    expect(JSON.stringify(canvas.toJSON())).toEqual('{"version":"' +
-      fabric.version +
-      '","objects":[],"background":"#ff5555","overlay":"rgba(0,0,0,0.2)"}')
+    assert.equal(
+      JSON.stringify(canvas.toJSON()),
+      '{"version":"' +
+        fabric.version +
+        '","objects":[],"background":"#ff5555","overlay":"rgba(0,0,0,0.2)"}',
+      "`background` and `overlay` value should be reflected in json"
+    )
     canvas.add(makeRect())
-    expect(JSON.stringify(canvas.toJSON())).toEqual(RECT_JSON)
+    assert.deepEqual(JSON.stringify(canvas.toJSON()), RECT_JSON)
   })
 
-  test("toJSON custom properties non-existence check", function (assert) {
+  QUnit.test("toJSON custom properties non-existence check", function (assert) {
     var rect = new fabric.Rect({ width: 10, height: 20 })
     rect.padding = 123
     canvas.add(rect)
@@ -1107,16 +1329,25 @@
     canvas.bar = 456
 
     var data = canvas.toJSON(["padding", "foo", "bar", "baz"])
-    expect("padding" in data.objects[0]).toBeTruthy()
-    expect("foo" in data.objects[0]).toBeTruthy()
-    expect(!("bar" in data.objects[0])).toBeTruthy()
-    expect(!("baz" in data.objects[0])).toBeTruthy()
-    expect(!("foo" in data)).toBeTruthy()
-    expect(!("baz" in data)).toBeTruthy()
-    expect("bar" in data).toBeTruthy()
+    assert.ok("padding" in data.objects[0])
+    assert.ok(
+      "foo" in data.objects[0],
+      "foo shouldn't be included if it's not in an object"
+    )
+    assert.ok(
+      !("bar" in data.objects[0]),
+      "bar shouldn't be included if it's not in an object"
+    )
+    assert.ok(
+      !("baz" in data.objects[0]),
+      "bar shouldn't be included if it's not in an object"
+    )
+    assert.ok(!("foo" in data))
+    assert.ok(!("baz" in data))
+    assert.ok("bar" in data)
   })
 
-  test("toJSON backgroundImage", function (assert) {
+  QUnit.test("toJSON backgroundImage", function (assert) {
     var done = assert.async()
     createImageObject(function (image) {
       canvas.backgroundImage = image
@@ -1124,7 +1355,7 @@
       var json = canvas.toJSON()
 
       fixImageDimension(json.backgroundImage)
-      expect(json.backgroundImage).toEqual(REFERENCE_IMG_OBJECT)
+      assert.deepEqual(json.backgroundImage, REFERENCE_IMG_OBJECT)
 
       canvas.backgroundImage = null
 
@@ -1132,19 +1363,19 @@
     })
   })
 
-  test("toJSON backgroundImage with custom props", function (assert) {
+  QUnit.test("toJSON backgroundImage with custom props", function (assert) {
     var done = assert.async()
     createImageObject(function (image) {
       canvas.backgroundImage = image
       image.custom = "yes"
       var json = canvas.toJSON(["custom"])
-      expect(json.backgroundImage.custom).toEqual("yes")
+      assert.equal(json.backgroundImage.custom, "yes")
       canvas.backgroundImage = null
       done()
     })
   })
 
-  test("toJSON overlayImage", function (assert) {
+  QUnit.test("toJSON overlayImage", function (assert) {
     var done = assert.async()
     createImageObject(function (image) {
       canvas.overlayImage = image
@@ -1152,7 +1383,7 @@
       var json = canvas.toJSON()
 
       fixImageDimension(json.overlayImage)
-      expect(json.overlayImage).toEqual(REFERENCE_IMG_OBJECT)
+      assert.deepEqual(json.overlayImage, REFERENCE_IMG_OBJECT)
 
       canvas.overlayImage = null
 
@@ -1160,41 +1391,41 @@
     })
   })
 
-  test("toJSON overlayImage with custom props", function (assert) {
+  QUnit.test("toJSON overlayImage with custom props", function (assert) {
     var done = assert.async()
     createImageObject(function (image) {
       canvas.overlayImage = image
       image.custom = "yes"
       var json = canvas.toJSON(["custom"])
-      expect(json.overlayImage.custom).toEqual("yes")
+      assert.equal(json.overlayImage.custom, "yes")
       canvas.overlayImage = null
       done()
     })
   })
 
-  test("toDatalessJSON", function (assert) {
+  QUnit.test("toDatalessJSON", function (assert) {
     var path = new fabric.Path("M 100 100 L 300 100 L 200 300 z", {
       sourcePath: "http://example.com/"
     })
     canvas.add(path)
-    expect(JSON.stringify(canvas.toDatalessJSON())).toEqual(PATH_DATALESS_JSON)
+    assert.equal(JSON.stringify(canvas.toDatalessJSON()), PATH_DATALESS_JSON)
   })
 
-  test("toObject", function (assert) {
-    expect(typeof canvas.toObject === "function").toBeTruthy()
+  QUnit.test("toObject", function (assert) {
+    assert.ok(typeof canvas.toObject === "function")
     var expectedObject = {
       version: fabric.version,
       objects: canvas.getObjects()
     }
-    expect(expectedObject).toEqual(canvas.toObject())
+    assert.deepEqual(expectedObject, canvas.toObject())
 
     var rect = makeRect()
     canvas.add(rect)
 
-    expect(canvas.toObject().objects[0].type).toEqual(rect.type)
+    assert.equal(canvas.toObject().objects[0].type, rect.type)
   })
 
-  test("toObject non includeDefaultValues", function (assert) {
+  QUnit.test("toObject non includeDefaultValues", function (assert) {
     canvas.includeDefaultValues = false
     var rect = makeRect()
     canvas.add(rect)
@@ -1207,23 +1438,35 @@
       top: 0,
       left: 0
     }
-    expect(cObject.objects[0]).toEqual(expectedRect)
+    assert.deepEqual(
+      cObject.objects[0],
+      expectedRect,
+      "Rect should be exported withoud defaults"
+    )
     canvas.includeDefaultValues = true
   })
 
-  test("toObject excludeFromExport", function (assert) {
+  QUnit.test("toObject excludeFromExport", function (assert) {
     var rect = makeRect(),
       rect2 = makeRect(),
       rect3 = makeRect()
     canvas.clear()
     canvas.add(rect, rect2, rect3)
-    expect(canvas.toObject().objects.length).toEqual(3)
+    assert.equal(
+      canvas.toObject().objects.length,
+      3,
+      "all objects get exported"
+    )
     rect.excludeFromExport = true
     rect2.excludeFromExport = true
-    expect(canvas.toObject().objects.length).toEqual(1)
+    assert.equal(
+      canvas.toObject().objects.length,
+      1,
+      "only one object gets exported"
+    )
   })
 
-  test("toObject excludeFromExport bgImage overlay", function (assert) {
+  QUnit.test("toObject excludeFromExport bgImage overlay", function (assert) {
     var rect = makeRect(),
       rect2 = makeRect(),
       rect3 = makeRect()
@@ -1234,31 +1477,43 @@
     var rectToObject = rect.toObject()
     var rect2ToObject = rect2.toObject()
     var canvasToObject = canvas.toObject()
-    expect(canvasToObject.backgroundImage).toEqual(rectToObject)
-    expect(canvasToObject.overlayImage).toEqual(rect2ToObject)
+    assert.deepEqual(
+      canvasToObject.backgroundImage,
+      rectToObject,
+      "background exported"
+    )
+    assert.deepEqual(
+      canvasToObject.overlayImage,
+      rect2ToObject,
+      "overlay exported"
+    )
     rect.excludeFromExport = true
     rect2.excludeFromExport = true
     canvasToObject = canvas.toObject()
-    expect(canvasToObject.backgroundImage).toEqual(undefined)
-    expect(canvasToObject.overlayImage).toEqual(undefined)
+    assert.equal(
+      canvasToObject.backgroundImage,
+      undefined,
+      "background not exported"
+    )
+    assert.equal(canvasToObject.overlayImage, undefined, "overlay not exported")
   })
 
-  test("toDatalessObject", function (assert) {
-    expect(typeof canvas.toDatalessObject === "function").toBeTruthy()
+  QUnit.test("toDatalessObject", function (assert) {
+    assert.ok(typeof canvas.toDatalessObject === "function")
     var expectedObject = {
       version: fabric.version,
       objects: canvas.getObjects()
     }
-    expect(expectedObject).toEqual(canvas.toDatalessObject())
+    assert.deepEqual(expectedObject, canvas.toDatalessObject())
 
     var rect = makeRect()
     canvas.add(rect)
 
-    expect(canvas.toObject().objects[0].type).toEqual(rect.type)
+    assert.equal(canvas.toObject().objects[0].type, rect.type)
     // TODO (kangax): need to test this method with fabric.Path to ensure that path is not populated
   })
 
-  test("toObject with additional properties", function (assert) {
+  QUnit.test("toObject with additional properties", function (assert) {
     canvas.freeDrawingColor = "red"
     canvas.foobar = 123
 
@@ -1268,116 +1523,139 @@
       freeDrawingColor: "red",
       foobar: 123
     }
-    expect(expectedObject).toEqual(canvas.toObject(["freeDrawingColor", "foobar"]))
+    assert.deepEqual(
+      expectedObject,
+      canvas.toObject(["freeDrawingColor", "foobar"])
+    )
     var rect = makeRect()
     rect.foobar = 456
     canvas.add(rect)
 
-    expect(!("foobar" in canvas.toObject(["smthelse"]).objects[0])).toBeTruthy()
-    expect("foobar" in canvas.toObject(["foobar"]).objects[0]).toBeTruthy()
+    assert.ok(!("foobar" in canvas.toObject(["smthelse"]).objects[0]))
+    assert.ok("foobar" in canvas.toObject(["foobar"]).objects[0])
   })
 
-  test("isEmpty", function (assert) {
-    expect(typeof canvas.isEmpty === "function").toBeTruthy()
-    expect(canvas.isEmpty()).toBeTruthy()
+  QUnit.test("isEmpty", function (assert) {
+    assert.ok(typeof canvas.isEmpty === "function")
+    assert.ok(canvas.isEmpty())
     canvas.add(makeRect())
-    expect(!canvas.isEmpty()).toBeTruthy()
+    assert.ok(!canvas.isEmpty())
   })
 
-  test("loadFromJSON with json string staticCanvas", function (assert) {
+  QUnit.test("loadFromJSON with json string staticCanvas", function (assert) {
     var done = assert.async()
-    expect(typeof canvas.loadFromJSON === "function").toBeTruthy()
+    assert.ok(typeof canvas.loadFromJSON === "function")
 
     canvas.loadFromJSON(PATH_JSON, function () {
       var obj = canvas.item(0)
 
-      expect(!canvas.isEmpty()).toBeTruthy()
-      expect(obj.type).toEqual("path")
-      expect(canvas.backgroundColor).toEqual("#ff5555")
+      assert.ok(!canvas.isEmpty(), "canvas is not empty")
+      assert.equal(obj.type, "path", "first object is a path object")
+      assert.equal(
+        canvas.backgroundColor,
+        "#ff5555",
+        "backgroundColor is populated properly"
+      )
 
-      expect(obj.get("left")).toEqual(268)
-      expect(obj.get("top")).toEqual(266)
-      expect(obj.get("width")).toEqual(49.803999999999995)
-      expect(obj.get("height")).toEqual(48.027)
-      expect(obj.get("fill")).toEqual("rgb(0,0,0)")
-      expect(obj.get("stroke")).toBe(null)
-      expect(obj.get("strokeWidth")).toBe(1)
-      expect(obj.get("scaleX")).toBe(1)
-      expect(obj.get("scaleY")).toBe(1)
-      expect(obj.get("angle")).toBe(0)
-      expect(obj.get("flipX")).toBe(false)
-      expect(obj.get("flipY")).toBe(false)
-      expect(obj.get("opacity")).toBe(1)
-      expect(obj.get("path").length > 0).toBeTruthy()
+      assert.equal(obj.get("left"), 268)
+      assert.equal(obj.get("top"), 266)
+      assert.equal(obj.get("width"), 49.803999999999995)
+      assert.equal(obj.get("height"), 48.027)
+      assert.equal(obj.get("fill"), "rgb(0,0,0)")
+      assert.strictEqual(obj.get("stroke"), null)
+      assert.strictEqual(obj.get("strokeWidth"), 1)
+      assert.strictEqual(obj.get("scaleX"), 1)
+      assert.strictEqual(obj.get("scaleY"), 1)
+      assert.strictEqual(obj.get("angle"), 0)
+      assert.strictEqual(obj.get("flipX"), false)
+      assert.strictEqual(obj.get("flipY"), false)
+      assert.strictEqual(obj.get("opacity"), 1)
+      assert.ok(obj.get("path").length > 0)
       done()
     })
   })
 
-  test("loadFromJSON with json object", function (assert) {
+  QUnit.test("loadFromJSON with json object", function (assert) {
     var done = assert.async()
-    expect(typeof canvas.loadFromJSON === "function").toBeTruthy()
+    assert.ok(typeof canvas.loadFromJSON === "function")
 
     canvas.loadFromJSON(JSON.parse(PATH_JSON), function () {
       var obj = canvas.item(0)
 
-      expect(!canvas.isEmpty()).toBeTruthy()
-      expect(obj.type).toEqual("path")
-      expect(canvas.backgroundColor).toEqual("#ff5555")
-      expect(canvas.overlayColor).toEqual("rgba(0,0,0,0.2)")
+      assert.ok(!canvas.isEmpty(), "canvas is not empty")
+      assert.equal(obj.type, "path", "first object is a path object")
+      assert.equal(
+        canvas.backgroundColor,
+        "#ff5555",
+        "backgroundColor is populated properly"
+      )
+      assert.equal(
+        canvas.overlayColor,
+        "rgba(0,0,0,0.2)",
+        "overlayColor is populated properly"
+      )
 
-      expect(obj.get("left")).toEqual(268)
-      expect(obj.get("top")).toEqual(266)
-      expect(obj.get("width")).toEqual(49.803999999999995)
-      expect(obj.get("height")).toEqual(48.027)
-      expect(obj.get("fill")).toEqual("rgb(0,0,0)")
-      expect(obj.get("stroke")).toBe(null)
-      expect(obj.get("strokeWidth")).toBe(1)
-      expect(obj.get("scaleX")).toBe(1)
-      expect(obj.get("scaleY")).toBe(1)
-      expect(obj.get("angle")).toBe(0)
-      expect(obj.get("flipX")).toBe(false)
-      expect(obj.get("flipY")).toBe(false)
-      expect(obj.get("opacity")).toBe(1)
+      assert.equal(obj.get("left"), 268)
+      assert.equal(obj.get("top"), 266)
+      assert.equal(obj.get("width"), 49.803999999999995)
+      assert.equal(obj.get("height"), 48.027)
+      assert.equal(obj.get("fill"), "rgb(0,0,0)")
+      assert.strictEqual(obj.get("stroke"), null)
+      assert.strictEqual(obj.get("strokeWidth"), 1)
+      assert.strictEqual(obj.get("scaleX"), 1)
+      assert.strictEqual(obj.get("scaleY"), 1)
+      assert.strictEqual(obj.get("angle"), 0)
+      assert.strictEqual(obj.get("flipX"), false)
+      assert.strictEqual(obj.get("flipY"), false)
+      assert.strictEqual(obj.get("opacity"), 1)
 
-      expect(obj.get("path").length > 0).toBeTruthy()
+      assert.ok(obj.get("path").length > 0)
       done()
     })
   })
 
-  test("loadFromJSON with json object without default values", function (
+  QUnit.test("loadFromJSON with json object without default values", function (
     assert
   ) {
     var done = assert.async()
-    expect(typeof canvas.loadFromJSON === "function").toBeTruthy()
+    assert.ok(typeof canvas.loadFromJSON === "function")
 
     canvas.loadFromJSON(JSON.parse(PATH_WITHOUT_DEFAULTS_JSON), function () {
       var obj = canvas.item(0)
 
-      expect(!canvas.isEmpty()).toBeTruthy()
-      expect(obj.type).toEqual("path")
-      expect(canvas.backgroundColor).toEqual("#ff5555")
-      expect(canvas.overlayColor).toEqual("rgba(0,0,0,0.2)")
+      assert.ok(!canvas.isEmpty(), "canvas is not empty")
+      assert.equal(obj.type, "path", "first object is a path object")
+      assert.equal(
+        canvas.backgroundColor,
+        "#ff5555",
+        "backgroundColor is populated properly"
+      )
+      assert.equal(
+        canvas.overlayColor,
+        "rgba(0,0,0,0.2)",
+        "overlayColor is populated properly"
+      )
 
-      expect(obj.get("left")).toEqual(268)
-      expect(obj.get("top")).toEqual(266)
-      expect(obj.get("width")).toEqual(49.803999999999995)
-      expect(obj.get("height")).toEqual(48.027)
-      expect(obj.get("fill")).toEqual("rgb(0,0,0)")
-      expect(obj.get("stroke")).toBe(null)
-      expect(obj.get("strokeWidth")).toBe(1)
-      expect(obj.get("scaleX")).toBe(1)
-      expect(obj.get("scaleY")).toBe(1)
-      expect(obj.get("angle")).toBe(0)
-      expect(obj.get("flipX")).toBe(false)
-      expect(obj.get("flipY")).toBe(false)
-      expect(obj.get("opacity")).toBe(1)
+      assert.equal(obj.get("left"), 268)
+      assert.equal(obj.get("top"), 266)
+      assert.equal(obj.get("width"), 49.803999999999995)
+      assert.equal(obj.get("height"), 48.027)
+      assert.equal(obj.get("fill"), "rgb(0,0,0)")
+      assert.strictEqual(obj.get("stroke"), null)
+      assert.strictEqual(obj.get("strokeWidth"), 1)
+      assert.strictEqual(obj.get("scaleX"), 1)
+      assert.strictEqual(obj.get("scaleY"), 1)
+      assert.strictEqual(obj.get("angle"), 0)
+      assert.strictEqual(obj.get("flipX"), false)
+      assert.strictEqual(obj.get("flipY"), false)
+      assert.strictEqual(obj.get("opacity"), 1)
 
-      expect(obj.get("path").length > 0).toBeTruthy()
+      assert.ok(obj.get("path").length > 0)
       done()
     })
   })
 
-  test("loadFromJSON with image background and color", function (assert) {
+  QUnit.test("loadFromJSON with image background and color", function (assert) {
     var done = assert.async()
     var serialized = JSON.parse(PATH_JSON)
     serialized.background = "green"
@@ -1387,14 +1665,14 @@
         '","filters":[],"crossOrigin":""}'
     )
     canvas.loadFromJSON(serialized, function () {
-      expect(!canvas.isEmpty()).toBeTruthy()
-      expect(canvas.backgroundColor).toEqual("green")
-      expect(canvas.backgroundImage instanceof fabric.Image).toBeTruthy()
+      assert.ok(!canvas.isEmpty(), "canvas is not empty")
+      assert.equal(canvas.backgroundColor, "green")
+      assert.ok(canvas.backgroundImage instanceof fabric.Image)
       done()
     })
   })
 
-  test("loadFromJSON custom properties", function (assert) {
+  QUnit.test("loadFromJSON custom properties", function (assert) {
     var done = assert.async()
     var rect = new fabric.Rect({ width: 10, height: 20 })
     rect.padding = 123
@@ -1405,48 +1683,48 @@
     var jsonWithoutFoo = JSON.stringify(canvas.toJSON(["padding"]))
     var jsonWithFoo = JSON.stringify(canvas.toJSON(["padding", "foo"]))
 
-    expect(jsonWithFoo).toEqual(RECT_JSON_WITH_PADDING)
-    expect(jsonWithoutFoo !== RECT_JSON_WITH_PADDING).toBeTruthy()
+    assert.equal(jsonWithFoo, RECT_JSON_WITH_PADDING)
+    assert.ok(jsonWithoutFoo !== RECT_JSON_WITH_PADDING)
 
     canvas.clear()
     canvas.loadFromJSON(jsonWithFoo, function () {
       var obj = canvas.item(0)
 
-      expect(obj.padding).toEqual(123)
-      expect(obj.foo).toEqual("bar")
+      assert.equal(obj.padding, 123, "padding on object is set properly")
+      assert.equal(obj.foo, "bar", '"foo" property on object is set properly')
       done()
     })
   })
 
-  test("loadFromJSON with text", function (assert) {
+  QUnit.test("loadFromJSON with text", function (assert) {
     var done = assert.async()
     var json =
       '{"objects":[{"type":"text","left":150,"top":200,"width":128,"height":64.32,"fill":"#000000","stroke":"","strokeWidth":"","scaleX":0.8,"scaleY":0.8,"angle":0,"flipX":false,"flipY":false,"opacity":1,"text":"NAME HERE","fontSize":24,"fontWeight":"","fontFamily":"Delicious_500","fontStyle":"","lineHeight":"","textDecoration":"","textAlign":"center","path":"","strokeStyle":"","backgroundColor":""}],"background":"#ffffff"}'
     canvas.loadFromJSON(json, function () {
       canvas.renderAll()
 
-      expect("text").toEqual(canvas.item(0).type)
-      expect(150).toEqual(canvas.item(0).left)
-      expect(200).toEqual(canvas.item(0).top)
-      expect("NAME HERE").toEqual(canvas.item(0).text)
+      assert.equal("text", canvas.item(0).type)
+      assert.equal(150, canvas.item(0).left)
+      assert.equal(200, canvas.item(0).top)
+      assert.equal("NAME HERE", canvas.item(0).text)
 
       done()
     })
   })
 
-  test("loadFromJSON with clipPath", function (assert) {
+  QUnit.test("loadFromJSON with clipPath", function (assert) {
     var done = assert.async()
     var json =
       '{"clipPath": {"type":"text","left":150,"top":200,"width":128,"height":64.32,"fill":"#000000","stroke":"","strokeWidth":"","scaleX":0.8,"scaleY":0.8,"angle":0,"flipX":false,"flipY":false,"opacity":1,"text":"NAME HERE","fontSize":24,"fontWeight":"","fontFamily":"Delicious_500","fontStyle":"","lineHeight":"","textDecoration":"","textAlign":"center","path":"","strokeStyle":"","backgroundColor":""}}'
     canvas.loadFromJSON(json, function () {
       canvas.renderAll()
-      expect("text").toEqual(canvas.clipPath.type)
+      assert.equal("text", canvas.clipPath.type)
       done()
     })
   })
 
-  test("sendToBack", function (assert) {
-    expect(typeof canvas.sendToBack === "function").toBeTruthy()
+  QUnit.test("sendToBack", function (assert) {
+    assert.ok(typeof canvas.sendToBack === "function")
 
     var rect1 = makeRect(),
       rect2 = makeRect(),
@@ -1455,17 +1733,21 @@
     canvas.add(rect1, rect2, rect3)
 
     canvas.sendToBack(rect3)
-    expect(canvas.item(0)).toEqual(rect3)
+    assert.equal(canvas.item(0), rect3, "third should now be the first one")
 
     canvas.sendToBack(rect2)
-    expect(canvas.item(0)).toEqual(rect2)
+    assert.equal(canvas.item(0), rect2, "second should now be the first one")
 
     canvas.sendToBack(rect2)
-    expect(canvas.item(0)).toEqual(rect2)
+    assert.equal(
+      canvas.item(0),
+      rect2,
+      "second should *still* be the first one"
+    )
   })
 
-  test("bringToFront", function (assert) {
-    expect(typeof canvas.bringToFront === "function").toBeTruthy()
+  QUnit.test("bringToFront", function (assert) {
+    assert.ok(typeof canvas.bringToFront === "function")
 
     var rect1 = makeRect(),
       rect2 = makeRect(),
@@ -1474,17 +1756,17 @@
     canvas.add(rect1, rect2, rect3)
 
     canvas.bringToFront(rect1)
-    expect(canvas.item(2)).toEqual(rect1)
+    assert.equal(canvas.item(2), rect1, "first should now be the last one")
 
     canvas.bringToFront(rect2)
-    expect(canvas.item(2)).toEqual(rect2)
+    assert.equal(canvas.item(2), rect2, "second should now be the last one")
 
     canvas.bringToFront(rect2)
-    expect(canvas.item(2)).toEqual(rect2)
+    assert.equal(canvas.item(2), rect2, "second should *still* be the last one")
   })
 
-  test("sendBackwards", function (assert) {
-    expect(typeof canvas.sendBackwards === "function").toBeTruthy()
+  QUnit.test("sendBackwards", function (assert) {
+    assert.ok(typeof canvas.sendBackwards === "function")
 
     var rect1 = makeRect(),
       rect2 = makeRect(),
@@ -1493,46 +1775,46 @@
     canvas.add(rect1, rect2, rect3)
 
     // [ 1, 2, 3 ]
-    expect(canvas.item(0)).toEqual(rect1)
-    expect(canvas.item(1)).toEqual(rect2)
-    expect(canvas.item(2)).toEqual(rect3)
+    assert.equal(canvas.item(0), rect1)
+    assert.equal(canvas.item(1), rect2)
+    assert.equal(canvas.item(2), rect3)
 
     canvas.sendBackwards(rect3)
 
     // moved 3 one level back — [1, 3, 2]
-    expect(canvas.item(0)).toEqual(rect1)
-    expect(canvas.item(2)).toEqual(rect2)
-    expect(canvas.item(1)).toEqual(rect3)
+    assert.equal(canvas.item(0), rect1)
+    assert.equal(canvas.item(2), rect2)
+    assert.equal(canvas.item(1), rect3)
 
     canvas.sendBackwards(rect3)
 
     // moved 3 one level back — [3, 1, 2]
-    expect(canvas.item(1)).toEqual(rect1)
-    expect(canvas.item(2)).toEqual(rect2)
-    expect(canvas.item(0)).toEqual(rect3)
+    assert.equal(canvas.item(1), rect1)
+    assert.equal(canvas.item(2), rect2)
+    assert.equal(canvas.item(0), rect3)
 
     canvas.sendBackwards(rect3)
 
     // 3 stays at the deepEqual position — [2, 3, 1]
-    expect(canvas.item(1)).toEqual(rect1)
-    expect(canvas.item(2)).toEqual(rect2)
-    expect(canvas.item(0)).toEqual(rect3)
+    assert.equal(canvas.item(1), rect1)
+    assert.equal(canvas.item(2), rect2)
+    assert.equal(canvas.item(0), rect3)
 
     canvas.sendBackwards(rect2)
 
-    expect(canvas.item(2)).toEqual(rect1)
-    expect(canvas.item(1)).toEqual(rect2)
-    expect(canvas.item(0)).toEqual(rect3)
+    assert.equal(canvas.item(2), rect1)
+    assert.equal(canvas.item(1), rect2)
+    assert.equal(canvas.item(0), rect3)
 
     canvas.sendBackwards(rect2)
 
-    expect(canvas.item(2)).toEqual(rect1)
-    expect(canvas.item(0)).toEqual(rect2)
-    expect(canvas.item(1)).toEqual(rect3)
+    assert.equal(canvas.item(2), rect1)
+    assert.equal(canvas.item(0), rect2)
+    assert.equal(canvas.item(1), rect3)
   })
 
-  test("bringForward", function (assert) {
-    expect(typeof canvas.bringForward === "function").toBeTruthy()
+  QUnit.test("bringForward", function (assert) {
+    assert.ok(typeof canvas.bringForward === "function")
 
     var rect1 = makeRect(),
       rect2 = makeRect(),
@@ -1541,41 +1823,41 @@
     canvas.add(rect1, rect2, rect3)
 
     // initial position — [ 1, 2, 3 ]
-    expect(canvas.item(0)).toEqual(rect1)
-    expect(canvas.item(1)).toEqual(rect2)
-    expect(canvas.item(2)).toEqual(rect3)
+    assert.equal(canvas.item(0), rect1)
+    assert.equal(canvas.item(1), rect2)
+    assert.equal(canvas.item(2), rect3)
 
     canvas.bringForward(rect1)
 
     // 1 moves one way up — [ 2, 1, 3 ]
-    expect(canvas.item(1)).toEqual(rect1)
-    expect(canvas.item(0)).toEqual(rect2)
-    expect(canvas.item(2)).toEqual(rect3)
+    assert.equal(canvas.item(1), rect1)
+    assert.equal(canvas.item(0), rect2)
+    assert.equal(canvas.item(2), rect3)
 
     canvas.bringForward(rect1)
 
     // 1 moves one way up again — [ 2, 3, 1 ]
-    expect(canvas.item(2)).toEqual(rect1)
-    expect(canvas.item(0)).toEqual(rect2)
-    expect(canvas.item(1)).toEqual(rect3)
+    assert.equal(canvas.item(2), rect1)
+    assert.equal(canvas.item(0), rect2)
+    assert.equal(canvas.item(1), rect3)
 
     canvas.bringForward(rect1)
 
     // 1 is already all the way on top and so doesn't change position — [ 2, 3, 1 ]
-    expect(canvas.item(2)).toEqual(rect1)
-    expect(canvas.item(0)).toEqual(rect2)
-    expect(canvas.item(1)).toEqual(rect3)
+    assert.equal(canvas.item(2), rect1)
+    assert.equal(canvas.item(0), rect2)
+    assert.equal(canvas.item(1), rect3)
 
     canvas.bringForward(rect3)
 
     // 1 is already all the way on top and so doesn't change position — [ 2, 1, 3 ]
-    expect(canvas.item(1)).toEqual(rect1)
-    expect(canvas.item(0)).toEqual(rect2)
-    expect(canvas.item(2)).toEqual(rect3)
+    assert.equal(canvas.item(1), rect1)
+    assert.equal(canvas.item(0), rect2)
+    assert.equal(canvas.item(2), rect3)
   })
 
-  test("moveTo", function (assert) {
-    expect(typeof canvas.moveTo === "function").toBeTruthy()
+  QUnit.test("moveTo", function (assert) {
+    assert.ok(typeof canvas.moveTo === "function")
 
     var rect1 = makeRect(),
       rect2 = makeRect(),
@@ -1584,174 +1866,242 @@
     canvas.add(rect1, rect2, rect3)
 
     // [ 1, 2, 3 ]
-    expect(canvas.item(0)).toEqual(rect1)
-    expect(canvas.item(1)).toEqual(rect2)
-    expect(canvas.item(2)).toEqual(rect3)
+    assert.equal(canvas.item(0), rect1)
+    assert.equal(canvas.item(1), rect2)
+    assert.equal(canvas.item(2), rect3)
 
     canvas.moveTo(rect3, 0)
 
     // moved 3 to level 0 — [3, 1, 2]
-    expect(canvas.item(1)).toEqual(rect1)
-    expect(canvas.item(2)).toEqual(rect2)
-    expect(canvas.item(0)).toEqual(rect3)
+    assert.equal(canvas.item(1), rect1)
+    assert.equal(canvas.item(2), rect2)
+    assert.equal(canvas.item(0), rect3)
 
     canvas.moveTo(rect3, 1)
 
     // moved 3 to level 1 — [1, 3, 2]
-    expect(canvas.item(0)).toEqual(rect1)
-    expect(canvas.item(2)).toEqual(rect2)
-    expect(canvas.item(1)).toEqual(rect3)
+    assert.equal(canvas.item(0), rect1)
+    assert.equal(canvas.item(2), rect2)
+    assert.equal(canvas.item(1), rect3)
 
     canvas.moveTo(rect3, 2)
 
     // moved 3 to level 2 — [1, 2, 3]
-    expect(canvas.item(0)).toEqual(rect1)
-    expect(canvas.item(1)).toEqual(rect2)
-    expect(canvas.item(2)).toEqual(rect3)
+    assert.equal(canvas.item(0), rect1)
+    assert.equal(canvas.item(1), rect2)
+    assert.equal(canvas.item(2), rect3)
 
     canvas.moveTo(rect3, 2)
 
     // moved 3 to same level 2 and so doesn't change position — [1, 2, 3]
-    expect(canvas.item(0)).toEqual(rect1)
-    expect(canvas.item(1)).toEqual(rect2)
-    expect(canvas.item(2)).toEqual(rect3)
+    assert.equal(canvas.item(0), rect1)
+    assert.equal(canvas.item(1), rect2)
+    assert.equal(canvas.item(2), rect3)
 
     canvas.moveTo(rect2, 0)
 
     // moved 2 to level 0 — [2, 1, 3]
-    expect(canvas.item(1)).toEqual(rect1)
-    expect(canvas.item(0)).toEqual(rect2)
-    expect(canvas.item(2)).toEqual(rect3)
+    assert.equal(canvas.item(1), rect1)
+    assert.equal(canvas.item(0), rect2)
+    assert.equal(canvas.item(2), rect3)
 
     canvas.moveTo(rect2, 2)
 
     // moved 2 to level 2 — [1, 3, 2]
-    expect(canvas.item(0)).toEqual(rect1)
-    expect(canvas.item(2)).toEqual(rect2)
-    expect(canvas.item(1)).toEqual(rect3)
+    assert.equal(canvas.item(0), rect1)
+    assert.equal(canvas.item(2), rect2)
+    assert.equal(canvas.item(1), rect3)
   })
 
-  test("item", function (assert) {
-    expect(typeof canvas.item === "function").toBeTruthy()
+  QUnit.test("item", function (assert) {
+    assert.ok(typeof canvas.item === "function")
 
     var rect1 = makeRect(),
       rect2 = makeRect()
 
     canvas.add(rect1, rect2)
 
-    expect(canvas.item(0)).toEqual(rect1)
-    expect(canvas.item(1)).toEqual(rect2)
+    assert.equal(canvas.item(0), rect1)
+    assert.equal(canvas.item(1), rect2)
 
     canvas.remove(canvas.item(0))
 
-    expect(canvas.item(0)).toEqual(rect2)
+    assert.equal(canvas.item(0), rect2)
   })
 
-  test("complexity", function (assert) {
-    expect(typeof canvas.complexity === "function").toBeTruthy()
-    expect(canvas.complexity()).toEqual(0)
+  QUnit.test("complexity", function (assert) {
+    assert.ok(typeof canvas.complexity === "function")
+    assert.equal(canvas.complexity(), 0)
 
     canvas.add(makeRect())
-    expect(canvas.complexity()).toEqual(1)
+    assert.equal(canvas.complexity(), 1)
 
     canvas.add(makeRect(), makeRect())
-    expect(canvas.complexity()).toEqual(3)
+    assert.equal(canvas.complexity(), 3)
   })
 
-  test("toString", function (assert) {
-    expect(typeof canvas.toString === "function").toBeTruthy()
+  QUnit.test("toString", function (assert) {
+    assert.ok(typeof canvas.toString === "function")
 
-    expect(canvas.toString()).toEqual("#<fabric.Canvas (0): { objects: 0 }>")
+    assert.equal(canvas.toString(), "#<fabric.Canvas (0): { objects: 0 }>")
 
     canvas.add(makeRect())
-    expect(canvas.toString()).toEqual("#<fabric.Canvas (1): { objects: 1 }>")
+    assert.equal(canvas.toString(), "#<fabric.Canvas (1): { objects: 1 }>")
   })
 
-  test("dispose clear references", function (assert) {
+  QUnit.test("dispose clear references", function (assert) {
     var canvas2 = new fabric.StaticCanvas(null, { renderOnAddRemove: false })
-    expect(typeof canvas2.dispose === "function").toBeTruthy()
+    assert.ok(typeof canvas2.dispose === "function")
     canvas2.add(makeRect(), makeRect(), makeRect())
     canvas2.dispose()
-    expect(canvas2.getObjects().length).toEqual(0)
-    expect(canvas2.lowerCanvasEl).toEqual(null)
-    expect(canvas2.contextContainer).toEqual(null)
+    assert.equal(canvas2.getObjects().length, 0, "dispose should clear canvas")
+    assert.equal(
+      canvas2.lowerCanvasEl,
+      null,
+      "dispose should clear lowerCanvasEl"
+    )
+    assert.equal(
+      canvas2.contextContainer,
+      null,
+      "dispose should clear contextContainer"
+    )
   })
 
-  test("clone", function (assert) {
-    expect(typeof canvas.clone === "function").toBeTruthy()
+  QUnit.test("clone", function (assert) {
+    assert.ok(typeof canvas.clone === "function")
     // TODO (kangax): test clone
   })
 
-  test("getSetWidth", function (assert) {
-    expect(typeof canvas.getWidth === "function").toBeTruthy()
-    expect(canvas.getWidth()).toEqual(200)
-    expect(canvas.setWidth(444)).toEqual(canvas)
-    expect(canvas.getWidth()).toEqual(444)
-    expect(canvas.lowerCanvasEl.style.width).toEqual(444 + "px")
+  QUnit.test("getSetWidth", function (assert) {
+    assert.ok(typeof canvas.getWidth === "function")
+    assert.equal(canvas.getWidth(), 200)
+    assert.equal(canvas.setWidth(444), canvas, "should be chainable")
+    assert.equal(canvas.getWidth(), 444)
+    assert.equal(canvas.lowerCanvasEl.style.width, 444 + "px")
   })
 
-  test("getSetHeight", function (assert) {
-    expect(typeof canvas.getHeight === "function").toBeTruthy()
-    expect(canvas.getHeight()).toEqual(200)
-    expect(canvas.setHeight(765)).toEqual(canvas)
-    expect(canvas.getHeight()).toEqual(765)
-    expect(canvas.lowerCanvasEl.style.height).toEqual(765 + "px")
+  QUnit.test("getSetHeight", function (assert) {
+    assert.ok(typeof canvas.getHeight === "function")
+    assert.equal(canvas.getHeight(), 200)
+    assert.equal(canvas.setHeight(765), canvas, "should be chainable")
+    assert.equal(canvas.getHeight(), 765)
+    assert.equal(canvas.lowerCanvasEl.style.height, 765 + "px")
   })
 
-  test("setWidth css only", function (assert) {
+  QUnit.test("setWidth css only", function (assert) {
     canvas.setWidth(123)
     canvas.setWidth("100%", { cssOnly: true })
 
-    expect(canvas.lowerCanvasEl.style.width).toEqual("100%")
-    expect(canvas.getWidth()).toEqual(123)
+    assert.equal(
+      canvas.lowerCanvasEl.style.width,
+      "100%",
+      "Should be as the css only value"
+    )
+    assert.equal(canvas.getWidth(), 123, "Should be as the none css only value")
   })
 
-  test("setHeight css only", function (assert) {
+  QUnit.test("setHeight css only", function (assert) {
     canvas.setHeight(123)
     canvas.setHeight("100%", { cssOnly: true })
 
-    expect(canvas.lowerCanvasEl.style.height).toEqual("100%")
-    expect(canvas.getHeight()).toEqual(123)
+    assert.equal(
+      canvas.lowerCanvasEl.style.height,
+      "100%",
+      "Should be as the css only value"
+    )
+    assert.equal(
+      canvas.getHeight(),
+      123,
+      "Should be as the none css only value"
+    )
   })
 
-  test("setDimensions css only", function (assert) {
+  QUnit.test("setDimensions css only", function (assert) {
     canvas.setDimensions({ width: 200, height: 200 })
     canvas.setDimensions({ width: "250px", height: "350px" }, { cssOnly: true })
-    expect(canvas.lowerCanvasEl.style.width).toEqual("250px")
-    expect(canvas.lowerCanvasEl.style.height).toEqual("350px")
-    expect(canvas.getWidth()).toEqual(200)
-    expect(canvas.getHeight()).toEqual(200)
+    assert.equal(
+      canvas.lowerCanvasEl.style.width,
+      "250px",
+      'Should be as none backstore only value + "px"'
+    )
+    assert.equal(
+      canvas.lowerCanvasEl.style.height,
+      "350px",
+      'Should be as none backstore only value + "px"'
+    )
+    assert.equal(
+      canvas.getWidth(),
+      200,
+      "Should be as the backstore only value"
+    )
+    assert.equal(
+      canvas.getHeight(),
+      200,
+      "Should be as the backstore only value"
+    )
   })
 
-  test("setWidth backstore only", function (assert) {
+  QUnit.test("setWidth backstore only", function (assert) {
     canvas.setWidth(123)
     canvas.setWidth(500, { backstoreOnly: true })
 
-    expect(canvas.lowerCanvasEl.style.width).toEqual(123 + "px")
-    expect(canvas.getWidth()).toEqual(500)
+    assert.equal(
+      canvas.lowerCanvasEl.style.width,
+      123 + "px",
+      'Should be as none backstore only value + "px"'
+    )
+    assert.equal(
+      canvas.getWidth(),
+      500,
+      "Should be as the backstore only value"
+    )
   })
 
-  test("setHeight backstore only", function (assert) {
+  QUnit.test("setHeight backstore only", function (assert) {
     canvas.setHeight(123)
     canvas.setHeight(500, { backstoreOnly: true })
 
-    expect(canvas.lowerCanvasEl.style.height).toEqual(123 + "px")
-    expect(canvas.getHeight()).toEqual(500)
+    assert.equal(
+      canvas.lowerCanvasEl.style.height,
+      123 + "px",
+      'Should be as none backstore only value + "px"'
+    )
+    assert.equal(
+      canvas.getHeight(),
+      500,
+      "Should be as the backstore only value"
+    )
   })
 
-  test("setDimensions backstore only", function (assert) {
+  QUnit.test("setDimensions backstore only", function (assert) {
     canvas.setDimensions({ width: 200, height: 200 })
     canvas.setDimensions({ width: 250, height: 350 }, { backstoreOnly: true })
-    expect(canvas.lowerCanvasEl.style.width).toEqual(200 + "px")
-    expect(canvas.lowerCanvasEl.style.height).toEqual(200 + "px")
-    expect(canvas.getWidth()).toEqual(250)
-    expect(canvas.getHeight()).toEqual(350)
+    assert.equal(
+      canvas.lowerCanvasEl.style.width,
+      200 + "px",
+      'Should be as none backstore only value + "px"'
+    )
+    assert.equal(
+      canvas.lowerCanvasEl.style.height,
+      200 + "px",
+      'Should be as none backstore only value + "px"'
+    )
+    assert.equal(
+      canvas.getWidth(),
+      250,
+      "Should be as the backstore only value"
+    )
+    assert.equal(
+      canvas.getHeight(),
+      350,
+      "Should be as the backstore only value"
+    )
     canvas.cancelRequestedRender()
   })
 
-  test("fxRemove", function (assert) {
+  QUnit.test("fxRemove", function (assert) {
     var done = assert.async()
-    expect(typeof canvas.fxRemove === "function").toBeTruthy()
+    assert.ok(typeof canvas.fxRemove === "function")
 
     var rect = new fabric.Rect()
     canvas.add(rect)
@@ -1759,24 +2109,32 @@
     var callbackFired = false
     function onComplete() {
       callbackFired = true
-      expect(canvas.item(0)).toEqual(undefined)
-      expect(callbackFired).toBeTruthy()
+      assert.equal(canvas.item(0), undefined)
+      assert.ok(callbackFired)
       canvas.cancelRequestedRender()
       done()
     }
 
-    expect(canvas.item(0) === rect).toBeTruthy()
-    expect(canvas.fxRemove(rect, { onComplete: onComplete })).toEqual(canvas)
+    assert.ok(canvas.item(0) === rect)
+    assert.equal(
+      canvas.fxRemove(rect, { onComplete: onComplete }),
+      canvas,
+      "should be chainable"
+    )
   })
 
-  test("options in setBackgroundImage from URL", function (assert) {
+  QUnit.test("options in setBackgroundImage from URL", function (assert) {
     var done = assert.async()
     canvas.setBackgroundImage(
       IMG_SRC,
       function () {
-        expect(canvas.backgroundImage.canvas).toEqual(canvas)
-        expect(canvas.backgroundImage.left).toEqual(50)
-        expect(canvas.backgroundImage.originX).toEqual("right")
+        assert.equal(
+          canvas.backgroundImage.canvas,
+          canvas,
+          "canvas is referenced"
+        )
+        assert.equal(canvas.backgroundImage.left, 50)
+        assert.equal(canvas.backgroundImage.originX, "right")
         done()
       },
       {
@@ -1786,14 +2144,14 @@
     )
   })
 
-  test("options in setOverlayImage from URL", function (assert) {
+  QUnit.test("options in setOverlayImage from URL", function (assert) {
     var done = assert.async()
     canvas.setOverlayImage(
       IMG_SRC,
       function () {
-        expect(canvas.overlayImage.canvas).toEqual(canvas)
-        expect(canvas.overlayImage.left).toEqual(50)
-        expect(canvas.overlayImage.originX).toEqual("right")
+        assert.equal(canvas.overlayImage.canvas, canvas, "canvas is referenced")
+        assert.equal(canvas.overlayImage.left, 50)
+        assert.equal(canvas.overlayImage.originX, "right")
         done()
       },
       {
@@ -1803,143 +2161,235 @@
     )
   })
 
-  test("setViewportTransform", function (assert) {
-    expect(typeof canvas.setViewportTransform === "function").toBeTruthy()
+  QUnit.test("setViewportTransform", function (assert) {
+    assert.ok(typeof canvas.setViewportTransform === "function")
     var vpt = [2, 0, 0, 2, 50, 50]
     canvas.viewportTransform = fabric.StaticCanvas.prototype.viewportTransform
-    expect(canvas.viewportTransform).toEqual([1, 0, 0, 1, 0, 0])
+    assert.deepEqual(
+      canvas.viewportTransform,
+      [1, 0, 0, 1, 0, 0],
+      "initial viewport is identity matrix"
+    )
     canvas.setViewportTransform(vpt)
-    expect(canvas.viewportTransform).toEqual(vpt)
+    assert.deepEqual(
+      canvas.viewportTransform,
+      vpt,
+      "viewport now is the set one"
+    )
     canvas.viewportTransform = fabric.StaticCanvas.prototype.viewportTransform
   })
 
-  test("getZoom", function (assert) {
-    expect(typeof canvas.getZoom === "function").toBeTruthy()
+  QUnit.test("getZoom", function (assert) {
+    assert.ok(typeof canvas.getZoom === "function")
     var vpt = [2, 0, 0, 2, 50, 50]
     canvas.viewportTransform = fabric.StaticCanvas.prototype.viewportTransform
-    expect(canvas.getZoom()).toEqual(1)
+    assert.deepEqual(canvas.getZoom(), 1, "initial zoom is 1")
     canvas.setViewportTransform(vpt)
-    expect(canvas.getZoom()).toEqual(2)
+    assert.deepEqual(canvas.getZoom(), 2, "zoom is set to 2")
     canvas.viewportTransform = fabric.StaticCanvas.prototype.viewportTransform
   })
 
-  test("setZoom", function (assert) {
-    expect(typeof canvas.setZoom === "function").toBeTruthy()
-    expect(canvas.getZoom()).toEqual(1)
+  QUnit.test("setZoom", function (assert) {
+    assert.ok(typeof canvas.setZoom === "function")
+    assert.deepEqual(canvas.getZoom(), 1, "initial zoom is 1")
     canvas.setZoom(2)
-    expect(canvas.getZoom()).toEqual(2)
+    assert.deepEqual(canvas.getZoom(), 2, "zoom is set to 2")
     canvas.viewportTransform = fabric.StaticCanvas.prototype.viewportTransform
   })
 
-  test("zoomToPoint", function (assert) {
-    expect(typeof canvas.zoomToPoint === "function").toBeTruthy()
-    expect(canvas.viewportTransform).toEqual([1, 0, 0, 1, 0, 0])
+  QUnit.test("zoomToPoint", function (assert) {
+    assert.ok(typeof canvas.zoomToPoint === "function")
+    assert.deepEqual(
+      canvas.viewportTransform,
+      [1, 0, 0, 1, 0, 0],
+      "initial viewport is identity matrix"
+    )
     var point = new fabric.Point(50, 50)
     canvas.zoomToPoint(point, 1)
-    expect(canvas.viewportTransform).toEqual([1, 0, 0, 1, 0, 0])
+    assert.deepEqual(
+      canvas.viewportTransform,
+      [1, 0, 0, 1, 0, 0],
+      "viewport has no changes if not moving with zoom level"
+    )
     canvas.zoomToPoint(point, 2)
-    expect(canvas.viewportTransform).toEqual([2, 0, 0, 2, -50, -50])
+    assert.deepEqual(
+      canvas.viewportTransform,
+      [2, 0, 0, 2, -50, -50],
+      "viewport has a translation effect and zoom"
+    )
     canvas.zoomToPoint(point, 3)
-    expect(canvas.viewportTransform).toEqual([3, 0, 0, 3, -100, -100])
+    assert.deepEqual(
+      canvas.viewportTransform,
+      [3, 0, 0, 3, -100, -100],
+      "viewport has a translation effect and zoom"
+    )
     canvas.viewportTransform = fabric.StaticCanvas.prototype.viewportTransform
   })
 
-  test("absolutePan", function (assert) {
-    expect(typeof canvas.absolutePan === "function").toBeTruthy()
-    expect(canvas.viewportTransform).toEqual([1, 0, 0, 1, 0, 0])
+  QUnit.test("absolutePan", function (assert) {
+    assert.ok(typeof canvas.absolutePan === "function")
+    assert.deepEqual(
+      canvas.viewportTransform,
+      [1, 0, 0, 1, 0, 0],
+      "initial viewport is identity matrix"
+    )
     var point = new fabric.Point(50, 50)
     canvas.absolutePan(point)
-    expect(canvas.viewportTransform).toEqual([1, 0, 0, 1, -point.x, -point.y])
+    assert.deepEqual(
+      canvas.viewportTransform,
+      [1, 0, 0, 1, -point.x, -point.y],
+      "viewport has translation effect applied"
+    )
     canvas.absolutePan(point)
-    expect(canvas.viewportTransform).toEqual([1, 0, 0, 1, -point.x, -point.y])
+    assert.deepEqual(
+      canvas.viewportTransform,
+      [1, 0, 0, 1, -point.x, -point.y],
+      "viewport has same translation effect applied"
+    )
     canvas.viewportTransform = fabric.StaticCanvas.prototype.viewportTransform
   })
 
-  test("relativePan", function (assert) {
-    expect(typeof canvas.relativePan === "function").toBeTruthy()
-    expect(canvas.viewportTransform).toEqual([1, 0, 0, 1, 0, 0])
+  QUnit.test("relativePan", function (assert) {
+    assert.ok(typeof canvas.relativePan === "function")
+    assert.deepEqual(
+      canvas.viewportTransform,
+      [1, 0, 0, 1, 0, 0],
+      "initial viewport is identity matrix"
+    )
     var point = new fabric.Point(-50, -50)
     canvas.relativePan(point)
-    expect(canvas.viewportTransform).toEqual([1, 0, 0, 1, -50, -50])
+    assert.deepEqual(
+      canvas.viewportTransform,
+      [1, 0, 0, 1, -50, -50],
+      "viewport has translation effect applied"
+    )
     canvas.relativePan(point)
-    expect(canvas.viewportTransform).toEqual([1, 0, 0, 1, -100, -100])
+    assert.deepEqual(
+      canvas.viewportTransform,
+      [1, 0, 0, 1, -100, -100],
+      "viewport has translation effect applied on top of old one"
+    )
     canvas.viewportTransform = fabric.StaticCanvas.prototype.viewportTransform
   })
 
-  test("getContext", function (assert) {
-    expect(typeof canvas.getContext === "function").toBeTruthy()
+  QUnit.test("getContext", function (assert) {
+    assert.ok(typeof canvas.getContext === "function")
     var context = canvas.getContext()
-    expect(context).toEqual(canvas.contextContainer)
+    assert.equal(
+      context,
+      canvas.contextContainer,
+      "should return the context container"
+    )
   })
 
-  test("calcViewportBoundaries", function (assert) {
-    expect(typeof canvas.calcViewportBoundaries === "function").toBeTruthy()
+  QUnit.test("calcViewportBoundaries", function (assert) {
+    assert.ok(typeof canvas.calcViewportBoundaries === "function")
     canvas.calcViewportBoundaries()
-    expect(canvas.vptCoords.tl).toEqual(new fabric.Point(0, 0))
-    expect(canvas.vptCoords.tr).toEqual(new fabric.Point(canvas.getWidth(), 0))
-    expect(canvas.vptCoords.bl).toEqual(new fabric.Point(0, canvas.getHeight()))
-    expect(canvas.vptCoords.br).toEqual(new fabric.Point(canvas.getWidth(), canvas.getHeight()))
+    assert.deepEqual(canvas.vptCoords.tl, new fabric.Point(0, 0), "tl is 0,0")
+    assert.deepEqual(
+      canvas.vptCoords.tr,
+      new fabric.Point(canvas.getWidth(), 0),
+      "tr is width, 0"
+    )
+    assert.deepEqual(
+      canvas.vptCoords.bl,
+      new fabric.Point(0, canvas.getHeight()),
+      "bl is 0, height"
+    )
+    assert.deepEqual(
+      canvas.vptCoords.br,
+      new fabric.Point(canvas.getWidth(), canvas.getHeight()),
+      "tl is width, height"
+    )
   })
 
-  test("calcViewportBoundaries with zoom", function (assert) {
-    expect(typeof canvas.calcViewportBoundaries === "function").toBeTruthy()
+  QUnit.test("calcViewportBoundaries with zoom", function (assert) {
+    assert.ok(typeof canvas.calcViewportBoundaries === "function")
     canvas.setViewportTransform([2, 0, 0, 2, 0, 0])
-    expect(canvas.vptCoords.tl).toEqual(new fabric.Point(0, 0))
-    expect(canvas.vptCoords.tr).toEqual(new fabric.Point(canvas.getWidth() / 2, 0))
-    expect(canvas.vptCoords.bl).toEqual(new fabric.Point(0, canvas.getHeight() / 2))
-    expect(canvas.vptCoords.br).toEqual(new fabric.Point(canvas.getWidth() / 2, canvas.getHeight() / 2))
+    assert.deepEqual(canvas.vptCoords.tl, new fabric.Point(0, 0), "tl is 0,0")
+    assert.deepEqual(
+      canvas.vptCoords.tr,
+      new fabric.Point(canvas.getWidth() / 2, 0),
+      "tl is 0,0"
+    )
+    assert.deepEqual(
+      canvas.vptCoords.bl,
+      new fabric.Point(0, canvas.getHeight() / 2),
+      "tl is 0,0"
+    )
+    assert.deepEqual(
+      canvas.vptCoords.br,
+      new fabric.Point(canvas.getWidth() / 2, canvas.getHeight() / 2),
+      "tl is 0,0"
+    )
   })
 
-  test("calcViewportBoundaries with zoom and translation", function (
+  QUnit.test("calcViewportBoundaries with zoom and translation", function (
     assert
   ) {
-    expect(typeof canvas.calcViewportBoundaries === "function").toBeTruthy()
+    assert.ok(typeof canvas.calcViewportBoundaries === "function")
     canvas.setViewportTransform([2, 0, 0, 2, -60, 60])
-    expect(canvas.vptCoords.tl).toEqual(new fabric.Point(30, -30))
-    expect(canvas.vptCoords.tr).toEqual(new fabric.Point(30 + canvas.getWidth() / 2, -30))
-    expect(canvas.vptCoords.bl).toEqual(new fabric.Point(30, canvas.getHeight() / 2 - 30))
-    expect(canvas.vptCoords.br).toEqual(new fabric.Point(30 + canvas.getWidth() / 2, canvas.getHeight() / 2 - 30))
+    assert.deepEqual(
+      canvas.vptCoords.tl,
+      new fabric.Point(30, -30),
+      "tl is 0,0"
+    )
+    assert.deepEqual(
+      canvas.vptCoords.tr,
+      new fabric.Point(30 + canvas.getWidth() / 2, -30),
+      "tl is 0,0"
+    )
+    assert.deepEqual(
+      canvas.vptCoords.bl,
+      new fabric.Point(30, canvas.getHeight() / 2 - 30),
+      "tl is 0,0"
+    )
+    assert.deepEqual(
+      canvas.vptCoords.br,
+      new fabric.Point(30 + canvas.getWidth() / 2, canvas.getHeight() / 2 - 30),
+      "tl is 0,0"
+    )
   })
 
-  test("_isRetinaScaling", function (assert) {
+  QUnit.test("_isRetinaScaling", function (assert) {
     canvas.enableRetinaScaling = true
     fabric.devicePixelRatio = 2
     var isScaling = canvas._isRetinaScaling()
-    expect(isScaling).toEqual(true)
+    assert.equal(isScaling, true, "retina > 1 and enabled")
 
     canvas.enableRetinaScaling = false
     fabric.devicePixelRatio = 2
     var isScaling = canvas._isRetinaScaling()
-    expect(isScaling).toEqual(false)
+    assert.equal(isScaling, false, "retina > 1 and disabled")
 
     canvas.enableRetinaScaling = false
     fabric.devicePixelRatio = 1
     var isScaling = canvas._isRetinaScaling()
-    expect(isScaling).toEqual(false)
+    assert.equal(isScaling, false, "retina = 1 and disabled")
 
     canvas.enableRetinaScaling = true
     fabric.devicePixelRatio = 1
     var isScaling = canvas._isRetinaScaling()
-    expect(isScaling).toEqual(false)
+    assert.equal(isScaling, false, "retina = 1 and enabled")
   })
 
-  test("getRetinaScaling", function (assert) {
+  QUnit.test("getRetinaScaling", function (assert) {
     canvas.enableRetinaScaling = true
     fabric.devicePixelRatio = 1
     var scaling = canvas.getRetinaScaling()
-    expect(scaling).toEqual(1)
+    assert.equal(scaling, 1, "retina is devicePixelRatio")
 
     fabric.devicePixelRatio = 2
     var scaling = canvas.getRetinaScaling()
-    expect(scaling).toEqual(2)
+    assert.equal(scaling, 2, "retina is devicePixelRatio")
 
     fabric.devicePixelRatio = 2
     canvas.enableRetinaScaling = false
     var scaling = canvas.getRetinaScaling()
-    expect(scaling).toEqual(1)
+    assert.equal(scaling, 1, "retina is disabled, 1")
   })
 
-  test("options in setBackgroundImage from image instance", function (
+  QUnit.test("options in setBackgroundImage from image instance", function (
     assert
   ) {
     var done = assert.async()
@@ -1947,9 +2397,13 @@
       canvas.setBackgroundImage(
         imageInstance,
         function () {
-          expect(canvas.backgroundImage.canvas).toEqual(canvas)
-          expect(canvas.backgroundImage.left).toEqual(100)
-          expect(canvas.backgroundImage.originX).toEqual("center")
+          assert.equal(
+            canvas.backgroundImage.canvas,
+            canvas,
+            "canvas get referenced"
+          )
+          assert.equal(canvas.backgroundImage.left, 100)
+          assert.equal(canvas.backgroundImage.originX, "center")
 
           done()
         },
@@ -1961,7 +2415,7 @@
     })
   })
 
-  test("options in setOverlayImage from image instance", function (
+  QUnit.test("options in setOverlayImage from image instance", function (
     assert
   ) {
     var done = assert.async()
@@ -1969,10 +2423,10 @@
       canvas.setOverlayImage(
         imageInstance,
         function () {
-          expect(canvas.overlayImage).toEqual(imageInstance)
-          expect(imageInstance.left).toEqual(100)
-          expect(imageInstance.originX).toEqual("center")
-          expect(imageInstance.canvas).toEqual(canvas)
+          assert.equal(canvas.overlayImage, imageInstance)
+          assert.equal(imageInstance.left, 100)
+          assert.equal(imageInstance.originX, "center")
+          assert.equal(imageInstance.canvas, canvas, "canvas get referenced")
           done()
         },
         {
@@ -1983,23 +2437,29 @@
     })
   })
 
-  test("createPNGStream", function (assert) {
+  QUnit.test("createPNGStream", function (assert) {
     if (!fabric.isLikelyNode) {
-      expect(true).toBeTruthy()
+      assert.ok(true, "not supposed to run outside node")
     } else {
-      expect(typeof canvas.createPNGStream === "function").toBeTruthy()
+      assert.ok(
+        typeof canvas.createPNGStream === "function",
+        "there is a createPNGStream method"
+      )
     }
   })
 
-  test("createJPEGStream", function (assert) {
+  QUnit.test("createJPEGStream", function (assert) {
     if (!fabric.isLikelyNode) {
-      expect(true).toBeTruthy()
+      assert.ok(true, "not supposed to run outside node")
     } else {
-      expect(typeof canvas.createJPEGStream === "function").toBeTruthy()
+      assert.ok(
+        typeof canvas.createJPEGStream === "function",
+        "there is a createJPEGStream method"
+      )
     }
   })
 
-  test("toSVG with background", function (assert) {
+  QUnit.test("toSVG with background", function (assert) {
     var canvas2 = new fabric.StaticCanvas()
     canvas2.backgroundColor = "red"
     var svg = canvas2.toSVG()
@@ -2007,10 +2467,10 @@
       '<?xml version="1.0" encoding="UTF-8" standalone="no" ?>\n<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">\n<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" version="1.1" width="300" height="150" viewBox="0 0 300 150" xml:space="preserve">\n<desc>Created with Fabric.js ' +
       fabric.version +
       '</desc>\n<defs>\n</defs>\n<rect x="0" y="0" width="100%" height="100%" fill="red"></rect>\n</svg>'
-    expect(svg).toEqual(expectedSVG)
+    assert.equal(svg, expectedSVG, "svg is as expected")
   })
 
-  test(
+  QUnit.test(
     "toSVG with background and zoom and svgViewportTransformation",
     function (assert) {
       var canvas2 = new fabric.StaticCanvas()
@@ -2022,11 +2482,11 @@
         '<?xml version="1.0" encoding="UTF-8" standalone="no" ?>\n<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">\n<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" version="1.1" width="300" height="150" viewBox="-20 -10 100 50" xml:space="preserve">\n<desc>Created with Fabric.js ' +
         fabric.version +
         '</desc>\n<defs>\n</defs>\n<rect x="0" y="0" width="100%" height="100%" fill="blue"></rect>\n</svg>'
-      expect(svg).toEqual(expectedSVG)
+      assert.equal(svg, expectedSVG, "svg is as expected")
     }
   )
 
-  test("toSVG with background gradient", function (assert) {
+  QUnit.test("toSVG with background gradient", function (assert) {
     fabric.Object.__uid = 0
     var canvas2 = new fabric.StaticCanvas()
     canvas2.backgroundColor = new fabric.Gradient({
@@ -2047,10 +2507,10 @@
       '<?xml version="1.0" encoding="UTF-8" standalone="no" ?>\n<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">\n<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" version="1.1" width="300" height="150" viewBox="0 0 300 150" xml:space="preserve">\n<desc>Created with Fabric.js ' +
       fabric.version +
       '</desc>\n<defs>\n<linearGradient id="SVGID_0" gradientUnits="userSpaceOnUse" gradientTransform="matrix(1 0 0 1 0 0) matrix(1 0 0 1 -150 -75)"  x1="0" y1="0" x2="300" y2="0">\n<stop offset="0%" style="stop-color:black;"/>\n<stop offset="100%" style="stop-color:white;"/>\n</linearGradient>\n</defs>\n<rect transform="matrix(1 0 0 1 0 0) translate(150,75)" x="-150" y="-75" width="300" height="150" fill="url(#SVGID_0)"></rect>\n</svg>'
-    expect(svg).toEqual(expectedSVG)
+    assert.equal(svg, expectedSVG, "svg is as expected")
   })
 
-  test("toSVG with background gradient and transforms", function (
+  QUnit.test("toSVG with background gradient and transforms", function (
     assert
   ) {
     fabric.Object.__uid = 0
@@ -2075,10 +2535,10 @@
       '<?xml version="1.0" encoding="UTF-8" standalone="no" ?>\n<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">\n<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" version="1.1" width="300" height="150" viewBox="-5 -1.5 300 37.5" xml:space="preserve">\n<desc>Created with Fabric.js ' +
       fabric.version +
       '</desc>\n<defs>\n<linearGradient id="SVGID_0" gradientUnits="userSpaceOnUse" gradientTransform="matrix(1 2 3 4 5 6) matrix(0.2 0.3 0.4 0.5 -153 -23.75)"  x1="0" y1="0" x2="300" y2="0">\n<stop offset="0%" style="stop-color:black;"/>\n<stop offset="100%" style="stop-color:white;"/>\n</linearGradient>\n</defs>\n<rect transform="matrix(-2 1 1.5 -0.5 1 -2) translate(150,75)" x="-150" y="-75" width="300" height="150" fill="url(#SVGID_0)"></rect>\n</svg>'
-    expect(svg).toEqual(expectedSVG)
+    assert.equal(svg, expectedSVG, "svg is as expected")
   })
 
-  test("toSVG with background pattern", function (assert) {
+  QUnit.test("toSVG with background pattern", function (assert) {
     fabric.Object.__uid = 0
     var canvas2 = new fabric.StaticCanvas()
     canvas2.backgroundColor = new fabric.Pattern({
@@ -2090,19 +2550,19 @@
       '<?xml version="1.0" encoding="UTF-8" standalone="no" ?>\n<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">\n<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" version="1.1" width="300" height="150" viewBox="0 0 300 150" xml:space="preserve">\n<desc>Created with Fabric.js ' +
       fabric.version +
       '</desc>\n<defs>\n<pattern id="SVGID_0" x="0" y="0" width="0" height="0">\n<image x="0" y="0" width="0" height="0" xlink:href=""></image>\n</pattern>\n</defs>\n<rect transform="matrix(1 0 0 1 0 0) translate(150,75)" x="-150" y="-75" width="300" height="150" fill="url(#SVGID_0)"></rect>\n</svg>'
-    expect(svg).toEqual(expectedSVG)
+    assert.equal(svg, expectedSVG, "svg is as expected")
   })
 
-  test("requestRenderAll and cancelRequestedRender", function (assert) {
+  QUnit.test("requestRenderAll and cancelRequestedRender", function (assert) {
     var canvas2 = new fabric.StaticCanvas()
-    expect(canvas2.isRendering).toEqual(undefined)
+    assert.equal(canvas2.isRendering, undefined, "no redering is in progress")
     canvas2.requestRenderAll()
-    expect(canvas2.isRendering).not.toEqual(0)
+    assert.notEqual(canvas2.isRendering, 0, "a rendering is scehduled")
     canvas2.cancelRequestedRender()
-    expect(canvas2.isRendering).toEqual(0)
+    assert.equal(canvas2.isRendering, 0, "rendering cancelled")
   })
 
-  // test('backgroundImage', function(assert) {
+  // QUnit.test('backgroundImage', function(assert) {
   //   var done = assert.async();
   //   assert.deepEqual('', canvas.backgroundImage);
   //   canvas.setBackgroundImage('../../assets/pug.jpg');
@@ -2116,7 +2576,7 @@
   //   }, 1000);
   // });
 
-  // test('setOverlayImage', function(assert) {
+  // QUnit.test('setOverlayImage', function(assert) {
   //   var done = assert.async();
   //   assert.deepEqual(canvas.overlayImage, undefined);
   //   canvas.setOverlayImage('../../assets/pug.jpg');

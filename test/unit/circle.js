@@ -1,88 +1,100 @@
 ;(function () {
-  describe("fabric.Circle")
+  QUnit.module("fabric.Circle")
 
-  test("constructor", function (assert) {
-    expect(fabric.Circle).toBeTruthy()
+  QUnit.test("constructor", function (assert) {
+    assert.ok(fabric.Circle)
 
     var circle = new fabric.Circle()
 
-    expect(circle instanceof fabric.Circle).toBeTruthy()
-    expect(circle instanceof fabric.Object).toBeTruthy()
+    assert.ok(
+      circle instanceof fabric.Circle,
+      "should inherit from fabric.Circle"
+    )
+    assert.ok(
+      circle instanceof fabric.Object,
+      "should inherit from fabric.Object"
+    )
 
-    expect(circle.type).toEqual("circle")
+    assert.deepEqual(circle.type, "circle")
   })
 
-  test("constructor with radius", function (assert) {
-    expect(fabric.Circle).toBeTruthy()
+  QUnit.test("constructor with radius", function (assert) {
+    assert.ok(fabric.Circle)
     var circle = new fabric.Circle({ radius: 20 })
-    expect(circle.width).toEqual(40)
-    expect(circle.height).toEqual(40)
+    assert.equal(circle.width, 40, "width is set")
+    assert.equal(circle.height, 40, "height is set")
   })
 
-  test("getRadiusX, getRadiusY", function (assert) {
+  QUnit.test("getRadiusX, getRadiusY", function (assert) {
     var circle = new fabric.Circle({ radius: 10 })
 
-    expect(typeof circle.getRadiusX === "function").toBeTruthy()
-    expect(typeof circle.getRadiusY === "function").toBeTruthy()
+    assert.ok(
+      typeof circle.getRadiusX === "function",
+      "getRadiusX should exist"
+    )
+    assert.ok(
+      typeof circle.getRadiusY === "function",
+      "getRadiusY should exist"
+    )
 
-    expect(circle.getRadiusX()).toEqual(10)
-    expect(circle.getRadiusY()).toEqual(10)
+    assert.equal(circle.getRadiusX(), 10)
+    assert.equal(circle.getRadiusY(), 10)
 
     circle.scale(2)
 
-    expect(circle.getRadiusX()).toEqual(20)
-    expect(circle.getRadiusY()).toEqual(20)
+    assert.equal(circle.getRadiusX(), 20)
+    assert.equal(circle.getRadiusY(), 20)
 
     circle.set("scaleX", 3)
 
-    expect(circle.getRadiusX()).toEqual(30)
-    expect(circle.getRadiusY()).toEqual(20)
+    assert.equal(circle.getRadiusX(), 30)
+    assert.equal(circle.getRadiusY(), 20)
 
     circle.set("scaleY", 4)
 
-    expect(circle.getRadiusX()).toEqual(30)
-    expect(circle.getRadiusY()).toEqual(40)
+    assert.equal(circle.getRadiusX(), 30)
+    assert.equal(circle.getRadiusY(), 40)
   })
 
-  test("setRadius", function (assert) {
+  QUnit.test("setRadius", function (assert) {
     var circle = new fabric.Circle({ radius: 10, strokeWidth: 0 })
 
-    expect(typeof circle.setRadius === "function").toBeTruthy()
+    assert.ok(typeof circle.setRadius === "function")
 
-    expect(circle.getRadiusX()).toEqual(10)
-    expect(circle.getRadiusY()).toEqual(10)
+    assert.equal(circle.getRadiusX(), 10)
+    assert.equal(circle.getRadiusY(), 10)
 
-    expect(circle.width).toEqual(20)
-    expect(circle.height).toEqual(20)
+    assert.equal(circle.width, 20)
+    assert.equal(circle.height, 20)
 
-    expect(circle).toEqual(circle.setRadius(20))
+    assert.equal(circle, circle.setRadius(20))
 
-    expect(circle.getRadiusX()).toEqual(20)
-    expect(circle.getRadiusY()).toEqual(20)
+    assert.equal(circle.getRadiusX(), 20)
+    assert.equal(circle.getRadiusY(), 20)
 
-    expect(circle.width).toEqual(40)
-    expect(circle.height).toEqual(40)
+    assert.equal(circle.width, 40)
+    assert.equal(circle.height, 40)
   })
 
-  test("set radius", function (assert) {
+  QUnit.test("set radius", function (assert) {
     var circle = new fabric.Circle({ strokeWidth: 0 })
 
     circle.set("radius", 20)
 
-    expect(circle.getRadiusX()).toEqual(20)
-    expect(circle.getRadiusY()).toEqual(20)
+    assert.equal(circle.getRadiusX(), 20)
+    assert.equal(circle.getRadiusY(), 20)
 
-    expect(circle.width).toEqual(40)
-    expect(circle.height).toEqual(40)
+    assert.equal(circle.width, 40)
+    assert.equal(circle.height, 40)
   })
 
-  test("complexity", function (assert) {
+  QUnit.test("complexity", function (assert) {
     var circle = new fabric.Circle()
-    expect(typeof circle.complexity === "function").toBeTruthy()
-    expect(circle.complexity()).toEqual(1)
+    assert.ok(typeof circle.complexity === "function")
+    assert.equal(circle.complexity(), 1)
   })
 
-  test("toObject", function (assert) {
+  QUnit.test("toObject", function (assert) {
     var circle = new fabric.Circle()
     var defaultProperties = {
       version: fabric.version,
@@ -119,8 +131,8 @@
       skewX: 0,
       skewY: 0
     }
-    expect(typeof circle.toObject === "function").toBeTruthy()
-    expect(circle.toObject()).toEqual(defaultProperties)
+    assert.ok(typeof circle.toObject === "function")
+    assert.deepEqual(circle.toObject(), defaultProperties)
 
     circle.set("left", 100).set("top", 200).set("radius", 15)
 
@@ -135,22 +147,25 @@
       }
     )
 
-    expect(circle.toObject()).toEqual(augmentedProperties)
+    assert.deepEqual(circle.toObject(), augmentedProperties)
   })
 
-  test("toSVG with full circle", function (assert) {
+  QUnit.test("toSVG with full circle", function (assert) {
     var circle = new fabric.Circle({ width: 100, height: 100, radius: 10 })
     var svg = circle.toSVG()
     var svgClipPath = circle.toClipPathSVG()
-    expect(svg).toEqual(
+    assert.equal(
+      svg,
       '<g transform="matrix(1 0 0 1 10.5 10.5)"  >\n<circle style="stroke: none; stroke-width: 1; stroke-dasharray: none; stroke-linecap: butt; stroke-dashoffset: 0; stroke-linejoin: miter; stroke-miterlimit: 4; fill: rgb(0,0,0); fill-rule: nonzero; opacity: 1;"  cx="0" cy="0" r="10" />\n</g>\n'
     )
-    expect(svgClipPath).toEqual(
-      '\t<circle transform="matrix(1 0 0 1 10.5 10.5)" cx="0" cy="0" r="10" />\n'
+    assert.equal(
+      svgClipPath,
+      '\t<circle transform="matrix(1 0 0 1 10.5 10.5)" cx="0" cy="0" r="10" />\n',
+      "circle as clipPath"
     )
   })
 
-  test("toSVG with half circle", function (assert) {
+  QUnit.test("toSVG with half circle", function (assert) {
     var circle = new fabric.Circle({
       width: 100,
       height: 100,
@@ -159,16 +174,19 @@
     })
     var svg = circle.toSVG()
     var svgClipPath = circle.toClipPathSVG()
-    expect(svg).toEqual(
+    assert.equal(
+      svg,
       '<g transform="matrix(1 0 0 1 10.5 10.5)"  >\n<path d="M 10 0 A 10 10 0 0 1 -10 0" style="stroke: none; stroke-width: 1; stroke-dasharray: none; stroke-linecap: butt; stroke-dashoffset: 0; stroke-linejoin: miter; stroke-miterlimit: 4; fill: rgb(0,0,0); fill-rule: nonzero; opacity: 1;"   />\n</g>\n'
     )
-    expect(svgClipPath).toEqual(
-      '\t<path d="M 10 0 A 10 10 0 0 1 -10 0" transform="matrix(1 0 0 1 10.5 10.5)"  />\n'
+    assert.equal(
+      svgClipPath,
+      '\t<path d="M 10 0 A 10 10 0 0 1 -10 0" transform="matrix(1 0 0 1 10.5 10.5)"  />\n',
+      "half circle as clipPath"
     )
   })
 
-  test("fromElement", function (assert) {
-    expect(typeof fabric.Circle.fromElement === "function").toBeTruthy()
+  QUnit.test("fromElement", function (assert) {
+    assert.ok(typeof fabric.Circle.fromElement === "function")
 
     var namespace = "http://www.w3.org/2000/svg"
     var elCircle = fabric.document.createElementNS(namespace, "circle"),
@@ -195,17 +213,17 @@
     elCircle.setAttributeNS(namespace, "stroke-miterlimit", strokeMiterLimit)
 
     fabric.Circle.fromElement(elCircle, function (oCircle) {
-      expect(oCircle instanceof fabric.Circle).toBeTruthy()
-      expect(oCircle.get("radius")).toEqual(radius)
-      expect(oCircle.get("left")).toEqual(left - radius)
-      expect(oCircle.get("top")).toEqual(top - radius)
-      expect(oCircle.get("fill")).toEqual(fill)
-      expect(oCircle.get("opacity")).toEqual(opacity)
-      expect(oCircle.get("strokeWidth")).toEqual(strokeWidth)
-      expect(oCircle.get("strokeDashArray")).toEqual(strokeDashArray)
-      expect(oCircle.get("strokeLineCap")).toEqual(strokeLineCap)
-      expect(oCircle.get("strokeLineJoin")).toEqual(strokeLineJoin)
-      expect(oCircle.get("strokeMiterLimit")).toEqual(strokeMiterLimit)
+      assert.ok(oCircle instanceof fabric.Circle)
+      assert.equal(oCircle.get("radius"), radius)
+      assert.equal(oCircle.get("left"), left - radius)
+      assert.equal(oCircle.get("top"), top - radius)
+      assert.equal(oCircle.get("fill"), fill)
+      assert.equal(oCircle.get("opacity"), opacity)
+      assert.equal(oCircle.get("strokeWidth"), strokeWidth)
+      assert.deepEqual(oCircle.get("strokeDashArray"), strokeDashArray)
+      assert.equal(oCircle.get("strokeLineCap"), strokeLineCap)
+      assert.equal(oCircle.get("strokeLineJoin"), strokeLineJoin)
+      assert.equal(oCircle.get("strokeMiterLimit"), strokeMiterLimit)
 
       var elFaultyCircle = fabric.document.createElementNS(namespace, "circle")
       elFaultyCircle.setAttributeNS(namespace, "r", "-10")
@@ -216,7 +234,7 @@
       } catch (err) {
         error = err
       }
-      expect(error).toBeTruthy()
+      assert.ok(error, "negative attribute should throw")
 
       elFaultyCircle.removeAttribute("r")
 
@@ -227,13 +245,13 @@
         error = err
       }
 
-      expect(error).toBeTruthy()
+      assert.ok(error, "inexstent attribute should throw")
     })
   })
 
-  test("fromObject", function (assert) {
+  QUnit.test("fromObject", function (assert) {
     var done = assert.async()
-    expect(typeof fabric.Circle.fromObject === "function").toBeTruthy()
+    assert.ok(typeof fabric.Circle.fromObject === "function")
 
     var left = 112,
       top = 234,
@@ -248,32 +266,32 @@
         fill: fill
       },
       function (circle) {
-        expect(circle instanceof fabric.Circle).toBeTruthy()
+        assert.ok(circle instanceof fabric.Circle)
 
-        expect(circle.get("left")).toEqual(left)
-        expect(circle.get("top")).toEqual(top)
-        expect(circle.get("radius")).toEqual(radius)
-        expect(circle.get("fill")).toEqual(fill)
+        assert.equal(circle.get("left"), left)
+        assert.equal(circle.get("top"), top)
+        assert.equal(circle.get("radius"), radius)
+        assert.equal(circle.get("fill"), fill)
 
         var expected = circle.toObject()
         fabric.Circle.fromObject(expected, function (actual) {
-          expect(actual.toObject()).toEqual(expected)
+          assert.deepEqual(actual.toObject(), expected)
           done()
         })
       }
     )
   })
 
-  test("cloning and radius, width, height", function (assert) {
+  QUnit.test("cloning and radius, width, height", function (assert) {
     var circle = new fabric.Circle({ radius: 10, strokeWidth: 0 })
     circle.scale(2)
 
     circle.clone(function (clone) {
-      expect(clone.width).toEqual(20)
-      expect(clone.getScaledWidth()).toEqual(40)
-      expect(clone.height).toEqual(20)
-      expect(clone.getScaledHeight()).toEqual(40)
-      expect(clone.radius).toEqual(10)
+      assert.equal(clone.width, 20)
+      assert.equal(clone.getScaledWidth(), 40)
+      assert.equal(clone.height, 20)
+      assert.equal(clone.getScaledHeight(), 40)
+      assert.equal(clone.radius, 10)
     })
   })
 })()

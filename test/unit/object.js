@@ -3,7 +3,7 @@
     enableRetinaScaling: false
   }))
 
-  describe("fabric.Object", {
+  QUnit.module("fabric.Object", {
     afterEach: function () {
       fabric.perfLimitSizeTotal = 2097152
       fabric.maxCacheSideLimit = 4096
@@ -17,21 +17,21 @@
     }
   })
 
-  test("constructor & properties", function (assert) {
-    expect(typeof fabric.Object === "function").toBeTruthy()
+  QUnit.test("constructor & properties", function (assert) {
+    assert.ok(typeof fabric.Object === "function")
 
     var cObj = new fabric.Object()
 
-    expect(cObj).toBeTruthy()
-    expect(cObj instanceof fabric.Object).toBeTruthy()
-    expect(cObj.constructor === fabric.Object).toBeTruthy()
+    assert.ok(cObj)
+    assert.ok(cObj instanceof fabric.Object)
+    assert.ok(cObj.constructor === fabric.Object)
 
-    expect(cObj.type).toEqual("object")
-    expect(cObj.includeDefaultValues).toEqual(true)
-    expect(cObj.selectable).toEqual(true)
+    assert.equal(cObj.type, "object")
+    assert.equal(cObj.includeDefaultValues, true)
+    assert.equal(cObj.selectable, true)
   })
 
-  test("get", function (assert) {
+  QUnit.test("get", function (assert) {
     var cObj = new fabric.Object({
       left: 11,
       top: 22,
@@ -40,14 +40,14 @@
       opacity: 0.7
     })
 
-    expect(cObj.get("left")).toEqual(11)
-    expect(cObj.get("top")).toEqual(22)
-    expect(cObj.get("width")).toEqual(50)
-    expect(cObj.get("height")).toEqual(60)
-    expect(cObj.get("opacity")).toEqual(0.7)
+    assert.equal(cObj.get("left"), 11)
+    assert.equal(cObj.get("top"), 22)
+    assert.equal(cObj.get("width"), 50)
+    assert.equal(cObj.get("height"), 60)
+    assert.equal(cObj.get("opacity"), 0.7)
   })
 
-  test("set", function (assert) {
+  QUnit.test("set", function (assert) {
     var cObj = new fabric.Object({
       left: 11,
       top: 22,
@@ -62,26 +62,30 @@
     cObj.set("height", 61)
     cObj.set("opacity", 0.5)
 
-    expect(cObj.get("left")).toEqual(12)
-    expect(cObj.get("top")).toEqual(23)
-    expect(cObj.get("width")).toEqual(51)
-    expect(cObj.get("height")).toEqual(61)
-    expect(cObj.get("opacity")).toEqual(0.5)
+    assert.equal(cObj.get("left"), 12)
+    assert.equal(cObj.get("top"), 23)
+    assert.equal(cObj.get("width"), 51)
+    assert.equal(cObj.get("height"), 61)
+    assert.equal(cObj.get("opacity"), 0.5)
 
-    expect(cObj.set("opacity", 0.5)).toEqual(cObj)
+    assert.equal(cObj.set("opacity", 0.5), cObj, "chainable")
   })
 
-  test("set with object of prop/values", function (assert) {
+  QUnit.test("set with object of prop/values", function (assert) {
     var cObj = new fabric.Object({})
 
-    expect(cObj).toEqual(cObj.set({ width: 99, height: 88, fill: "red" }))
+    assert.equal(
+      cObj,
+      cObj.set({ width: 99, height: 88, fill: "red" }),
+      "chainable"
+    )
 
-    expect("red").toEqual(cObj.get("fill"))
-    expect(99).toEqual(cObj.get("width"))
-    expect(88).toEqual(cObj.get("height"))
+    assert.equal("red", cObj.get("fill"))
+    assert.equal(99, cObj.get("width"))
+    assert.equal(88, cObj.get("height"))
   })
 
-  // test('Dinamically generated accessors', function(assert) {
+  // QUnit.test('Dinamically generated accessors', function(assert) {
   //   var cObj = new fabric.Object({ });
   //
   //   assert.equal('function', typeof cObj.getWidth);
@@ -100,18 +104,18 @@
   //   assert.equal(0.123, cObj.getOpacity());
   // });
 
-  test("stateProperties", function (assert) {
+  QUnit.test("stateProperties", function (assert) {
     var cObj = new fabric.Object()
-    expect(cObj.stateProperties).toBeTruthy()
-    expect(cObj.stateProperties.length > 0).toBeTruthy()
+    assert.ok(cObj.stateProperties)
+    assert.ok(cObj.stateProperties.length > 0)
   })
 
-  test("transform", function (assert) {
+  QUnit.test("transform", function (assert) {
     var cObj = new fabric.Object()
-    expect(typeof cObj.transform === "function").toBeTruthy()
+    assert.ok(typeof cObj.transform === "function")
   })
 
-  test("toJSON", function (assert) {
+  QUnit.test("toJSON", function (assert) {
     var emptyObjectJSON =
       '{"type":"object","version":"' +
       fabric.version +
@@ -131,8 +135,8 @@
       '"skewX":0,"skewY":0}'
 
     var cObj = new fabric.Object()
-    expect(typeof cObj.toJSON === "function").toBeTruthy()
-    expect(JSON.stringify(cObj.toJSON())).toEqual(emptyObjectJSON)
+    assert.ok(typeof cObj.toJSON === "function")
+    assert.equal(JSON.stringify(cObj.toJSON()), emptyObjectJSON)
 
     cObj
       .set("opacity", 0.88)
@@ -144,10 +148,10 @@
       .set("strokeLineJoin", "bevil")
       .set("strokeMiterLimit", 5)
 
-    expect(JSON.stringify(cObj.toJSON())).toEqual(augmentedJSON)
+    assert.equal(JSON.stringify(cObj.toJSON()), augmentedJSON)
   })
 
-  test("toObject", function (assert) {
+  QUnit.test("toObject", function (assert) {
     var emptyObjectRepr = {
       version: fabric.version,
       type: "object",
@@ -215,7 +219,7 @@
     }
 
     var cObj = new fabric.Object()
-    expect(emptyObjectRepr).toEqual(cObj.toObject())
+    assert.deepEqual(emptyObjectRepr, cObj.toObject())
 
     cObj
       .set("left", 10)
@@ -229,7 +233,7 @@
       .set("strokeLineJoin", "bevil")
       .set("strokeMiterLimit", 5)
 
-    expect(augmentedObjectRepr).toEqual(cObj.toObject())
+    assert.deepEqual(augmentedObjectRepr, cObj.toObject())
 
     var fractionalValue = 166.66666666666666,
       testedProperties = "left top width height".split(" "),
@@ -240,7 +244,15 @@
 
       testedProperties.forEach(function (property) {
         cObj.set(property, fractionalValue)
-        expect(cObj.toObject()[property]).toEqual(expectedValue)
+        assert.equal(
+          cObj.toObject()[property],
+          expectedValue,
+          "value of " +
+            property +
+            " should have " +
+            fractionDigits +
+            " fractional digits"
+        )
       }, this)
 
       fabric.Object.NUM_FRACTION_DIGITS = fractionDigitsDefault
@@ -251,7 +263,7 @@
     testFractionDigits.call(this, 0, 167)
   })
 
-  test("toObject without default values", function (assert) {
+  QUnit.test("toObject without default values", function (assert) {
     var emptyObjectRepr = {
       version: fabric.version,
       type: "object",
@@ -277,7 +289,11 @@
     var cObj = new fabric.Object(),
       toObjectObj
     cObj.includeDefaultValues = false
-    expect(emptyObjectRepr).toEqual(cObj.toObject())
+    assert.deepEqual(
+      emptyObjectRepr,
+      cObj.toObject(),
+      "top and left are always mantained"
+    )
 
     cObj
       .set("left", 10)
@@ -291,107 +307,113 @@
       .set("strokeLineJoin", "bevil")
       .set("strokeMiterLimit", 5)
     toObjectObj = cObj.toObject()
-    expect(augmentedObjectRepr).toEqual(toObjectObj)
-    expect(augmentedObjectRepr.strokeDashArray).not.toEqual(toObjectObj.strokeDashArray)
-    expect(augmentedObjectRepr.strokeDashArray).toEqual(toObjectObj.strokeDashArray)
+    assert.deepEqual(augmentedObjectRepr, toObjectObj)
+    assert.notEqual(
+      augmentedObjectRepr.strokeDashArray,
+      toObjectObj.strokeDashArray
+    )
+    assert.deepEqual(
+      augmentedObjectRepr.strokeDashArray,
+      toObjectObj.strokeDashArray
+    )
   })
 
-  test("toDatalessObject", function (assert) {
+  QUnit.test("toDatalessObject", function (assert) {
     var cObj = new fabric.Object()
-    expect(typeof cObj.toDatalessObject === "function").toBeTruthy()
-    expect(cObj.toObject()).toEqual(cObj.toDatalessObject())
+    assert.ok(typeof cObj.toDatalessObject === "function")
+    assert.deepEqual(cObj.toObject(), cObj.toDatalessObject())
   })
 
-  test("toString", function (assert) {
+  QUnit.test("toString", function (assert) {
     var cObj = new fabric.Object()
-    expect(cObj.toString()).toEqual("#<fabric.Object>")
+    assert.equal(cObj.toString(), "#<fabric.Object>")
     cObj.type = "moo"
-    expect(cObj.toString()).toEqual("#<fabric.Moo>")
+    assert.equal(cObj.toString(), "#<fabric.Moo>")
   })
 
-  test("render", function (assert) {
+  QUnit.test("render", function (assert) {
     var cObj = new fabric.Object()
-    expect(typeof cObj.render === "function").toBeTruthy()
+    assert.ok(typeof cObj.render === "function")
   })
 
-  test("rotate", function (assert) {
+  QUnit.test("rotate", function (assert) {
     var cObj = new fabric.Object()
-    expect(typeof cObj.rotate === "function").toBeTruthy()
-    expect(cObj.get("angle")).toEqual(0)
-    expect(cObj.rotate(45)).toEqual(cObj)
-    expect(cObj.get("angle")).toEqual(45)
+    assert.ok(typeof cObj.rotate === "function")
+    assert.equal(cObj.get("angle"), 0)
+    assert.equal(cObj.rotate(45), cObj, "chainable")
+    assert.equal(cObj.get("angle"), 45)
   })
 
-  test("scale", function (assert) {
+  QUnit.test("scale", function (assert) {
     var cObj = new fabric.Object()
-    expect(typeof cObj.scale === "function").toBeTruthy()
-    expect(cObj.get("scaleX")).toEqual(1)
-    expect(cObj.get("scaleY")).toEqual(1)
+    assert.ok(typeof cObj.scale === "function")
+    assert.equal(cObj.get("scaleX"), 1)
+    assert.equal(cObj.get("scaleY"), 1)
     cObj.scale(1.5)
-    expect(cObj.get("scaleX")).toEqual(1.5)
-    expect(cObj.get("scaleY")).toEqual(1.5)
-    expect(cObj.scale(2)).toEqual(cObj)
+    assert.equal(cObj.get("scaleX"), 1.5)
+    assert.equal(cObj.get("scaleY"), 1.5)
+    assert.equal(cObj.scale(2), cObj, "chainable")
   })
 
-  test("setOpacity", function (assert) {
+  QUnit.test("setOpacity", function (assert) {
     var cObj = new fabric.Object()
-    expect(cObj.get("opacity")).toEqual(1)
+    assert.equal(cObj.get("opacity"), 1)
     cObj.set("opacity", 0.68)
-    expect(cObj.get("opacity")).toEqual(0.68)
-    expect(cObj.set("opacity", 1)).toEqual(cObj)
+    assert.equal(cObj.get("opacity"), 0.68)
+    assert.equal(cObj.set("opacity", 1), cObj, "chainable")
   })
 
-  test("getAngle", function (assert) {
+  QUnit.test("getAngle", function (assert) {
     var cObj = new fabric.Object()
-    expect(cObj.get("angle")).toEqual(0)
+    assert.equal(cObj.get("angle"), 0)
     cObj.rotate(45)
-    expect(cObj.get("angle")).toEqual(45)
+    assert.equal(cObj.get("angle"), 45)
   })
 
-  test("rotate", function (assert) {
+  QUnit.test("rotate", function (assert) {
     var cObj = new fabric.Object()
-    expect(cObj.get("angle")).toEqual(0)
-    expect(cObj.set("angle", 45)).toEqual(cObj)
-    expect(cObj.get("angle")).toEqual(45)
+    assert.equal(cObj.get("angle"), 0)
+    assert.equal(cObj.set("angle", 45), cObj, "chainable")
+    assert.equal(cObj.get("angle"), 45)
   })
 
-  test("drawBorders", function (assert) {
+  QUnit.test("drawBorders", function (assert) {
     var cObj = new fabric.Object(),
       canvas = fabric.document.createElement("canvas")
 
     var dummyContext = canvas.getContext("2d")
 
-    expect(typeof cObj.drawBorders === "function").toBeTruthy()
-    expect(cObj.drawBorders(dummyContext)).toEqual(cObj)
+    assert.ok(typeof cObj.drawBorders === "function")
+    assert.equal(cObj.drawBorders(dummyContext), cObj, "chainable")
   })
 
-  test("drawControls", function (assert) {
+  QUnit.test("drawControls", function (assert) {
     var cObj = new fabric.Object(),
       _canvas = fabric.document.createElement("canvas")
     cObj.canvas = canvas
     var dummyContext = _canvas.getContext("2d")
-    expect(typeof cObj.drawControls === "function").toBeTruthy()
-    expect(cObj.drawControls(dummyContext)).toEqual(cObj)
+    assert.ok(typeof cObj.drawControls === "function")
+    assert.equal(cObj.drawControls(dummyContext), cObj, "chainable")
   })
 
-  test("clone", function (assert) {
+  QUnit.test("clone", function (assert) {
     var cObj = new fabric.Object({ left: 123, top: 456, opacity: 0.66 })
-    expect(typeof cObj.clone === "function").toBeTruthy()
+    assert.ok(typeof cObj.clone === "function")
     cObj.clone(function (clone) {
-      expect(clone.get("left")).toEqual(123)
-      expect(clone.get("top")).toEqual(456)
-      expect(clone.get("opacity")).toEqual(0.66)
+      assert.equal(clone.get("left"), 123)
+      assert.equal(clone.get("top"), 456)
+      assert.equal(clone.get("opacity"), 0.66)
 
       // augmenting clone properties should not affect original instance
       clone.set("left", 12).set("scaleX", 2.5).rotate(33)
 
-      expect(cObj.get("left")).toEqual(123)
-      expect(cObj.get("scaleX")).toEqual(1)
-      expect(cObj.get("angle")).toEqual(0)
+      assert.equal(cObj.get("left"), 123)
+      assert.equal(cObj.get("scaleX"), 1)
+      assert.equal(cObj.get("angle"), 0)
     })
   })
 
-  test("cloneAsImage", function (assert) {
+  QUnit.test("cloneAsImage", function (assert) {
     var done = assert.async()
     var cObj = new fabric.Rect({
       width: 100,
@@ -399,16 +421,16 @@
       fill: "red",
       strokeWidth: 0
     })
-    expect(typeof cObj.cloneAsImage === "function").toBeTruthy()
+    assert.ok(typeof cObj.cloneAsImage === "function")
     cObj.cloneAsImage(function (image) {
-      expect(image).toBeTruthy()
-      expect(image instanceof fabric.Image).toBeTruthy()
-      expect(image.width).toEqual(100)
+      assert.ok(image)
+      assert.ok(image instanceof fabric.Image)
+      assert.equal(image.width, 100, "the image has same dimension of object")
       done()
     })
   })
 
-  test("cloneAsImage with retina scaling enabled", function (assert) {
+  QUnit.test("cloneAsImage with retina scaling enabled", function (assert) {
     var done = assert.async()
     var cObj = new fabric.Rect({
       width: 100,
@@ -419,9 +441,9 @@
     fabric.devicePixelRatio = 2
     cObj.cloneAsImage(
       function (image) {
-        expect(image).toBeTruthy()
-        expect(image instanceof fabric.Image).toBeTruthy()
-        expect(image.width).toEqual(200)
+        assert.ok(image)
+        assert.ok(image instanceof fabric.Image)
+        assert.equal(image.width, 200, "the image has been scaled by retina")
         fabric.devicePixelRatio = 1
         done()
       },
@@ -429,7 +451,7 @@
     )
   })
 
-  test("toCanvasElement", function (assert) {
+  QUnit.test("toCanvasElement", function (assert) {
     var cObj = new fabric.Rect({
       width: 100,
       height: 100,
@@ -437,14 +459,17 @@
       strokeWidth: 0
     })
 
-    expect(typeof cObj.toCanvasElement === "function").toBeTruthy()
+    assert.ok(typeof cObj.toCanvasElement === "function")
 
     var canvasEl = cObj.toCanvasElement()
 
-    expect(typeof canvasEl.getContext === "function").toBeTruthy()
+    assert.ok(
+      typeof canvasEl.getContext === "function",
+      "the element returned is a canvas"
+    )
   })
 
-  test("toCanvasElement activeSelection", function (assert) {
+  QUnit.test("toCanvasElement activeSelection", function (assert) {
     var cObj = new fabric.Rect({
       width: 100,
       height: 100,
@@ -465,18 +490,18 @@
       canvas: canvas
     })
 
-    expect(cObj.canvas).toEqual(canvas)
+    assert.equal(cObj.canvas, canvas, "canvas is the main one step 1")
 
     activeSel.toCanvasElement()
 
-    expect(cObj.canvas).toEqual(canvas)
+    assert.equal(cObj.canvas, canvas, "canvas is the main one step 2")
 
     activeSel.destroy()
 
-    expect(cObj.canvas).toEqual(canvas)
+    assert.equal(cObj.canvas, canvas, "canvas is the main one step 3")
   })
 
-  test(
+  QUnit.test(
     "toCanvasElement does not modify oCoords on zoomed canvas",
     function (assert) {
       var cObj = new fabric.Rect({
@@ -490,12 +515,20 @@
       var originaloCoords = cObj.oCoords
       var originalaCoords = cObj.aCoords
       cObj.toCanvasElement()
-      expect(cObj.oCoords).toEqual(originaloCoords)
-      expect(cObj.aCoords).toEqual(originalaCoords)
+      assert.deepEqual(
+        cObj.oCoords,
+        originaloCoords,
+        "cObj did not get object coords changed"
+      )
+      assert.deepEqual(
+        cObj.aCoords,
+        originalaCoords,
+        "cObj did not get absolute coords changed"
+      )
     }
   )
 
-  test("toDataURL", function (assert) {
+  QUnit.test("toDataURL", function (assert) {
     var cObj = new fabric.Rect({
       width: 100,
       height: 100,
@@ -503,21 +536,21 @@
       strokeWidth: 0
     })
 
-    expect(typeof cObj.toDataURL === "function").toBeTruthy()
+    assert.ok(typeof cObj.toDataURL === "function")
 
     var dataURL = cObj.toDataURL()
-    expect(typeof dataURL).toEqual("string")
-    expect(dataURL.substring(0, 21)).toEqual("data:image/png;base64")
+    assert.equal(typeof dataURL, "string")
+    assert.equal(dataURL.substring(0, 21), "data:image/png;base64")
 
     try {
       dataURL = cObj.toDataURL({ format: "jpeg" })
-      expect(dataURL.substring(0, 22)).toEqual("data:image/jpeg;base64")
+      assert.equal(dataURL.substring(0, 22), "data:image/jpeg;base64")
     } catch (err) {
       fabric.log("jpeg toDataURL not supported")
     }
   })
 
-  test("toDataURL & reference to canvas", function (assert) {
+  QUnit.test("toDataURL & reference to canvas", function (assert) {
     // var data =
     //   'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAGQA'+
     //   'AABkCAYAAABw4pVUAAAA+UlEQVR4nO3RoRHAQBDEsOu/6YR+B2s'+
@@ -537,40 +570,44 @@
     var objCanvas = cObj.canvas
     cObj.toDataURL()
 
-    expect(objCanvas).toEqual(cObj.canvas)
+    assert.equal(objCanvas, cObj.canvas)
   })
 
-  test("isType", function (assert) {
+  QUnit.test("isType", function (assert) {
     var cObj = new fabric.Object()
-    expect(typeof cObj.isType === "function").toBeTruthy()
-    expect(cObj.isType("object")).toBeTruthy()
-    expect(!cObj.isType("rect")).toBeTruthy()
+    assert.ok(typeof cObj.isType === "function")
+    assert.ok(cObj.isType("object"))
+    assert.ok(!cObj.isType("rect"))
     cObj = new fabric.Rect()
-    expect(cObj.isType("rect")).toBeTruthy()
-    expect(!cObj.isType("object")).toBeTruthy()
+    assert.ok(cObj.isType("rect"))
+    assert.ok(!cObj.isType("object"))
   })
 
-  test("toggle", function (assert) {
+  QUnit.test("toggle", function (assert) {
     var object = new fabric.Object({
       left: 100,
       top: 124,
       width: 210,
       height: 66
     })
-    expect(typeof object.toggle === "function").toBeTruthy()
+    assert.ok(typeof object.toggle === "function")
 
     object.set("flipX", false)
-    expect(object.toggle("flipX")).toEqual(object)
-    expect(object.get("flipX")).toEqual(true)
+    assert.equal(object.toggle("flipX"), object, "should be chainable")
+    assert.equal(object.get("flipX"), true)
     object.toggle("flipX")
-    expect(object.get("flipX")).toEqual(false)
+    assert.equal(object.get("flipX"), false)
 
     object.set("left", 112.45)
     object.toggle("left")
-    expect(object.get("left")).toEqual(112.45)
+    assert.equal(
+      object.get("left"),
+      112.45,
+      "non boolean properties should not be affected"
+    )
   })
 
-  test("_setLineDash", function (assert) {
+  QUnit.test("_setLineDash", function (assert) {
     var object = new fabric.Rect({
       left: 100,
       top: 124,
@@ -579,52 +616,64 @@
       stroke: "black",
       strokeWidth: 2
     })
-    expect(typeof object._setLineDash === "function").toBeTruthy()
+    assert.ok(typeof object._setLineDash === "function")
     object.strokeDashArray = [3, 2, 1]
-    expect(object.strokeDashArray.length).toEqual(3)
+    assert.equal(object.strokeDashArray.length, 3, "strokeDash array is odd")
     object._setLineDash(canvas.contextContainer, object.strokeDashArray, null)
-    expect(object.strokeDashArray.length).toEqual(6)
+    assert.equal(
+      object.strokeDashArray.length,
+      6,
+      "strokeDash array now is even"
+    )
 
-    expect(canvas.contextContainer.getLineDash().length).toEqual(6)
+    assert.equal(
+      canvas.contextContainer.getLineDash().length,
+      6,
+      "object pushed line dash to canvas"
+    )
     object._setLineDash(canvas.contextContainer, [], null)
-    expect(canvas.contextContainer.getLineDash().length).toEqual(6)
+    assert.equal(
+      canvas.contextContainer.getLineDash().length,
+      6,
+      "bailed immediately as array empty"
+    )
   })
 
-  test("straighten", function (assert) {
+  QUnit.test("straighten", function (assert) {
     var object = new fabric.Object({
       left: 100,
       top: 124,
       width: 210,
       height: 66
     })
-    expect(typeof object.straighten === "function").toBeTruthy()
+    assert.ok(typeof object.straighten === "function")
 
     object.rotate(123.456)
     object.straighten()
-    expect(object.get("angle")).toEqual(90)
+    assert.equal(object.get("angle"), 90)
 
     object.rotate(97.111)
     object.straighten()
-    expect(object.get("angle")).toEqual(90)
+    assert.equal(object.get("angle"), 90)
 
     object.rotate(3.45)
     object.straighten()
-    expect(object.get("angle")).toEqual(0)
+    assert.equal(object.get("angle"), 0)
 
     object.rotate(-157)
     object.straighten()
-    expect(object.get("angle")).toEqual(-180)
+    assert.equal(object.get("angle"), -180)
 
     object.rotate(159)
     object.straighten()
-    expect(object.get("angle")).toEqual(180)
+    assert.equal(object.get("angle"), 180)
 
     object.rotate(999)
     object.straighten()
-    expect(object.get("angle")).toEqual(270)
+    assert.equal(object.get("angle"), 270)
   })
 
-  test("fxStraighten", function (assert) {
+  QUnit.test("fxStraighten", function (assert) {
     var done = assert.async()
     var object = new fabric.Object({
       left: 20,
@@ -645,19 +694,27 @@
     }
 
     var callbacks = { onComplete: onComplete, onChange: onChange }
-    expect(typeof object.fxStraighten === "function").toBeTruthy()
-    expect(object.fxStraighten(callbacks)).toEqual(object)
-    expect(fabric.util.toFixed(object.get("angle"), 0)).toEqual(43)
+    assert.ok(typeof object.fxStraighten === "function")
+    assert.equal(object.fxStraighten(callbacks), object, "should be chainable")
+    assert.equal(fabric.util.toFixed(object.get("angle"), 0), 43)
     setTimeout(function () {
-      expect(onCompleteFired).toBeTruthy()
-      expect(onChangeFired).toBeTruthy()
-      expect(object.get("angle")).toEqual(0)
-      expect(object.fxStraighten()).toEqual(object)
+      assert.ok(onCompleteFired)
+      assert.ok(onChangeFired)
+      assert.equal(
+        object.get("angle"),
+        0,
+        "angle should be set to 0 by the end of animation"
+      )
+      assert.equal(
+        object.fxStraighten(),
+        object,
+        "should work without callbacks"
+      )
       done()
     }, 1000)
   })
 
-  test("on off fire are chainable", function (assert) {
+  QUnit.test("on off fire are chainable", function (assert) {
     var object = new fabric.Object({
       left: 20,
       top: 30,
@@ -667,18 +724,26 @@
     })
     var ret
     ret = object.fire("")
-    expect(ret).toEqual(object)
+    assert.equal(
+      ret,
+      object,
+      "fire is chainable when no events are registered at all"
+    )
     ret = object.on("hi", function () {})
-    expect(ret).toEqual(object)
+    assert.equal(ret, object, "on is chainable")
     ret = object.fire("bye")
-    expect(ret).toEqual(object)
+    assert.equal(
+      ret,
+      object,
+      "fire is chainable when firing a non registerd event"
+    )
     ret = object.fire("hi")
-    expect(ret).toEqual(object)
+    assert.equal(ret, object, "fire is chainable when firing a registerd event")
     ret = object.off("hi")
-    expect(ret).toEqual(object)
+    assert.equal(ret, object, "off is chainable")
   })
 
-  test("observable", function (assert) {
+  QUnit.test("observable", function (assert) {
     var object = new fabric.Object({
       left: 20,
       top: 30,
@@ -698,12 +763,12 @@
     })
 
     object.fire("foo")
-    expect(fooFired).toBeTruthy()
-    expect(!barFired).toBeTruthy()
+    assert.ok(fooFired)
+    assert.ok(!barFired)
 
     object.fire("bar")
-    expect(fooFired).toBeTruthy()
-    expect(barFired).toBeTruthy()
+    assert.ok(fooFired)
+    assert.ok(barFired)
 
     var firedOptions
     object.on("baz", function (options) {
@@ -711,11 +776,11 @@
     })
     object.fire("baz", { param1: "abrakadabra", param2: 3.1415 })
 
-    expect("abrakadabra").toEqual(firedOptions.param1)
-    expect(3.1415).toEqual(firedOptions.param2)
+    assert.equal("abrakadabra", firedOptions.param1)
+    assert.equal(3.1415, firedOptions.param2)
   })
 
-  test("object:added", function (assert) {
+  QUnit.test("object:added", function (assert) {
     var object = new fabric.Object()
     var addedEventFired = false
 
@@ -724,21 +789,21 @@
     })
     canvas.add(object)
 
-    expect(addedEventFired).toBeTruthy()
+    assert.ok(addedEventFired)
   })
 
-  test("canvas reference", function (assert) {
+  QUnit.test("canvas reference", function (assert) {
     var object = new fabric.Object()
     var object2 = new fabric.Object()
 
     canvas.add(object)
     canvas.insertAt(object2, 0)
 
-    expect(object.canvas === canvas).toBeTruthy()
-    expect(object2.canvas === canvas).toBeTruthy()
+    assert.ok(object.canvas === canvas)
+    assert.ok(object2.canvas === canvas)
   })
 
-  test("object:removed", function (assert) {
+  QUnit.test("object:removed", function (assert) {
     var object = new fabric.Object()
     var removedEventFired = false
 
@@ -749,205 +814,233 @@
     })
     canvas.remove(object)
 
-    expect(removedEventFired).toBeTruthy()
+    assert.ok(removedEventFired)
   })
 
-  test("center", function (assert) {
+  QUnit.test("center", function (assert) {
     var object = new fabric.Object()
     object.strokeWidth = 0
     canvas.viewportTransform = [1, 0, 0, 1, 0, 0]
-    expect(typeof object.center === "function").toBeTruthy()
+    assert.ok(typeof object.center === "function")
 
     canvas.add(object)
-    expect(object.center()).toEqual(object)
+    assert.equal(object.center(), object, "should be chainable")
 
-    expect(object.getCenterPoint().x).toEqual(canvas.getWidth() / 2)
-    expect(object.getCenterPoint().y).toEqual(canvas.getHeight() / 2)
+    assert.equal(object.getCenterPoint().x, canvas.getWidth() / 2)
+    assert.equal(object.getCenterPoint().y, canvas.getHeight() / 2)
 
     canvas.setZoom(2)
     object.center()
-    expect(object.getCenterPoint().x).toEqual(canvas.getWidth() / 2)
-    expect(object.getCenterPoint().y).toEqual(canvas.getHeight() / 2)
+    assert.equal(
+      object.getCenterPoint().x,
+      canvas.getWidth() / 2,
+      "object center.x is in canvas center when the canvas is transformed"
+    )
+    assert.equal(
+      object.getCenterPoint().y,
+      canvas.getHeight() / 2,
+      "object center.y is in canvas center when the canvas is transformed"
+    )
   })
 
-  test("centerH", function (assert) {
+  QUnit.test("centerH", function (assert) {
     var object = new fabric.Object()
     object.strokeWidth = 0
     canvas.viewportTransform = [1, 0, 0, 1, 0, 0]
-    expect(typeof object.centerH === "function").toBeTruthy()
+    assert.ok(typeof object.centerH === "function")
     var oldY = object.top
 
     canvas.add(object)
-    expect(object.centerH()).toEqual(object)
+    assert.equal(object.centerH(), object, "should be chainable")
 
-    expect(object.getCenterPoint().x).toEqual(canvas.getWidth() / 2)
-    expect(object.top).toEqual(oldY)
+    assert.equal(object.getCenterPoint().x, canvas.getWidth() / 2)
+    assert.equal(object.top, oldY, "object top did not change")
     canvas.setZoom(2)
     object.centerH()
-    expect(object.getCenterPoint().x).toEqual(canvas.getWidth() / 2)
+    assert.equal(
+      object.getCenterPoint().x,
+      canvas.getWidth() / 2,
+      "object center.x is in canvas center when the canvas is transformed"
+    )
   })
 
-  test("centerV", function (assert) {
+  QUnit.test("centerV", function (assert) {
     var object = new fabric.Object()
     object.strokeWidth = 0
     canvas.viewportTransform = [1, 0, 0, 1, 0, 0]
-    expect(typeof object.centerV === "function").toBeTruthy()
+    assert.ok(typeof object.centerV === "function")
     var oldX = object.left
 
     canvas.add(object)
-    expect(object.centerV()).toEqual(object)
-    expect(object.left).toEqual(oldX)
-    expect(object.getCenterPoint().y).toEqual(canvas.getHeight() / 2)
+    assert.equal(object.centerV(), object, "should be chainable")
+    assert.equal(object.left, oldX, "object top did not change")
+    assert.equal(object.getCenterPoint().y, canvas.getHeight() / 2)
 
     canvas.setZoom(2)
     object.centerV()
-    expect(object.getCenterPoint().y).toEqual(canvas.getHeight() / 2)
+    assert.equal(
+      object.getCenterPoint().y,
+      canvas.getHeight() / 2,
+      "object center.y is in canvas center when the canvas is transformed"
+    )
   })
 
-  test("viewportCenter", function (assert) {
+  QUnit.test("viewportCenter", function (assert) {
     var object = new fabric.Object()
     object.strokeWidth = 0
     canvas.viewportTransform = [1, 0, 0, 1, 0, 0]
-    expect(typeof object.viewportCenter === "function").toBeTruthy()
+    assert.ok(typeof object.viewportCenter === "function")
 
     canvas.add(object)
-    expect(object.viewportCenter()).toEqual(object)
+    assert.equal(object.viewportCenter(), object, "should be chainable")
 
-    expect(object.getCenterPoint().x).toEqual(canvas.getWidth() / 2)
-    expect(object.getCenterPoint().y).toEqual(canvas.getHeight() / 2)
+    assert.equal(object.getCenterPoint().x, canvas.getWidth() / 2)
+    assert.equal(object.getCenterPoint().y, canvas.getHeight() / 2)
 
     canvas.setZoom(2)
     object.viewportCenter()
-    expect(object.getCenterPoint().x).toEqual(canvas.getWidth() / (2 * canvas.getZoom()))
-    expect(object.getCenterPoint().y).toEqual(canvas.getHeight() / (2 * canvas.getZoom()))
+    assert.equal(
+      object.getCenterPoint().x,
+      canvas.getWidth() / (2 * canvas.getZoom())
+    )
+    assert.equal(
+      object.getCenterPoint().y,
+      canvas.getHeight() / (2 * canvas.getZoom())
+    )
   })
 
-  test("viewportCenterH", function (assert) {
+  QUnit.test("viewportCenterH", function (assert) {
     var object = new fabric.Object()
     object.strokeWidth = 0
     canvas.viewportTransform = [1, 0, 0, 1, 0, 0]
-    expect(typeof object.viewportCenterH === "function").toBeTruthy()
+    assert.ok(typeof object.viewportCenterH === "function")
 
     var oldY = object.top
     canvas.add(object)
-    expect(object.viewportCenterH()).toEqual(object)
-    expect(object.getCenterPoint().x).toEqual(canvas.getWidth() / 2)
-    expect(object.top).toEqual(oldY)
+    assert.equal(object.viewportCenterH(), object, "should be chainable")
+    assert.equal(object.getCenterPoint().x, canvas.getWidth() / 2)
+    assert.equal(object.top, oldY, "object top did not change")
     canvas.setZoom(2)
     object.viewportCenterH()
-    expect(object.getCenterPoint().x).toEqual(canvas.getWidth() / (2 * canvas.getZoom()))
-    expect(object.top).toEqual(oldY)
+    assert.equal(
+      object.getCenterPoint().x,
+      canvas.getWidth() / (2 * canvas.getZoom())
+    )
+    assert.equal(object.top, oldY, "object top did not change")
   })
 
-  test("viewportCenterV", function (assert) {
+  QUnit.test("viewportCenterV", function (assert) {
     var object = new fabric.Object()
     object.strokeWidth = 0
     canvas.viewportTransform = [1, 0, 0, 1, 0, 0]
-    expect(typeof object.viewportCenterV === "function").toBeTruthy()
+    assert.ok(typeof object.viewportCenterV === "function")
 
     var oldX = object.left
 
     canvas.add(object)
-    expect(object.viewportCenterV()).toEqual(object)
-    expect(object.getCenterPoint().y).toEqual(canvas.getHeight() / 2)
-    expect(object.left).toEqual(oldX)
+    assert.equal(object.viewportCenterV(), object, "should be chainable")
+    assert.equal(object.getCenterPoint().y, canvas.getHeight() / 2)
+    assert.equal(object.left, oldX, "object left did not change")
     canvas.setZoom(2)
     object.viewportCenterV()
-    expect(object.getCenterPoint().y).toEqual(canvas.getHeight() / (2 * canvas.getZoom()))
-    expect(object.left).toEqual(oldX)
+    assert.equal(
+      object.getCenterPoint().y,
+      canvas.getHeight() / (2 * canvas.getZoom())
+    )
+    assert.equal(object.left, oldX, "object left did not change")
   })
 
-  test("sendToBack", function (assert) {
+  QUnit.test("sendToBack", function (assert) {
     var object = new fabric.Object()
 
-    expect(typeof object.sendToBack === "function").toBeTruthy()
+    assert.ok(typeof object.sendToBack === "function")
 
     canvas.add(object)
-    expect(object.sendToBack()).toEqual(object)
+    assert.equal(object.sendToBack(), object, "should be chainable")
   })
 
-  test("bringToFront", function (assert) {
+  QUnit.test("bringToFront", function (assert) {
     var object = new fabric.Object()
 
-    expect(typeof object.bringToFront === "function").toBeTruthy()
+    assert.ok(typeof object.bringToFront === "function")
 
     canvas.add(object)
-    expect(object.bringToFront()).toEqual(object)
+    assert.equal(object.bringToFront(), object, "should be chainable")
   })
 
-  test("sendBackwards", function (assert) {
+  QUnit.test("sendBackwards", function (assert) {
     var object = new fabric.Object()
 
-    expect(typeof object.sendBackwards === "function").toBeTruthy()
+    assert.ok(typeof object.sendBackwards === "function")
 
     canvas.add(object)
-    expect(object.sendBackwards()).toEqual(object)
+    assert.equal(object.sendBackwards(), object, "should be chainable")
   })
 
-  test("bringForward", function (assert) {
+  QUnit.test("bringForward", function (assert) {
     var object = new fabric.Object()
 
-    expect(typeof object.bringForward === "function").toBeTruthy()
+    assert.ok(typeof object.bringForward === "function")
 
     canvas.add(object)
-    expect(object.bringForward()).toEqual(object)
+    assert.equal(object.bringForward(), object, "should be chainable")
   })
 
-  test("moveTo", function (assert) {
+  QUnit.test("moveTo", function (assert) {
     var object = new fabric.Object()
 
-    expect(typeof object.moveTo === "function").toBeTruthy()
+    assert.ok(typeof object.moveTo === "function")
 
     canvas.add(object)
-    expect(object.moveTo()).toEqual(object)
+    assert.equal(object.moveTo(), object, "should be chainable")
   })
 
-  test("getTotalObjectScaling with zoom", function (assert) {
+  QUnit.test("getTotalObjectScaling with zoom", function (assert) {
     var object = new fabric.Object({ scaleX: 3, scaleY: 2 })
     canvas.setZoom(3)
     canvas.add(object)
     var objectScale = object.getTotalObjectScaling()
-    expect(objectScale).toEqual({
+    assert.deepEqual(objectScale, {
       scaleX: object.scaleX * 3,
       scaleY: object.scaleY * 3
     })
   })
 
-  test("getTotalObjectScaling with retina", function (assert) {
+  QUnit.test("getTotalObjectScaling with retina", function (assert) {
     var object = new fabric.Object({ scaleX: 3, scaleY: 2 })
     canvas.enableRetinaScaling = true
     fabric.devicePixelRatio = 4
     canvas.add(object)
     var objectScale = object.getTotalObjectScaling()
-    expect(objectScale).toEqual({
+    assert.deepEqual(objectScale, {
       scaleX: object.scaleX * 4,
       scaleY: object.scaleY * 4
     })
   })
 
-  test("getObjectScaling", function (assert) {
+  QUnit.test("getObjectScaling", function (assert) {
     var object = new fabric.Object({ scaleX: 3, scaleY: 2 })
     var objectScale = object.getObjectScaling()
-    expect(objectScale).toEqual({
+    assert.deepEqual(objectScale, {
       scaleX: object.scaleX,
       scaleY: object.scaleY
     })
   })
 
-  test("getObjectScaling in group", function (assert) {
+  QUnit.test("getObjectScaling in group", function (assert) {
     var object = new fabric.Object({ scaleX: 3, scaleY: 2 })
     var group = new fabric.Group()
     group.scaleX = 2
     group.scaleY = 2
     object.group = group
     var objectScale = object.getObjectScaling()
-    expect(objectScale).toEqual({
+    assert.deepEqual(objectScale, {
       scaleX: object.scaleX * group.scaleX,
       scaleY: object.scaleY * group.scaleY
     })
   })
 
-  test("getObjectScaling in group with object rotated", function (
+  QUnit.test("getObjectScaling in group with object rotated", function (
     assert
   ) {
     var object = new fabric.Object({ scaleX: 3, scaleY: 2, angle: 45 })
@@ -958,54 +1051,74 @@
     var objectScale = object.getObjectScaling()
     objectScale.scaleX = objectScale.scaleX.toFixed(3)
     objectScale.scaleY = objectScale.scaleY.toFixed(3)
-    expect(objectScale).toEqual({
+    assert.deepEqual(objectScale, {
       scaleX: "7.649",
       scaleY: "4.707"
     })
   })
 
-  test("dirty flag on set property", function (assert) {
+  QUnit.test("dirty flag on set property", function (assert) {
     var object = new fabric.Object({ scaleX: 3, scaleY: 2 })
     object.cacheProperties = ["propA", "propB"]
     object.dirty = false
-    expect(object.dirty).toEqual(false)
+    assert.equal(object.dirty, false, "object starts with dirty flag disabled")
     object.set("propC", "3")
-    expect(object.dirty).toEqual(false)
+    assert.equal(
+      object.dirty,
+      false,
+      "after setting a property out of cache, dirty flag is still false"
+    )
     object.set("propA", "2")
-    expect(object.dirty).toEqual(true)
+    assert.equal(
+      object.dirty,
+      true,
+      "after setting a property from cache, dirty flag is true"
+    )
   })
 
-  test("_createCacheCanvas sets object as dirty", function (assert) {
+  QUnit.test("_createCacheCanvas sets object as dirty", function (assert) {
     var object = new fabric.Object({
       scaleX: 3,
       scaleY: 2,
       width: 1,
       height: 2
     })
-    expect(object.dirty).toEqual(true)
+    assert.equal(object.dirty, true, "object is dirty after creation")
     object.dirty = false
-    expect(object.dirty).toEqual(false)
+    assert.equal(object.dirty, false, "object is not dirty after specifying it")
     object._createCacheCanvas()
-    expect(object.dirty).toEqual(true)
+    assert.equal(
+      object.dirty,
+      true,
+      "object is dirty again if cache gets created"
+    )
   })
 
-  test("isCacheDirty statefullCache disabled", function (assert) {
+  QUnit.test("isCacheDirty statefullCache disabled", function (assert) {
     var object = new fabric.Object({
       scaleX: 3,
       scaleY: 2,
       width: 1,
       height: 2
     })
-    expect(object.dirty).toEqual(true)
+    assert.equal(object.dirty, true, "object is dirty after creation")
     object.cacheProperties = ["propA", "propB"]
     object.dirty = false
     object.statefullCache = false
-    expect(object.isCacheDirty()).toEqual(false)
+    assert.equal(
+      object.isCacheDirty(),
+      false,
+      "object is not dirty if dirty flag is false"
+    )
     object.dirty = true
-    expect(object.isCacheDirty()).toEqual(true)
+    assert.equal(
+      object.isCacheDirty(),
+      true,
+      "object is dirty if dirty flag is true"
+    )
   })
 
-  test("isCacheDirty statefullCache enabled", function (assert) {
+  QUnit.test("isCacheDirty statefullCache enabled", function (assert) {
     var object = new fabric.Object({
       scaleX: 3,
       scaleY: 2,
@@ -1017,41 +1130,69 @@
     object.statefullCache = true
     object.propA = "A"
     object.setupState({ propertySet: "cacheProperties" })
-    expect(object.isCacheDirty()).toEqual(false)
+    assert.equal(object.isCacheDirty(), false, "object is not dirty")
     object.propA = "B"
-    expect(object.isCacheDirty()).toEqual(true)
+    assert.equal(
+      object.isCacheDirty(),
+      true,
+      "object is dirty because change in propA is detected by statefullCache"
+    )
   })
 
-  test(
+  QUnit.test(
     "_getCacheCanvasDimensions returns dimensions and zoom for cache canvas",
     function (assert) {
       var object = new fabric.Object({ width: 10, height: 10, strokeWidth: 0 })
       var dims = object._getCacheCanvasDimensions()
-      expect(dims).toEqual({ width: 12, height: 12, zoomX: 1, zoomY: 1, x: 10, y: 10 })
+      assert.deepEqual(
+        dims,
+        { width: 12, height: 12, zoomX: 1, zoomY: 1, x: 10, y: 10 },
+        "if no scaling is applied cache is as big as object"
+      )
       object.strokeWidth = 2
       dims = object._getCacheCanvasDimensions()
-      expect(dims).toEqual({ width: 14, height: 14, zoomX: 1, zoomY: 1, x: 12, y: 12 })
+      assert.deepEqual(
+        dims,
+        { width: 14, height: 14, zoomX: 1, zoomY: 1, x: 12, y: 12 },
+        "cache contains the stroke"
+      )
       object.scaleX = 2
       object.scaleY = 3
       dims = object._getCacheCanvasDimensions()
-      expect(dims).toEqual({ width: 26, height: 38, zoomX: 2, zoomY: 3, x: 24, y: 36 })
+      assert.deepEqual(
+        dims,
+        { width: 26, height: 38, zoomX: 2, zoomY: 3, x: 24, y: 36 },
+        "cache is as big as the scaled object"
+      )
     }
   )
 
-  test("_getCacheCanvasDimensions and strokeUniform", function (assert) {
+  QUnit.test("_getCacheCanvasDimensions and strokeUniform", function (assert) {
     var object = new fabric.Object({ width: 10, height: 10, strokeWidth: 2 })
     var dims = object._getCacheCanvasDimensions()
-    expect(dims).toEqual({ width: 14, height: 14, zoomX: 1, zoomY: 1, x: 12, y: 12 })
+    assert.deepEqual(
+      dims,
+      { width: 14, height: 14, zoomX: 1, zoomY: 1, x: 12, y: 12 },
+      "if no scaling is applied cache is as big as object + strokeWidth"
+    )
     object.strokeUniform = true
     var dims = object._getCacheCanvasDimensions()
-    expect(dims).toEqual({ width: 14, height: 14, zoomX: 1, zoomY: 1, x: 12, y: 12 })
+    assert.deepEqual(
+      dims,
+      { width: 14, height: 14, zoomX: 1, zoomY: 1, x: 12, y: 12 },
+      "if no scaling is applied strokeUniform makes no difference"
+    )
     object.scaleX = 2
     object.scaleY = 3
     dims = object._getCacheCanvasDimensions()
-    expect(dims).toEqual({ width: 24, height: 34, zoomX: 2, zoomY: 3, x: 22, y: 32 })
+    assert.deepEqual(
+      dims,
+      { width: 24, height: 34, zoomX: 2, zoomY: 3, x: 22, y: 32 },
+      "cache is as big as the scaled object"
+    )
   })
 
-  test(
+  QUnit.test(
     "_updateCacheCanvas check if cache canvas should be updated",
     function (assert) {
       fabric.perfLimitSizeTotal = 10000
@@ -1059,22 +1200,38 @@
       fabric.minCacheSideLimit = 1
       var object = new fabric.Object({ width: 10, height: 10, strokeWidth: 0 })
       object._createCacheCanvas()
-      expect(object.cacheWidth).toEqual(12)
-      expect(object.cacheHeight).toEqual(12)
-      expect(object._updateCacheCanvas()).toEqual(false)
+      assert.equal(object.cacheWidth, 12, "current cache dimensions are saved")
+      assert.equal(object.cacheHeight, 12, "current cache dimensions are saved")
+      assert.equal(
+        object._updateCacheCanvas(),
+        false,
+        "second execution of cache canvas return false"
+      )
       object.scaleX = 2
-      expect(object._updateCacheCanvas()).toEqual(true)
-      expect(object.cacheWidth).toEqual(22)
-      expect(object.zoomX).toEqual(2)
+      assert.equal(
+        object._updateCacheCanvas(),
+        true,
+        "if scale change, it returns true"
+      )
+      assert.equal(object.cacheWidth, 22, "current cache dimensions is updated")
+      assert.equal(object.zoomX, 2, "current scale level is saved")
       object.width = 2
-      expect(object._updateCacheCanvas()).toEqual(true)
-      expect(object.cacheWidth).toEqual(6)
+      assert.equal(
+        object._updateCacheCanvas(),
+        true,
+        "if dimension change, it returns true"
+      )
+      assert.equal(object.cacheWidth, 6, "current cache dimensions is updated")
       object.strokeWidth = 2
-      expect(object._updateCacheCanvas()).toEqual(true)
+      assert.equal(
+        object._updateCacheCanvas(),
+        true,
+        "if strokeWidth change, it returns true"
+      )
     }
   )
 
-  test("_limitCacheSize limit min to 256", function (assert) {
+  QUnit.test("_limitCacheSize limit min to 256", function (assert) {
     fabric.perfLimitSizeTotal = 50000
     fabric.maxCacheSideLimit = 4096
     fabric.minCacheSideLimit = 256
@@ -1083,14 +1240,14 @@
     var zoomX = dims.zoomX
     var zoomY = dims.zoomY
     var limitedDims = object._limitCacheSize(dims)
-    expect(dims).toEqual(limitedDims)
-    expect(dims.width).toEqual(256)
-    expect(dims.height).toEqual(256)
-    expect(zoomX).toEqual(dims.zoomX)
-    expect(zoomY).toEqual(dims.zoomY)
+    assert.equal(dims, limitedDims, "object is mutated")
+    assert.equal(dims.width, 256, "width gets minimum to the cacheSideLimit")
+    assert.equal(dims.height, 256, "height gets minimum to the cacheSideLimit")
+    assert.equal(zoomX, dims.zoomX, "zoom factor X does not need a change")
+    assert.equal(zoomY, dims.zoomY, "zoom factor Y does not need a change")
   })
 
-  test("_limitCacheSize does not limit if not necessary", function (
+  QUnit.test("_limitCacheSize does not limit if not necessary", function (
     assert
   ) {
     fabric.perfLimitSizeTotal = 1000000
@@ -1101,14 +1258,14 @@
     var zoomX = dims.zoomX
     var zoomY = dims.zoomY
     var limitedDims = object._limitCacheSize(dims)
-    expect(dims).toEqual(limitedDims)
-    expect(dims.width).toEqual(402)
-    expect(dims.height).toEqual(402)
-    expect(zoomX).toEqual(dims.zoomX)
-    expect(zoomY).toEqual(dims.zoomY)
+    assert.equal(dims, limitedDims, "object is mutated")
+    assert.equal(dims.width, 402, "width is in the middle of limits")
+    assert.equal(dims.height, 402, "height is in the middle of limits")
+    assert.equal(zoomX, dims.zoomX, "zoom factor X does not need a change")
+    assert.equal(zoomY, dims.zoomY, "zoom factor Y does not need a change")
   })
 
-  test("_limitCacheSize does cap up minCacheSideLimit", function (
+  QUnit.test("_limitCacheSize does cap up minCacheSideLimit", function (
     assert
   ) {
     fabric.perfLimitSizeTotal = 10000
@@ -1121,14 +1278,22 @@
     var zoomX = dims.zoomX
     var zoomY = dims.zoomY
     var limitedDims = object._limitCacheSize(dims)
-    expect(dims).toEqual(limitedDims)
-    expect(dims.width).toEqual(256)
-    expect(dims.height).toEqual(256)
-    expect((zoomX * dims.width) / width).toEqual(dims.zoomX)
-    expect((zoomY * dims.height) / height).toEqual(dims.zoomY)
+    assert.equal(dims, limitedDims, "object is mutated")
+    assert.equal(dims.width, 256, "width is capped to min")
+    assert.equal(dims.height, 256, "height is capped to min")
+    assert.equal(
+      (zoomX * dims.width) / width,
+      dims.zoomX,
+      "zoom factor X gets updated to represent the shrink"
+    )
+    assert.equal(
+      (zoomY * dims.height) / height,
+      dims.zoomY,
+      "zoom factor Y gets updated to represent the shrink"
+    )
   })
 
-  test("_limitCacheSize does cap up if necessary", function (assert) {
+  QUnit.test("_limitCacheSize does cap up if necessary", function (assert) {
     fabric.perfLimitSizeTotal = 1000000
     fabric.maxCacheSideLimit = 4096
     fabric.minCacheSideLimit = 256
@@ -1143,14 +1308,22 @@
     var zoomX = dims.zoomX
     var zoomY = dims.zoomY
     var limitedDims = object._limitCacheSize(dims)
-    expect(dims).toEqual(limitedDims)
-    expect(dims.width).toEqual(1000)
-    expect(dims.height).toEqual(1000)
-    expect((zoomX * dims.width) / width).toEqual(dims.zoomX)
-    expect((zoomY * dims.height) / height).toEqual(dims.zoomY)
+    assert.equal(dims, limitedDims, "object is mutated")
+    assert.equal(dims.width, 1000, "width is capped to max allowed by area")
+    assert.equal(dims.height, 1000, "height is capped to max allowed by area")
+    assert.equal(
+      (zoomX * dims.width) / width,
+      dims.zoomX,
+      "zoom factor X gets updated to represent the shrink"
+    )
+    assert.equal(
+      (zoomY * dims.height) / height,
+      dims.zoomY,
+      "zoom factor Y gets updated to represent the shrink"
+    )
   })
 
-  test(
+  QUnit.test(
     "_limitCacheSize does cap up if necessary to maxCacheSideLimit",
     function (assert) {
       fabric.perfLimitSizeTotal = 100000000
@@ -1165,15 +1338,31 @@
       var zoomX = dims.zoomX
       var zoomY = dims.zoomY
       var limitedDims = object._limitCacheSize(dims)
-      expect(dims).toEqual(limitedDims)
-      expect(dims.width).toEqual(fabric.maxCacheSideLimit)
-      expect(dims.height).toEqual(fabric.maxCacheSideLimit)
-      expect(dims.zoomX).toEqual((zoomX * 4096) / 8194)
-      expect(dims.zoomY).toEqual((zoomY * 4096) / 8194)
+      assert.equal(dims, limitedDims, "object is mutated")
+      assert.equal(
+        dims.width,
+        fabric.maxCacheSideLimit,
+        "width is capped to max allowed by fabric"
+      )
+      assert.equal(
+        dims.height,
+        fabric.maxCacheSideLimit,
+        "height is capped to max allowed by fabric"
+      )
+      assert.equal(
+        dims.zoomX,
+        (zoomX * 4096) / 8194,
+        "zoom factor X gets updated to represent the shrink"
+      )
+      assert.equal(
+        dims.zoomY,
+        (zoomY * 4096) / 8194,
+        "zoom factor Y gets updated to represent the shrink"
+      )
     }
   )
 
-  test(
+  QUnit.test(
     "_limitCacheSize does cap up if necessary to maxCacheSideLimit, different AR",
     function (assert) {
       fabric.perfLimitSizeTotal = 100000000
@@ -1190,15 +1379,31 @@
       var zoomX = dims.zoomX
       var zoomY = dims.zoomY
       var limitedDims = object._limitCacheSize(dims)
-      expect(dims).toEqual(limitedDims)
-      expect(dims.width).toEqual(fabric.maxCacheSideLimit)
-      expect(dims.height).toEqual(fabric.maxCacheSideLimit)
-      expect(dims.zoomX).toEqual((zoomX * fabric.maxCacheSideLimit) / width)
-      expect(dims.zoomY).toEqual((zoomY * fabric.maxCacheSideLimit) / height)
+      assert.equal(dims, limitedDims, "object is mutated")
+      assert.equal(
+        dims.width,
+        fabric.maxCacheSideLimit,
+        "width is capped to max allowed by fabric"
+      )
+      assert.equal(
+        dims.height,
+        fabric.maxCacheSideLimit,
+        "height is capped to max allowed by fabric"
+      )
+      assert.equal(
+        dims.zoomX,
+        (zoomX * fabric.maxCacheSideLimit) / width,
+        "zoom factor X gets updated to represent the shrink"
+      )
+      assert.equal(
+        dims.zoomY,
+        (zoomY * fabric.maxCacheSideLimit) / height,
+        "zoom factor Y gets updated to represent the shrink"
+      )
     }
   )
 
-  test("_setShadow", function (assert) {
+  QUnit.test("_setShadow", function (assert) {
     var canvas = new fabric.StaticCanvas(null, {
       enableRetinaScaling: false,
       width: 600,
@@ -1216,87 +1421,159 @@
       offsetY: 15
     })
     object._setShadow(context)
-    expect(context.shadowOffsetX).toEqual(object.shadow.offsetX)
-    expect(context.shadowOffsetY).toEqual(object.shadow.offsetY)
-    expect(context.shadowBlur).toEqual(object.shadow.blur)
+    assert.equal(
+      context.shadowOffsetX,
+      object.shadow.offsetX,
+      "shadow offsetX is set"
+    )
+    assert.equal(
+      context.shadowOffsetY,
+      object.shadow.offsetY,
+      "shadow offsetY is set"
+    )
+    assert.equal(context.shadowBlur, object.shadow.blur, "shadow blur is set")
     fabric.browserShadowBlurConstant = 1.5
     object._setShadow(context)
-    expect(context.shadowOffsetX).toEqual(object.shadow.offsetX)
-    expect(context.shadowOffsetY).toEqual(object.shadow.offsetY)
-    expect(context.shadowBlur).toEqual(object.shadow.blur * 1.5)
+    assert.equal(
+      context.shadowOffsetX,
+      object.shadow.offsetX,
+      "shadow offsetX is unchanged with browserConstant"
+    )
+    assert.equal(
+      context.shadowOffsetY,
+      object.shadow.offsetY,
+      "shadow offsetY is unchanged with browserConstant"
+    )
+    assert.equal(
+      context.shadowBlur,
+      object.shadow.blur * 1.5,
+      "shadow blur is affected with browserConstant"
+    )
     fabric.browserShadowBlurConstant = 1
     object.scaleX = 2
     object.scaleY = 3
     object._setShadow(context)
-    expect(context.shadowOffsetX).toEqual(object.shadow.offsetX * object.scaleX)
-    expect(context.shadowOffsetY).toEqual(object.shadow.offsetY * object.scaleY)
-    expect(context.shadowBlur).toEqual((object.shadow.blur * (object.scaleX + object.scaleY)) / 2)
+    assert.equal(
+      context.shadowOffsetX,
+      object.shadow.offsetX * object.scaleX,
+      "shadow offsetX is affected by scaleX"
+    )
+    assert.equal(
+      context.shadowOffsetY,
+      object.shadow.offsetY * object.scaleY,
+      "shadow offsetY is affected by scaleY"
+    )
+    assert.equal(
+      context.shadowBlur,
+      (object.shadow.blur * (object.scaleX + object.scaleY)) / 2,
+      "shadow blur is affected by scaleY and scaleX"
+    )
     object.group = group
     object._setShadow(context)
-    expect(context.shadowOffsetX).toEqual(object.shadow.offsetX * object.scaleX * group.scaleX)
-    expect(context.shadowOffsetY).toEqual(object.shadow.offsetY * object.scaleY * group.scaleY)
-    expect(context.shadowBlur).toEqual((object.shadow.blur *
-      (object.scaleX * group.scaleX + object.scaleY * group.scaleY)) /
-      2)
+    assert.equal(
+      context.shadowOffsetX,
+      object.shadow.offsetX * object.scaleX * group.scaleX,
+      "shadow offsetX is affected by scaleX and group.scaleX"
+    )
+    assert.equal(
+      context.shadowOffsetY,
+      object.shadow.offsetY * object.scaleY * group.scaleY,
+      "shadow offsetX is affected by scaleX and group.scaleX"
+    )
+    assert.equal(
+      context.shadowBlur,
+      (object.shadow.blur *
+        (object.scaleX * group.scaleX + object.scaleY * group.scaleY)) /
+        2,
+      "shadow blur is affected by scales"
+    )
   })
 
-  test("willDrawShadow", function (assert) {
+  QUnit.test("willDrawShadow", function (assert) {
     var object = new fabric.Object({ shadow: { offsetX: 0, offsetY: 0 } })
-    expect(object.willDrawShadow()).toEqual(false)
+    assert.equal(object.willDrawShadow(), false, "object will not drawShadow")
     object.shadow.offsetX = 1
-    expect(object.willDrawShadow()).toEqual(true)
+    assert.equal(object.willDrawShadow(), true, "object will drawShadow")
   })
 
-  test("_set  change a property", function (assert) {
+  QUnit.test("_set  change a property", function (assert) {
     var object = new fabric.Object({ fill: "blue" })
     object._set("fill", "red")
-    expect(object.fill).toEqual("red")
+    assert.equal(object.fill, "red", "property changed")
   })
-  test("_set can rise the dirty flag", function (assert) {
+  QUnit.test("_set can rise the dirty flag", function (assert) {
     var object = new fabric.Object({ fill: "blue" })
     object.dirty = false
     object._set("fill", "red")
-    expect(object.dirty).toEqual(true)
+    assert.equal(object.dirty, true, "dirty is rised")
   })
-  test("_set rise dirty flag only if value changed", function (assert) {
+  QUnit.test("_set rise dirty flag only if value changed", function (assert) {
     var object = new fabric.Object({ fill: "blue" })
     object.dirty = false
     object._set("fill", "blue")
-    expect(object.dirty).toEqual(false)
+    assert.equal(object.dirty, false, "dirty is not rised")
   })
-  test("isNotVisible", function (assert) {
+  QUnit.test("isNotVisible", function (assert) {
     var object = new fabric.Object({ fill: "blue", width: 100, height: 100 })
-    expect(object.isNotVisible()).toEqual(false)
+    assert.equal(object.isNotVisible(), false, "object is default visilbe")
     object = new fabric.Object({
       fill: "blue",
       width: 0,
       height: 0,
       strokeWidth: 1
     })
-    expect(object.isNotVisible()).toEqual(false)
+    assert.equal(
+      object.isNotVisible(),
+      false,
+      "object is visilbe with width and height equal 0, but strokeWidth 1"
+    )
     object = new fabric.Object({ opacity: 0, fill: "blue" })
-    expect(object.isNotVisible()).toEqual(true)
+    assert.equal(
+      object.isNotVisible(),
+      true,
+      "object is not visilbe with opacity 0"
+    )
     object = new fabric.Object({ fill: "blue", visible: false })
-    expect(object.isNotVisible()).toEqual(true)
+    assert.equal(
+      object.isNotVisible(),
+      true,
+      "object is not visilbe with visible false"
+    )
     object = new fabric.Object({
       fill: "blue",
       width: 0,
       height: 0,
       strokeWidth: 0
     })
-    expect(object.isNotVisible()).toEqual(true)
+    assert.equal(
+      object.isNotVisible(),
+      true,
+      "object is not visilbe with also strokeWidth equal 0"
+    )
   })
-  test("shouldCache", function (assert) {
+  QUnit.test("shouldCache", function (assert) {
     var object = new fabric.Object()
     object.objectCaching = false
-    expect(object.shouldCache()).toEqual(false)
+    assert.equal(
+      object.shouldCache(),
+      false,
+      "if objectCaching is false, object should not cache"
+    )
     object.objectCaching = true
-    expect(object.shouldCache()).toEqual(true)
+    assert.equal(
+      object.shouldCache(),
+      true,
+      "if objectCaching is true, object should cache"
+    )
     object.objectCaching = false
     object.needsItsOwnCache = function () {
       return true
     }
-    expect(object.shouldCache()).toEqual(true)
+    assert.equal(
+      object.shouldCache(),
+      true,
+      "if objectCaching is false, but we have a clipPath, shouldCache returns true"
+    )
 
     object.needsItsOwnCache = function () {
       return false
@@ -1308,7 +1585,11 @@
         return true
       }
     }
-    expect(object.shouldCache()).toEqual(false)
+    assert.equal(
+      object.shouldCache(),
+      false,
+      "if objectCaching is true, but we are in a group, shouldCache returns false"
+    )
 
     object.objectCaching = true
     object.group = {
@@ -1316,7 +1597,11 @@
         return false
       }
     }
-    expect(object.shouldCache()).toEqual(true)
+    assert.equal(
+      object.shouldCache(),
+      true,
+      "if objectCaching is true, but we are in a not cached group, shouldCache returns true"
+    )
 
     object.objectCaching = false
     object.group = {
@@ -1324,7 +1609,11 @@
         return false
       }
     }
-    expect(object.shouldCache()).toEqual(false)
+    assert.equal(
+      object.shouldCache(),
+      false,
+      "if objectCaching is false, but we are in a not cached group, shouldCache returns false"
+    )
 
     object.objectCaching = false
     object.group = {
@@ -1332,7 +1621,11 @@
         return true
       }
     }
-    expect(object.shouldCache()).toEqual(false)
+    assert.equal(
+      object.shouldCache(),
+      false,
+      "if objectCaching is false, but we are in a cached group, shouldCache returns false"
+    )
 
     object.needsItsOwnCache = function () {
       return true
@@ -1344,7 +1637,11 @@
         return true
       }
     }
-    expect(object.shouldCache()).toEqual(true)
+    assert.equal(
+      object.shouldCache(),
+      true,
+      "if objectCaching is false, but we have a clipPath, group cached, we cache anyway"
+    )
 
     object.objectCaching = false
     object.group = {
@@ -1352,37 +1649,61 @@
         return false
       }
     }
-    expect(object.shouldCache()).toEqual(true)
+    assert.equal(
+      object.shouldCache(),
+      true,
+      "if objectCaching is false, but we have a clipPath, group not cached, we cache anyway"
+    )
   })
-  test("needsItsOwnCache", function (assert) {
+  QUnit.test("needsItsOwnCache", function (assert) {
     var object = new fabric.Object()
-    expect(object.needsItsOwnCache()).toEqual(false)
+    assert.equal(
+      object.needsItsOwnCache(),
+      false,
+      "default needsItsOwnCache is false"
+    )
     object.clipPath = {}
-    expect(object.needsItsOwnCache()).toEqual(true)
+    assert.equal(object.needsItsOwnCache(), true, "with a clipPath is true")
     delete object.clipPath
 
     object.paintFirst = "stroke"
     object.stroke = "black"
     object.shadow = {}
-    expect(object.needsItsOwnCache()).toEqual(true)
+    assert.equal(
+      object.needsItsOwnCache(),
+      true,
+      "if stroke first will return true"
+    )
 
     object.paintFirst = "stroke"
     object.stroke = "black"
     object.shadow = null
-    expect(object.needsItsOwnCache()).toEqual(true)
+    assert.equal(
+      object.needsItsOwnCache(),
+      true,
+      "if stroke first will return false if no shadow"
+    )
 
     object.paintFirst = "stroke"
     object.stroke = ""
     object.shadow = {}
-    expect(object.needsItsOwnCache()).toEqual(false)
+    assert.equal(
+      object.needsItsOwnCache(),
+      false,
+      "if stroke first will return false if no stroke"
+    )
 
     object.paintFirst = "stroke"
     object.stroke = "black"
     object.fill = ""
     object.shadow = {}
-    expect(object.needsItsOwnCache()).toEqual(false)
+    assert.equal(
+      object.needsItsOwnCache(),
+      false,
+      "if stroke first will return false if no fill"
+    )
   })
-  test("hasStroke", function (assert) {
+  QUnit.test("hasStroke", function (assert) {
     var object = new fabric.Object({
       fill: "blue",
       width: 100,
@@ -1390,21 +1711,45 @@
       strokeWidth: 3,
       stroke: "black"
     })
-    expect(object.hasStroke()).toEqual(true)
+    assert.equal(
+      object.hasStroke(),
+      true,
+      "if strokeWidth is present and stroke is black hasStroke is true"
+    )
     object.stroke = ""
-    expect(object.hasStroke()).toEqual(false)
+    assert.equal(
+      object.hasStroke(),
+      false,
+      "if strokeWidth is present and stroke is empty string hasStroke is false"
+    )
     object.stroke = "transparent"
-    expect(object.hasStroke()).toEqual(false)
+    assert.equal(
+      object.hasStroke(),
+      false,
+      "if strokeWidth is present and stroke is transparent hasStroke is false"
+    )
     object.stroke = "black"
     object.strokeWidth = 0
-    expect(object.hasStroke()).toEqual(false)
+    assert.equal(
+      object.hasStroke(),
+      false,
+      "if strokeWidth is 0 and stroke is a color hasStroke is false"
+    )
   })
-  test("hasFill", function (assert) {
+  QUnit.test("hasFill", function (assert) {
     var object = new fabric.Object({ fill: "blue", width: 100, height: 100 })
-    expect(object.hasFill()).toEqual(true)
+    assert.equal(
+      object.hasFill(),
+      true,
+      "with a color that is not transparent, hasFill is true"
+    )
     object.fill = ""
-    expect(object.hasFill()).toEqual(false)
+    assert.equal(object.hasFill(), false, "without a color, hasFill is false")
     object.fill = "transparent"
-    expect(object.hasFill()).toEqual(false)
+    assert.equal(
+      object.hasFill(),
+      false,
+      "with a color that is transparent, hasFill is true"
+    )
   })
 })()

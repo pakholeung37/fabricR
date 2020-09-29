@@ -114,26 +114,26 @@
     img.src = src
   }
 
-  describe("fabric.Image")
+  QUnit.module("fabric.Image")
 
-  test("constructor", function (assert) {
+  QUnit.test("constructor", function (assert) {
     var done = assert.async()
-    expect(fabric.Image).toBeTruthy()
+    assert.ok(fabric.Image)
 
     createImageObject(function (image) {
-      expect(image instanceof fabric.Image).toBeTruthy()
-      expect(image instanceof fabric.Object).toBeTruthy()
+      assert.ok(image instanceof fabric.Image)
+      assert.ok(image instanceof fabric.Object)
 
-      expect(image.get("type")).toEqual("image")
+      assert.equal(image.get("type"), "image")
 
       done()
     })
   })
 
-  test("toObject", function (assert) {
+  QUnit.test("toObject", function (assert) {
     var done = assert.async()
     createImageObject(function (image) {
-      expect(typeof image.toObject === "function").toBeTruthy()
+      assert.ok(typeof image.toObject === "function")
       var toObject = image.toObject()
       // workaround for node-canvas sometimes producing images with width/height and sometimes not
       if (toObject.width === 0) {
@@ -142,41 +142,45 @@
       if (toObject.height === 0) {
         toObject.height = IMG_HEIGHT
       }
-      expect(toObject).toEqual(REFERENCE_IMG_OBJECT)
+      assert.deepEqual(toObject, REFERENCE_IMG_OBJECT)
       done()
     })
   })
 
-  test("setSrc", function (assert) {
+  QUnit.test("setSrc", function (assert) {
     var done = assert.async()
     createImageObject(function (image) {
       image.width = 100
       image.height = 100
-      expect(typeof image.setSrc === "function").toBeTruthy()
-      expect(image.width).toEqual(100)
-      expect(image.height).toEqual(100)
+      assert.ok(typeof image.setSrc === "function")
+      assert.equal(image.width, 100)
+      assert.equal(image.height, 100)
       image.setSrc(IMG_SRC, function () {
-        expect(image.width).toEqual(IMG_WIDTH)
-        expect(image.height).toEqual(IMG_HEIGHT)
+        assert.equal(image.width, IMG_WIDTH)
+        assert.equal(image.height, IMG_HEIGHT)
         done()
       })
     })
   })
 
-  test("setSrc with crossOrigin", function (assert) {
+  QUnit.test("setSrc with crossOrigin", function (assert) {
     var done = assert.async()
     createImageObject(function (image) {
       image.width = 100
       image.height = 100
-      expect(typeof image.setSrc === "function").toBeTruthy()
-      expect(image.width).toEqual(100)
-      expect(image.height).toEqual(100)
+      assert.ok(typeof image.setSrc === "function")
+      assert.equal(image.width, 100)
+      assert.equal(image.height, 100)
       image.setSrc(
         IMG_SRC,
         function () {
-          expect(image.width).toEqual(IMG_WIDTH)
-          expect(image.height).toEqual(IMG_HEIGHT)
-          expect(image.getCrossOrigin()).toEqual("anonymous")
+          assert.equal(image.width, IMG_WIDTH)
+          assert.equal(image.height, IMG_HEIGHT)
+          assert.equal(
+            image.getCrossOrigin(),
+            "anonymous",
+            "setSrc will respect crossOrigin"
+          )
           done()
         },
         {
@@ -186,10 +190,10 @@
     })
   })
 
-  test("toObject with no element", function (assert) {
+  QUnit.test("toObject with no element", function (assert) {
     var done = assert.async()
     createImageObject(function (image) {
-      expect(typeof image.toObject === "function").toBeTruthy()
+      assert.ok(typeof image.toObject === "function")
       var toObject = image.toObject()
       // workaround for node-canvas sometimes producing images with width/height and sometimes not
       if (toObject.width === 0) {
@@ -198,37 +202,47 @@
       if (toObject.height === 0) {
         toObject.height = IMG_HEIGHT
       }
-      expect(toObject).toEqual(REFERENCE_IMG_OBJECT)
+      assert.deepEqual(toObject, REFERENCE_IMG_OBJECT)
       done()
     })
   })
 
-  test("toObject with resize filter", function (assert) {
+  QUnit.test("toObject with resize filter", function (assert) {
     var done = assert.async()
     createImageObject(function (image) {
-      expect(typeof image.toObject === "function").toBeTruthy()
+      assert.ok(typeof image.toObject === "function")
       var filter = new fabric.Image.filters.Resize({
         resizeType: "bilinear",
         scaleX: 0.3,
         scaleY: 0.3
       })
       image.resizeFilter = filter
-      expect(image.resizeFilter instanceof fabric.Image.filters.Resize).toBeTruthy()
+      assert.ok(
+        image.resizeFilter instanceof fabric.Image.filters.Resize,
+        "should inherit from fabric.Image.filters.Resize"
+      )
       var toObject = image.toObject()
-      expect(toObject.resizeFilter).toEqual(filter.toObject())
+      assert.deepEqual(
+        toObject.resizeFilter,
+        filter.toObject(),
+        "the filter is in object form now"
+      )
       fabric.Image.fromObject(toObject, function (imageFromObject) {
         var filterFromObj = imageFromObject.resizeFilter
-        expect(filterFromObj instanceof fabric.Image.filters.Resize).toBeTruthy()
-        expect(filterFromObj).toEqual(filter)
-        expect(filterFromObj.scaleX).toEqual(0.3)
-        expect(filterFromObj.scaleY).toEqual(0.3)
-        expect(filterFromObj.resizeType).toEqual("bilinear")
+        assert.ok(
+          filterFromObj instanceof fabric.Image.filters.Resize,
+          "should inherit from fabric.Image.filters.Resize"
+        )
+        assert.deepEqual(filterFromObj, filter, "the filter has been restored")
+        assert.equal(filterFromObj.scaleX, 0.3)
+        assert.equal(filterFromObj.scaleY, 0.3)
+        assert.equal(filterFromObj.resizeType, "bilinear")
         done()
       })
     })
   })
 
-  test("toObject with normal filter and resize filter", function (
+  QUnit.test("toObject with normal filter and resize filter", function (
     assert
   ) {
     var done = assert.async()
@@ -240,22 +254,36 @@
       image.scaleX = 0.3
       image.scaleY = 0.3
       var toObject = image.toObject()
-      expect(toObject.resizeFilter).toEqual(filter.toObject())
-      expect(toObject.filters[0]).toEqual(filterBg.toObject())
+      assert.deepEqual(
+        toObject.resizeFilter,
+        filter.toObject(),
+        "the filter is in object form now"
+      )
+      assert.deepEqual(
+        toObject.filters[0],
+        filterBg.toObject(),
+        "the filter is in object form now brightness"
+      )
       fabric.Image.fromObject(toObject, function (imageFromObject) {
         var filterFromObj = imageFromObject.resizeFilter
         var brightnessFromObj = imageFromObject.filters[0]
-        expect(filterFromObj instanceof fabric.Image.filters.Resize).toBeTruthy()
-        expect(brightnessFromObj instanceof fabric.Image.filters.Brightness).toBeTruthy()
+        assert.ok(
+          filterFromObj instanceof fabric.Image.filters.Resize,
+          "should inherit from fabric.Image.filters.Resize"
+        )
+        assert.ok(
+          brightnessFromObj instanceof fabric.Image.filters.Brightness,
+          "should inherit from fabric.Image.filters.Resize"
+        )
         done()
       })
     })
   })
 
-  test("toObject with applied resize filter", function (assert) {
+  QUnit.test("toObject with applied resize filter", function (assert) {
     var done = assert.async()
     createImageObject(function (image) {
-      expect(typeof image.toObject === "function").toBeTruthy()
+      assert.ok(typeof image.toObject === "function")
       var filter = new fabric.Image.filters.Resize({
         resizeType: "bilinear",
         scaleX: 0.2,
@@ -264,36 +292,57 @@
       image.filters.push(filter)
       var width = image.width,
         height = image.height
-      expect(image.filters[0] instanceof fabric.Image.filters.Resize).toBeTruthy()
+      assert.ok(
+        image.filters[0] instanceof fabric.Image.filters.Resize,
+        "should inherit from fabric.Image.filters.Resize"
+      )
       image.applyFilters()
-      expect(image.width).toEqual(Math.floor(width))
-      expect(image.height).toEqual(Math.floor(height))
-      expect(image._filterScalingX.toFixed(1)).toEqual(0.2)
-      expect(image._filterScalingY.toFixed(1)).toEqual(0.2)
+      assert.equal(image.width, Math.floor(width), "width is not changed")
+      assert.equal(image.height, Math.floor(height), "height is not changed")
+      assert.equal(
+        image._filterScalingX.toFixed(1),
+        0.2,
+        "a new scaling factor is made for x"
+      )
+      assert.equal(
+        image._filterScalingY.toFixed(1),
+        0.2,
+        "a new scaling factor is made for y"
+      )
       var toObject = image.toObject()
-      expect(toObject.filters[0]).toEqual(filter.toObject())
-      expect(toObject.width).toEqual(width)
-      expect(toObject.height).toEqual(height)
+      assert.deepEqual(toObject.filters[0], filter.toObject())
+      assert.equal(toObject.width, width, "width is stored as before filters")
+      assert.equal(
+        toObject.height,
+        height,
+        "height is stored as before filters"
+      )
       fabric.Image.fromObject(toObject, function (_imageFromObject) {
         var filterFromObj = _imageFromObject.filters[0]
-        expect(filterFromObj instanceof fabric.Image.filters.Resize).toBeTruthy()
-        expect(filterFromObj.scaleY).toEqual(0.2)
-        expect(filterFromObj.scaleX).toEqual(0.2)
+        assert.ok(
+          filterFromObj instanceof fabric.Image.filters.Resize,
+          "should inherit from fabric.Image.filters.Resize"
+        )
+        assert.equal(filterFromObj.scaleY, 0.2)
+        assert.equal(filterFromObj.scaleX, 0.2)
         done()
       })
     })
   })
 
-  test("toString", function (assert) {
+  QUnit.test("toString", function (assert) {
     var done = assert.async()
     createImageObject(function (image) {
-      expect(typeof image.toString === "function").toBeTruthy()
-      expect(image.toString()).toEqual('#<fabric.Image: { src: "' + IMG_SRC + '" }>')
+      assert.ok(typeof image.toString === "function")
+      assert.equal(
+        image.toString(),
+        '#<fabric.Image: { src: "' + IMG_SRC + '" }>'
+      )
       done()
     })
   })
 
-  test("toSVG with crop", function (assert) {
+  QUnit.test("toSVG with crop", function (assert) {
     var done = assert.async()
     createImageObject(function (image) {
       image.cropX = 1
@@ -305,82 +354,90 @@
         '<g transform="matrix(1 0 0 1 137 54)"  >\n<clipPath id="imageCrop_1">\n\t<rect x="-137" y="-54" width="274" height="108" />\n</clipPath>\n\t<image style="stroke: none; stroke-width: 0; stroke-dasharray: none; stroke-linecap: butt; stroke-dashoffset: 0; stroke-linejoin: miter; stroke-miterlimit: 4; fill: rgb(0,0,0); fill-rule: nonzero; opacity: 1;"  xlink:href="' +
         IMG_SRC +
         '" x="-138" y="-55" width="276" height="110" clip-path="url(#imageCrop_1)" ></image>\n</g>\n'
-      expect(image.toSVG()).toEqual(expectedSVG)
+      assert.equal(image.toSVG(), expectedSVG)
       done()
     })
   })
 
-  test("hasCrop", function (assert) {
+  QUnit.test("hasCrop", function (assert) {
     var done = assert.async()
     createImageObject(function (image) {
-      expect(typeof image.hasCrop === "function").toBeTruthy()
-      expect(image.hasCrop()).toEqual(false)
+      assert.ok(typeof image.hasCrop === "function")
+      assert.equal(image.hasCrop(), false, "standard image has no crop")
       image.cropX = 1
-      expect(image.hasCrop()).toEqual(true)
+      assert.equal(image.hasCrop(), true, "cropX !== 0 gives crop true")
       image.cropX = 0
       image.cropY = 1
-      expect(image.hasCrop()).toEqual(true)
+      assert.equal(image.hasCrop(), true, "cropY !== 0 gives crop true")
       image.width -= 1
-      expect(image.hasCrop()).toEqual(true)
+      assert.equal(
+        image.hasCrop(),
+        true,
+        "width < element.width gives crop true"
+      )
       image.width += 1
       image.height -= 1
-      expect(image.hasCrop()).toEqual(true)
+      assert.equal(
+        image.hasCrop(),
+        true,
+        "height < element.height gives crop true"
+      )
       done()
     })
   })
 
-  test("toSVG", function (assert) {
+  QUnit.test("toSVG", function (assert) {
     var done = assert.async()
     createImageObject(function (image) {
-      expect(typeof image.toSVG === "function").toBeTruthy()
+      assert.ok(typeof image.toSVG === "function")
       var expectedSVG =
         '<g transform="matrix(1 0 0 1 138 55)"  >\n\t<image style="stroke: none; stroke-width: 0; stroke-dasharray: none; stroke-linecap: butt; stroke-dashoffset: 0; stroke-linejoin: miter; stroke-miterlimit: 4; fill: rgb(0,0,0); fill-rule: nonzero; opacity: 1;"  xlink:href="' +
         IMG_SRC +
         '" x="-138" y="-55" width="276" height="110"></image>\n</g>\n'
-      expect(image.toSVG()).toEqual(expectedSVG)
+      assert.equal(image.toSVG(), expectedSVG)
       done()
     })
   })
 
-  test("toSVG with imageSmoothing false", function (assert) {
+  QUnit.test("toSVG with imageSmoothing false", function (assert) {
     var done = assert.async()
     createImageObject(function (image) {
       image.imageSmoothing = false
-      expect(typeof image.toSVG === "function").toBeTruthy()
+      assert.ok(typeof image.toSVG === "function")
       var expectedSVG =
         '<g transform="matrix(1 0 0 1 138 55)"  >\n\t<image style="stroke: none; stroke-width: 0; stroke-dasharray: none; stroke-linecap: butt; stroke-dashoffset: 0; stroke-linejoin: miter; stroke-miterlimit: 4; fill: rgb(0,0,0); fill-rule: nonzero; opacity: 1;"  xlink:href="' +
         IMG_SRC +
         '" x="-138" y="-55" width="276" height="110" image-rendering="optimizeSpeed"></image>\n</g>\n'
-      expect(image.toSVG()).toEqual(expectedSVG)
+      assert.equal(image.toSVG(), expectedSVG)
       done()
     })
   })
 
-  test("toSVG with missing element", function (assert) {
+  QUnit.test("toSVG with missing element", function (assert) {
     var done = assert.async()
     createImageObject(function (image) {
       delete image._element
-      expect(typeof image.toSVG === "function").toBeTruthy()
+      assert.ok(typeof image.toSVG === "function")
       var expectedSVG = '<g transform="matrix(1 0 0 1 138 55)"  >\n</g>\n'
-      expect(image.toSVG()).toEqual(expectedSVG)
+      assert.equal(image.toSVG(), expectedSVG)
       done()
     })
   })
 
-  test("getSrc", function (assert) {
+  QUnit.test("getSrc", function (assert) {
     var done = assert.async()
     createImageObject(function (image) {
-      expect(typeof image.getSrc === "function").toBeTruthy()
-      expect(image.getSrc()).toEqual(IMG_SRC)
+      assert.ok(typeof image.getSrc === "function")
+      assert.equal(image.getSrc(), IMG_SRC)
       done()
     })
   })
 
-  test("getSrc with srcFromAttribute", function (assert) {
+  QUnit.test("getSrc with srcFromAttribute", function (assert) {
     var done = assert.async()
     createImageObjectWithSrc(
       function (image) {
-        expect(image.getSrc()).toEqual(IMG_SRC_REL)
+        assert.equal(image.getSrc(), IMG_SRC_REL)
         done()
       },
       {
@@ -390,28 +447,28 @@
     )
   })
 
-  test("getElement", function (assert) {
+  QUnit.test("getElement", function (assert) {
     var elImage = _createImageElement()
     var image = new fabric.Image(elImage)
-    expect(typeof image.getElement === "function").toBeTruthy()
-    expect(image.getElement()).toEqual(elImage)
+    assert.ok(typeof image.getElement === "function")
+    assert.equal(image.getElement(), elImage)
   })
 
-  test("setElement", function (assert) {
+  QUnit.test("setElement", function (assert) {
     var done = assert.async()
     createImageObject(function (image) {
-      expect(typeof image.setElement === "function").toBeTruthy()
+      assert.ok(typeof image.setElement === "function")
 
       var elImage = _createImageElement()
-      expect(image.getElement()).not.toEqual(elImage)
-      expect(image.setElement(elImage)).toEqual(image)
-      expect(image.getElement()).toEqual(elImage)
-      expect(image._originalElement).toEqual(elImage)
+      assert.notEqual(image.getElement(), elImage)
+      assert.equal(image.setElement(elImage), image, "chainable")
+      assert.equal(image.getElement(), elImage)
+      assert.equal(image._originalElement, elImage)
       done()
     })
   })
 
-  test("setElement resets the webgl cache", function (assert) {
+  QUnit.test("setElement resets the webgl cache", function (assert) {
     var done = assert.async()
     var fabricBackend = fabric.filterBackend
     createImageObject(function (image) {
@@ -423,30 +480,46 @@
       }
       var elImage = _createImageElement()
       fabric.filterBackend.textureCache[image.cacheKey] = "something"
-      expect(image.setElement(elImage)).toEqual(image)
-      expect(fabric.filterBackend.textureCache[image.cacheKey]).toEqual(undefined)
+      assert.equal(image.setElement(elImage), image, "chainable")
+      assert.equal(fabric.filterBackend.textureCache[image.cacheKey], undefined)
       fabric.filterBackend = fabricBackend
       done()
     })
   })
 
-  test("crossOrigin", function (assert) {
+  QUnit.test("crossOrigin", function (assert) {
     var done = assert.async()
     createImageObject(function (image) {
-      expect(image.getCrossOrigin()).toEqual(null)
+      assert.equal(
+        image.getCrossOrigin(),
+        null,
+        "initial crossOrigin value should be set"
+      )
 
       var elImage = _createImageElement()
       elImage.crossOrigin = "anonymous"
       image = new fabric.Image(elImage)
-      expect(image.getCrossOrigin()).toEqual("anonymous")
+      assert.equal(
+        image.getCrossOrigin(),
+        "anonymous",
+        "crossOrigin value will respect the image element value"
+      )
 
       var objRepr = image.toObject()
-      expect(objRepr.crossOrigin).toEqual("anonymous")
+      assert.equal(
+        objRepr.crossOrigin,
+        "anonymous",
+        "toObject should return proper crossOrigin value"
+      )
 
       var elImage2 = _createImageElement()
       elImage2.crossOrigin = "use-credentials"
       image.setElement(elImage2)
-      expect(elImage2.crossOrigin).toEqual("use-credentials")
+      assert.equal(
+        elImage2.crossOrigin,
+        "use-credentials",
+        "setElement should not try to change element crossOrigin"
+      )
 
       // fromObject doesn't work on Node :/
       if (fabric.isLikelyNode) {
@@ -455,38 +528,50 @@
       }
       console.log(objRepr)
       fabric.Image.fromObject(objRepr, function (img) {
-        expect(img.getCrossOrigin()).toEqual(null)
+        assert.equal(
+          img.getCrossOrigin(),
+          null,
+          "image without src return no element"
+        )
         done()
       })
     })
   })
 
-  test("clone", function (assert) {
+  QUnit.test("clone", function (assert) {
     var done = assert.async()
     createImageObject(function (image) {
-      expect(typeof image.clone === "function").toBeTruthy()
+      assert.ok(typeof image.clone === "function")
       image.clone(function (clone) {
-        expect(clone instanceof fabric.Image).toBeTruthy()
-        expect(clone.toObject()).toEqual(image.toObject())
+        assert.ok(clone instanceof fabric.Image)
+        assert.deepEqual(clone.toObject(), image.toObject())
         done()
       })
     })
   })
 
-  test("cloneWidthHeight", function (assert) {
+  QUnit.test("cloneWidthHeight", function (assert) {
     var done = assert.async()
     createSmallImageObject(function (image) {
       image.clone(function (clone) {
-        expect(clone.width).toEqual(IMG_WIDTH / 2)
-        expect(clone.height).toEqual(IMG_HEIGHT / 2)
+        assert.equal(
+          clone.width,
+          IMG_WIDTH / 2,
+          "clone's element should have width identical to that of original image"
+        )
+        assert.equal(
+          clone.height,
+          IMG_HEIGHT / 2,
+          "clone's element should have height identical to that of original image"
+        )
         done()
       })
     })
   })
 
-  test("fromObject", function (assert) {
+  QUnit.test("fromObject", function (assert) {
     var done = assert.async()
-    expect(typeof fabric.Image.fromObject === "function").toBeTruthy()
+    assert.ok(typeof fabric.Image.fromObject === "function")
 
     // should not throw error when no callback is given
     var obj = fabric.util.object.extend(
@@ -496,12 +581,12 @@
       }
     )
     fabric.Image.fromObject(obj, function (instance) {
-      expect(instance instanceof fabric.Image).toBeTruthy()
+      assert.ok(instance instanceof fabric.Image)
       done()
     })
   })
 
-  test("fromObject with clipPath", function (assert) {
+  QUnit.test("fromObject with clipPath", function (assert) {
     var done = assert.async()
     // should not throw error when no callback is given
     var obj = fabric.util.object.extend(
@@ -512,15 +597,15 @@
       }
     )
     fabric.Image.fromObject(obj, function (instance) {
-      expect(instance instanceof fabric.Image).toBeTruthy()
-      expect(instance.clipPath instanceof fabric.Rect).toBeTruthy()
+      assert.ok(instance instanceof fabric.Image)
+      assert.ok(instance.clipPath instanceof fabric.Rect)
       done()
     })
   })
 
-  test("fromObject does not mutate data", function (assert) {
+  QUnit.test("fromObject does not mutate data", function (assert) {
     var done = assert.async()
-    expect(typeof fabric.Image.fromObject === "function").toBeTruthy()
+    assert.ok(typeof fabric.Image.fromObject === "function")
 
     var obj = fabric.util.object.extend(
       fabric.util.object.clone(REFERENCE_IMG_OBJECT),
@@ -543,44 +628,58 @@
     var copyOfContrast = contrast
     var copyOfObject = obj
     fabric.Image.fromObject(obj, function () {
-      expect(copyOfFilters === obj.filters).toBeTruthy()
-      expect(copyOfBrighteness === copyOfFilters[0]).toBeTruthy()
-      expect(copyOfBrighteness).toEqual(obj.filters[0])
-      expect(copyOfFilters).toEqual(obj.filters)
-      expect(copyOfContrast).toEqual(obj.resizeFilter)
-      expect(copyOfObject).toEqual(obj)
-      expect(copyOfContrast === obj.resizeFilter).toBeTruthy()
+      assert.ok(copyOfFilters === obj.filters, "filters array did not mutate")
+      assert.ok(copyOfBrighteness === copyOfFilters[0], "filter is same object")
+      assert.deepEqual(
+        copyOfBrighteness,
+        obj.filters[0],
+        "did not mutate filter"
+      )
+      assert.deepEqual(copyOfFilters, obj.filters, "did not mutate array")
+      assert.deepEqual(
+        copyOfContrast,
+        obj.resizeFilter,
+        "did not mutate object"
+      )
+      assert.deepEqual(copyOfObject, obj, "did not change any value")
+      assert.ok(
+        copyOfContrast === obj.resizeFilter,
+        "resizefilter is same object"
+      )
       done()
     })
   })
 
-  test("fromURL", function (assert) {
+  QUnit.test("fromURL", function (assert) {
     var done = assert.async()
-    expect(typeof fabric.Image.fromURL === "function").toBeTruthy()
+    assert.ok(typeof fabric.Image.fromURL === "function")
     fabric.Image.fromURL(IMG_SRC, function (instance) {
-      expect(instance instanceof fabric.Image).toBeTruthy()
-      expect(REFERENCE_IMG_OBJECT).toEqual(instance.toObject())
+      assert.ok(instance instanceof fabric.Image)
+      assert.deepEqual(REFERENCE_IMG_OBJECT, instance.toObject())
       done()
     })
   })
 
-  test("fromURL error", function (assert) {
+  QUnit.test("fromURL error", function (assert) {
     var done = assert.async()
-    expect(typeof fabric.Image.fromURL === "function").toBeTruthy()
+    assert.ok(typeof fabric.Image.fromURL === "function")
     fabric.Image.fromURL(IMG_URL_NON_EXISTING, function (instance, isError) {
-      expect(instance instanceof fabric.Image).toBeTruthy()
-      expect(isError).toEqual(true)
+      assert.ok(instance instanceof fabric.Image)
+      assert.equal(isError, true)
       done()
     })
   })
 
-  test("fromElement", function (assert) {
+  QUnit.test("fromElement", function (assert) {
     var done = assert.async()
 
     var IMAGE_DATA_URL =
       "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAA4AAAARCAYAAADtyJ2fAAAACXBIWXMAAAsSAAALEgHS3X78AAAAGXRFWHRTb2Z0d2FyZQBBZG9iZSBJbWFnZVJlYWR5ccllPAAAAVBJREFUeNqMU7tOBDEMtENuy614/QE/gZBOuvJK+Et6CiQ6JP6ExxWI7bhL1vgVExYKLPmsTTIzjieHd+MZZSBIAJwEyJU0EWaum+lNljRux3O6nl70Gx/GUwUeyYcDJWZNhMK1aEXYe95Mz4iP44kDTRUZSWSq1YEHri0/HZxXfGSFBN+qDEJTrNI+QXRBviZ7eWCQgjsg+IHiHYB30MhqUxwcmH1Arc2kFDwkBldeFGJLPqs/AbbF2dWgUym6Z2Tb6RVzYxG1wUnmaNcOonZiU0++l6C7FzoQY42g3+8jz+GZ+dWMr1rRH0OjAFhPO+VJFx/vWDqPmk8H97CGBUYUiqAGW0PVe1+aX8j2Ll0tgHtvLx6AK9Tu1ZTFTQ0ojChqGD4qkOzeAuzVfgzsaTym1ClS+IdwtQCFooQMBTumNun1H6Bfcc9/MUn4R3wJMAAZH6MmA4ht4gAAAABJRU5ErkJggg=="
 
-    expect(typeof fabric.Image.fromElement === "function").toBeTruthy()
+    assert.ok(
+      typeof fabric.Image.fromElement === "function",
+      "fromElement should exist"
+    )
 
     var imageEl = makeImageElement({
       width: "14",
@@ -589,21 +688,24 @@
     })
 
     fabric.Image.fromElement(imageEl, function (imgObject) {
-      expect(imgObject instanceof fabric.Image).toBeTruthy()
-      expect(imgObject.get("width")).toEqual(14)
-      expect(imgObject.get("height")).toEqual(17)
-      expect(imgObject.getSrc()).toEqual(IMAGE_DATA_URL)
+      assert.ok(imgObject instanceof fabric.Image)
+      assert.deepEqual(imgObject.get("width"), 14, "width of an object")
+      assert.deepEqual(imgObject.get("height"), 17, "height of an object")
+      assert.deepEqual(imgObject.getSrc(), IMAGE_DATA_URL, "src of an object")
       done()
     })
   })
 
-  test("fromElement imageSmoothing", function (assert) {
+  QUnit.test("fromElement imageSmoothing", function (assert) {
     var done = assert.async()
 
     var IMAGE_DATA_URL =
       "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAA4AAAARCAYAAADtyJ2fAAAACXBIWXMAAAsSAAALEgHS3X78AAAAGXRFWHRTb2Z0d2FyZQBBZG9iZSBJbWFnZVJlYWR5ccllPAAAAVBJREFUeNqMU7tOBDEMtENuy614/QE/gZBOuvJK+Et6CiQ6JP6ExxWI7bhL1vgVExYKLPmsTTIzjieHd+MZZSBIAJwEyJU0EWaum+lNljRux3O6nl70Gx/GUwUeyYcDJWZNhMK1aEXYe95Mz4iP44kDTRUZSWSq1YEHri0/HZxXfGSFBN+qDEJTrNI+QXRBviZ7eWCQgjsg+IHiHYB30MhqUxwcmH1Arc2kFDwkBldeFGJLPqs/AbbF2dWgUym6Z2Tb6RVzYxG1wUnmaNcOonZiU0++l6C7FzoQY42g3+8jz+GZ+dWMr1rRH0OjAFhPO+VJFx/vWDqPmk8H97CGBUYUiqAGW0PVe1+aX8j2Ll0tgHtvLx6AK9Tu1ZTFTQ0ojChqGD4qkOzeAuzVfgzsaTym1ClS+IdwtQCFooQMBTumNun1H6Bfcc9/MUn4R3wJMAAZH6MmA4ht4gAAAABJRU5ErkJggg=="
 
-    expect(typeof fabric.Image.fromElement === "function").toBeTruthy()
+    assert.ok(
+      typeof fabric.Image.fromElement === "function",
+      "fromElement should exist"
+    )
 
     var imageEl = makeImageElement({
       width: "14",
@@ -613,19 +715,26 @@
     })
 
     fabric.Image.fromElement(imageEl, function (imgObject) {
-      expect(imgObject instanceof fabric.Image).toBeTruthy()
-      expect(imgObject.get("imageSmoothing")).toEqual(false)
+      assert.ok(imgObject instanceof fabric.Image)
+      assert.deepEqual(
+        imgObject.get("imageSmoothing"),
+        false,
+        "imageSmoothing set to false"
+      )
       done()
     })
   })
 
-  test("fromElement with preserveAspectRatio", function (assert) {
+  QUnit.test("fromElement with preserveAspectRatio", function (assert) {
     var done = assert.async()
 
     var IMAGE_DATA_URL =
       "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAA4AAAARCAYAAADtyJ2fAAAACXBIWXMAAAsSAAALEgHS3X78AAAAGXRFWHRTb2Z0d2FyZQBBZG9iZSBJbWFnZVJlYWR5ccllPAAAAVBJREFUeNqMU7tOBDEMtENuy614/QE/gZBOuvJK+Et6CiQ6JP6ExxWI7bhL1vgVExYKLPmsTTIzjieHd+MZZSBIAJwEyJU0EWaum+lNljRux3O6nl70Gx/GUwUeyYcDJWZNhMK1aEXYe95Mz4iP44kDTRUZSWSq1YEHri0/HZxXfGSFBN+qDEJTrNI+QXRBviZ7eWCQgjsg+IHiHYB30MhqUxwcmH1Arc2kFDwkBldeFGJLPqs/AbbF2dWgUym6Z2Tb6RVzYxG1wUnmaNcOonZiU0++l6C7FzoQY42g3+8jz+GZ+dWMr1rRH0OjAFhPO+VJFx/vWDqPmk8H97CGBUYUiqAGW0PVe1+aX8j2Ll0tgHtvLx6AK9Tu1ZTFTQ0ojChqGD4qkOzeAuzVfgzsaTym1ClS+IdwtQCFooQMBTumNun1H6Bfcc9/MUn4R3wJMAAZH6MmA4ht4gAAAABJRU5ErkJggg=="
 
-    expect(typeof fabric.Image.fromElement === "function").toBeTruthy()
+    assert.ok(
+      typeof fabric.Image.fromElement === "function",
+      "fromElement should exist"
+    )
 
     var imageEl = makeImageElement({
       width: "140",
@@ -637,17 +746,25 @@
       imgObject._removeTransformMatrix(
         imgObject.parsePreserveAspectRatioAttribute()
       )
-      expect(imgObject instanceof fabric.Image).toBeTruthy()
-      expect(imgObject.get("width")).toEqual(14)
-      expect(imgObject.get("height")).toEqual(17)
-      expect(imgObject.get("scaleX")).toEqual(10)
-      expect(imgObject.get("scaleY")).toEqual(10)
-      expect(imgObject.getSrc()).toEqual(IMAGE_DATA_URL)
+      assert.ok(imgObject instanceof fabric.Image)
+      assert.deepEqual(imgObject.get("width"), 14, "width of an object")
+      assert.deepEqual(imgObject.get("height"), 17, "height of an object")
+      assert.deepEqual(
+        imgObject.get("scaleX"),
+        10,
+        "scaleX compensate the width"
+      )
+      assert.deepEqual(
+        imgObject.get("scaleY"),
+        10,
+        "scaleY compensate the height"
+      )
+      assert.deepEqual(imgObject.getSrc(), IMAGE_DATA_URL, "src of an object")
       done()
     })
   })
 
-  test("fromElement with preserveAspectRatio and smaller bbox", function (
+  QUnit.test("fromElement with preserveAspectRatio and smaller bbox", function (
     assert
   ) {
     var done = assert.async()
@@ -655,7 +772,10 @@
     var IMAGE_DATA_URL =
       "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAA4AAAARCAYAAADtyJ2fAAAACXBIWXMAAAsSAAALEgHS3X78AAAAGXRFWHRTb2Z0d2FyZQBBZG9iZSBJbWFnZVJlYWR5ccllPAAAAVBJREFUeNqMU7tOBDEMtENuy614/QE/gZBOuvJK+Et6CiQ6JP6ExxWI7bhL1vgVExYKLPmsTTIzjieHd+MZZSBIAJwEyJU0EWaum+lNljRux3O6nl70Gx/GUwUeyYcDJWZNhMK1aEXYe95Mz4iP44kDTRUZSWSq1YEHri0/HZxXfGSFBN+qDEJTrNI+QXRBviZ7eWCQgjsg+IHiHYB30MhqUxwcmH1Arc2kFDwkBldeFGJLPqs/AbbF2dWgUym6Z2Tb6RVzYxG1wUnmaNcOonZiU0++l6C7FzoQY42g3+8jz+GZ+dWMr1rRH0OjAFhPO+VJFx/vWDqPmk8H97CGBUYUiqAGW0PVe1+aX8j2Ll0tgHtvLx6AK9Tu1ZTFTQ0ojChqGD4qkOzeAuzVfgzsaTym1ClS+IdwtQCFooQMBTumNun1H6Bfcc9/MUn4R3wJMAAZH6MmA4ht4gAAAABJRU5ErkJggg=="
 
-    expect(typeof fabric.Image.fromElement === "function").toBeTruthy()
+    assert.ok(
+      typeof fabric.Image.fromElement === "function",
+      "fromElement should exist"
+    )
 
     var imageEl = makeImageElement({
       x: "0",
@@ -670,18 +790,30 @@
       imgObject._removeTransformMatrix(
         imgObject.parsePreserveAspectRatioAttribute()
       )
-      expect(imgObject.get("width")).toEqual(14)
-      expect(imgObject.get("height")).toEqual(17)
-      expect(imgObject.get("left")).toEqual(0)
-      expect(imgObject.get("top")).toEqual(42.5)
-      expect(imgObject.get("scaleX")).toEqual(5)
-      expect(imgObject.get("scaleY")).toEqual(5)
-      expect(imgObject.getSrc()).toEqual(IMAGE_DATA_URL)
+      assert.deepEqual(imgObject.get("width"), 14, "width of an object")
+      assert.deepEqual(imgObject.get("height"), 17, "height of an object")
+      assert.deepEqual(imgObject.get("left"), 0, "left")
+      assert.deepEqual(
+        imgObject.get("top"),
+        42.5,
+        "top is moved to stay in center"
+      )
+      assert.deepEqual(
+        imgObject.get("scaleX"),
+        5,
+        "scaleX compensate the width"
+      )
+      assert.deepEqual(
+        imgObject.get("scaleY"),
+        5,
+        "scaleY compensate the height"
+      )
+      assert.deepEqual(imgObject.getSrc(), IMAGE_DATA_URL, "src of an object")
       done()
     })
   })
 
-  test(
+  QUnit.test(
     "fromElement with preserveAspectRatio and smaller bbox xMidYmax",
     function (assert) {
       var done = assert.async()
@@ -689,7 +821,10 @@
       var IMAGE_DATA_URL =
         "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAA4AAAARCAYAAADtyJ2fAAAACXBIWXMAAAsSAAALEgHS3X78AAAAGXRFWHRTb2Z0d2FyZQBBZG9iZSBJbWFnZVJlYWR5ccllPAAAAVBJREFUeNqMU7tOBDEMtENuy614/QE/gZBOuvJK+Et6CiQ6JP6ExxWI7bhL1vgVExYKLPmsTTIzjieHd+MZZSBIAJwEyJU0EWaum+lNljRux3O6nl70Gx/GUwUeyYcDJWZNhMK1aEXYe95Mz4iP44kDTRUZSWSq1YEHri0/HZxXfGSFBN+qDEJTrNI+QXRBviZ7eWCQgjsg+IHiHYB30MhqUxwcmH1Arc2kFDwkBldeFGJLPqs/AbbF2dWgUym6Z2Tb6RVzYxG1wUnmaNcOonZiU0++l6C7FzoQY42g3+8jz+GZ+dWMr1rRH0OjAFhPO+VJFx/vWDqPmk8H97CGBUYUiqAGW0PVe1+aX8j2Ll0tgHtvLx6AK9Tu1ZTFTQ0ojChqGD4qkOzeAuzVfgzsaTym1ClS+IdwtQCFooQMBTumNun1H6Bfcc9/MUn4R3wJMAAZH6MmA4ht4gAAAABJRU5ErkJggg=="
 
-      expect(typeof fabric.Image.fromElement === "function").toBeTruthy()
+      assert.ok(
+        typeof fabric.Image.fromElement === "function",
+        "fromElement should exist"
+      )
 
       var imageEl = makeImageElement({
         x: "0",
@@ -704,19 +839,31 @@
         imgObject._removeTransformMatrix(
           imgObject.parsePreserveAspectRatioAttribute()
         )
-        expect(imgObject.get("width")).toEqual(14)
-        expect(imgObject.get("height")).toEqual(17)
-        expect(imgObject.get("left")).toEqual(0)
-        expect(imgObject.get("top")).toEqual(85)
-        expect(imgObject.get("scaleX")).toEqual(5)
-        expect(imgObject.get("scaleY")).toEqual(5)
-        expect(imgObject.getSrc()).toEqual(IMAGE_DATA_URL)
+        assert.deepEqual(imgObject.get("width"), 14, "width of an object")
+        assert.deepEqual(imgObject.get("height"), 17, "height of an object")
+        assert.deepEqual(imgObject.get("left"), 0, "left")
+        assert.deepEqual(
+          imgObject.get("top"),
+          85,
+          "top is moved to stay in center"
+        )
+        assert.deepEqual(
+          imgObject.get("scaleX"),
+          5,
+          "scaleX compensate the width"
+        )
+        assert.deepEqual(
+          imgObject.get("scaleY"),
+          5,
+          "scaleY compensate the height"
+        )
+        assert.deepEqual(imgObject.getSrc(), IMAGE_DATA_URL, "src of an object")
         done()
       })
     }
   )
 
-  test(
+  QUnit.test(
     "fromElement with preserveAspectRatio and smaller bbox xMidYmin",
     function (assert) {
       var done = assert.async()
@@ -724,7 +871,10 @@
       var IMAGE_DATA_URL =
         "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAA4AAAARCAYAAADtyJ2fAAAACXBIWXMAAAsSAAALEgHS3X78AAAAGXRFWHRTb2Z0d2FyZQBBZG9iZSBJbWFnZVJlYWR5ccllPAAAAVBJREFUeNqMU7tOBDEMtENuy614/QE/gZBOuvJK+Et6CiQ6JP6ExxWI7bhL1vgVExYKLPmsTTIzjieHd+MZZSBIAJwEyJU0EWaum+lNljRux3O6nl70Gx/GUwUeyYcDJWZNhMK1aEXYe95Mz4iP44kDTRUZSWSq1YEHri0/HZxXfGSFBN+qDEJTrNI+QXRBviZ7eWCQgjsg+IHiHYB30MhqUxwcmH1Arc2kFDwkBldeFGJLPqs/AbbF2dWgUym6Z2Tb6RVzYxG1wUnmaNcOonZiU0++l6C7FzoQY42g3+8jz+GZ+dWMr1rRH0OjAFhPO+VJFx/vWDqPmk8H97CGBUYUiqAGW0PVe1+aX8j2Ll0tgHtvLx6AK9Tu1ZTFTQ0ojChqGD4qkOzeAuzVfgzsaTym1ClS+IdwtQCFooQMBTumNun1H6Bfcc9/MUn4R3wJMAAZH6MmA4ht4gAAAABJRU5ErkJggg=="
 
-      expect(typeof fabric.Image.fromElement === "function").toBeTruthy()
+      assert.ok(
+        typeof fabric.Image.fromElement === "function",
+        "fromElement should exist"
+      )
 
       var imageEl = makeImageElement({
         x: "0",
@@ -739,19 +889,31 @@
         imgObject._removeTransformMatrix(
           imgObject.parsePreserveAspectRatioAttribute()
         )
-        expect(imgObject.get("width")).toEqual(14)
-        expect(imgObject.get("height")).toEqual(17)
-        expect(imgObject.get("left")).toEqual(0)
-        expect(imgObject.get("top")).toEqual(0)
-        expect(imgObject.get("scaleX")).toEqual(5)
-        expect(imgObject.get("scaleY")).toEqual(5)
-        expect(imgObject.getSrc()).toEqual(IMAGE_DATA_URL)
+        assert.deepEqual(imgObject.get("width"), 14, "width of an object")
+        assert.deepEqual(imgObject.get("height"), 17, "height of an object")
+        assert.deepEqual(imgObject.get("left"), 0, "left")
+        assert.deepEqual(
+          imgObject.get("top"),
+          0,
+          "top is moved to stay in center"
+        )
+        assert.deepEqual(
+          imgObject.get("scaleX"),
+          5,
+          "scaleX compensate the width"
+        )
+        assert.deepEqual(
+          imgObject.get("scaleY"),
+          5,
+          "scaleY compensate the height"
+        )
+        assert.deepEqual(imgObject.getSrc(), IMAGE_DATA_URL, "src of an object")
         done()
       })
     }
   )
 
-  test(
+  QUnit.test(
     "fromElement with preserveAspectRatio and smaller V bbox xMinYMin",
     function (assert) {
       var done = assert.async()
@@ -759,7 +921,10 @@
       var IMAGE_DATA_URL =
         "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAA4AAAARCAYAAADtyJ2fAAAACXBIWXMAAAsSAAALEgHS3X78AAAAGXRFWHRTb2Z0d2FyZQBBZG9iZSBJbWFnZVJlYWR5ccllPAAAAVBJREFUeNqMU7tOBDEMtENuy614/QE/gZBOuvJK+Et6CiQ6JP6ExxWI7bhL1vgVExYKLPmsTTIzjieHd+MZZSBIAJwEyJU0EWaum+lNljRux3O6nl70Gx/GUwUeyYcDJWZNhMK1aEXYe95Mz4iP44kDTRUZSWSq1YEHri0/HZxXfGSFBN+qDEJTrNI+QXRBviZ7eWCQgjsg+IHiHYB30MhqUxwcmH1Arc2kFDwkBldeFGJLPqs/AbbF2dWgUym6Z2Tb6RVzYxG1wUnmaNcOonZiU0++l6C7FzoQY42g3+8jz+GZ+dWMr1rRH0OjAFhPO+VJFx/vWDqPmk8H97CGBUYUiqAGW0PVe1+aX8j2Ll0tgHtvLx6AK9Tu1ZTFTQ0ojChqGD4qkOzeAuzVfgzsaTym1ClS+IdwtQCFooQMBTumNun1H6Bfcc9/MUn4R3wJMAAZH6MmA4ht4gAAAABJRU5ErkJggg=="
 
-      expect(typeof fabric.Image.fromElement === "function").toBeTruthy()
+      assert.ok(
+        typeof fabric.Image.fromElement === "function",
+        "fromElement should exist"
+      )
 
       var imageEl = makeImageElement({
         x: "0",
@@ -774,19 +939,31 @@
         imgObject._removeTransformMatrix(
           imgObject.parsePreserveAspectRatioAttribute()
         )
-        expect(imgObject.get("width")).toEqual(14)
-        expect(imgObject.get("height")).toEqual(17)
-        expect(imgObject.get("left")).toEqual(0)
-        expect(imgObject.get("top")).toEqual(0)
-        expect(imgObject.get("scaleX")).toEqual(5)
-        expect(imgObject.get("scaleY")).toEqual(5)
-        expect(imgObject.getSrc()).toEqual(IMAGE_DATA_URL)
+        assert.deepEqual(imgObject.get("width"), 14, "width of an object")
+        assert.deepEqual(imgObject.get("height"), 17, "height of an object")
+        assert.deepEqual(imgObject.get("left"), 0, "left")
+        assert.deepEqual(
+          imgObject.get("top"),
+          0,
+          "top is moved to stay in center"
+        )
+        assert.deepEqual(
+          imgObject.get("scaleX"),
+          5,
+          "scaleX compensate the width"
+        )
+        assert.deepEqual(
+          imgObject.get("scaleY"),
+          5,
+          "scaleY compensate the height"
+        )
+        assert.deepEqual(imgObject.getSrc(), IMAGE_DATA_URL, "src of an object")
         done()
       })
     }
   )
 
-  test(
+  QUnit.test(
     "fromElement with preserveAspectRatio and smaller V bbox xMidYmin",
     function (assert) {
       var done = assert.async()
@@ -794,7 +971,10 @@
       var IMAGE_DATA_URL =
         "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAA4AAAARCAYAAADtyJ2fAAAACXBIWXMAAAsSAAALEgHS3X78AAAAGXRFWHRTb2Z0d2FyZQBBZG9iZSBJbWFnZVJlYWR5ccllPAAAAVBJREFUeNqMU7tOBDEMtENuy614/QE/gZBOuvJK+Et6CiQ6JP6ExxWI7bhL1vgVExYKLPmsTTIzjieHd+MZZSBIAJwEyJU0EWaum+lNljRux3O6nl70Gx/GUwUeyYcDJWZNhMK1aEXYe95Mz4iP44kDTRUZSWSq1YEHri0/HZxXfGSFBN+qDEJTrNI+QXRBviZ7eWCQgjsg+IHiHYB30MhqUxwcmH1Arc2kFDwkBldeFGJLPqs/AbbF2dWgUym6Z2Tb6RVzYxG1wUnmaNcOonZiU0++l6C7FzoQY42g3+8jz+GZ+dWMr1rRH0OjAFhPO+VJFx/vWDqPmk8H97CGBUYUiqAGW0PVe1+aX8j2Ll0tgHtvLx6AK9Tu1ZTFTQ0ojChqGD4qkOzeAuzVfgzsaTym1ClS+IdwtQCFooQMBTumNun1H6Bfcc9/MUn4R3wJMAAZH6MmA4ht4gAAAABJRU5ErkJggg=="
 
-      expect(typeof fabric.Image.fromElement === "function").toBeTruthy()
+      assert.ok(
+        typeof fabric.Image.fromElement === "function",
+        "fromElement should exist"
+      )
 
       var imageEl = makeImageElement({
         x: "0",
@@ -809,19 +989,31 @@
         imgObject._removeTransformMatrix(
           imgObject.parsePreserveAspectRatioAttribute()
         )
-        expect(imgObject.get("width")).toEqual(14)
-        expect(imgObject.get("height")).toEqual(17)
-        expect(imgObject.get("left")).toEqual(35)
-        expect(imgObject.get("top")).toEqual(0)
-        expect(imgObject.get("scaleX")).toEqual(5)
-        expect(imgObject.get("scaleY")).toEqual(5)
-        expect(imgObject.getSrc()).toEqual(IMAGE_DATA_URL)
+        assert.deepEqual(imgObject.get("width"), 14, "width of an object")
+        assert.deepEqual(imgObject.get("height"), 17, "height of an object")
+        assert.deepEqual(imgObject.get("left"), 35, "left")
+        assert.deepEqual(
+          imgObject.get("top"),
+          0,
+          "top is moved to stay in center"
+        )
+        assert.deepEqual(
+          imgObject.get("scaleX"),
+          5,
+          "scaleX compensate the width"
+        )
+        assert.deepEqual(
+          imgObject.get("scaleY"),
+          5,
+          "scaleY compensate the height"
+        )
+        assert.deepEqual(imgObject.getSrc(), IMAGE_DATA_URL, "src of an object")
         done()
       })
     }
   )
 
-  test(
+  QUnit.test(
     "fromElement with preserveAspectRatio and smaller V bbox xMaxYMin",
     function (assert) {
       var done = assert.async()
@@ -829,7 +1021,10 @@
       var IMAGE_DATA_URL =
         "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAA4AAAARCAYAAADtyJ2fAAAACXBIWXMAAAsSAAALEgHS3X78AAAAGXRFWHRTb2Z0d2FyZQBBZG9iZSBJbWFnZVJlYWR5ccllPAAAAVBJREFUeNqMU7tOBDEMtENuy614/QE/gZBOuvJK+Et6CiQ6JP6ExxWI7bhL1vgVExYKLPmsTTIzjieHd+MZZSBIAJwEyJU0EWaum+lNljRux3O6nl70Gx/GUwUeyYcDJWZNhMK1aEXYe95Mz4iP44kDTRUZSWSq1YEHri0/HZxXfGSFBN+qDEJTrNI+QXRBviZ7eWCQgjsg+IHiHYB30MhqUxwcmH1Arc2kFDwkBldeFGJLPqs/AbbF2dWgUym6Z2Tb6RVzYxG1wUnmaNcOonZiU0++l6C7FzoQY42g3+8jz+GZ+dWMr1rRH0OjAFhPO+VJFx/vWDqPmk8H97CGBUYUiqAGW0PVe1+aX8j2Ll0tgHtvLx6AK9Tu1ZTFTQ0ojChqGD4qkOzeAuzVfgzsaTym1ClS+IdwtQCFooQMBTumNun1H6Bfcc9/MUn4R3wJMAAZH6MmA4ht4gAAAABJRU5ErkJggg=="
 
-      expect(typeof fabric.Image.fromElement === "function").toBeTruthy()
+      assert.ok(
+        typeof fabric.Image.fromElement === "function",
+        "fromElement should exist"
+      )
 
       var imageEl = makeImageElement({
         x: "0",
@@ -844,31 +1039,43 @@
         imgObject._removeTransformMatrix(
           imgObject.parsePreserveAspectRatioAttribute()
         )
-        expect(imgObject.get("width")).toEqual(14)
-        expect(imgObject.get("height")).toEqual(17)
-        expect(imgObject.get("left")).toEqual(70)
-        expect(imgObject.get("top")).toEqual(0)
-        expect(imgObject.get("scaleX")).toEqual(5)
-        expect(imgObject.get("scaleY")).toEqual(5)
-        expect(imgObject.getSrc()).toEqual(IMAGE_DATA_URL)
+        assert.deepEqual(imgObject.get("width"), 14, "width of an object")
+        assert.deepEqual(imgObject.get("height"), 17, "height of an object")
+        assert.deepEqual(imgObject.get("left"), 70, "left")
+        assert.deepEqual(
+          imgObject.get("top"),
+          0,
+          "top is moved to stay in center"
+        )
+        assert.deepEqual(
+          imgObject.get("scaleX"),
+          5,
+          "scaleX compensate the width"
+        )
+        assert.deepEqual(
+          imgObject.get("scaleY"),
+          5,
+          "scaleY compensate the height"
+        )
+        assert.deepEqual(imgObject.getSrc(), IMAGE_DATA_URL, "src of an object")
         done()
       })
     }
   )
 
-  test("consecutive dataURLs give same result.", function (assert) {
+  QUnit.test("consecutive dataURLs give same result.", function (assert) {
     var done = assert.async()
     createImageObject(function (image) {
       var data1 = image.toDataURL()
       var data2 = image.toDataURL()
       var data3 = image.toDataURL()
-      expect(data1 === data2).toBeTruthy()
-      expect(data1 === data3).toBeTruthy()
+      assert.ok(data1 === data2, "dataurl does not change 1")
+      assert.ok(data1 === data3, "dataurl does not change 2")
       done()
     })
   })
 
-  test(
+  QUnit.test(
     "apply filters run isNeutralState implementation of filters",
     function (assert) {
       var done = assert.async()
@@ -880,26 +1087,26 @@
         filter.isNeutralState = function () {
           run = true
         }
-        expect(run).toEqual(false)
+        assert.equal(run, false, "isNeutralState did not run yet")
         image.applyFilters()
-        expect(run).toEqual(true)
+        assert.equal(run, true, "isNeutralState did run")
         done()
       })
     }
   )
 
-  test("apply filters set the image dirty", function (assert) {
+  QUnit.test("apply filters set the image dirty", function (assert) {
     var done = assert.async()
     createImageObject(function (image) {
       image.dirty = false
-      expect(image.dirty).toEqual(false)
+      assert.equal(image.dirty, false, "false apply filter dirty is false")
       image.applyFilters()
-      expect(image.dirty).toEqual(true)
+      assert.equal(image.dirty, true, "After apply filter dirty is true")
       done()
     })
   })
 
-  test("apply filters reset _element and _filteredEl", function (assert) {
+  QUnit.test("apply filters reset _element and _filteredEl", function (assert) {
     var done = assert.async()
     createImageObject(function (image) {
       var contrast = new fabric.Image.filters.Contrast({ contrast: 0.5 })
@@ -908,14 +1115,22 @@
       var filtered = image._filteredEl
       image.filters = [contrast]
       image.applyFilters()
-      expect(image._element).not.toEqual(element)
-      expect(image._filteredEl).not.toEqual(filtered)
-      expect(image._element).toEqual(image._filteredEl)
+      assert.notEqual(image._element, element, "image element has changed")
+      assert.notEqual(
+        image._filteredEl,
+        filtered,
+        "image _filteredEl element has changed"
+      )
+      assert.equal(
+        image._element,
+        image._filteredEl,
+        "after filtering elements are the same"
+      )
       done()
     })
   })
 
-  test("apply filters and resize filter", function (assert) {
+  QUnit.test("apply filters and resize filter", function (assert) {
     var done = assert.async()
     createImageObject(function (image) {
       var contrast = new fabric.Image.filters.Contrast({ contrast: 0.5 })
@@ -927,23 +1142,47 @@
       image.scaleX = 0.4
       image.scaleY = 0.4
       image.applyFilters()
-      expect(image._element).not.toEqual(element)
-      expect(image._filteredEl).not.toEqual(filtered)
-      expect(image._element).toEqual(image._filteredEl)
+      assert.notEqual(image._element, element, "image element has changed")
+      assert.notEqual(
+        image._filteredEl,
+        filtered,
+        "image _filteredEl element has changed"
+      )
+      assert.equal(
+        image._element,
+        image._filteredEl,
+        "after filtering elements are the same"
+      )
       image.applyResizeFilters()
-      expect(image._element).not.toEqual(image._filteredEl)
-      expect(image._lastScaleX.toFixed(2)).toEqual(image.scaleX)
-      expect(image._lastScaleY.toFixed(2)).toEqual(image.scaleY)
+      assert.notEqual(
+        image._element,
+        image._filteredEl,
+        "after resizing the 2 elements differ"
+      )
+      assert.equal(
+        image._lastScaleX.toFixed(2),
+        image.scaleX,
+        "after resizing we know how much we scaled"
+      )
+      assert.equal(
+        image._lastScaleY.toFixed(2),
+        image.scaleY,
+        "after resizing we know how much we scaled"
+      )
       image.applyFilters()
-      expect(image._element).toEqual(image._filteredEl)
-      expect(image._lastScaleX).toEqual(1)
-      expect(image._lastScaleY).toEqual(1)
-      expect(image._needsResize()).toEqual(true)
+      assert.equal(
+        image._element,
+        image._filteredEl,
+        "after filters again the elements changed"
+      )
+      assert.equal(image._lastScaleX, 1, "lastScale X is reset")
+      assert.equal(image._lastScaleY, 1, "lastScale Y is reset")
+      assert.equal(image._needsResize(), true, "resizing is needed again")
       done()
     })
   })
 
-  test("apply filters set the image dirty and also the group", function (
+  QUnit.test("apply filters set the image dirty and also the group", function (
     assert
   ) {
     var done = assert.async()
@@ -951,16 +1190,16 @@
       var group = new fabric.Group([image])
       image.dirty = false
       group.dirty = false
-      expect(image.dirty).toEqual(false)
-      expect(group.dirty).toEqual(false)
+      assert.equal(image.dirty, false, "false apply filter dirty is false")
+      assert.equal(group.dirty, false, "false apply filter dirty is false")
       image.applyFilters()
-      expect(image.dirty).toEqual(true)
-      expect(group.dirty).toEqual(true)
+      assert.equal(image.dirty, true, "After apply filter dirty is true")
+      assert.equal(group.dirty, true, "After apply filter dirty is true")
       done()
     })
   })
 
-  test(
+  QUnit.test(
     "_renderFill respects source boundaries crop < 0 and width > elWidth",
     function (assert) {
       fabric.Image.prototype._renderFill.call(
@@ -978,17 +1217,17 @@
         },
         {
           drawImage: function (src, sX, sY, sW, sH) {
-            expect(sX >= 0).toBeTruthy()
-            expect(sY >= 0).toBeTruthy()
-            expect(sW <= 200).toBeTruthy()
-            expect(sH <= 200).toBeTruthy()
+            assert.ok(sX >= 0, "sX should be positive")
+            assert.ok(sY >= 0, "sY should be positive")
+            assert.ok(sW <= 200, "sW should not be larger than image width")
+            assert.ok(sH <= 200, "sH should  not be larger than image height")
           }
         }
       )
     }
   )
 
-  test(
+  QUnit.test(
     "_renderFill respects source boundaries crop < 0 and width > elWidth",
     function (assert) {
       fabric.Image.prototype._renderFill.call(
@@ -1006,10 +1245,16 @@
         },
         {
           drawImage: function (src, sX, sY, sW, sH) {
-            expect(sX === 15).toBeTruthy()
-            expect(sY === 15).toBeTruthy()
-            expect(sW === 105).toBeTruthy()
-            expect(sH === 105).toBeTruthy()
+            assert.ok(sX === 15, "sX should be cropX * filterScalingX")
+            assert.ok(sY === 15, "sY should be cropY * filterScalingY")
+            assert.ok(
+              sW === 105,
+              "sW will be width * filterScalingX if is < of element width"
+            )
+            assert.ok(
+              sH === 105,
+              "sH will be height * filterScalingY if is < of element height"
+            )
           }
         }
       )

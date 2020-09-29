@@ -2,23 +2,23 @@
   var canvas = (this.canvas = new fabric.StaticCanvas(null, {
     enableRetinaScaling: false
   }))
-  describe("fabric.ObjectGeometry")
+  QUnit.module("fabric.ObjectGeometry")
 
-  test("intersectsWithRectangle", function (assert) {
+  QUnit.test("intersectsWithRectangle", function (assert) {
     var cObj = new fabric.Object({ left: 50, top: 50, width: 100, height: 100 })
     cObj.setCoords()
-    expect(typeof cObj.intersectsWithRect === "function").toBeTruthy()
+    assert.ok(typeof cObj.intersectsWithRect === "function")
 
     var point1 = new fabric.Point(110, 100),
       point2 = new fabric.Point(210, 200),
       point3 = new fabric.Point(0, 0),
       point4 = new fabric.Point(10, 10)
 
-    expect(cObj.intersectsWithRect(point1, point2)).toBeTruthy()
-    expect(!cObj.intersectsWithRect(point3, point4)).toBeTruthy()
+    assert.ok(cObj.intersectsWithRect(point1, point2))
+    assert.ok(!cObj.intersectsWithRect(point3, point4))
   })
 
-  test("intersectsWithRectangle absolute", function (assert) {
+  QUnit.test("intersectsWithRectangle absolute", function (assert) {
     var cObj = new fabric.Rect({ left: 10, top: 10, width: 20, height: 20 })
     var absolute = true
     canvas.add(cObj)
@@ -31,16 +31,31 @@
       point3 = new fabric.Point(25, 25),
       point4 = new fabric.Point(35, 35)
 
-    expect(!cObj.intersectsWithRect(point1, point2)).toBeTruthy()
-    expect(!cObj.intersectsWithRect(point3, point4)).toBeTruthy()
-    expect(cObj.intersectsWithRect(point1, point2, absolute)).toBeTruthy()
-    expect(cObj.intersectsWithRect(point3, point4, absolute)).toBeTruthy()
+    assert.ok(
+      !cObj.intersectsWithRect(point1, point2),
+      "Does not intersect because there is a 2x zoom"
+    )
+    assert.ok(
+      !cObj.intersectsWithRect(point3, point4),
+      "Does not intersect because there is a 2x zoom"
+    )
+    assert.ok(
+      cObj.intersectsWithRect(point1, point2, absolute),
+      "absolute coordinates intersect"
+    )
+    assert.ok(
+      cObj.intersectsWithRect(point3, point4, absolute),
+      "absolute coordinates intersect"
+    )
   })
 
-  test("intersectsWithObject", function (assert) {
+  QUnit.test("intersectsWithObject", function (assert) {
     var cObj = new fabric.Object({ left: 50, top: 50, width: 100, height: 100 })
     cObj.setCoords()
-    expect(typeof cObj.intersectsWithObject === "function").toBeTruthy()
+    assert.ok(
+      typeof cObj.intersectsWithObject === "function",
+      "has intersectsWithObject method"
+    )
 
     var cObj2 = new fabric.Object({
       left: -150,
@@ -49,8 +64,14 @@
       height: 200
     })
     cObj2.setCoords()
-    expect(cObj.intersectsWithObject(cObj2)).toBeTruthy()
-    expect(cObj2.intersectsWithObject(cObj)).toBeTruthy()
+    assert.ok(
+      cObj.intersectsWithObject(cObj2),
+      "cobj2 does intersect with cobj"
+    )
+    assert.ok(
+      cObj2.intersectsWithObject(cObj),
+      "cobj2 does intersect with cobj"
+    )
 
     var cObj3 = new fabric.Object({
       left: 392.5,
@@ -59,67 +80,91 @@
       height: 33
     })
     cObj3.setCoords()
-    expect(!cObj.intersectsWithObject(cObj3)).toBeTruthy()
-    expect(!cObj3.intersectsWithObject(cObj)).toBeTruthy()
+    assert.ok(
+      !cObj.intersectsWithObject(cObj3),
+      "cobj3 does not intersect with cobj (external)"
+    )
+    assert.ok(
+      !cObj3.intersectsWithObject(cObj),
+      "cobj3 does not intersect with cobj (external)"
+    )
 
     var cObj4 = new fabric.Object({ left: 0, top: 0, width: 200, height: 200 })
     cObj4.setCoords()
-    expect(cObj4.intersectsWithObject(cObj)).toBeTruthy()
-    expect(cObj.intersectsWithObject(cObj4)).toBeTruthy()
+    assert.ok(
+      cObj4.intersectsWithObject(cObj),
+      "overlapping objects are considered intersecting"
+    )
+    assert.ok(
+      cObj.intersectsWithObject(cObj4),
+      "overlapping objects are considered intersecting"
+    )
   })
 
-  test("isContainedWithinRect", function (assert) {
+  QUnit.test("isContainedWithinRect", function (assert) {
     var cObj = new fabric.Object({ left: 20, top: 20, width: 10, height: 10 })
     cObj.setCoords()
-    expect(typeof cObj.isContainedWithinRect === "function").toBeTruthy()
+    assert.ok(typeof cObj.isContainedWithinRect === "function")
 
     // fully contained
-    expect(cObj.isContainedWithinRect(
-      new fabric.Point(10, 10),
-      new fabric.Point(100, 100)
-    )).toBeTruthy()
+    assert.ok(
+      cObj.isContainedWithinRect(
+        new fabric.Point(10, 10),
+        new fabric.Point(100, 100)
+      )
+    )
     // only intersects
-    expect(!cObj.isContainedWithinRect(
-      new fabric.Point(10, 10),
-      new fabric.Point(25, 25)
-    )).toBeTruthy()
+    assert.ok(
+      !cObj.isContainedWithinRect(
+        new fabric.Point(10, 10),
+        new fabric.Point(25, 25)
+      )
+    )
     // doesn't intersect
-    expect(!cObj.isContainedWithinRect(
-      new fabric.Point(100, 100),
-      new fabric.Point(110, 110)
-    )).toBeTruthy()
+    assert.ok(
+      !cObj.isContainedWithinRect(
+        new fabric.Point(100, 100),
+        new fabric.Point(110, 110)
+      )
+    )
   })
 
-  test("isContainedWithinRect absolute", function (assert) {
+  QUnit.test("isContainedWithinRect absolute", function (assert) {
     var cObj = new fabric.Rect({ left: 20, top: 20, width: 10, height: 10 })
     var absolute = true
     canvas.add(cObj)
     canvas.viewportTransform = [2, 0, 0, 2, 0, 0]
     cObj.setCoords()
     canvas.calcViewportBoundaries()
-    expect(typeof cObj.isContainedWithinRect === "function").toBeTruthy()
+    assert.ok(typeof cObj.isContainedWithinRect === "function")
 
     // fully contained
-    expect(cObj.isContainedWithinRect(
-      new fabric.Point(10, 10),
-      new fabric.Point(100, 100),
-      absolute
-    )).toBeTruthy()
+    assert.ok(
+      cObj.isContainedWithinRect(
+        new fabric.Point(10, 10),
+        new fabric.Point(100, 100),
+        absolute
+      )
+    )
     // only intersects
-    expect(!cObj.isContainedWithinRect(
-      new fabric.Point(10, 10),
-      new fabric.Point(25, 25),
-      absolute
-    )).toBeTruthy()
+    assert.ok(
+      !cObj.isContainedWithinRect(
+        new fabric.Point(10, 10),
+        new fabric.Point(25, 25),
+        absolute
+      )
+    )
     // doesn't intersect
-    expect(!cObj.isContainedWithinRect(
-      new fabric.Point(100, 100),
-      new fabric.Point(110, 110),
-      absolute
-    )).toBeTruthy()
+    assert.ok(
+      !cObj.isContainedWithinRect(
+        new fabric.Point(100, 100),
+        new fabric.Point(110, 110),
+        absolute
+      )
+    )
   })
 
-  test("intersectsWithRect", function (assert) {
+  QUnit.test("intersectsWithRect", function (assert) {
     var object = new fabric.Object({
         left: 0,
         top: 0,
@@ -137,14 +182,14 @@
     object.setCoords()
 
     // object and area intersects
-    expect(object.intersectsWithRect(point1, point2)).toEqual(true)
+    assert.equal(object.intersectsWithRect(point1, point2), true)
     // area is contained in object (no intersection)
-    expect(object.intersectsWithRect(point3, point4)).toEqual(false)
+    assert.equal(object.intersectsWithRect(point3, point4), false)
     // area is outside of object (no intersection)
-    expect(object.intersectsWithRect(point5, point6)).toEqual(false)
+    assert.equal(object.intersectsWithRect(point5, point6), false)
   })
 
-  test("intersectsWithObject", function (assert) {
+  QUnit.test("intersectsWithObject", function (assert) {
     var object = new fabric.Object({
         left: 20,
         top: 30,
@@ -183,12 +228,24 @@
     object2.set({ originX: "center", originY: "center" }).setCoords()
     object3.set({ originX: "center", originY: "center" }).setCoords()
 
-    expect(object.intersectsWithObject(object1)).toEqual(true)
-    expect(object.intersectsWithObject(object2)).toEqual(true)
-    expect(object.intersectsWithObject(object3)).toEqual(false)
+    assert.equal(
+      object.intersectsWithObject(object1),
+      true,
+      "object and object1 intersects"
+    )
+    assert.equal(
+      object.intersectsWithObject(object2),
+      true,
+      "object2 is contained in object"
+    )
+    assert.equal(
+      object.intersectsWithObject(object3),
+      false,
+      "object3 is outside of object (no intersection)"
+    )
   })
 
-  test("isContainedWithinObject", function (assert) {
+  QUnit.test("isContainedWithinObject", function (assert) {
     var object = new fabric.Object({
         left: 0,
         top: 0,
@@ -223,12 +280,28 @@
     object2.setCoords()
     object3.setCoords()
 
-    expect(object1.isContainedWithinObject(object)).toEqual(true)
-    expect(object2.isContainedWithinObject(object)).toEqual(false)
-    expect(object3.isContainedWithinObject(object)).toEqual(false)
+    assert.equal(
+      object1.isContainedWithinObject(object),
+      true,
+      "object1 is fully contained within object"
+    )
+    assert.equal(
+      object2.isContainedWithinObject(object),
+      false,
+      "object2 intersects object (not fully contained)"
+    )
+    assert.equal(
+      object3.isContainedWithinObject(object),
+      false,
+      "object3 is outside of object (not fully contained)"
+    )
     object1.angle = 45
     object1.setCoords()
-    expect(object1.isContainedWithinObject(object)).toEqual(false)
+    assert.equal(
+      object1.isContainedWithinObject(object),
+      false,
+      "object1 rotated is not contained within object"
+    )
 
     var rect1 = new fabric.Rect({
       width: 50,
@@ -246,10 +319,14 @@
     })
     rect1.setCoords()
     rect2.setCoords()
-    expect(rect1.isContainedWithinObject(rect2)).toEqual(false)
+    assert.equal(
+      rect1.isContainedWithinObject(rect2),
+      false,
+      "rect1 rotated is not contained within rect2"
+    )
   })
 
-  test("isContainedWithinRect", function (assert) {
+  QUnit.test("isContainedWithinRect", function (assert) {
     var object = new fabric.Object({
         left: 40,
         top: 40,
@@ -267,14 +344,14 @@
     object.set({ originX: "center", originY: "center" }).setCoords()
 
     // area is contained in object (no intersection)
-    expect(object.isContainedWithinRect(point1, point2)).toEqual(true)
+    assert.equal(object.isContainedWithinRect(point1, point2), true)
     // object and area intersects
-    expect(object.isContainedWithinRect(point3, point4)).toEqual(false)
+    assert.equal(object.isContainedWithinRect(point3, point4), false)
     // area is outside of object (no intersection)
-    expect(object.isContainedWithinRect(point5, point6)).toEqual(false)
+    assert.equal(object.isContainedWithinRect(point5, point6), false)
   })
 
-  test("isContainedWithinRect", function (assert) {
+  QUnit.test("isContainedWithinRect", function (assert) {
     var object = new fabric.Object({
         left: 40,
         top: 40,
@@ -292,14 +369,14 @@
     object.set({ originX: "center", originY: "center" }).setCoords()
 
     // area is contained in object (no intersection)
-    expect(object.isContainedWithinRect(point1, point2)).toEqual(true)
+    assert.equal(object.isContainedWithinRect(point1, point2), true)
     // object and area intersects
-    expect(object.isContainedWithinRect(point3, point4)).toEqual(false)
+    assert.equal(object.isContainedWithinRect(point3, point4), false)
     // area is outside of object (no intersection)
-    expect(object.isContainedWithinRect(point5, point6)).toEqual(false)
+    assert.equal(object.isContainedWithinRect(point5, point6), false)
   })
 
-  test("containsPoint", function (assert) {
+  QUnit.test("containsPoint", function (assert) {
     var object = new fabric.Object({
         left: 40,
         top: 40,
@@ -317,18 +394,18 @@
     object.set({ originX: "center", originY: "center" }).setCoords()
 
     // point1 is contained in object
-    expect(object.containsPoint(point1)).toEqual(true)
+    assert.equal(object.containsPoint(point1), true)
     // point2 is outside of object (right)
-    expect(object.containsPoint(point2)).toEqual(false)
+    assert.equal(object.containsPoint(point2), false)
     // point3 is outside of object (bottom)
-    expect(object.containsPoint(point3)).toEqual(false)
+    assert.equal(object.containsPoint(point3), false)
     // point4 is outside of object (left)
-    expect(object.containsPoint(point4)).toEqual(false)
+    assert.equal(object.containsPoint(point4), false)
     // point5 is outside of object (top)
-    expect(object.containsPoint(point5)).toEqual(false)
+    assert.equal(object.containsPoint(point5), false)
   })
 
-  test("containsPoint with padding", function (assert) {
+  QUnit.test("containsPoint with padding", function (assert) {
     var object = new fabric.Object({
         left: 40,
         top: 40,
@@ -347,20 +424,20 @@
     object.set({ originX: "center", originY: "center" }).setCoords()
 
     // point1 is contained in object
-    expect(object.containsPoint(point1)).toEqual(true)
+    assert.equal(object.containsPoint(point1), true)
     // point2 is contained in object (padding area)
-    expect(object.containsPoint(point2)).toEqual(true)
+    assert.equal(object.containsPoint(point2), true)
     // point2 is outside of object (right)
-    expect(object.containsPoint(point3)).toEqual(false)
+    assert.equal(object.containsPoint(point3), false)
     // point3 is outside of object (bottom)
-    expect(object.containsPoint(point4)).toEqual(false)
+    assert.equal(object.containsPoint(point4), false)
     // point4 is outside of object (left)
-    expect(object.containsPoint(point5)).toEqual(false)
+    assert.equal(object.containsPoint(point5), false)
     // point5 is outside of object (top)
-    expect(object.containsPoint(point6)).toEqual(false)
+    assert.equal(object.containsPoint(point6), false)
   })
 
-  test("setCoords", function (assert) {
+  QUnit.test("setCoords", function (assert) {
     var cObj = new fabric.Object({
       left: 150,
       top: 150,
@@ -368,65 +445,65 @@
       height: 100,
       strokeWidth: 0
     })
-    expect(typeof cObj.setCoords === "function").toBeTruthy()
-    expect(cObj.setCoords()).toEqual(cObj)
+    assert.ok(typeof cObj.setCoords === "function")
+    assert.equal(cObj.setCoords(), cObj, "chainable")
 
-    expect(cObj.oCoords.tl.x).toEqual(150)
-    expect(cObj.oCoords.tl.y).toEqual(150)
-    expect(cObj.oCoords.tr.x).toEqual(250)
-    expect(cObj.oCoords.tr.y).toEqual(150)
-    expect(cObj.oCoords.bl.x).toEqual(150)
-    expect(cObj.oCoords.bl.y).toEqual(250)
-    expect(cObj.oCoords.br.x).toEqual(250)
-    expect(cObj.oCoords.br.y).toEqual(250)
-    expect(cObj.oCoords.mtr.x).toEqual(200)
-    expect(cObj.oCoords.mtr.y).toEqual(110)
+    assert.equal(cObj.oCoords.tl.x, 150)
+    assert.equal(cObj.oCoords.tl.y, 150)
+    assert.equal(cObj.oCoords.tr.x, 250)
+    assert.equal(cObj.oCoords.tr.y, 150)
+    assert.equal(cObj.oCoords.bl.x, 150)
+    assert.equal(cObj.oCoords.bl.y, 250)
+    assert.equal(cObj.oCoords.br.x, 250)
+    assert.equal(cObj.oCoords.br.y, 250)
+    assert.equal(cObj.oCoords.mtr.x, 200)
+    assert.equal(cObj.oCoords.mtr.y, 110)
 
     cObj.set("left", 250).set("top", 250)
 
     // coords should still correspond to initial one, even after invoking `set`
-    expect(cObj.oCoords.tl.x).toEqual(150)
-    expect(cObj.oCoords.tl.y).toEqual(150)
-    expect(cObj.oCoords.tr.x).toEqual(250)
-    expect(cObj.oCoords.tr.y).toEqual(150)
-    expect(cObj.oCoords.bl.x).toEqual(150)
-    expect(cObj.oCoords.bl.y).toEqual(250)
-    expect(cObj.oCoords.br.x).toEqual(250)
-    expect(cObj.oCoords.br.y).toEqual(250)
-    expect(cObj.oCoords.mtr.x).toEqual(200)
-    expect(cObj.oCoords.mtr.y).toEqual(110)
+    assert.equal(cObj.oCoords.tl.x, 150)
+    assert.equal(cObj.oCoords.tl.y, 150)
+    assert.equal(cObj.oCoords.tr.x, 250)
+    assert.equal(cObj.oCoords.tr.y, 150)
+    assert.equal(cObj.oCoords.bl.x, 150)
+    assert.equal(cObj.oCoords.bl.y, 250)
+    assert.equal(cObj.oCoords.br.x, 250)
+    assert.equal(cObj.oCoords.br.y, 250)
+    assert.equal(cObj.oCoords.mtr.x, 200)
+    assert.equal(cObj.oCoords.mtr.y, 110)
 
     // recalculate coords
     cObj.setCoords()
 
     // check that coords are now updated
-    expect(cObj.oCoords.tl.x).toEqual(250)
-    expect(cObj.oCoords.tl.y).toEqual(250)
-    expect(cObj.oCoords.tr.x).toEqual(350)
-    expect(cObj.oCoords.tr.y).toEqual(250)
-    expect(cObj.oCoords.bl.x).toEqual(250)
-    expect(cObj.oCoords.bl.y).toEqual(350)
-    expect(cObj.oCoords.br.x).toEqual(350)
-    expect(cObj.oCoords.br.y).toEqual(350)
-    expect(cObj.oCoords.mtr.x).toEqual(300)
-    expect(cObj.oCoords.mtr.y).toEqual(210)
+    assert.equal(cObj.oCoords.tl.x, 250)
+    assert.equal(cObj.oCoords.tl.y, 250)
+    assert.equal(cObj.oCoords.tr.x, 350)
+    assert.equal(cObj.oCoords.tr.y, 250)
+    assert.equal(cObj.oCoords.bl.x, 250)
+    assert.equal(cObj.oCoords.bl.y, 350)
+    assert.equal(cObj.oCoords.br.x, 350)
+    assert.equal(cObj.oCoords.br.y, 350)
+    assert.equal(cObj.oCoords.mtr.x, 300)
+    assert.equal(cObj.oCoords.mtr.y, 210)
 
     cObj.set("padding", 25)
     cObj.setCoords()
     // coords should still correspond to initial one, even after invoking `set`
-    expect(cObj.oCoords.tl.x).toEqual(225)
-    expect(cObj.oCoords.tl.y).toEqual(225)
-    expect(cObj.oCoords.tr.x).toEqual(375)
-    expect(cObj.oCoords.tr.y).toEqual(225)
-    expect(cObj.oCoords.bl.x).toEqual(225)
-    expect(cObj.oCoords.bl.y).toEqual(375)
-    expect(cObj.oCoords.br.x).toEqual(375)
-    expect(cObj.oCoords.br.y).toEqual(375)
-    expect(cObj.oCoords.mtr.x).toEqual(300)
-    expect(cObj.oCoords.mtr.y).toEqual(185)
+    assert.equal(cObj.oCoords.tl.x, 225, "setCoords tl.x padding")
+    assert.equal(cObj.oCoords.tl.y, 225, "setCoords tl.y padding")
+    assert.equal(cObj.oCoords.tr.x, 375, "setCoords tr.x padding")
+    assert.equal(cObj.oCoords.tr.y, 225, "setCoords tr.y padding")
+    assert.equal(cObj.oCoords.bl.x, 225, "setCoords bl.x padding")
+    assert.equal(cObj.oCoords.bl.y, 375, "setCoords bl.y padding")
+    assert.equal(cObj.oCoords.br.x, 375, "setCoords br.x padding")
+    assert.equal(cObj.oCoords.br.y, 375, "setCoords br.y padding")
+    assert.equal(cObj.oCoords.mtr.x, 300, "setCoords mtr.x padding")
+    assert.equal(cObj.oCoords.mtr.y, 185, "setCoords mtr.y padding")
   })
 
-  test("setCoords and aCoords", function (assert) {
+  QUnit.test("setCoords and aCoords", function (assert) {
     var cObj = new fabric.Object({
       left: 150,
       top: 150,
@@ -439,28 +516,100 @@
     }
     cObj.setCoords()
 
-    expect(cObj.oCoords.tl.x).toEqual(300)
-    expect(cObj.oCoords.tl.y).toEqual(300)
-    expect(cObj.oCoords.tr.x).toEqual(500)
-    expect(cObj.oCoords.tr.y).toEqual(300)
-    expect(cObj.oCoords.bl.x).toEqual(300)
-    expect(cObj.oCoords.bl.y).toEqual(500)
-    expect(cObj.oCoords.br.x).toEqual(500)
-    expect(cObj.oCoords.br.y).toEqual(500)
-    expect(cObj.oCoords.mtr.x).toEqual(400)
-    expect(cObj.oCoords.mtr.y).toEqual(260)
+    assert.equal(
+      cObj.oCoords.tl.x,
+      300,
+      "oCoords are modified by viewportTransform tl.x"
+    )
+    assert.equal(
+      cObj.oCoords.tl.y,
+      300,
+      "oCoords are modified by viewportTransform tl.y"
+    )
+    assert.equal(
+      cObj.oCoords.tr.x,
+      500,
+      "oCoords are modified by viewportTransform tr.x"
+    )
+    assert.equal(
+      cObj.oCoords.tr.y,
+      300,
+      "oCoords are modified by viewportTransform tr.y"
+    )
+    assert.equal(
+      cObj.oCoords.bl.x,
+      300,
+      "oCoords are modified by viewportTransform bl.x"
+    )
+    assert.equal(
+      cObj.oCoords.bl.y,
+      500,
+      "oCoords are modified by viewportTransform bl.y"
+    )
+    assert.equal(
+      cObj.oCoords.br.x,
+      500,
+      "oCoords are modified by viewportTransform br.x"
+    )
+    assert.equal(
+      cObj.oCoords.br.y,
+      500,
+      "oCoords are modified by viewportTransform br.y"
+    )
+    assert.equal(
+      cObj.oCoords.mtr.x,
+      400,
+      "oCoords are modified by viewportTransform mtr.x"
+    )
+    assert.equal(
+      cObj.oCoords.mtr.y,
+      260,
+      "oCoords are modified by viewportTransform mtr.y"
+    )
 
-    expect(cObj.aCoords.tl.x).toEqual(150)
-    expect(cObj.aCoords.tl.y).toEqual(150)
-    expect(cObj.aCoords.tr.x).toEqual(250)
-    expect(cObj.aCoords.tr.y).toEqual(150)
-    expect(cObj.aCoords.bl.x).toEqual(150)
-    expect(cObj.aCoords.bl.y).toEqual(250)
-    expect(cObj.aCoords.br.x).toEqual(250)
-    expect(cObj.aCoords.br.y).toEqual(250)
+    assert.equal(
+      cObj.aCoords.tl.x,
+      150,
+      "aCoords do not interfere with viewportTransform"
+    )
+    assert.equal(
+      cObj.aCoords.tl.y,
+      150,
+      "aCoords do not interfere with viewportTransform"
+    )
+    assert.equal(
+      cObj.aCoords.tr.x,
+      250,
+      "aCoords do not interfere with viewportTransform"
+    )
+    assert.equal(
+      cObj.aCoords.tr.y,
+      150,
+      "aCoords do not interfere with viewportTransform"
+    )
+    assert.equal(
+      cObj.aCoords.bl.x,
+      150,
+      "aCoords do not interfere with viewportTransform"
+    )
+    assert.equal(
+      cObj.aCoords.bl.y,
+      250,
+      "aCoords do not interfere with viewportTransform"
+    )
+    assert.equal(
+      cObj.aCoords.br.x,
+      250,
+      "aCoords do not interfere with viewportTransform"
+    )
+    assert.equal(
+      cObj.aCoords.br.y,
+      250,
+      "aCoords do not interfere with viewportTransform"
+    )
   })
 
-  test("isOnScreen", function (assert) {
+  QUnit.test("isOnScreen", function (assert) {
     var cObj = new fabric.Object({
       left: 50,
       top: 50,
@@ -471,18 +620,24 @@
     canvas.viewportTransform = [1, 0, 0, 1, 0, 0]
     cObj.canvas = canvas
     cObj.setCoords()
-    expect(cObj.isOnScreen()).toBeTruthy()
+    assert.ok(cObj.isOnScreen(), "object is onScreen")
     cObj.top = 1000
-    expect(cObj.isOnScreen()).toBeTruthy()
-    expect(!cObj.isOnScreen(true)).toBeTruthy()
+    assert.ok(
+      cObj.isOnScreen(),
+      "object is still wrongly on screen since setCoords is not called and calculate is not set, even when top is already at 1000"
+    )
+    assert.ok(
+      !cObj.isOnScreen(true),
+      "object is not onScreen with top 1000 with calculate true and no setCoords call"
+    )
     cObj.setCoords()
-    expect(!cObj.isOnScreen()).toBeTruthy()
+    assert.ok(!cObj.isOnScreen(), "object is not onScreen with top 1000")
     canvas.setZoom(0.1)
     cObj.setCoords()
-    expect(cObj.isOnScreen()).toBeTruthy()
+    assert.ok(cObj.isOnScreen(), "zooming out the object is again on screen")
   })
 
-  test("transformMatrixKey depends from properties", function (assert) {
+  QUnit.test("transformMatrixKey depends from properties", function (assert) {
     var cObj = new fabric.Object({
       left: -10,
       top: -10,
@@ -497,14 +652,14 @@
     var key3 = cObj.transformMatrixKey()
     cObj.width = 5
     var key4 = cObj.transformMatrixKey()
-    expect(key1).not.toEqual(key2)
-    expect(key1).toEqual(key3)
-    expect(key4).not.toEqual(key2)
-    expect(key4).not.toEqual(key1)
-    expect(key4).not.toEqual(key3)
+    assert.notEqual(key1, key2, "keys are different")
+    assert.equal(key1, key3, "keys are equal")
+    assert.notEqual(key4, key2, "keys are different")
+    assert.notEqual(key4, key1, "keys are different")
+    assert.notEqual(key4, key3, "keys are different")
   })
 
-  test("transformMatrixKey depends from originX/originY", function (
+  QUnit.test("transformMatrixKey depends from originX/originY", function (
     assert
   ) {
     var cObj = new fabric.Object({
@@ -521,12 +676,12 @@
     var key2 = cObj.transformMatrixKey()
     cObj.originY = "center"
     var key3 = cObj.transformMatrixKey()
-    expect(key1).not.toEqual(key2)
-    expect(key1).not.toEqual(key3)
-    expect(key2).not.toEqual(key3)
+    assert.notEqual(key1, key2, "keys are different origins 1")
+    assert.notEqual(key1, key3, "keys are different origins 2")
+    assert.notEqual(key2, key3, "keys are different origins 3")
   })
 
-  test("isOnScreen with object that include canvas", function (assert) {
+  QUnit.test("isOnScreen with object that include canvas", function (assert) {
     var cObj = new fabric.Object({
       left: -10,
       top: -10,
@@ -537,14 +692,22 @@
     canvas.viewportTransform = [1, 0, 0, 1, 0, 0]
     cObj.canvas = canvas
     cObj.setCoords()
-    expect(cObj.isOnScreen()).toEqual(true)
+    assert.equal(
+      cObj.isOnScreen(),
+      true,
+      "object is onScreen because it include the canvas"
+    )
     cObj.top = -1000
     cObj.left = -1000
     cObj.setCoords()
-    expect(cObj.isOnScreen()).toEqual(false)
+    assert.equal(
+      cObj.isOnScreen(),
+      false,
+      "object is completely out of viewport"
+    )
   })
 
-  test(
+  QUnit.test(
     "isOnScreen with object that is in top left corner of canvas",
     function (assert) {
       var cObj = new fabric.Rect({
@@ -557,74 +720,115 @@
       canvas.viewportTransform = [1, 0, 0, 1, 0, 0]
       cObj.canvas = canvas
       cObj.setCoords()
-      expect(cObj.isOnScreen()).toBeTruthy()
+      assert.ok(
+        cObj.isOnScreen(),
+        "object is onScreen because it intersect a canvas line"
+      )
       cObj.top -= 20
       cObj.left -= 20
       cObj.setCoords()
-      expect(!cObj.isOnScreen()).toBeTruthy()
+      assert.ok(!cObj.isOnScreen(), "object is completely out of viewport")
     }
   )
 
-  test("calcTransformMatrix with no group", function (assert) {
+  QUnit.test("calcTransformMatrix with no group", function (assert) {
     var cObj = new fabric.Object({ width: 10, height: 15, strokeWidth: 0 })
-    expect(typeof cObj.calcTransformMatrix === "function").toBeTruthy()
+    assert.ok(
+      typeof cObj.calcTransformMatrix === "function",
+      "calcTransformMatrix should exist"
+    )
     cObj.top = 0
     cObj.left = 0
     cObj.scaleX = 2
     cObj.scaleY = 3
-    expect(cObj.calcTransformMatrix()).toEqual(cObj.calcOwnMatrix())
+    assert.deepEqual(
+      cObj.calcTransformMatrix(),
+      cObj.calcOwnMatrix(),
+      "without group matrix is same"
+    )
   })
 
-  test("calcOwnMatrix", function (assert) {
+  QUnit.test("calcOwnMatrix", function (assert) {
     var cObj = new fabric.Object({ width: 10, height: 15, strokeWidth: 0 })
-    expect(typeof cObj.calcOwnMatrix === "function").toBeTruthy()
+    assert.ok(
+      typeof cObj.calcOwnMatrix === "function",
+      "calcTransformMatrix should exist"
+    )
     cObj.top = 0
     cObj.left = 0
-    expect(cObj.calcOwnMatrix()).toEqual([1, 0, 0, 1, 5, 7.5])
+    assert.deepEqual(
+      cObj.calcOwnMatrix(),
+      [1, 0, 0, 1, 5, 7.5],
+      "only translate matrix"
+    )
     cObj.scaleX = 2
     cObj.scaleY = 3
-    expect(cObj.calcOwnMatrix()).toEqual([2, 0, 0, 3, 10, 22.5])
+    assert.deepEqual(
+      cObj.calcOwnMatrix(),
+      [2, 0, 0, 3, 10, 22.5],
+      "only translate matrix and scale"
+    )
     cObj.skewX = 45
-    expect(cObj.calcOwnMatrix()).toEqual([2, 0, 1.9999999999999998, 3, 25, 22.5])
+    assert.deepEqual(
+      cObj.calcOwnMatrix(),
+      [2, 0, 1.9999999999999998, 3, 25, 22.5],
+      "translate matrix scale skewX"
+    )
     cObj.skewY = 30
-    expect(cObj.calcOwnMatrix()).toEqual([
-      3.1547005383792515,
-      1.7320508075688772,
-      1.9999999999999998,
-      3,
-      30.773502691896255,
-      31.160254037844386
-    ])
+    assert.deepEqual(
+      cObj.calcOwnMatrix(),
+      [
+        3.1547005383792515,
+        1.7320508075688772,
+        1.9999999999999998,
+        3,
+        30.773502691896255,
+        31.160254037844386
+      ],
+      "translate matrix scale skewX skewY"
+    )
     cObj.angle = 38
-    expect(cObj.calcOwnMatrix()).toEqual([
-      1.4195809931249126,
-      3.3071022498267006,
-      -0.2709629187635314,
-      3.595355211471482,
-      5.065683074898075,
-      43.50067533516962
-    ])
+    assert.deepEqual(
+      cObj.calcOwnMatrix(),
+      [
+        1.4195809931249126,
+        3.3071022498267006,
+        -0.2709629187635314,
+        3.595355211471482,
+        5.065683074898075,
+        43.50067533516962
+      ],
+      "translate matrix scale skewX skewY angle"
+    )
     cObj.flipX = true
-    expect(cObj.calcOwnMatrix()).toEqual([
-      -3.552294904178618,
-      -0.5773529255117364,
-      -3.4230059331904186,
-      1.1327093101688495,
-      5.065683074898075,
-      43.50067533516962
-    ])
+    assert.deepEqual(
+      cObj.calcOwnMatrix(),
+      [
+        -3.552294904178618,
+        -0.5773529255117364,
+        -3.4230059331904186,
+        1.1327093101688495,
+        5.065683074898075,
+        43.50067533516962
+      ],
+      "translate matrix scale skewX skewY angle flipX"
+    )
     cObj.flipY = true
-    expect(cObj.calcOwnMatrix()).toEqual([
-      -1.4195809931249126,
-      -3.3071022498267006,
-      0.2709629187635314,
-      -3.595355211471482,
-      5.065683074898075,
-      43.50067533516962
-    ])
+    assert.deepEqual(
+      cObj.calcOwnMatrix(),
+      [
+        -1.4195809931249126,
+        -3.3071022498267006,
+        0.2709629187635314,
+        -3.595355211471482,
+        5.065683074898075,
+        43.50067533516962
+      ],
+      "translate matrix scale skewX skewY angle flipX flipY"
+    )
   })
 
-  test("_calcDimensionsTransformMatrix", function (assert) {
+  QUnit.test("_calcDimensionsTransformMatrix", function (assert) {
     var cObj = new fabric.Object({
       width: 10,
       height: 15,
@@ -633,13 +837,16 @@
       scaleY: 3,
       skewY: 10
     })
-    expect(typeof cObj._calcDimensionsTransformMatrix === "function").toBeTruthy()
+    assert.ok(
+      typeof cObj._calcDimensionsTransformMatrix === "function",
+      "_calcDimensionsTransformMatrix should exist"
+    )
     var matrix = cObj._calcDimensionsTransformMatrix()
     var expected = [2, 0, 0, 3, 0, 0]
-    expect(matrix).toEqual(expected)
+    assert.deepEqual(matrix, expected, "dimensions matrix is equal")
   })
 
-  test("_calcDimensionsTransformMatrix with flipping", function (assert) {
+  QUnit.test("_calcDimensionsTransformMatrix with flipping", function (assert) {
     var cObj = new fabric.Object({
       width: 10,
       height: 15,
@@ -649,29 +856,43 @@
       skewY: 10,
       flipX: true
     })
-    expect(typeof cObj._calcDimensionsTransformMatrix === "function").toBeTruthy()
+    assert.ok(
+      typeof cObj._calcDimensionsTransformMatrix === "function",
+      "_calcDimensionsTransformMatrix should exist"
+    )
     var matrix = cObj._calcDimensionsTransformMatrix(0, 0, false)
     var expected = [2, 0, 0, 3, 0, 0]
-    expect(matrix).toEqual(expected)
+    assert.deepEqual(
+      matrix,
+      expected,
+      "dimensions matrix with flipping = false is equal"
+    )
     var matrix2 = cObj._calcDimensionsTransformMatrix(0, 0, true)
     var expected = [-2, 0, 0, 3, 0, 0]
-    expect(matrix2).toEqual(expected)
+    assert.deepEqual(
+      matrix2,
+      expected,
+      "dimensions matrix with flipping = true is equal"
+    )
   })
 
-  test("_calcRotateMatrix", function (assert) {
+  QUnit.test("_calcRotateMatrix", function (assert) {
     var cObj = new fabric.Object({
       width: 10,
       height: 15,
       strokeWidth: 0,
       angle: 90
     })
-    expect(typeof cObj._calcRotateMatrix === "function").toBeTruthy()
+    assert.ok(
+      typeof cObj._calcRotateMatrix === "function",
+      "_calcRotateMatrix should exist"
+    )
     var matrix = cObj._calcRotateMatrix()
     var expected = [0, 1, -1, 0, 0, 0]
-    expect(matrix).toEqual(expected)
+    assert.deepEqual(matrix, expected, "rotate matrix is equal")
   })
 
-  test("_calcTranslateMatrix", function (assert) {
+  QUnit.test("_calcTranslateMatrix", function (assert) {
     var cObj = new fabric.Object({
       top: 5,
       width: 10,
@@ -679,69 +900,86 @@
       strokeWidth: 0,
       angle: 90
     })
-    expect(typeof cObj._calcTranslateMatrix === "function").toBeTruthy()
+    assert.ok(
+      typeof cObj._calcTranslateMatrix === "function",
+      "_calcTranslateMatrix should exist"
+    )
     var matrix = cObj._calcTranslateMatrix()
     var expected = [1, 0, 0, 1, -7.5, 10]
-    expect(matrix).toEqual(expected)
+    assert.deepEqual(matrix, expected, "translate matrix is equal")
   })
 
-  test("scaleToWidth", function (assert) {
+  QUnit.test("scaleToWidth", function (assert) {
     var cObj = new fabric.Object({ width: 560, strokeWidth: 0 })
-    expect(typeof cObj.scaleToWidth === "function").toBeTruthy()
-    expect(cObj.scaleToWidth(100)).toEqual(cObj)
-    expect(cObj.getScaledWidth()).toEqual(100)
-    expect(cObj.get("scaleX")).toEqual(100 / 560)
+    assert.ok(
+      typeof cObj.scaleToWidth === "function",
+      "scaleToWidth should exist"
+    )
+    assert.equal(cObj.scaleToWidth(100), cObj, "chainable")
+    assert.equal(cObj.getScaledWidth(), 100)
+    assert.equal(cObj.get("scaleX"), 100 / 560)
   })
 
-  test("scaleToWidth with zoom", function (assert) {
+  QUnit.test("scaleToWidth with zoom", function (assert) {
     var cObj = new fabric.Object({ width: 560, strokeWidth: 0 })
     cObj.canvas = {
       viewportTransform: [2, 0, 0, 2, 0, 0]
     }
-    expect(cObj.scaleToWidth(100, true)).toEqual(cObj)
-    expect(cObj.getScaledWidth()).toEqual(100)
-    expect(cObj.get("scaleX")).toEqual(100 / 560)
-    expect(cObj.scaleToWidth(100)).toEqual(cObj)
-    expect(cObj.getScaledWidth()).toEqual(50)
-    expect(cObj.get("scaleX")).toEqual(100 / 560 / 2)
+    assert.equal(cObj.scaleToWidth(100, true), cObj, "chainable")
+    assert.equal(
+      cObj.getScaledWidth(),
+      100,
+      "is not influenced by zoom - width"
+    )
+    assert.equal(cObj.get("scaleX"), 100 / 560)
+    assert.equal(cObj.scaleToWidth(100), cObj, "chainable")
+    assert.equal(cObj.getScaledWidth(), 50, "is influenced by zoom - width")
+    assert.equal(cObj.get("scaleX"), 100 / 560 / 2)
   })
 
-  test("scaleToHeight", function (assert) {
+  QUnit.test("scaleToHeight", function (assert) {
     var cObj = new fabric.Object({ height: 560, strokeWidth: 0 })
-    expect(typeof cObj.scaleToHeight === "function").toBeTruthy()
-    expect(cObj.scaleToHeight(100)).toEqual(cObj)
-    expect(cObj.getScaledHeight()).toEqual(100)
-    expect(cObj.get("scaleY")).toEqual(100 / 560)
+    assert.ok(
+      typeof cObj.scaleToHeight === "function",
+      "scaleToHeight should exist"
+    )
+    assert.equal(cObj.scaleToHeight(100), cObj, "chainable")
+    assert.equal(cObj.getScaledHeight(), 100)
+    assert.equal(cObj.get("scaleY"), 100 / 560)
   })
 
-  test("scaleToHeight with zoom", function (assert) {
+  QUnit.test("scaleToHeight with zoom", function (assert) {
     var cObj = new fabric.Object({ height: 560, strokeWidth: 0 })
     cObj.canvas = {
       viewportTransform: [2, 0, 0, 2, 0, 0]
     }
-    expect(cObj.scaleToHeight(100, true)).toEqual(cObj)
-    expect(cObj.getScaledHeight()).toEqual(100)
-    expect(cObj.get("scaleY")).toEqual(100 / 560)
-    expect(cObj.scaleToHeight(100)).toEqual(cObj)
-    expect(cObj.getScaledHeight()).toEqual(50)
-    expect(cObj.get("scaleY")).toEqual(100 / 560 / 2)
+    assert.equal(cObj.scaleToHeight(100, true), cObj, "chainable")
+    assert.equal(
+      cObj.getScaledHeight(),
+      100,
+      "is not influenced by zoom - height"
+    )
+    assert.equal(cObj.get("scaleY"), 100 / 560)
+    assert.equal(cObj.scaleToHeight(100), cObj, "chainable")
+    assert.equal(cObj.getScaledHeight(), 50, "is influenced by zoom - height")
+    assert.equal(cObj.get("scaleY"), 100 / 560 / 2)
   })
 
-  test("scaleToWidth on rotated object", function (assert) {
+  QUnit.test("scaleToWidth on rotated object", function (assert) {
     var obj = new fabric.Object({ height: 100, width: 100, strokeWidth: 0 })
     obj.rotate(45)
     obj.scaleToWidth(200)
-    expect(Math.round(obj.getBoundingRect().width)).toEqual(200)
+    assert.equal(Math.round(obj.getBoundingRect().width), 200)
   })
 
-  test("scaleToHeight on rotated object", function (assert) {
+  QUnit.test("scaleToHeight on rotated object", function (assert) {
     var obj = new fabric.Object({ height: 100, width: 100, strokeWidth: 0 })
     obj.rotate(45)
     obj.scaleToHeight(300)
-    expect(Math.round(obj.getBoundingRect().height)).toEqual(300)
+    assert.equal(Math.round(obj.getBoundingRect().height), 300)
   })
 
-  test("getBoundingRect with absolute coords", function (assert) {
+  QUnit.test("getBoundingRect with absolute coords", function (assert) {
     var cObj = new fabric.Object({
         strokeWidth: 0,
         width: 10,
@@ -753,128 +991,167 @@
 
     cObj.setCoords()
     boundingRect = cObj.getBoundingRect()
-    expect(boundingRect.left).toEqual(5)
-    expect(boundingRect.width).toEqual(10)
-    expect(boundingRect.height).toEqual(10)
+    assert.equal(
+      boundingRect.left,
+      5,
+      "gives the bounding rect left with zoom 1"
+    )
+    assert.equal(
+      boundingRect.width,
+      10,
+      "gives the bounding rect width with zoom 1"
+    )
+    assert.equal(
+      boundingRect.height,
+      10,
+      "gives the bounding rect height with zoom 1"
+    )
     cObj.canvas = {
       viewportTransform: [2, 0, 0, 2, 0, 0]
     }
     cObj.setCoords()
     boundingRect = cObj.getBoundingRect()
-    expect(boundingRect.left).toEqual(10)
-    expect(boundingRect.width).toEqual(20)
-    expect(boundingRect.height).toEqual(20)
+    assert.equal(
+      boundingRect.left,
+      10,
+      "gives the bounding rect left with zoom 2"
+    )
+    assert.equal(
+      boundingRect.width,
+      20,
+      "gives the bounding rect width with zoom 2"
+    )
+    assert.equal(
+      boundingRect.height,
+      20,
+      "gives the bounding rect height with zoom 2"
+    )
     boundingRect = cObj.getBoundingRect(true)
-    expect(boundingRect.left).toEqual(5)
-    expect(boundingRect.width).toEqual(10)
-    expect(boundingRect.height).toEqual(10)
+    assert.equal(
+      boundingRect.left,
+      5,
+      "gives the bounding rect left with absolute coords"
+    )
+    assert.equal(
+      boundingRect.width,
+      10,
+      "gives the bounding rect width with absolute coords"
+    )
+    assert.equal(
+      boundingRect.height,
+      10,
+      "gives the bounding rect height with absolute coords"
+    )
   })
 
-  test("getBoundingRect", function (assert) {
+  QUnit.test("getBoundingRect", function (assert) {
     var cObj = new fabric.Object({ strokeWidth: 0 }),
       boundingRect
-    expect(typeof cObj.getBoundingRect === "function").toBeTruthy()
+    assert.ok(typeof cObj.getBoundingRect === "function")
 
     cObj.setCoords()
     boundingRect = cObj.getBoundingRect()
-    expect(boundingRect.left).toEqual(0)
-    expect(boundingRect.top).toEqual(0)
-    expect(boundingRect.width).toEqual(0)
-    expect(boundingRect.height).toEqual(0)
+    assert.equal(boundingRect.left, 0)
+    assert.equal(boundingRect.top, 0)
+    assert.equal(boundingRect.width, 0)
+    assert.equal(boundingRect.height, 0)
     cObj.set("width", 123).setCoords()
     boundingRect = cObj.getBoundingRect()
-    expect(boundingRect.left).toEqual(0)
-    expect(boundingRect.top).toEqual(0)
-    expect(boundingRect.width).toEqual(123)
-    expect(boundingRect.height).toEqual(0)
+    assert.equal(boundingRect.left, 0)
+    assert.equal(boundingRect.top, 0)
+    assert.equal(boundingRect.width, 123)
+    assert.equal(boundingRect.height, 0)
 
     cObj.set("height", 167).setCoords()
     boundingRect = cObj.getBoundingRect()
-    expect(boundingRect.left).toEqual(0)
-    expect(Math.abs(boundingRect.top).toFixed(13)).toEqual(0)
-    expect(boundingRect.width).toEqual(123)
-    expect(boundingRect.height).toEqual(167)
+    assert.equal(boundingRect.left, 0)
+    assert.equal(Math.abs(boundingRect.top).toFixed(13), 0)
+    assert.equal(boundingRect.width, 123)
+    assert.equal(boundingRect.height, 167)
 
     cObj.scale(2).setCoords()
     boundingRect = cObj.getBoundingRect()
-    expect(boundingRect.left).toEqual(0)
-    expect(Math.abs(boundingRect.top).toFixed(13)).toEqual(0)
-    expect(boundingRect.width).toEqual(246)
-    expect(boundingRect.height).toEqual(334)
+    assert.equal(boundingRect.left, 0)
+    assert.equal(Math.abs(boundingRect.top).toFixed(13), 0)
+    assert.equal(boundingRect.width, 246)
+    assert.equal(boundingRect.height, 334)
   })
 
-  test("getBoundingRectWithStroke", function (assert) {
+  QUnit.test("getBoundingRectWithStroke", function (assert) {
     var cObj = new fabric.Object(),
       boundingRect
-    expect(typeof cObj.getBoundingRect === "function").toBeTruthy()
+    assert.ok(typeof cObj.getBoundingRect === "function")
 
     cObj.setCoords()
     boundingRect = cObj.getBoundingRect()
-    expect(boundingRect.left.toFixed(2)).toEqual(0)
-    expect(boundingRect.top.toFixed(2)).toEqual(0)
-    expect(boundingRect.width.toFixed(2)).toEqual(1)
-    expect(boundingRect.height.toFixed(2)).toEqual(1)
+    assert.equal(boundingRect.left.toFixed(2), 0)
+    assert.equal(boundingRect.top.toFixed(2), 0)
+    assert.equal(boundingRect.width.toFixed(2), 1)
+    assert.equal(boundingRect.height.toFixed(2), 1)
 
     cObj.set("width", 123).setCoords()
     boundingRect = cObj.getBoundingRect()
-    expect(boundingRect.left.toFixed(2)).toEqual(0)
-    expect(boundingRect.top.toFixed(2)).toEqual(0)
-    expect(boundingRect.width.toFixed(2)).toEqual(124)
-    expect(boundingRect.height.toFixed(2)).toEqual(1)
+    assert.equal(boundingRect.left.toFixed(2), 0)
+    assert.equal(boundingRect.top.toFixed(2), 0)
+    assert.equal(boundingRect.width.toFixed(2), 124)
+    assert.equal(boundingRect.height.toFixed(2), 1)
 
     cObj.set("height", 167).setCoords()
     boundingRect = cObj.getBoundingRect()
-    expect(boundingRect.left.toFixed(2)).toEqual(0)
-    expect(boundingRect.top.toFixed(2)).toEqual(0)
-    expect(boundingRect.width.toFixed(2)).toEqual(124)
-    expect(boundingRect.height.toFixed(2)).toEqual(168)
+    assert.equal(boundingRect.left.toFixed(2), 0)
+    assert.equal(boundingRect.top.toFixed(2), 0)
+    assert.equal(boundingRect.width.toFixed(2), 124)
+    assert.equal(boundingRect.height.toFixed(2), 168)
 
     cObj.scale(2).setCoords()
     boundingRect = cObj.getBoundingRect()
-    expect(boundingRect.left.toFixed(2)).toEqual(0)
-    expect(boundingRect.top.toFixed(2)).toEqual(0)
-    expect(boundingRect.width.toFixed(2)).toEqual(248)
-    expect(boundingRect.height.toFixed(2)).toEqual(336)
+    assert.equal(boundingRect.left.toFixed(2), 0)
+    assert.equal(boundingRect.top.toFixed(2), 0)
+    assert.equal(boundingRect.width.toFixed(2), 248)
+    assert.equal(boundingRect.height.toFixed(2), 336)
   })
 
-  test("getScaledWidth", function (assert) {
+  QUnit.test("getScaledWidth", function (assert) {
     var cObj = new fabric.Object()
-    expect(typeof cObj.getScaledWidth === "function").toBeTruthy()
-    expect(cObj.getScaledWidth()).toEqual(0 + cObj.strokeWidth)
+    assert.ok(typeof cObj.getScaledWidth === "function")
+    assert.equal(cObj.getScaledWidth(), 0 + cObj.strokeWidth)
     cObj.set("width", 123)
-    expect(cObj.getScaledWidth()).toEqual(123 + cObj.strokeWidth)
+    assert.equal(cObj.getScaledWidth(), 123 + cObj.strokeWidth)
     cObj.set("scaleX", 2)
-    expect(cObj.getScaledWidth()).toEqual(246 + cObj.strokeWidth * 2)
+    assert.equal(cObj.getScaledWidth(), 246 + cObj.strokeWidth * 2)
   })
 
-  test("getScaledHeight", function (assert) {
+  QUnit.test("getScaledHeight", function (assert) {
     var cObj = new fabric.Object({ strokeWidth: 0 })
     //  assert.ok(typeof cObj.getHeight === 'function');
-    expect(cObj.getScaledHeight()).toEqual(0)
+    assert.equal(cObj.getScaledHeight(), 0)
     cObj.set("height", 123)
-    expect(cObj.getScaledHeight()).toEqual(123)
+    assert.equal(cObj.getScaledHeight(), 123)
     cObj.set("scaleY", 2)
-    expect(cObj.getScaledHeight()).toEqual(246)
+    assert.equal(cObj.getScaledHeight(), 246)
   })
 
-  test("scale", function (assert) {
+  QUnit.test("scale", function (assert) {
     var cObj = new fabric.Object({ width: 10, height: 15, strokeWidth: 0 })
-    expect(typeof cObj.scale === "function").toBeTruthy()
+    assert.ok(typeof cObj.scale === "function", "scale should exist")
   })
 
-  test("_constrainScale", function (assert) {
+  QUnit.test("_constrainScale", function (assert) {
     var cObj = new fabric.Object({ width: 10, height: 15, strokeWidth: 0 })
-    expect(typeof cObj._constrainScale === "function").toBeTruthy()
+    assert.ok(
+      typeof cObj._constrainScale === "function",
+      "_constrainScale should exist"
+    )
     cObj.set("scaleX", 0)
-    expect(cObj.scaleX).toEqual(0.0001)
+    assert.equal(cObj.scaleX, 0.0001)
     cObj.set("scaleY", 0)
-    expect(cObj.scaleY).toEqual(0.0001)
+    assert.equal(cObj.scaleY, 0.0001)
     cObj.minScaleLimit = 3
     cObj.set("scaleY", 0)
-    expect(cObj.scaleY).toEqual(3)
+    assert.equal(cObj.scaleY, 3)
   })
 
-  test(
+  QUnit.test(
     "getCoords return coordinate of object in canvas coordinate.",
     function (assert) {
       var cObj = new fabric.Object({
@@ -885,27 +1162,75 @@
         left: 40
       })
       var coords = cObj.getCoords()
-      expect(coords[0]).toEqual(new fabric.Point(40, 30))
-      expect(coords[1]).toEqual(new fabric.Point(52, 30))
-      expect(coords[2]).toEqual(new fabric.Point(52, 47))
-      expect(coords[3]).toEqual(new fabric.Point(40, 47))
+      assert.deepEqual(
+        coords[0],
+        new fabric.Point(40, 30),
+        "return top left corner"
+      )
+      assert.deepEqual(
+        coords[1],
+        new fabric.Point(52, 30),
+        "return top right corner"
+      )
+      assert.deepEqual(
+        coords[2],
+        new fabric.Point(52, 47),
+        "return bottom right corner"
+      )
+      assert.deepEqual(
+        coords[3],
+        new fabric.Point(40, 47),
+        "return bottom left corner"
+      )
 
       cObj.left += 5
       coords = cObj.getCoords()
-      expect(coords[0]).toEqual(new fabric.Point(40, 30))
-      expect(coords[1]).toEqual(new fabric.Point(52, 30))
-      expect(coords[2]).toEqual(new fabric.Point(52, 47))
-      expect(coords[3]).toEqual(new fabric.Point(40, 47))
+      assert.deepEqual(
+        coords[0],
+        new fabric.Point(40, 30),
+        "return top left corner cached oCoords"
+      )
+      assert.deepEqual(
+        coords[1],
+        new fabric.Point(52, 30),
+        "return top right corner cached oCoords"
+      )
+      assert.deepEqual(
+        coords[2],
+        new fabric.Point(52, 47),
+        "return bottom right corner cached oCoords"
+      )
+      assert.deepEqual(
+        coords[3],
+        new fabric.Point(40, 47),
+        "return bottom left corner cached oCoords"
+      )
 
       coords = cObj.getCoords(false, true)
-      expect(coords[0]).toEqual(new fabric.Point(45, 30))
-      expect(coords[1]).toEqual(new fabric.Point(57, 30))
-      expect(coords[2]).toEqual(new fabric.Point(57, 47))
-      expect(coords[3]).toEqual(new fabric.Point(45, 47))
+      assert.deepEqual(
+        coords[0],
+        new fabric.Point(45, 30),
+        "return top left corner recalculated"
+      )
+      assert.deepEqual(
+        coords[1],
+        new fabric.Point(57, 30),
+        "return top right corner recalculated"
+      )
+      assert.deepEqual(
+        coords[2],
+        new fabric.Point(57, 47),
+        "return bottom right corner recalculated"
+      )
+      assert.deepEqual(
+        coords[3],
+        new fabric.Point(45, 47),
+        "return bottom left corner recalculated"
+      )
     }
   )
 
-  test(
+  QUnit.test(
     "getCoords return coordinate of object in zoomed canvas coordinate.",
     function (assert) {
       var cObj = new fabric.Object({
@@ -919,14 +1244,30 @@
         viewportTransform: [2, 0, 0, 2, 35, 35]
       }
       var coords = cObj.getCoords()
-      expect(coords[0]).toEqual(new fabric.Point(115, 95))
-      expect(coords[1]).toEqual(new fabric.Point(139, 95))
-      expect(coords[2]).toEqual(new fabric.Point(139, 129))
-      expect(coords[3]).toEqual(new fabric.Point(115, 129))
+      assert.deepEqual(
+        coords[0],
+        new fabric.Point(115, 95),
+        "return top left corner is influenced by canvas zoom"
+      )
+      assert.deepEqual(
+        coords[1],
+        new fabric.Point(139, 95),
+        "return top right corner is influenced by canvas zoom"
+      )
+      assert.deepEqual(
+        coords[2],
+        new fabric.Point(139, 129),
+        "return bottom right corner is influenced by canvas zoom"
+      )
+      assert.deepEqual(
+        coords[3],
+        new fabric.Point(115, 129),
+        "return bottom left corner is influenced by canvas zoom"
+      )
     }
   )
 
-  test(
+  QUnit.test(
     "getCoords return coordinate of object in absolute coordinates and ignore canvas zoom",
     function (assert) {
       var cObj = new fabric.Object({
@@ -940,14 +1281,30 @@
         viewportTransform: [2, 0, 0, 2, 35, 35]
       }
       var coords = cObj.getCoords(true)
-      expect(coords[0]).toEqual(new fabric.Point(40, 30))
-      expect(coords[1]).toEqual(new fabric.Point(52, 30))
-      expect(coords[2]).toEqual(new fabric.Point(52, 47))
-      expect(coords[3]).toEqual(new fabric.Point(40, 47))
+      assert.deepEqual(
+        coords[0],
+        new fabric.Point(40, 30),
+        "return top left corner cached oCoords"
+      )
+      assert.deepEqual(
+        coords[1],
+        new fabric.Point(52, 30),
+        "return top right corner cached oCoords"
+      )
+      assert.deepEqual(
+        coords[2],
+        new fabric.Point(52, 47),
+        "return bottom right corner cached oCoords"
+      )
+      assert.deepEqual(
+        coords[3],
+        new fabric.Point(40, 47),
+        "return bottom left corner cached oCoords"
+      )
     }
   )
 
-  test("getCoords absolute with angle", function (assert) {
+  QUnit.test("getCoords absolute with angle", function (assert) {
     var cObj = new fabric.Object({
       width: 10,
       height: 15,
@@ -960,17 +1317,41 @@
       viewportTransform: [2, 0, 0, 2, 35, 25]
     }
     var coords = cObj.getCoords(true)
-    expect(coords[0].x).toEqual(40)
-    expect(coords[1].x).toEqual(51.2763114494309)
-    expect(coords[2].x).toEqual(45.46196901289453)
-    expect(coords[3].x).toEqual(34.18565756346363)
-    expect(coords[0].y).toEqual(30)
-    expect(coords[1].y).toEqual(34.104241719908025)
-    expect(coords[2].y).toEqual(50.079016273268465)
-    expect(coords[3].y).toEqual(45.97477455336044)
+    assert.deepEqual(coords[0].x, 40, "return top left absolute with angle X")
+    assert.deepEqual(
+      coords[1].x,
+      51.2763114494309,
+      "return top right absolute with angle X"
+    )
+    assert.deepEqual(
+      coords[2].x,
+      45.46196901289453,
+      "return bottom right absolute with angle X"
+    )
+    assert.deepEqual(
+      coords[3].x,
+      34.18565756346363,
+      "return bottom left absolute with angle X"
+    )
+    assert.deepEqual(coords[0].y, 30, "return top left absolute with angle Y")
+    assert.deepEqual(
+      coords[1].y,
+      34.104241719908025,
+      "return top right absolute with angle Y"
+    )
+    assert.deepEqual(
+      coords[2].y,
+      50.079016273268465,
+      "return bottom right absolute with angle Y"
+    )
+    assert.deepEqual(
+      coords[3].y,
+      45.97477455336044,
+      "return bottom left absolute with angle Y"
+    )
   })
 
-  test("getCoords with angle", function (assert) {
+  QUnit.test("getCoords with angle", function (assert) {
     var cObj = new fabric.Object({
       width: 10,
       height: 15,
@@ -983,17 +1364,41 @@
       viewportTransform: [2, 0, 0, 2, 35, 25]
     }
     var coords = cObj.getCoords()
-    expect(coords[0].x).toEqual(115)
-    expect(coords[1].x).toEqual(137.55262289886178)
-    expect(coords[2].x).toEqual(125.92393802578906)
-    expect(coords[3].x).toEqual(103.37131512692726)
-    expect(coords[0].y).toEqual(85)
-    expect(coords[1].y).toEqual(93.20848343981605)
-    expect(coords[2].y).toEqual(125.15803254653693)
-    expect(coords[3].y).toEqual(116.94954910672088)
+    assert.deepEqual(coords[0].x, 115, "return top left with angle X")
+    assert.deepEqual(
+      coords[1].x,
+      137.55262289886178,
+      "return top right with angle X"
+    )
+    assert.deepEqual(
+      coords[2].x,
+      125.92393802578906,
+      "return bottom right with angle X"
+    )
+    assert.deepEqual(
+      coords[3].x,
+      103.37131512692726,
+      "return bottom left with angle X"
+    )
+    assert.deepEqual(coords[0].y, 85, "return top left with angle Y")
+    assert.deepEqual(
+      coords[1].y,
+      93.20848343981605,
+      "return top right with angle Y"
+    )
+    assert.deepEqual(
+      coords[2].y,
+      125.15803254653693,
+      "return bottom right with angle Y"
+    )
+    assert.deepEqual(
+      coords[3].y,
+      116.94954910672088,
+      "return bottom left with angle Y"
+    )
   })
 
-  test("getCoords absolute with skewX", function (assert) {
+  QUnit.test("getCoords absolute with skewX", function (assert) {
     var cObj = new fabric.Object({
       width: 10,
       height: 15,
@@ -1006,17 +1411,33 @@
       viewportTransform: [2, 0, 0, 2, 35, 25]
     }
     var coords = cObj.getCoords(true)
-    expect(coords[0].x).toEqual(40)
-    expect(coords[1].x).toEqual(69)
-    expect(coords[2].x).toEqual(69)
-    expect(coords[3].x).toEqual(40)
-    expect(coords[0].y).toEqual(30)
-    expect(coords[1].y).toEqual(30)
-    expect(coords[2].y).toEqual(47)
-    expect(coords[3].y).toEqual(47)
+    assert.deepEqual(coords[0].x, 40, "return top left absolute with skewX X")
+    assert.deepEqual(coords[1].x, 69, "return top right absolute with skewX X")
+    assert.deepEqual(
+      coords[2].x,
+      69,
+      "return bottom absolute right with skewX X"
+    )
+    assert.deepEqual(
+      coords[3].x,
+      40,
+      "return bottom absolute left with skewX X"
+    )
+    assert.deepEqual(coords[0].y, 30, "return top left absolute with skewX Y")
+    assert.deepEqual(coords[1].y, 30, "return top right absolute with skewX Y")
+    assert.deepEqual(
+      coords[2].y,
+      47,
+      "return bottom absolute right with skewX Y"
+    )
+    assert.deepEqual(
+      coords[3].y,
+      47,
+      "return bottom absolute left with skewX Y"
+    )
   })
 
-  test("getCoords with skewX", function (assert) {
+  QUnit.test("getCoords with skewX", function (assert) {
     var cObj = new fabric.Object({
       width: 10,
       height: 15,
@@ -1029,17 +1450,17 @@
       viewportTransform: [2, 0, 0, 2, 35, 25]
     }
     var coords = cObj.getCoords()
-    expect(coords[0].x).toEqual(115)
-    expect(coords[1].x).toEqual(173)
-    expect(coords[2].x).toEqual(173)
-    expect(coords[3].x).toEqual(115)
-    expect(coords[0].y).toEqual(85)
-    expect(coords[1].y).toEqual(85)
-    expect(coords[2].y).toEqual(119)
-    expect(coords[3].y).toEqual(119)
+    assert.deepEqual(coords[0].x, 115, "return top left with skewX X")
+    assert.deepEqual(coords[1].x, 173, "return top right with skewX X")
+    assert.deepEqual(coords[2].x, 173, "return bottom right with skewX X")
+    assert.deepEqual(coords[3].x, 115, "return bottom left with skewX X")
+    assert.deepEqual(coords[0].y, 85, "return top left with skewX Y")
+    assert.deepEqual(coords[1].y, 85, "return top right with skewX Y")
+    assert.deepEqual(coords[2].y, 119, "return bottom right with skewX Y")
+    assert.deepEqual(coords[3].y, 119, "return bottom left with skewX Y")
   })
 
-  test("getCoords absolute with skewY", function (assert) {
+  QUnit.test("getCoords absolute with skewY", function (assert) {
     var cObj = new fabric.Object({
       width: 10,
       height: 15,
@@ -1052,17 +1473,33 @@
       viewportTransform: [2, 0, 0, 2, 35, 25]
     }
     var coords = cObj.getCoords(true)
-    expect(coords[0].x).toEqual(40)
-    expect(coords[1].x).toEqual(52)
-    expect(coords[2].x).toEqual(52)
-    expect(coords[3].x).toEqual(40)
-    expect(coords[0].y).toEqual(30)
-    expect(coords[1].y).toEqual(30)
-    expect(coords[2].y).toEqual(59)
-    expect(coords[3].y).toEqual(59)
+    assert.deepEqual(coords[0].x, 40, "return top left absolute with skewY X")
+    assert.deepEqual(coords[1].x, 52, "return top right absolute with skewY X")
+    assert.deepEqual(
+      coords[2].x,
+      52,
+      "return bottom absolute right with skewY X"
+    )
+    assert.deepEqual(
+      coords[3].x,
+      40,
+      "return bottom absolute left with skewY X"
+    )
+    assert.deepEqual(coords[0].y, 30, "return top left absolute with skewY Y")
+    assert.deepEqual(coords[1].y, 30, "return top right absolute with skewY Y")
+    assert.deepEqual(
+      coords[2].y,
+      59,
+      "return bottom absolute right with skewY Y"
+    )
+    assert.deepEqual(
+      coords[3].y,
+      59,
+      "return bottom absolute left with skewY Y"
+    )
   })
 
-  test("getCoords with skewY", function (assert) {
+  QUnit.test("getCoords with skewY", function (assert) {
     var cObj = new fabric.Object({
       width: 10,
       height: 15,
@@ -1075,17 +1512,17 @@
       viewportTransform: [2, 0, 0, 2, 35, 25]
     }
     var coords = cObj.getCoords()
-    expect(coords[0].x).toEqual(115)
-    expect(coords[1].x).toEqual(139)
-    expect(coords[2].x).toEqual(139)
-    expect(coords[3].x).toEqual(115)
-    expect(coords[0].y).toEqual(85)
-    expect(coords[1].y).toEqual(85)
-    expect(coords[2].y).toEqual(143)
-    expect(coords[3].y).toEqual(143)
+    assert.deepEqual(coords[0].x, 115, "return top left with skewY X")
+    assert.deepEqual(coords[1].x, 139, "return top right with skewY X")
+    assert.deepEqual(coords[2].x, 139, "return bottom right with skewY X")
+    assert.deepEqual(coords[3].x, 115, "return bottom left with skewY X")
+    assert.deepEqual(coords[0].y, 85, "return top left with skewY Y")
+    assert.deepEqual(coords[1].y, 85, "return top right with skewY Y")
+    assert.deepEqual(coords[2].y, 143, "return bottom right with skewY Y")
+    assert.deepEqual(coords[3].y, 143, "return bottom left with skewY Y")
   })
 
-  test("getCoords absolute with skewY skewX angle", function (assert) {
+  QUnit.test("getCoords absolute with skewY skewX angle", function (assert) {
     var cObj = new fabric.Object({
       width: 10,
       height: 15,
@@ -1100,17 +1537,49 @@
       viewportTransform: [2, 0, 0, 2, 35, 25]
     }
     var coords = cObj.getCoords(true)
-    expect(coords[0].x).toEqual(40)
-    expect(coords[1].x).toEqual(40)
-    expect(coords[2].x).toEqual(11)
-    expect(coords[3].x).toEqual(11)
-    expect(coords[0].y).toEqual(30)
-    expect(coords[1].y).toEqual(58.74315780649914)
-    expect(coords[2].y).toEqual(58.74315780649914)
-    expect(coords[3].y).toEqual(30)
+    assert.deepEqual(
+      coords[0].x,
+      40,
+      "return top left absolute with skewY skewX angle X"
+    )
+    assert.deepEqual(
+      coords[1].x,
+      40,
+      "return top right absolute with skewY skewX angle X"
+    )
+    assert.deepEqual(
+      coords[2].x,
+      11,
+      "return bottom absolute right with skewY skewX angle X"
+    )
+    assert.deepEqual(
+      coords[3].x,
+      11,
+      "return bottom absolute left with skewY skewX angle X"
+    )
+    assert.deepEqual(
+      coords[0].y,
+      30,
+      "return top left absolute with skewY skewX angle Y"
+    )
+    assert.deepEqual(
+      coords[1].y,
+      58.74315780649914,
+      "return top right absolute with skewY skewX angle Y"
+    )
+    assert.deepEqual(
+      coords[2].y,
+      58.74315780649914,
+      "return bottom absolute right with skewY skewX angle Y"
+    )
+    assert.deepEqual(
+      coords[3].y,
+      30,
+      "return bottom absolute left with skewY skewX angle Y"
+    )
   })
 
-  test("getCoords with skewY skewX angle", function (assert) {
+  QUnit.test("getCoords with skewY skewX angle", function (assert) {
     var cObj = new fabric.Object({
       width: 10,
       height: 15,
@@ -1125,17 +1594,49 @@
       viewportTransform: [2, 0, 0, 2, 35, 25]
     }
     var coords = cObj.getCoords()
-    expect(coords[0].x).toEqual(115)
-    expect(coords[1].x).toEqual(115)
-    expect(coords[2].x).toEqual(57)
-    expect(coords[3].x).toEqual(57)
-    expect(coords[0].y).toEqual(85)
-    expect(coords[1].y).toEqual(142.48631561299828)
-    expect(coords[2].y).toEqual(142.48631561299828)
-    expect(coords[3].y).toEqual(85)
+    assert.deepEqual(
+      coords[0].x,
+      115,
+      "return top left with skewY skewX angle X"
+    )
+    assert.deepEqual(
+      coords[1].x,
+      115,
+      "return top right with skewY skewX angle X"
+    )
+    assert.deepEqual(
+      coords[2].x,
+      57,
+      "return bottom right with skewY skewX angle X"
+    )
+    assert.deepEqual(
+      coords[3].x,
+      57,
+      "return bottom left with skewY skewX angle X"
+    )
+    assert.deepEqual(
+      coords[0].y,
+      85,
+      "return top left with skewY skewX angle Y"
+    )
+    assert.deepEqual(
+      coords[1].y,
+      142.48631561299828,
+      "return top right with skewY skewX angle Y"
+    )
+    assert.deepEqual(
+      coords[2].y,
+      142.48631561299828,
+      "return bottom right with skewY skewX angle Y"
+    )
+    assert.deepEqual(
+      coords[3].y,
+      85,
+      "return bottom left with skewY skewX angle Y"
+    )
   })
 
-  test("isPartiallyOnScreen", function (assert) {
+  QUnit.test("isPartiallyOnScreen", function (assert) {
     var cObj = new fabric.Object({
       left: 50,
       top: 50,
@@ -1148,20 +1649,36 @@
     cObj.left = -60
     cObj.top = -60
     cObj.setCoords()
-    expect(cObj.isPartiallyOnScreen(true)).toEqual(true)
+    assert.equal(
+      cObj.isPartiallyOnScreen(true),
+      true,
+      "object is partially onScreen"
+    )
     cObj.left = -110
     cObj.top = -110
     cObj.setCoords()
-    expect(cObj.isPartiallyOnScreen(true)).toEqual(false)
+    assert.equal(
+      cObj.isPartiallyOnScreen(true),
+      false,
+      "object is completely offScreen and not partial"
+    )
     cObj.left = 50
     cObj.top = 50
     cObj.setCoords()
-    expect(cObj.isPartiallyOnScreen(true)).toEqual(false)
+    assert.equal(
+      cObj.isPartiallyOnScreen(true),
+      false,
+      "object is completely on screen and not partial"
+    )
     canvas.setZoom(2)
-    expect(cObj.isPartiallyOnScreen(true)).toEqual(true)
+    assert.equal(
+      cObj.isPartiallyOnScreen(true),
+      true,
+      "after zooming object is partially onScreen and offScreen"
+    )
   })
 
-  test(
+  QUnit.test(
     "isPartiallyOnScreen with object inside and outside of canvas",
     function (assert) {
       var cObj = new fabric.Object({
@@ -1177,13 +1694,21 @@
         enableRetinaScaling: false
       })
       cObj.canvas.calcViewportBoundaries()
-      expect(cObj.isPartiallyOnScreen(true)).toEqual(false)
+      assert.equal(
+        cObj.isPartiallyOnScreen(true),
+        false,
+        "object is completely onScreen"
+      )
       cObj.left = -20
       cObj.top = -20
       cObj.scaleX = 2
       cObj.scaleY = 2
       cObj.setCoords()
-      expect(cObj.isPartiallyOnScreen(true)).toEqual(true)
+      assert.equal(
+        cObj.isPartiallyOnScreen(true),
+        true,
+        "object has all corners outside screen but contains canvas"
+      )
     }
   )
 })()

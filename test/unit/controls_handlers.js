@@ -1,5 +1,5 @@
 ;(function () {
-  describe("fabric.controlsUtils", function (hooks) {
+  QUnit.module("fabric.controlsUtils", function (hooks) {
     var eventData, transform
     var canvas = new fabric.Canvas(null)
     hooks.beforeEach(function () {
@@ -18,67 +18,67 @@
     hooks.afterEach(function () {
       canvas.clear()
     })
-    test("changeWidth changes the width", function (assert) {
-      expect(transform.target.width).toEqual(100)
+    QUnit.test("changeWidth changes the width", function (assert) {
+      assert.equal(transform.target.width, 100)
       fabric.controlsUtils.changeWidth(eventData, transform, 200, 300)
-      expect(transform.target.width).toEqual(199)
-      expect(transform.target.left).toEqual(0)
-      expect(transform.target.top).toEqual(0)
+      assert.equal(transform.target.width, 199)
+      assert.equal(transform.target.left, 0)
+      assert.equal(transform.target.top, 0)
     })
-    test(
+    QUnit.test(
       "changeWidth changes the width with centered transform",
       function (assert) {
         transform.originX = "center"
         transform.originY = "center"
-        expect(transform.target.width).toEqual(100)
+        assert.equal(transform.target.width, 100)
         fabric.controlsUtils.changeWidth(eventData, transform, 200, 300)
-        expect(transform.target.width).toEqual(298)
-        expect(transform.target.left).toEqual(-99)
-        expect(transform.target.top).toEqual(0)
+        assert.equal(transform.target.width, 298)
+        assert.equal(transform.target.left, -99)
+        assert.equal(transform.target.top, 0)
       }
     )
-    test("changeWidth changes the width with big strokeWidth", function (
+    QUnit.test("changeWidth changes the width with big strokeWidth", function (
       assert
     ) {
       transform.target.strokeWidth = 15
       fabric.controlsUtils.changeWidth(eventData, transform, 200, 300)
-      expect(transform.target.width).toEqual(185)
+      assert.equal(transform.target.width, 185)
     })
-    test(
+    QUnit.test(
       "changeWidth changes the width with big strokeWidth and strokeUniform",
       function (assert) {
         transform.target.strokeWidth = 15
         transform.target.strokeUniform = true
         fabric.controlsUtils.changeWidth(eventData, transform, 200, 300)
-        expect(transform.target.width).toEqual(185)
+        assert.equal(transform.target.width, 185)
       }
     )
-    test(
+    QUnit.test(
       "changeWidth changes the width with big strokeWidth and strokeUniform + scaling",
       function (assert) {
         transform.target.strokeWidth = 15
         transform.target.strokeUniform = true
         transform.target.scaleX = 3
         fabric.controlsUtils.changeWidth(eventData, transform, 200, 300)
-        expect(Math.floor(transform.target.width)).toEqual(61)
+        assert.equal(Math.floor(transform.target.width), 61)
       }
     )
-    test(
+    QUnit.test(
       "changeWidth changes the width with big strokeWidth + scaling",
       function (assert) {
         transform.target.strokeWidth = 15
         transform.target.scaleX = 3
         fabric.controlsUtils.changeWidth(eventData, transform, 200, 300)
-        expect(Math.floor(transform.target.width)).toEqual(51)
+        assert.equal(Math.floor(transform.target.width), 51)
       }
     )
-    test("scalingXOrSkewingY changes scaleX", function (assert) {
+    QUnit.test("scalingXOrSkewingY changes scaleX", function (assert) {
       transform.target.scaleX = 1
       transform.target.strokeWidth = 0
       fabric.controlsUtils.scalingXOrSkewingY(eventData, transform, 200, 300)
-      expect(Math.round(transform.target.scaleX)).toEqual(2)
+      assert.equal(Math.round(transform.target.scaleX), 2)
     })
-    test("scalingXOrSkewingY changes scaleX to flip", function (assert) {
+    QUnit.test("scalingXOrSkewingY changes scaleX to flip", function (assert) {
       transform.target.scaleX = 1
       transform.target.strokeWidth = 0
       var returned = fabric.controlsUtils.scalingXOrSkewingY(
@@ -87,11 +87,11 @@
         -50,
         300
       )
-      expect(transform.target.scaleX).toEqual(0.5)
-      expect(transform.target.flipX).toEqual(true)
-      expect(returned).toEqual(true)
+      assert.equal(transform.target.scaleX, 0.5)
+      assert.equal(transform.target.flipX, true, "the object flipped X")
+      assert.equal(returned, true, "action was permitted")
     })
-    test("scalingXOrSkewingY blocks scaleX to flip", function (assert) {
+    QUnit.test("scalingXOrSkewingY blocks scaleX to flip", function (assert) {
       transform.target.scaleX = 1
       transform.target.strokeWidth = 0
       transform.target.lockScalingFlip = true
@@ -101,17 +101,17 @@
         -50,
         300
       )
-      expect(transform.target.scaleX).toEqual(1)
-      expect(transform.target.flipX).toEqual(false)
-      expect(returned).toEqual(false)
+      assert.equal(transform.target.scaleX, 1)
+      assert.equal(transform.target.flipX, false, "the object did not flip X")
+      assert.equal(returned, false, "action was not permitted X")
     })
-    test("scalingYOrSkewingX changes scaleY", function (assert) {
+    QUnit.test("scalingYOrSkewingX changes scaleY", function (assert) {
       transform.target.scaleY = 1
       transform.target.strokeWidth = 0
       fabric.controlsUtils.scalingYOrSkewingX(eventData, transform, 200, 300)
-      expect(Math.round(transform.target.scaleY)).toEqual(3)
+      assert.equal(Math.round(transform.target.scaleY), 3)
     })
-    test("scalingYOrSkewingX changes scaleY to flip", function (assert) {
+    QUnit.test("scalingYOrSkewingX changes scaleY to flip", function (assert) {
       transform.target.scaleY = 1
       transform.target.strokeWidth = 0
       var returned = fabric.controlsUtils.scalingYOrSkewingX(
@@ -120,11 +120,11 @@
         200,
         -80
       )
-      expect(transform.target.scaleY).toEqual(0.8)
-      expect(transform.target.flipY).toEqual(true)
-      expect(returned).toEqual(true)
+      assert.equal(transform.target.scaleY, 0.8)
+      assert.equal(transform.target.flipY, true, "the object flipped Y")
+      assert.equal(returned, true, "action was permitted Y")
     })
-    test("scalingYOrSkewingX blocks scaleX to flip", function (assert) {
+    QUnit.test("scalingYOrSkewingX blocks scaleX to flip", function (assert) {
       transform.target.scaley = 1
       transform.target.strokeWidth = 0
       transform.target.lockScalingFlip = true
@@ -134,11 +134,11 @@
         200,
         -80
       )
-      expect(transform.target.scaleY).toEqual(1)
-      expect(transform.target.flipY).toEqual(false)
-      expect(returned).toEqual(false)
+      assert.equal(transform.target.scaleY, 1)
+      assert.equal(transform.target.flipY, false, "the object did not flip Y")
+      assert.equal(returned, false, "action was not permitted Y")
     })
-    test("scalingXOrSkewingY changes skewY if shift pressed", function (
+    QUnit.test("scalingXOrSkewingY changes skewY if shift pressed", function (
       assert
     ) {
       transform.target.scaleX = 1
@@ -146,10 +146,10 @@
       transform.target.strokeWidth = 0
       eventData.shiftKey = true
       fabric.controlsUtils.scalingXOrSkewingY(eventData, transform, 200, 300)
-      expect(Math.round(transform.target.skewY)).toEqual(79)
-      expect(Math.round(transform.target.scaleX)).toEqual(1)
+      assert.equal(Math.round(transform.target.skewY), 79)
+      assert.equal(Math.round(transform.target.scaleX), 1)
     })
-    test("scalingYOrSkewingX changes skewX if shift pressed", function (
+    QUnit.test("scalingYOrSkewingX changes skewX if shift pressed", function (
       assert
     ) {
       transform.target.scaleY = 1
@@ -157,19 +157,19 @@
       transform.target.strokeWidth = 0
       eventData.shiftKey = true
       fabric.controlsUtils.scalingYOrSkewingX(eventData, transform, 200, 300)
-      expect(Math.round(transform.target.skewX)).toEqual(72)
-      expect(Math.round(transform.target.scaleY)).toEqual(1)
+      assert.equal(Math.round(transform.target.skewX), 72)
+      assert.equal(Math.round(transform.target.scaleY), 1)
     })
-    test(
+    QUnit.test(
       "scalingXOrSkewingY will fire events on canvas and target",
       function (assert) {
         var done = assert.async()
         transform.target.scaleX = 1
         transform.target.canvas.on("object:scaling", function (options) {
-          expect(options.target).toEqual(transform.target)
+          assert.equal(options.target, transform.target)
         })
         transform.target.on("scaling", function (options) {
-          expect(options).toEqual({
+          assert.deepEqual(options, {
             e: eventData,
             transform: transform,
             pointer: {
@@ -182,7 +182,7 @@
         fabric.controlsUtils.scalingXOrSkewingY(eventData, transform, 200, 300)
       }
     )
-    test("wrapWithFixedAnchor", function (assert) {
+    QUnit.test("wrapWithFixedAnchor", function (assert) {
       var target = transform.target
       transform.originX = "center"
       transform.originY = "center"
@@ -193,25 +193,25 @@
         target.scaleY = 5
       }
       var center = target.getCenterPoint()
-      expect(center.x).toEqual(50)
-      expect(center.y).toEqual(50)
+      assert.deepEqual(center.x, 50, "initial center is x 50")
+      assert.deepEqual(center.y, 50, "initial center is y 50")
       actionHandler({}, transform)
       var center2 = target.getCenterPoint()
-      expect(center2.x).toEqual(250)
-      expect(center2.y).toEqual(250)
+      assert.deepEqual(center2.x, 250, "after action center is x 250")
+      assert.deepEqual(center2.y, 250, "after action center is y 250")
       target.top = 0
       target.left = 0
       target.scaleX = 1
       target.scaleY = 1
       var center3 = target.getCenterPoint()
-      expect(center3.x).toEqual(50)
-      expect(center3.y).toEqual(50)
+      assert.deepEqual(center3.x, 50, "after reset center is x 50")
+      assert.deepEqual(center3.y, 50, "after reset center is y 50")
       fabric.controlsUtils.wrapWithFixedAnchor(actionHandler)({}, transform)
       var center4 = target.getCenterPoint()
-      expect(target.scaleX).toEqual(5)
-      expect(target.scaleY).toEqual(5)
-      expect(center4.x).toEqual(50)
-      expect(center4.y).toEqual(50)
+      assert.equal(target.scaleX, 5, "action made scaleX bigger")
+      assert.equal(target.scaleY, 5, "action made scaleY bigger")
+      assert.deepEqual(center4.x, 50, "with wrapper center is x 50")
+      assert.deepEqual(center4.y, 50, "with wrapper center is y 50")
     })
   })
 })()

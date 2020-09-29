@@ -8,7 +8,7 @@
     img.src = src
   }
 
-  describe("fabric.Pattern")
+  QUnit.module("fabric.Pattern")
 
   var img = fabric.document.createElement("img")
   setSrc(img, IMG_SRC)
@@ -22,18 +22,25 @@
     )
   }
 
-  test("constructor", function (assert) {
-    expect(fabric.Pattern).toBeTruthy()
+  QUnit.test("constructor", function (assert) {
+    assert.ok(fabric.Pattern)
     var pattern = createPattern()
-    expect(pattern instanceof fabric.Pattern).toBeTruthy()
+    assert.ok(
+      pattern instanceof fabric.Pattern,
+      "should inherit from fabric.Pattern"
+    )
   })
 
-  test("constructor with source string and with callback", function (
+  QUnit.test("constructor with source string and with callback", function (
     assert
   ) {
     var done = assert.async()
     function callback(pattern) {
-      expect(pattern.source.complete).toEqual(true)
+      assert.equal(
+        pattern.source.complete,
+        true,
+        "pattern source has been loaded"
+      )
       done()
     }
     new fabric.Pattern(
@@ -44,57 +51,57 @@
     )
   })
 
-  test("properties", function (assert) {
+  QUnit.test("properties", function (assert) {
     var pattern = createPattern()
-    expect(pattern.source).toEqual(img)
-    expect(pattern.repeat).toEqual("repeat")
-    expect(pattern.offsetX).toEqual(0)
-    expect(pattern.offsetY).toEqual(0)
-    expect(pattern.crossOrigin).toEqual("")
+    assert.equal(pattern.source, img)
+    assert.equal(pattern.repeat, "repeat")
+    assert.equal(pattern.offsetX, 0)
+    assert.equal(pattern.offsetY, 0)
+    assert.equal(pattern.crossOrigin, "")
   })
 
-  test("toObject", function (assert) {
+  QUnit.test("toObject", function (assert) {
     var pattern = createPattern()
 
-    expect(typeof pattern.toObject === "function").toBeTruthy()
+    assert.ok(typeof pattern.toObject === "function")
 
     var object = pattern.toObject()
 
-    expect(object.source.indexOf("fixtures/greyfloral.png") > -1).toBeTruthy()
-    expect(object.repeat).toEqual("repeat")
-    expect(object.offsetX).toEqual(0)
-    expect(object.offsetY).toEqual(0)
-    expect(object.patternTransform).toEqual(null)
+    assert.ok(object.source.indexOf("fixtures/greyfloral.png") > -1)
+    assert.equal(object.repeat, "repeat")
+    assert.equal(object.offsetX, 0)
+    assert.equal(object.offsetY, 0)
+    assert.equal(object.patternTransform, null)
   })
 
-  test("toObject with custom props", function (assert) {
+  QUnit.test("toObject with custom props", function (assert) {
     var pattern = createPattern()
     pattern.patternTransform = [1, 0, 0, 2, 0, 0]
     pattern.id = "myId"
     var object = pattern.toObject(["id"])
-    expect(object.id).toEqual("myId")
-    expect(object.patternTransform).toEqual(pattern.patternTransform)
+    assert.equal(object.id, "myId")
+    assert.deepEqual(object.patternTransform, pattern.patternTransform)
   })
 
-  test("toObject with custom props", function (assert) {
+  QUnit.test("toObject with custom props", function (assert) {
     var pattern = createPattern()
     pattern.patternTransform = [1, 0, 0, 2, 0, 0]
     pattern.id = "myId"
     var object = pattern.toObject(["id"])
-    expect(object.id).toEqual("myId")
-    expect(object.patternTransform).toEqual(pattern.patternTransform)
+    assert.equal(object.id, "myId")
+    assert.deepEqual(object.patternTransform, pattern.patternTransform)
   })
 
-  test("toObject with crossOrigin", function (assert) {
+  QUnit.test("toObject with crossOrigin", function (assert) {
     var pattern = new fabric.Pattern({
       source: IMG_SRC,
       crossOrigin: "anonymous"
     })
     var object = pattern.toObject()
-    expect(object.crossOrigin).toEqual("anonymous")
+    assert.equal(object.crossOrigin, "anonymous")
   })
 
-  test("fromObject with crossOrigin", function (assert) {
+  QUnit.test("fromObject with crossOrigin", function (assert) {
     var pattern = new fabric.Pattern({
       source: IMG_SRC,
       crossOrigin: "anonymous"
@@ -102,20 +109,20 @@
 
     var object = pattern.toObject()
     var pattern2 = new fabric.Pattern(object)
-    expect(pattern2.crossOrigin).toEqual("anonymous")
+    assert.equal(pattern2.crossOrigin, "anonymous")
   })
 
-  test("toLive", function (assert) {
+  QUnit.test("toLive", function (assert) {
     var pattern = createPattern()
     var canvas = new fabric.StaticCanvas(null, { enableRetinaScaling: false })
     var patternHTML = canvas.contextContainer.createPattern(img, "repeat")
-    expect(typeof pattern.toLive === "function").toBeTruthy()
+    assert.ok(typeof pattern.toLive === "function")
 
     var created = pattern.toLive(canvas.contextContainer)
-    expect(created.toString()).toEqual(patternHTML.toString())
+    assert.equal(created.toString(), patternHTML.toString(), "is a pattern")
   })
 
-  test(
+  QUnit.test(
     "pattern serialization / deserialization (image source)",
     function (assert) {
       var pattern = createPattern()
@@ -123,12 +130,12 @@
 
       // node-canvas doesn't give <img> "src"
       var patternDeserialized = new fabric.Pattern(obj)
-      expect(typeof patternDeserialized.source).toEqual("object")
-      expect(patternDeserialized.repeat).toEqual("repeat")
+      assert.equal(typeof patternDeserialized.source, "object")
+      assert.equal(patternDeserialized.repeat, "repeat")
     }
   )
 
-  test("toSVG", function (assert) {
+  QUnit.test("toSVG", function (assert) {
     fabric.Object.__uid = 0
     var pattern = createPattern()
     var rect = new fabric.Rect({ width: 500, height: 500 })
@@ -136,11 +143,11 @@
       '<pattern id="SVGID_0" x="0" y="0" width="0.3" height="0.248">\n<image x="0" y="0" width="150" height="124" xlink:href="' +
       img.src +
       '"></image>\n</pattern>\n'
-    expect(typeof pattern.toSVG === "function").toBeTruthy()
-    expect(pattern.toSVG(rect)).toEqual(expectedSVG)
+    assert.ok(typeof pattern.toSVG === "function")
+    assert.equal(pattern.toSVG(rect), expectedSVG, "SVG match")
   })
 
-  test("toSVG repeat-y", function (assert) {
+  QUnit.test("toSVG repeat-y", function (assert) {
     fabric.Object.__uid = 0
     var pattern = createPattern()
     pattern.repeat = "repeat-y"
@@ -149,11 +156,11 @@
       '<pattern id="SVGID_0" x="0" y="0" width="1" height="0.248">\n<image x="0" y="0" width="150" height="124" xlink:href="' +
       img.src +
       '"></image>\n</pattern>\n'
-    expect(typeof pattern.toSVG === "function").toBeTruthy()
-    expect(pattern.toSVG(rect)).toEqual(expectedSVG)
+    assert.ok(typeof pattern.toSVG === "function")
+    assert.equal(pattern.toSVG(rect), expectedSVG, "SVG match repeat-y")
   })
 
-  test("toSVG repeat-x", function (assert) {
+  QUnit.test("toSVG repeat-x", function (assert) {
     fabric.Object.__uid = 0
     var pattern = createPattern()
     pattern.repeat = "repeat-x"
@@ -162,11 +169,11 @@
       '<pattern id="SVGID_0" x="0" y="0" width="0.3" height="1">\n<image x="0" y="0" width="150" height="124" xlink:href="' +
       img.src +
       '"></image>\n</pattern>\n'
-    expect(typeof pattern.toSVG === "function").toBeTruthy()
-    expect(pattern.toSVG(rect)).toEqual(expectedSVG)
+    assert.ok(typeof pattern.toSVG === "function")
+    assert.equal(pattern.toSVG(rect), expectedSVG, "SVG match repeat-x")
   })
 
-  test("toSVG no-repeat", function (assert) {
+  QUnit.test("toSVG no-repeat", function (assert) {
     fabric.Object.__uid = 0
     var pattern = createPattern()
     pattern.repeat = "no-repeat"
@@ -175,11 +182,11 @@
       '<pattern id="SVGID_0" x="0" y="0" width="1" height="1">\n<image x="0" y="0" width="150" height="124" xlink:href="' +
       img.src +
       '"></image>\n</pattern>\n'
-    expect(typeof pattern.toSVG === "function").toBeTruthy()
-    expect(pattern.toSVG(rect)).toEqual(expectedSVG)
+    assert.ok(typeof pattern.toSVG === "function")
+    assert.equal(pattern.toSVG(rect), expectedSVG, "SVG match no-repeat")
   })
 
-  test("toSVG no-repeat offsetX and offsetY", function (assert) {
+  QUnit.test("toSVG no-repeat offsetX and offsetY", function (assert) {
     fabric.Object.__uid = 0
     var pattern = createPattern()
     pattern.repeat = "no-repeat"
@@ -190,17 +197,21 @@
       '<pattern id="SVGID_0" x="0.1" y="-0.1" width="1.1" height="1.1">\n<image x="0" y="0" width="150" height="124" xlink:href="' +
       img.src +
       '"></image>\n</pattern>\n'
-    expect(typeof pattern.toSVG === "function").toBeTruthy()
-    expect(pattern.toSVG(rect)).toEqual(expectedSVG)
+    assert.ok(typeof pattern.toSVG === "function")
+    assert.equal(
+      pattern.toSVG(rect),
+      expectedSVG,
+      "SVG match no-repat offsetX and offsetY"
+    )
   })
 
-  test("initPattern from object", function (assert) {
+  QUnit.test("initPattern from object", function (assert) {
     var fillObj = {
       type: "pattern",
       source:
         "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mP8z/C/HgAGgwJ/lK3Q6wAAAABJRU5ErkJggg=="
     }
     var obj = new fabric.Object({ fill: fillObj })
-    expect(obj.fill instanceof fabric.Pattern).toBeTruthy()
+    assert.ok(obj.fill instanceof fabric.Pattern, "the pattern is enlived")
   })
 })()

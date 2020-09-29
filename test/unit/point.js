@@ -1,27 +1,27 @@
 ;(function () {
-  describe("fabric.Point")
+  QUnit.module("fabric.Point")
 
-  test("constructor & properties", function (assert) {
-    expect(typeof fabric.Point === "function").toBeTruthy()
+  QUnit.test("constructor & properties", function (assert) {
+    assert.ok(typeof fabric.Point === "function")
 
     var point = new fabric.Point()
 
-    expect(point).toBeTruthy()
-    expect(point instanceof fabric.Point).toBeTruthy()
-    expect(point.constructor === fabric.Point).toBeTruthy()
-    expect(typeof point.constructor === "function").toBeTruthy()
-    expect(point.type).toEqual("point")
-    expect(point.x).toEqual(undefined)
-    expect(point.y).toEqual(undefined)
+    assert.ok(point)
+    assert.ok(point instanceof fabric.Point)
+    assert.ok(point.constructor === fabric.Point)
+    assert.ok(typeof point.constructor === "function")
+    assert.equal(point.type, "point")
+    assert.equal(point.x, undefined, "no default values for x")
+    assert.equal(point.y, undefined, "no default values for y")
 
     var x = 5,
       y = 6
     point = new fabric.Point(x, y)
-    expect(point.x).toEqual(x)
-    expect(point.y).toEqual(y)
+    assert.equal(point.x, x, "constructor pass x value")
+    assert.equal(point.y, y, "constructor pass y value")
   })
 
-  test("point add", function (assert) {
+  QUnit.test("point add", function (assert) {
     var x1 = 2,
       y1 = 3,
       x2 = 4,
@@ -29,21 +29,21 @@
       point = new fabric.Point(x1, y1),
       point2 = new fabric.Point(x2, y2)
 
-    expect(typeof point.add === "function").toBeTruthy()
-    expect(point.x).toEqual(x1)
-    expect(point.y).toEqual(y1)
+    assert.ok(typeof point.add === "function")
+    assert.equal(point.x, x1, "constructor pass x value")
+    assert.equal(point.y, y1, "constructor pass y value")
     var returned = point.add(point2)
-    expect(returned instanceof fabric.Point).toBeTruthy()
-    expect(returned).not.toEqual(point)
-    expect(returned.x).toEqual(x1 + x2)
-    expect(returned.y).toEqual(y1 + y2)
-    expect(point.x).toEqual(x1)
-    expect(point.y).toEqual(y1)
-    expect(point2.x).toEqual(x2)
-    expect(point2.y).toEqual(y2)
+    assert.ok(returned instanceof fabric.Point, "returns a point class")
+    assert.notEqual(returned, point, "is not chainable")
+    assert.equal(returned.x, x1 + x2, "x coords should be added")
+    assert.equal(returned.y, y1 + y2, "y coords should be added")
+    assert.equal(point.x, x1, "point is not changed")
+    assert.equal(point.y, y1, "point is not changed")
+    assert.equal(point2.x, x2, "point 2 is not changed")
+    assert.equal(point2.y, y2, "point 2 is not changed")
   })
 
-  test("point addEquals", function (assert) {
+  QUnit.test("point addEquals", function (assert) {
     var x1 = 2,
       y1 = 3,
       x2 = 4,
@@ -51,51 +51,51 @@
       point = new fabric.Point(x1, y1),
       point2 = new fabric.Point(x2, y2)
 
-    expect(typeof point.addEquals === "function").toBeTruthy()
-    expect(point.x).toEqual(x1)
-    expect(point.y).toEqual(y1)
+    assert.ok(typeof point.addEquals === "function")
+    assert.equal(point.x, x1, "constructor pass x value")
+    assert.equal(point.y, y1, "constructor pass y value")
     var returned = point.addEquals(point2)
-    expect(returned instanceof fabric.Point).toBeTruthy()
-    expect(returned).toEqual(point)
-    expect(point.x).toEqual(x1 + x2)
-    expect(point.y).toEqual(y1 + y2)
-    expect(point2.x).toEqual(x2)
-    expect(point2.y).toEqual(y2)
+    assert.ok(returned instanceof fabric.Point, "returns a point class")
+    assert.equal(returned, point, "is chainable")
+    assert.equal(point.x, x1 + x2, "x coords should be added")
+    assert.equal(point.y, y1 + y2, "y coords should be added")
+    assert.equal(point2.x, x2, "point 2 is not changed")
+    assert.equal(point2.y, y2, "point 2 is not changed")
   })
 
-  test("scalarAdd", function (assert) {
+  QUnit.test("scalarAdd", function (assert) {
     var x1 = 2,
       y1 = 3,
       scalar = 3,
       point = new fabric.Point(x1, y1)
 
-    expect(typeof point.scalarAdd === "function").toBeTruthy()
-    expect(point.x).toEqual(x1)
-    expect(point.y).toEqual(y1)
+    assert.ok(typeof point.scalarAdd === "function")
+    assert.equal(point.x, x1, "constructor pass x value")
+    assert.equal(point.y, y1, "constructor pass y value")
     var returned = point.scalarAdd(scalar)
-    expect(returned instanceof fabric.Point).toBeTruthy()
-    expect(returned).not.toEqual(point)
-    expect(returned.x).toEqual(x1 + scalar)
-    expect(returned.y).toEqual(y1 + scalar)
+    assert.ok(returned instanceof fabric.Point, "returns a point class")
+    assert.notEqual(returned, point, "is not chainable")
+    assert.equal(returned.x, x1 + scalar, "x coords should be added")
+    assert.equal(returned.y, y1 + scalar, "y coords should be added")
   })
 
-  test("scalarAddEquals", function (assert) {
+  QUnit.test("scalarAddEquals", function (assert) {
     var x1 = 2,
       y1 = 3,
       scalar = 3,
       point = new fabric.Point(x1, y1)
 
-    expect(typeof point.scalarAddEquals === "function").toBeTruthy()
-    expect(point.x).toEqual(x1)
-    expect(point.y).toEqual(y1)
+    assert.ok(typeof point.scalarAddEquals === "function")
+    assert.equal(point.x, x1, "constructor pass x value")
+    assert.equal(point.y, y1, "constructor pass y value")
     var returned = point.scalarAddEquals(scalar)
-    expect(returned instanceof fabric.Point).toBeTruthy()
-    expect(returned).toEqual(point)
-    expect(point.x).toEqual(x1 + scalar)
-    expect(point.y).toEqual(y1 + scalar)
+    assert.ok(returned instanceof fabric.Point, "returns a point class")
+    assert.equal(returned, point, "is chainable")
+    assert.equal(point.x, x1 + scalar, "x coords should be added")
+    assert.equal(point.y, y1 + scalar, "y coords should be added")
   })
 
-  test("point subtract", function (assert) {
+  QUnit.test("point subtract", function (assert) {
     var x1 = 2,
       y1 = 3,
       x2 = 4,
@@ -103,21 +103,21 @@
       point = new fabric.Point(x1, y1),
       point2 = new fabric.Point(x2, y2)
 
-    expect(typeof point.subtract === "function").toBeTruthy()
-    expect(point.x).toEqual(x1)
-    expect(point.y).toEqual(y1)
+    assert.ok(typeof point.subtract === "function")
+    assert.equal(point.x, x1, "constructor pass x value")
+    assert.equal(point.y, y1, "constructor pass y value")
     var returned = point.subtract(point2)
-    expect(returned instanceof fabric.Point).toBeTruthy()
-    expect(returned).not.toEqual(point)
-    expect(returned.x).toEqual(x1 - x2)
-    expect(returned.y).toEqual(y1 - y2)
-    expect(point.x).toEqual(x1)
-    expect(point.y).toEqual(y1)
-    expect(point2.x).toEqual(x2)
-    expect(point2.y).toEqual(y2)
+    assert.ok(returned instanceof fabric.Point, "returns a point class")
+    assert.notEqual(returned, point, "is not chainable")
+    assert.equal(returned.x, x1 - x2, "x coords should be added")
+    assert.equal(returned.y, y1 - y2, "y coords should be added")
+    assert.equal(point.x, x1, "point is not changed")
+    assert.equal(point.y, y1, "point is not changed")
+    assert.equal(point2.x, x2, "point 2 is not changed")
+    assert.equal(point2.y, y2, "point 2 is not changed")
   })
 
-  test("point subtractEquals", function (assert) {
+  QUnit.test("point subtractEquals", function (assert) {
     var x1 = 2,
       y1 = 3,
       x2 = 4,
@@ -125,115 +125,115 @@
       point = new fabric.Point(x1, y1),
       point2 = new fabric.Point(x2, y2)
 
-    expect(typeof point.subtractEquals === "function").toBeTruthy()
-    expect(point.x).toEqual(x1)
-    expect(point.y).toEqual(y1)
+    assert.ok(typeof point.subtractEquals === "function")
+    assert.equal(point.x, x1, "constructor pass x value")
+    assert.equal(point.y, y1, "constructor pass y value")
     var returned = point.subtractEquals(point2)
-    expect(returned instanceof fabric.Point).toBeTruthy()
-    expect(returned).toEqual(point)
-    expect(point.x).toEqual(x1 - x2)
-    expect(point.y).toEqual(y1 - y2)
-    expect(point2.x).toEqual(x2)
-    expect(point2.y).toEqual(y2)
+    assert.ok(returned instanceof fabric.Point, "returns a point class")
+    assert.equal(returned, point, "is chainable")
+    assert.equal(point.x, x1 - x2, "x coords should be added")
+    assert.equal(point.y, y1 - y2, "y coords should be added")
+    assert.equal(point2.x, x2, "point 2 is not changed")
+    assert.equal(point2.y, y2, "point 2 is not changed")
   })
 
-  test("scalarSubtract", function (assert) {
+  QUnit.test("scalarSubtract", function (assert) {
     var x1 = 2,
       y1 = 3,
       scalar = 3,
       point = new fabric.Point(x1, y1)
 
-    expect(typeof point.scalarSubtract === "function").toBeTruthy()
-    expect(point.x).toEqual(x1)
-    expect(point.y).toEqual(y1)
+    assert.ok(typeof point.scalarSubtract === "function")
+    assert.equal(point.x, x1, "constructor pass x value")
+    assert.equal(point.y, y1, "constructor pass y value")
     var returned = point.scalarSubtract(scalar)
-    expect(returned instanceof fabric.Point).toBeTruthy()
-    expect(returned).not.toEqual(point)
-    expect(returned.x).toEqual(x1 - scalar)
-    expect(returned.y).toEqual(y1 - scalar)
+    assert.ok(returned instanceof fabric.Point, "returns a point class")
+    assert.notEqual(returned, point, "is not chainable")
+    assert.equal(returned.x, x1 - scalar, "x coords should be added")
+    assert.equal(returned.y, y1 - scalar, "y coords should be added")
   })
 
-  test("scalarSubtractEquals", function (assert) {
+  QUnit.test("scalarSubtractEquals", function (assert) {
     var x1 = 2,
       y1 = 3,
       scalar = 3,
       point = new fabric.Point(x1, y1)
 
-    expect(typeof point.scalarSubtractEquals === "function").toBeTruthy()
-    expect(point.x).toEqual(x1)
-    expect(point.y).toEqual(y1)
+    assert.ok(typeof point.scalarSubtractEquals === "function")
+    assert.equal(point.x, x1, "constructor pass x value")
+    assert.equal(point.y, y1, "constructor pass y value")
     var returned = point.scalarSubtractEquals(scalar)
-    expect(returned instanceof fabric.Point).toBeTruthy()
-    expect(returned).toEqual(point)
-    expect(point.x).toEqual(x1 - scalar)
-    expect(point.y).toEqual(y1 - scalar)
+    assert.ok(returned instanceof fabric.Point, "returns a point class")
+    assert.equal(returned, point, "is chainable")
+    assert.equal(point.x, x1 - scalar, "x coords should be added")
+    assert.equal(point.y, y1 - scalar, "y coords should be added")
   })
 
-  test("multiply", function (assert) {
+  QUnit.test("multiply", function (assert) {
     var x1 = 2,
       y1 = 3,
       scalar = 3,
       point = new fabric.Point(x1, y1)
 
-    expect(typeof point.multiply === "function").toBeTruthy()
-    expect(point.x).toEqual(x1)
-    expect(point.y).toEqual(y1)
+    assert.ok(typeof point.multiply === "function")
+    assert.equal(point.x, x1, "constructor pass x value")
+    assert.equal(point.y, y1, "constructor pass y value")
     var returned = point.multiply(scalar)
-    expect(returned instanceof fabric.Point).toBeTruthy()
-    expect(returned).not.toEqual(point)
-    expect(returned.x).toEqual(x1 * scalar)
-    expect(returned.y).toEqual(y1 * scalar)
+    assert.ok(returned instanceof fabric.Point, "returns a point class")
+    assert.notEqual(returned, point, "is not chainable")
+    assert.equal(returned.x, x1 * scalar, "x coords should be added")
+    assert.equal(returned.y, y1 * scalar, "y coords should be added")
   })
 
-  test("multiplyEquals", function (assert) {
+  QUnit.test("multiplyEquals", function (assert) {
     var x1 = 2,
       y1 = 3,
       scalar = 3,
       point = new fabric.Point(x1, y1)
 
-    expect(typeof point.multiplyEquals === "function").toBeTruthy()
-    expect(point.x).toEqual(x1)
-    expect(point.y).toEqual(y1)
+    assert.ok(typeof point.multiplyEquals === "function")
+    assert.equal(point.x, x1, "constructor pass x value")
+    assert.equal(point.y, y1, "constructor pass y value")
     var returned = point.multiplyEquals(scalar)
-    expect(returned instanceof fabric.Point).toBeTruthy()
-    expect(returned).toEqual(point)
-    expect(point.x).toEqual(x1 * scalar)
-    expect(point.y).toEqual(y1 * scalar)
+    assert.ok(returned instanceof fabric.Point, "returns a point class")
+    assert.equal(returned, point, "is chainable")
+    assert.equal(point.x, x1 * scalar, "x coords should be added")
+    assert.equal(point.y, y1 * scalar, "y coords should be added")
   })
 
-  test("divide", function (assert) {
+  QUnit.test("divide", function (assert) {
     var x1 = 2,
       y1 = 3,
       scalar = 3,
       point = new fabric.Point(x1, y1)
 
-    expect(typeof point.divide === "function").toBeTruthy()
-    expect(point.x).toEqual(x1)
-    expect(point.y).toEqual(y1)
+    assert.ok(typeof point.divide === "function")
+    assert.equal(point.x, x1, "constructor pass x value")
+    assert.equal(point.y, y1, "constructor pass y value")
     var returned = point.divide(scalar)
-    expect(returned instanceof fabric.Point).toBeTruthy()
-    expect(returned).not.toEqual(point)
-    expect(returned.x).toEqual(x1 / scalar)
-    expect(returned.y).toEqual(y1 / scalar)
+    assert.ok(returned instanceof fabric.Point, "returns a point class")
+    assert.notEqual(returned, point, "is not chainable")
+    assert.equal(returned.x, x1 / scalar, "x coords should be added")
+    assert.equal(returned.y, y1 / scalar, "y coords should be added")
   })
 
-  test("divideEquals", function (assert) {
+  QUnit.test("divideEquals", function (assert) {
     var x1 = 2,
       y1 = 3,
       scalar = 3,
       point = new fabric.Point(x1, y1)
 
-    expect(typeof point.divideEquals === "function").toBeTruthy()
-    expect(point.x).toEqual(x1)
-    expect(point.y).toEqual(y1)
+    assert.ok(typeof point.divideEquals === "function")
+    assert.equal(point.x, x1, "constructor pass x value")
+    assert.equal(point.y, y1, "constructor pass y value")
     var returned = point.divideEquals(scalar)
-    expect(returned instanceof fabric.Point).toBeTruthy()
-    expect(returned).toEqual(point)
-    expect(point.x).toEqual(x1 / scalar)
-    expect(point.y).toEqual(y1 / scalar)
+    assert.ok(returned instanceof fabric.Point, "returns a point class")
+    assert.equal(returned, point, "is chainable")
+    assert.equal(point.x, x1 / scalar, "x coords should be added")
+    assert.equal(point.y, y1 / scalar, "y coords should be added")
   })
 
-  test("point eq", function (assert) {
+  QUnit.test("point eq", function (assert) {
     var x1 = 2,
       y1 = 3,
       x2 = 4,
@@ -242,13 +242,13 @@
       point3 = new fabric.Point(x1, y1),
       point2 = new fabric.Point(x2, y2)
 
-    expect(typeof point.eq === "function").toBeTruthy()
-    expect(!point.eq(point2)).toBeTruthy()
-    expect(point.eq(point)).toBeTruthy()
-    expect(point.eq(point3)).toBeTruthy()
+    assert.ok(typeof point.eq === "function")
+    assert.ok(!point.eq(point2), "points are not equals")
+    assert.ok(point.eq(point), "a point should be equal to itself")
+    assert.ok(point.eq(point3), "point constructed from save var are equals")
   })
 
-  test("point lt", function (assert) {
+  QUnit.test("point lt", function (assert) {
     var x1 = 2,
       y1 = 3,
       x2 = 4,
@@ -256,13 +256,13 @@
       point = new fabric.Point(x1, y1),
       point2 = new fabric.Point(x2, y2)
 
-    expect(typeof point.lt === "function").toBeTruthy()
-    expect(point.x < point2.x).toBeTruthy()
-    expect(point.y < point2.y).toBeTruthy()
-    expect(point.lt(point2)).toBeTruthy()
+    assert.ok(typeof point.lt === "function")
+    assert.ok(point.x < point2.x, "x1 should be less than x2")
+    assert.ok(point.y < point2.y, "y1 should be less than y2")
+    assert.ok(point.lt(point2), "point should be lt than point 2")
   })
 
-  test("point gt", function (assert) {
+  QUnit.test("point gt", function (assert) {
     var x1 = 2,
       y1 = 3,
       x2 = 4,
@@ -270,32 +270,13 @@
       point = new fabric.Point(x1, y1),
       point2 = new fabric.Point(x2, y2)
 
-    expect(typeof point.gt === "function").toBeTruthy()
-    expect(point2.x > point.x).toBeTruthy()
-    expect(point2.y > point.y).toBeTruthy()
-    expect(point2.gt(point)).toBeTruthy()
+    assert.ok(typeof point.gt === "function")
+    assert.ok(point2.x > point.x, "x1 should be gt than x2")
+    assert.ok(point2.y > point.y, "y1 should be gt than y2")
+    assert.ok(point2.gt(point), "point2 should be gt than point")
   })
 
-  test("point lte", function (assert) {
-    var x1 = 2,
-      y1 = 3,
-      x2 = 4,
-      y2 = 5,
-      point = new fabric.Point(x1, y1),
-      point3 = new fabric.Point(x1, y1),
-      point2 = new fabric.Point(x2, y2)
-
-    expect(typeof point.lte === "function").toBeTruthy()
-    expect(point.x <= point2.x).toBeTruthy()
-    expect(point.y <= point2.y).toBeTruthy()
-    expect(point.lte(point2)).toBeTruthy()
-    expect(point.x <= point3.x).toBeTruthy()
-    expect(point.y <= point3.y).toBeTruthy()
-    expect(point.eq(point3) && point.lte(point3)).toBeTruthy()
-    expect(point.lte(point)).toBeTruthy()
-  })
-
-  test("point gte", function (assert) {
+  QUnit.test("point lte", function (assert) {
     var x1 = 2,
       y1 = 3,
       x2 = 4,
@@ -304,17 +285,42 @@
       point3 = new fabric.Point(x1, y1),
       point2 = new fabric.Point(x2, y2)
 
-    expect(typeof point.gte === "function").toBeTruthy()
-    expect(point2.x >= point.x).toBeTruthy()
-    expect(point2.y >= point.y).toBeTruthy()
-    expect(point2.gte(point)).toBeTruthy()
-    expect(point3.x >= point.x).toBeTruthy()
-    expect(point3.y >= point.y).toBeTruthy()
-    expect(point3.eq(point) && point3.gte(point)).toBeTruthy()
-    expect(point.gte(point)).toBeTruthy()
+    assert.ok(typeof point.lte === "function")
+    assert.ok(point.x <= point2.x, "x1 should be less than x2")
+    assert.ok(point.y <= point2.y, "y1 should be less than y2")
+    assert.ok(point.lte(point2), "point should be lt than point 2")
+    assert.ok(point.x <= point3.x, "x1 should be less than x2")
+    assert.ok(point.y <= point3.y, "y1 should be less than y2")
+    assert.ok(
+      point.eq(point3) && point.lte(point3),
+      "lte return true on equal points"
+    )
+    assert.ok(point.lte(point), "point is lte than itselft")
   })
 
-  test("point lerp", function (assert) {
+  QUnit.test("point gte", function (assert) {
+    var x1 = 2,
+      y1 = 3,
+      x2 = 4,
+      y2 = 5,
+      point = new fabric.Point(x1, y1),
+      point3 = new fabric.Point(x1, y1),
+      point2 = new fabric.Point(x2, y2)
+
+    assert.ok(typeof point.gte === "function")
+    assert.ok(point2.x >= point.x, "x1 should be greater than x2")
+    assert.ok(point2.y >= point.y, "y1 should be greater than y2")
+    assert.ok(point2.gte(point), "point2 should be gte than point")
+    assert.ok(point3.x >= point.x, "x1 should be greater than x2")
+    assert.ok(point3.y >= point.y, "y1 should be greater than y2")
+    assert.ok(
+      point3.eq(point) && point3.gte(point),
+      "gte returns true on equal points"
+    )
+    assert.ok(point.gte(point), "point should be gte than itself")
+  })
+
+  QUnit.test("point lerp", function (assert) {
     var x1 = 2,
       y1 = 3,
       x2 = 4,
@@ -322,23 +328,39 @@
       point = new fabric.Point(x1, y1),
       point2 = new fabric.Point(x2, y2)
 
-    expect(typeof point.lerp === "function").toBeTruthy()
+    assert.ok(typeof point.lerp === "function")
     var returned = point.lerp(point2)
-    expect(returned instanceof fabric.Point).toBeTruthy()
-    expect(returned).not.toEqual(point)
-    expect(returned.x).toEqual(point.x + (point2.x - point.x) / 2)
-    expect(returned.y).toEqual(point.y + (point2.y - point.y) / 2)
+    assert.ok(returned instanceof fabric.Point, "returns a point class")
+    assert.notEqual(returned, point, "not chainable")
+    assert.equal(
+      returned.x,
+      point.x + (point2.x - point.x) / 2,
+      "default is in the middle"
+    )
+    assert.equal(
+      returned.y,
+      point.y + (point2.y - point.y) / 2,
+      "default is in the middle"
+    )
     returned = point.lerp(point2, 0)
-    expect(returned).toEqual(point)
+    assert.deepEqual(returned, point, "0 gives you the original point")
     returned = point.lerp(point2, 1)
-    expect(returned).toEqual(point2)
+    assert.deepEqual(returned, point2, "1 gives you the destination point")
     returned = point.lerp(point2, -1)
-    expect(returned).toEqual(point)
+    assert.deepEqual(
+      returned,
+      point,
+      "-1 < 0 so t = 0 gives you the original point"
+    )
     returned = point.lerp(point2, 2)
-    expect(returned).toEqual(point2)
+    assert.deepEqual(
+      returned,
+      point2,
+      "2 > 1 so t = 1 gives you the destination point"
+    )
   })
 
-  test("point distance from", function (assert) {
+  QUnit.test("point distance from", function (assert) {
     var x1 = 2,
       y1 = 3,
       x2 = 4,
@@ -346,15 +368,19 @@
       point = new fabric.Point(x1, y1),
       point2 = new fabric.Point(x2, y2)
 
-    expect(typeof point.distanceFrom === "function").toBeTruthy()
+    assert.ok(typeof point.distanceFrom === "function")
     var returned = point.distanceFrom(point2, 0.5)
-    expect(typeof returned === "number").toBeTruthy()
-    expect(returned).toEqual(Math.sqrt(
-      Math.pow(point2.x - point.x, 2) + Math.pow(point2.y - point.y, 2)
-    ))
+    assert.ok(typeof returned === "number", "returns a number")
+    assert.equal(
+      returned,
+      Math.sqrt(
+        Math.pow(point2.x - point.x, 2) + Math.pow(point2.y - point.y, 2)
+      ),
+      "return the geomentric distance between coords"
+    )
   })
 
-  test("midPointFrom", function (assert) {
+  QUnit.test("midPointFrom", function (assert) {
     var x1 = 2,
       y1 = 3,
       x2 = 4,
@@ -362,15 +388,23 @@
       point = new fabric.Point(x1, y1),
       point2 = new fabric.Point(x2, y2)
 
-    expect(typeof point.midPointFrom === "function").toBeTruthy()
+    assert.ok(typeof point.midPointFrom === "function")
     var returned = point.midPointFrom(point2)
-    expect(returned instanceof fabric.Point).toBeTruthy()
-    expect(returned).not.toEqual(point)
-    expect(returned.x).toEqual(point.x + (point2.x - point.x) / 2)
-    expect(returned.y).toEqual(point.y + (point2.y - point.y) / 2)
+    assert.ok(returned instanceof fabric.Point, "returns a point class")
+    assert.notEqual(returned, point, "not chainable")
+    assert.equal(
+      returned.x,
+      point.x + (point2.x - point.x) / 2,
+      "point.x is in the middle"
+    )
+    assert.equal(
+      returned.y,
+      point.y + (point2.y - point.y) / 2,
+      "point.y is in the middle"
+    )
   })
 
-  test("min", function (assert) {
+  QUnit.test("min", function (assert) {
     var x1 = 2,
       y1 = 3,
       x2 = 4,
@@ -378,15 +412,23 @@
       point = new fabric.Point(x1, y1),
       point2 = new fabric.Point(x2, y2)
 
-    expect(typeof point.min === "function").toBeTruthy()
+    assert.ok(typeof point.min === "function")
     var returned = point.min(point2)
-    expect(returned instanceof fabric.Point).toBeTruthy()
-    expect(returned).not.toEqual(point)
-    expect(returned.x).toEqual(Math.min(point.x, point2.x))
-    expect(returned.y).toEqual(Math.min(point.y, point2.y))
+    assert.ok(returned instanceof fabric.Point, "returns a point class")
+    assert.notEqual(returned, point, "not chainable")
+    assert.equal(
+      returned.x,
+      Math.min(point.x, point2.x),
+      "point.x is the min from the points"
+    )
+    assert.equal(
+      returned.y,
+      Math.min(point.y, point2.y),
+      "point.y is the min from the points"
+    )
   })
 
-  test("max", function (assert) {
+  QUnit.test("max", function (assert) {
     var x1 = 2,
       y1 = 3,
       x2 = 4,
@@ -394,67 +436,75 @@
       point = new fabric.Point(x1, y1),
       point2 = new fabric.Point(x2, y2)
 
-    expect(typeof point.max === "function").toBeTruthy()
+    assert.ok(typeof point.max === "function")
     var returned = point.max(point2)
-    expect(returned instanceof fabric.Point).toBeTruthy()
-    expect(returned).not.toEqual(point)
-    expect(returned.x).toEqual(Math.max(point.x, point2.x))
-    expect(returned.y).toEqual(Math.max(point.y, point2.y))
+    assert.ok(returned instanceof fabric.Point, "returns a point class")
+    assert.notEqual(returned, point, "not chainable")
+    assert.equal(
+      returned.x,
+      Math.max(point.x, point2.x),
+      "point.x is the max from the points"
+    )
+    assert.equal(
+      returned.y,
+      Math.max(point.y, point2.y),
+      "point.y is the max from the points"
+    )
   })
 
-  test("toString", function (assert) {
+  QUnit.test("toString", function (assert) {
     var x1 = 2,
       y1 = 3,
       point = new fabric.Point(x1, y1)
 
-    expect(typeof point.toString === "function").toBeTruthy()
+    assert.ok(typeof point.toString === "function")
     var returned = point.toString()
-    expect(typeof returned === "string").toBeTruthy()
-    expect(returned).toEqual(point.x + "," + point.y)
+    assert.ok(typeof returned === "string", "returns a string")
+    assert.equal(returned, point.x + "," + point.y, "coords concat with ,")
   })
 
-  test("setXY", function (assert) {
+  QUnit.test("setXY", function (assert) {
     var x1 = 2,
       y1 = 3,
       x2 = 4,
       y2 = 8,
       point = new fabric.Point(x1, y1)
 
-    expect(typeof point.setXY === "function").toBeTruthy()
+    assert.ok(typeof point.setXY === "function")
     var returned = point.setXY(x2, y2)
-    expect(returned instanceof fabric.Point).toBeTruthy()
-    expect(returned).toEqual(point)
-    expect(returned.x).toEqual(x2)
-    expect(returned.y).toEqual(y2)
+    assert.ok(returned instanceof fabric.Point, "returns a point class")
+    assert.equal(returned, point, "chainable")
+    assert.equal(returned.x, x2, "it changed x property")
+    assert.equal(returned.y, y2, "it changed x property")
   })
 
-  test("setX", function (assert) {
+  QUnit.test("setX", function (assert) {
     var x1 = 2,
       y1 = 3,
       x2 = 4,
       point = new fabric.Point(x1, y1)
 
-    expect(typeof point.setX === "function").toBeTruthy()
+    assert.ok(typeof point.setX === "function")
     var returned = point.setX(x2)
-    expect(returned instanceof fabric.Point).toBeTruthy()
-    expect(returned).toEqual(point)
-    expect(returned.x).toEqual(x2)
+    assert.ok(returned instanceof fabric.Point, "returns a point class")
+    assert.equal(returned, point, "chainable")
+    assert.equal(returned.x, x2, "it changed x property")
   })
 
-  test("setY", function (assert) {
+  QUnit.test("setY", function (assert) {
     var x1 = 2,
       y1 = 3,
       y2 = 8,
       point = new fabric.Point(x1, y1)
 
-    expect(typeof point.setY === "function").toBeTruthy()
+    assert.ok(typeof point.setY === "function")
     var returned = point.setY(y2)
-    expect(returned instanceof fabric.Point).toBeTruthy()
-    expect(returned).toEqual(point)
-    expect(returned.y).toEqual(y2)
+    assert.ok(returned instanceof fabric.Point, "returns a point class")
+    assert.equal(returned, point, "chainable")
+    assert.equal(returned.y, y2, "it changed y property")
   })
 
-  test("setFromPoint", function (assert) {
+  QUnit.test("setFromPoint", function (assert) {
     var x1 = 2,
       y1 = 3,
       x2 = 4,
@@ -462,15 +512,15 @@
       point = new fabric.Point(x1, y1),
       point2 = new fabric.Point(x2, y2)
 
-    expect(typeof point.setFromPoint === "function").toBeTruthy()
+    assert.ok(typeof point.setFromPoint === "function")
     var returned = point.setFromPoint(point2)
-    expect(returned instanceof fabric.Point).toBeTruthy()
-    expect(returned).toEqual(point)
-    expect(returned.x).toEqual(point2.x)
-    expect(returned.y).toEqual(point2.y)
+    assert.ok(returned instanceof fabric.Point, "returns a point class")
+    assert.equal(returned, point, "chainable")
+    assert.equal(returned.x, point2.x, "it changed x property")
+    assert.equal(returned.y, point2.y, "it changed x property")
   })
 
-  test("swap", function (assert) {
+  QUnit.test("swap", function (assert) {
     var x1 = 2,
       y1 = 3,
       x2 = 4,
@@ -478,25 +528,25 @@
       point = new fabric.Point(x1, y1),
       point2 = new fabric.Point(x2, y2)
 
-    expect(typeof point.swap === "function").toBeTruthy()
+    assert.ok(typeof point.swap === "function")
     var returned = point.swap(point2)
-    expect(returned).toEqual(undefined)
-    expect(point.x).toEqual(x2)
-    expect(point.y).toEqual(y2)
-    expect(point2.x).toEqual(x1)
-    expect(point2.y).toEqual(y1)
+    assert.equal(returned, undefined, "it does not return anything")
+    assert.equal(point.x, x2, "swapped x")
+    assert.equal(point.y, y2, "swapped y")
+    assert.equal(point2.x, x1, "swapped x")
+    assert.equal(point2.y, y1, "swapped y")
   })
 
-  test("clone", function (assert) {
+  QUnit.test("clone", function (assert) {
     var x1 = 2,
       y1 = 3,
       point = new fabric.Point(x1, y1)
 
-    expect(typeof point.clone === "function").toBeTruthy()
+    assert.ok(typeof point.clone === "function")
     var returned = point.clone()
-    expect(returned instanceof fabric.Point).toBeTruthy()
-    expect(returned).not.toEqual(point)
-    expect(returned.x).toEqual(point.x)
-    expect(returned.y).toEqual(point.y)
+    assert.ok(returned instanceof fabric.Point, "returns a point class")
+    assert.notEqual(returned, point, "is not chainable")
+    assert.equal(returned.x, point.x, "x coords should be same")
+    assert.equal(returned.y, point.y, "y coords should be same")
   })
 })()

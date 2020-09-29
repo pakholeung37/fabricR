@@ -1,41 +1,48 @@
 ;(function () {
   var canvas = new fabric.Canvas()
-  describe("fabric.BaseBrush", function (hooks) {
+  QUnit.module("fabric.BaseBrush", function (hooks) {
     hooks.afterEach(function () {
       canvas.cancelRequestedRender()
     })
 
-    test("fabric brush constructor", function (assert) {
-      expect(fabric.BaseBrush).toBeTruthy()
+    QUnit.test("fabric brush constructor", function (assert) {
+      assert.ok(fabric.BaseBrush)
 
       var brush = new fabric.BaseBrush()
 
-      expect(brush instanceof fabric.BaseBrush).toBeTruthy()
-      expect(brush.color).toEqual("rgb(0, 0, 0)")
-      expect(brush.width).toEqual(1)
+      assert.ok(
+        brush instanceof fabric.BaseBrush,
+        "should inherit from fabric.BaseBrush"
+      )
+      assert.equal(brush.color, "rgb(0, 0, 0)", "default color is black")
+      assert.equal(brush.width, 1, "default width is 1")
     })
-    test("fabric pencil brush constructor", function (assert) {
-      expect(fabric.PencilBrush).toBeTruthy()
+    QUnit.test("fabric pencil brush constructor", function (assert) {
+      assert.ok(fabric.PencilBrush)
       var brush = new fabric.PencilBrush(canvas)
-      expect(brush.canvas).toEqual(canvas)
-      expect(brush._points).toEqual([])
+      assert.equal(brush.canvas, canvas, "assigns canvas")
+      assert.deepEqual(brush._points, [], "points is an empty array")
     })
 
     ;[true, false].forEach(function (val) {
-      describe(
+      QUnit.module(
         "fabric.BaseBrush with canvas.enableRetinaScaling = " + val,
         function (hooks) {
           hooks.beforeEach(function () {
             canvas.enableRetinaScaling = val
           })
-          test("fabric pencil brush draw point", function (assert) {
+          QUnit.test("fabric pencil brush draw point", function (assert) {
             var brush = new fabric.PencilBrush(canvas)
             var pointer = canvas.getPointer({ clientX: 10, clientY: 10 })
             brush.onMouseDown(pointer, { e: {} })
             var pathData = brush.convertPointsToSVGPath(brush._points).join("")
-            expect(pathData).toEqual("M 9.999 10 L 10.001 10")
+            assert.equal(
+              pathData,
+              "M 9.999 10 L 10.001 10",
+              "path data create a small line that looks like a point"
+            )
           })
-          test("fabric pencil brush multiple points", function (assert) {
+          QUnit.test("fabric pencil brush multiple points", function (assert) {
             var brush = new fabric.PencilBrush(canvas)
             var pointer = canvas.getPointer({ clientX: 10, clientY: 10 })
             brush.onMouseDown(pointer, { e: {} })
@@ -44,10 +51,18 @@
             brush.onMouseMove(pointer, { e: {} })
             brush.onMouseMove(pointer, { e: {} })
             var pathData = brush.convertPointsToSVGPath(brush._points).join("")
-            expect(pathData).toEqual("M 9.999 10 L 10.001 10")
-            expect(brush._points.length).toEqual(2)
+            assert.equal(
+              pathData,
+              "M 9.999 10 L 10.001 10",
+              "path data create a small line that looks like a point"
+            )
+            assert.equal(
+              brush._points.length,
+              2,
+              "concident points are discarded"
+            )
           })
-          test(
+          QUnit.test(
             "fabric pencil brush multiple points not discarded",
             function (assert) {
               var brush = new fabric.PencilBrush(canvas)
@@ -62,13 +77,19 @@
               var pathData = brush
                 .convertPointsToSVGPath(brush._points)
                 .join("")
-              expect(pathData).toEqual(
-                "M 9.999 9.999 Q 10 10 12.5 12.5 Q 15 15 17.5 17.5 Q 20 20 17.5 17.5 Q 15 15 17.5 17.5 L 20.001 20.001"
+              assert.equal(
+                pathData,
+                "M 9.999 9.999 Q 10 10 12.5 12.5 Q 15 15 17.5 17.5 Q 20 20 17.5 17.5 Q 15 15 17.5 17.5 L 20.001 20.001",
+                "path data create a complex path"
               )
-              expect(brush._points.length).toEqual(6)
+              assert.equal(
+                brush._points.length,
+                6,
+                "concident points are discarded"
+              )
             }
           )
-          test(
+          QUnit.test(
             "fabric pencil brush multiple points not discarded",
             function (assert) {
               var fireBeforePathCreatedEvent = false
@@ -91,10 +112,18 @@
               brush.onMouseMove(pointer2, { e: {} })
               brush.onMouseMove(pointer3, { e: {} })
               brush.onMouseUp({ e: {} })
-              expect(fireBeforePathCreatedEvent).toEqual(true)
-              expect(firePathCreatedEvent).toEqual(true)
-              expect(added instanceof fabric.Path).toBeTruthy()
-              expect(added.path.length).toBeTruthy()
+              assert.equal(
+                fireBeforePathCreatedEvent,
+                true,
+                "before:path:created event is fired"
+              )
+              assert.equal(
+                firePathCreatedEvent,
+                true,
+                "path:created event is fired"
+              )
+              assert.ok(added instanceof fabric.Path, "a path is added")
+              assert.ok(added.path.length, 6, "path has 6 steps")
               canvas.off()
             }
           )

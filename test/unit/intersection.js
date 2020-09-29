@@ -1,102 +1,168 @@
 ;(function () {
-  describe("fabric.Intersection")
+  QUnit.module("fabric.Intersection")
 
-  test("constructor & properties", function (assert) {
-    expect(typeof fabric.Intersection === "function").toBeTruthy()
+  QUnit.test("constructor & properties", function (assert) {
+    assert.ok(typeof fabric.Intersection === "function")
 
     var intersection = new fabric.Intersection()
 
-    expect(intersection).toBeTruthy()
-    expect(intersection instanceof fabric.Intersection).toBeTruthy()
-    expect(intersection.constructor === fabric.Intersection).toBeTruthy()
-    expect(typeof intersection.constructor === "function").toBeTruthy()
-    expect(intersection.points).toEqual([])
-    expect("status" in intersection).toBeTruthy()
-    expect(intersection.status).toEqual(undefined)
+    assert.ok(intersection)
+    assert.ok(intersection instanceof fabric.Intersection)
+    assert.ok(intersection.constructor === fabric.Intersection)
+    assert.ok(typeof intersection.constructor === "function")
+    assert.deepEqual(
+      intersection.points,
+      [],
+      "starts with empty array of points"
+    )
+    assert.ok("status" in intersection, "has status property")
+    assert.equal(intersection.status, undefined, "no default value for status")
 
     var status = "status"
     intersection = new fabric.Intersection(status)
-    expect(intersection.status).toEqual(status)
+    assert.equal(intersection.status, status, "constructor pass status value")
   })
 
-  test("appendPoint", function (assert) {
+  QUnit.test("appendPoint", function (assert) {
     var point = new fabric.Point(1, 1)
     var intersection = new fabric.Intersection()
-    expect(typeof intersection.appendPoint === "function").toBeTruthy()
+    assert.ok(
+      typeof intersection.appendPoint === "function",
+      "has appendPoint method"
+    )
     var returned = intersection.appendPoint(point)
-    expect(returned instanceof fabric.Intersection).toBeTruthy()
-    expect(returned).toEqual(intersection)
-    expect(intersection.points.indexOf(point)).toEqual(0)
+    assert.ok(
+      returned instanceof fabric.Intersection,
+      "returns a fabric.Intersection"
+    )
+    assert.equal(returned, intersection, "is chainable")
+    assert.equal(
+      intersection.points.indexOf(point),
+      0,
+      "now intersection contain points"
+    )
   })
 
-  test("appendPoints", function (assert) {
+  QUnit.test("appendPoints", function (assert) {
     var point = new fabric.Point(1, 1)
     var intersection = new fabric.Intersection()
-    expect(typeof intersection.appendPoints === "function").toBeTruthy()
+    assert.ok(
+      typeof intersection.appendPoints === "function",
+      "has appendPoint method"
+    )
     var returned = intersection.appendPoints([point, point])
-    expect(returned instanceof fabric.Intersection).toBeTruthy()
-    expect(returned).toEqual(intersection)
-    expect(intersection.points.indexOf(point)).toEqual(0)
-    expect(intersection.points.length).toEqual(2)
+    assert.ok(
+      returned instanceof fabric.Intersection,
+      "returns a fabric.Intersection"
+    )
+    assert.equal(returned, intersection, "is chainable")
+    assert.equal(
+      intersection.points.indexOf(point),
+      0,
+      "now intersection contain points"
+    )
+    assert.equal(
+      intersection.points.length,
+      2,
+      "now intersection contains 2 points"
+    )
   })
 
-  test("intersectLineLine simple intersection", function (assert) {
+  QUnit.test("intersectLineLine simple intersection", function (assert) {
     var p1 = new fabric.Point(0, 0),
       p2 = new fabric.Point(10, 10),
       p3 = new fabric.Point(0, 10),
       p4 = new fabric.Point(10, 0),
       intersection = fabric.Intersection.intersectLineLine(p1, p2, p3, p4)
-    expect(typeof fabric.Intersection.intersectLineLine === "function").toBeTruthy()
-    expect(intersection instanceof fabric.Intersection).toBeTruthy()
-    expect(intersection.status).toEqual("Intersection")
-    expect(intersection.points[0]).toEqual(new fabric.Point(5, 5))
+    assert.ok(
+      typeof fabric.Intersection.intersectLineLine === "function",
+      "has intersectLineLine function"
+    )
+    assert.ok(
+      intersection instanceof fabric.Intersection,
+      "returns a fabric.Intersection"
+    )
+    assert.equal(
+      intersection.status,
+      "Intersection",
+      "it return a inteserction result"
+    )
+    assert.deepEqual(
+      intersection.points[0],
+      new fabric.Point(5, 5),
+      "intersect in 5,5"
+    )
   })
 
-  test("intersectLineLine parallel", function (assert) {
+  QUnit.test("intersectLineLine parallel", function (assert) {
     var p1 = new fabric.Point(0, 0),
       p2 = new fabric.Point(0, 10),
       p3 = new fabric.Point(10, 0),
       p4 = new fabric.Point(10, 10),
       intersection = fabric.Intersection.intersectLineLine(p1, p2, p3, p4)
-    expect(intersection instanceof fabric.Intersection).toBeTruthy()
-    expect(intersection.status).toEqual("Parallel")
-    expect(intersection.points).toEqual([])
+    assert.ok(
+      intersection instanceof fabric.Intersection,
+      "returns a fabric.Intersection"
+    )
+    assert.equal(intersection.status, "Parallel", "it return a Parallel result")
+    assert.deepEqual(intersection.points, [], "no point of intersections")
   })
 
-  test("intersectLineLine coincident", function (assert) {
+  QUnit.test("intersectLineLine coincident", function (assert) {
     var p1 = new fabric.Point(0, 0),
       p2 = new fabric.Point(0, 10),
       p3 = new fabric.Point(0, 0),
       p4 = new fabric.Point(0, 10),
       intersection = fabric.Intersection.intersectLineLine(p1, p2, p3, p4)
-    expect(intersection instanceof fabric.Intersection).toBeTruthy()
-    expect(intersection.status).toEqual("Coincident")
-    expect(intersection.points).toEqual([])
+    assert.ok(
+      intersection instanceof fabric.Intersection,
+      "returns a fabric.Intersection"
+    )
+    assert.equal(
+      intersection.status,
+      "Coincident",
+      "it return a Coincident result"
+    )
+    assert.deepEqual(intersection.points, [], "no point of intersections")
   })
 
-  test("intersectLineLine coincident but different", function (assert) {
+  QUnit.test("intersectLineLine coincident but different", function (assert) {
     var p1 = new fabric.Point(0, 0),
       p2 = new fabric.Point(0, 10),
       p3 = new fabric.Point(0, 1),
       p4 = new fabric.Point(0, 9),
       intersection = fabric.Intersection.intersectLineLine(p1, p2, p3, p4)
-    expect(intersection instanceof fabric.Intersection).toBeTruthy()
-    expect(intersection.status).toEqual("Coincident")
-    expect(intersection.points).toEqual([])
+    assert.ok(
+      intersection instanceof fabric.Intersection,
+      "returns a fabric.Intersection"
+    )
+    assert.equal(
+      intersection.status,
+      "Coincident",
+      "it return a Coincident result"
+    )
+    assert.deepEqual(intersection.points, [], "no point of intersections")
   })
 
-  test("intersectLineLine no intersect", function (assert) {
+  QUnit.test("intersectLineLine no intersect", function (assert) {
     var p1 = new fabric.Point(0, 0),
       p2 = new fabric.Point(0, 10),
       p3 = new fabric.Point(10, 0),
       p4 = new fabric.Point(1, 10),
       intersection = fabric.Intersection.intersectLineLine(p1, p2, p3, p4)
-    expect(intersection instanceof fabric.Intersection).toBeTruthy()
-    expect(intersection.status).toEqual(undefined)
-    expect(intersection.points).toEqual([])
+    assert.ok(
+      intersection instanceof fabric.Intersection,
+      "returns a fabric.Intersection"
+    )
+    assert.equal(
+      intersection.status,
+      undefined,
+      "it return a undefined status result"
+    )
+    assert.deepEqual(intersection.points, [], "no point of intersections")
   })
 
-  test("intersectLinePolygon", function (assert) {
+  QUnit.test("intersectLinePolygon", function (assert) {
     var p1 = new fabric.Point(0, 5),
       p2 = new fabric.Point(10, 5),
       p3 = new fabric.Point(5, 0),
@@ -104,15 +170,33 @@
       p5 = new fabric.Point(8, 10),
       points = [p3, p4, p5],
       intersection = fabric.Intersection.intersectLinePolygon(p1, p2, points)
-    expect(intersection instanceof fabric.Intersection).toBeTruthy()
-    expect(typeof fabric.Intersection.intersectLinePolygon === "function").toBeTruthy()
-    expect(intersection.status).toEqual("Intersection")
-    expect(intersection.points.length).toEqual(2)
-    expect(intersection.points[0]).toEqual(new fabric.Point(3.5, 5))
-    expect(intersection.points[1]).toEqual(new fabric.Point(6.5, 5))
+    assert.ok(
+      intersection instanceof fabric.Intersection,
+      "returns a fabric.Intersection"
+    )
+    assert.ok(
+      typeof fabric.Intersection.intersectLinePolygon === "function",
+      "has intersectLinePolygon function"
+    )
+    assert.equal(
+      intersection.status,
+      "Intersection",
+      "it return a Intersection result"
+    )
+    assert.equal(intersection.points.length, 2, "2 points of intersections")
+    assert.deepEqual(
+      intersection.points[0],
+      new fabric.Point(3.5, 5),
+      "intersect in 3.5 ,5"
+    )
+    assert.deepEqual(
+      intersection.points[1],
+      new fabric.Point(6.5, 5),
+      "intersect in 6.5 ,5"
+    )
   })
 
-  test("intersectLinePolygon in one point", function (assert) {
+  QUnit.test("intersectLinePolygon in one point", function (assert) {
     var p1 = new fabric.Point(0, 5),
       p2 = new fabric.Point(5, 5),
       p3 = new fabric.Point(5, 0),
@@ -120,13 +204,24 @@
       p5 = new fabric.Point(8, 10),
       points = [p3, p4, p5],
       intersection = fabric.Intersection.intersectLinePolygon(p1, p2, points)
-    expect(intersection instanceof fabric.Intersection).toBeTruthy()
-    expect(intersection.status).toEqual("Intersection")
-    expect(intersection.points.length).toEqual(1)
-    expect(intersection.points[0]).toEqual(new fabric.Point(3.5, 5))
+    assert.ok(
+      intersection instanceof fabric.Intersection,
+      "returns a fabric.Intersection"
+    )
+    assert.equal(
+      intersection.status,
+      "Intersection",
+      "it return a Intersection result"
+    )
+    assert.equal(intersection.points.length, 1, "1 points of intersections")
+    assert.deepEqual(
+      intersection.points[0],
+      new fabric.Point(3.5, 5),
+      "intersect in 3.5 ,5"
+    )
   })
 
-  test("intersectLinePolygon in one point", function (assert) {
+  QUnit.test("intersectLinePolygon in one point", function (assert) {
     var p1 = new fabric.Point(0, 5),
       p2 = new fabric.Point(3, 5),
       p3 = new fabric.Point(5, 0),
@@ -134,12 +229,15 @@
       p5 = new fabric.Point(8, 10),
       points = [p3, p4, p5],
       intersection = fabric.Intersection.intersectLinePolygon(p1, p2, points)
-    expect(intersection instanceof fabric.Intersection).toBeTruthy()
-    expect(intersection.status).toEqual(undefined)
-    expect(intersection.points.length).toEqual(0)
+    assert.ok(
+      intersection instanceof fabric.Intersection,
+      "returns a fabric.Intersection"
+    )
+    assert.equal(intersection.status, undefined, "it return a undefined result")
+    assert.equal(intersection.points.length, 0, "0 points of intersections")
   })
 
-  test("intersectLinePolygon on a polygon segment", function (assert) {
+  QUnit.test("intersectLinePolygon on a polygon segment", function (assert) {
     //TODO: fix this. it should return coincident.
     var p1 = new fabric.Point(1, 10),
       p2 = new fabric.Point(9, 10),
@@ -148,14 +246,29 @@
       p5 = new fabric.Point(8, 10),
       points = [p3, p4, p5],
       intersection = fabric.Intersection.intersectLinePolygon(p1, p2, points)
-    expect(intersection instanceof fabric.Intersection).toBeTruthy()
-    expect(intersection.status).toEqual("Intersection")
-    expect(intersection.points.length).toEqual(2)
-    expect(intersection.points[0]).toEqual(new fabric.Point(2, 10))
-    expect(intersection.points[1]).toEqual(new fabric.Point(8, 10))
+    assert.ok(
+      intersection instanceof fabric.Intersection,
+      "returns a fabric.Intersection"
+    )
+    assert.equal(
+      intersection.status,
+      "Intersection",
+      "it return a Intersection result"
+    )
+    assert.equal(intersection.points.length, 2, "2 points of intersections")
+    assert.deepEqual(
+      intersection.points[0],
+      new fabric.Point(2, 10),
+      "intersect in 2, 10"
+    )
+    assert.deepEqual(
+      intersection.points[1],
+      new fabric.Point(8, 10),
+      "intersect in 8, 10"
+    )
   })
 
-  test("intersectPolygonPolygon not intersecting", function (assert) {
+  QUnit.test("intersectPolygonPolygon not intersecting", function (assert) {
     var p3b = new fabric.Point(50, 0),
       p4b = new fabric.Point(20, 100),
       p5b = new fabric.Point(80, 100),
@@ -168,13 +281,23 @@
         pointsb,
         points
       )
-    expect(typeof fabric.Intersection.intersectPolygonPolygon === "function").toBeTruthy()
-    expect(intersection instanceof fabric.Intersection).toBeTruthy()
-    expect(intersection.status).toEqual(undefined)
-    expect(intersection.points.length).toEqual(0)
+    assert.ok(
+      typeof fabric.Intersection.intersectPolygonPolygon === "function",
+      "has intersectPolygonPolygon function"
+    )
+    assert.ok(
+      intersection instanceof fabric.Intersection,
+      "returns a fabric.Intersection"
+    )
+    assert.equal(
+      intersection.status,
+      undefined,
+      "it return a Intersection with no status"
+    )
+    assert.equal(intersection.points.length, 0, "0 points of intersections")
   })
 
-  test("intersectPolygonPolygon intersecting", function (assert) {
+  QUnit.test("intersectPolygonPolygon intersecting", function (assert) {
     var p3b = new fabric.Point(1, 1),
       p4b = new fabric.Point(3, 1),
       p5b = new fabric.Point(3, 3),
@@ -189,15 +312,33 @@
         pointsb,
         points
       )
-    expect(typeof fabric.Intersection.intersectPolygonPolygon === "function").toBeTruthy()
-    expect(intersection instanceof fabric.Intersection).toBeTruthy()
-    expect(intersection.status).toEqual("Intersection")
-    expect(intersection.points.length).toEqual(2)
-    expect(intersection.points[0]).toEqual(new fabric.Point(3, 2))
-    expect(intersection.points[1]).toEqual(new fabric.Point(2, 3))
+    assert.ok(
+      typeof fabric.Intersection.intersectPolygonPolygon === "function",
+      "has intersectPolygonPolygon function"
+    )
+    assert.ok(
+      intersection instanceof fabric.Intersection,
+      "returns a fabric.Intersection"
+    )
+    assert.equal(
+      intersection.status,
+      "Intersection",
+      "it return a Intersection result"
+    )
+    assert.equal(intersection.points.length, 2, "2 points of intersections")
+    assert.deepEqual(
+      intersection.points[0],
+      new fabric.Point(3, 2),
+      "point of intersections 3, 2"
+    )
+    assert.deepEqual(
+      intersection.points[1],
+      new fabric.Point(2, 3),
+      "point of intersections 2, 3"
+    )
   })
 
-  test("intersectPolygonRectangle intersecting", function (assert) {
+  QUnit.test("intersectPolygonRectangle intersecting", function (assert) {
     var p3b = new fabric.Point(1, 1),
       p5b = new fabric.Point(3, 3),
       p3 = new fabric.Point(2, 2),
@@ -210,15 +351,33 @@
         p3b,
         p5b
       )
-    expect(typeof fabric.Intersection.intersectPolygonRectangle === "function").toBeTruthy()
-    expect(intersection instanceof fabric.Intersection).toBeTruthy()
-    expect(intersection.status).toEqual("Intersection")
-    expect(intersection.points.length).toEqual(2)
-    expect(intersection.points[0]).toEqual(new fabric.Point(3, 2))
-    expect(intersection.points[1]).toEqual(new fabric.Point(2, 3))
+    assert.ok(
+      typeof fabric.Intersection.intersectPolygonRectangle === "function",
+      "has intersectPolygonPolygon function"
+    )
+    assert.ok(
+      intersection instanceof fabric.Intersection,
+      "returns a fabric.Intersection"
+    )
+    assert.equal(
+      intersection.status,
+      "Intersection",
+      "it return a Intersection result"
+    )
+    assert.equal(intersection.points.length, 2, "2 points of intersections")
+    assert.deepEqual(
+      intersection.points[0],
+      new fabric.Point(3, 2),
+      "point of intersections 3, 2"
+    )
+    assert.deepEqual(
+      intersection.points[1],
+      new fabric.Point(2, 3),
+      "point of intersections 2, 3"
+    )
   })
 
-  test("intersectPolygonRectangle not intersecting", function (assert) {
+  QUnit.test("intersectPolygonRectangle not intersecting", function (assert) {
     var p3b = new fabric.Point(10, 10),
       p5b = new fabric.Point(30, 30),
       p3 = new fabric.Point(2, 2),
@@ -231,9 +390,19 @@
         p3b,
         p5b
       )
-    expect(typeof fabric.Intersection.intersectPolygonRectangle === "function").toBeTruthy()
-    expect(intersection instanceof fabric.Intersection).toBeTruthy()
-    expect(intersection.status).toEqual(undefined)
-    expect(intersection.points.length).toEqual(0)
+    assert.ok(
+      typeof fabric.Intersection.intersectPolygonRectangle === "function",
+      "has intersectPolygonPolygon function"
+    )
+    assert.ok(
+      intersection instanceof fabric.Intersection,
+      "returns a fabric.Intersection"
+    )
+    assert.equal(
+      intersection.status,
+      undefined,
+      "it return a Intersection result"
+    )
+    assert.equal(intersection.points.length, 0, "0 points of intersections")
   })
 })()

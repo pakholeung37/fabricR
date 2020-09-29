@@ -1,5 +1,5 @@
 ;(function () {
-  describe("fabric.util")
+  QUnit.module("fabric.util")
 
   function _createImageElement() {
     return fabric.document.createElement("img")
@@ -27,183 +27,234 @@
 
   var IMG_URL_NON_EXISTING = "http://www.google.com/non-existing"
 
-  test("fabric.util.toFixed", function (assert) {
-    expect(typeof fabric.util.toFixed === "function").toBeTruthy()
+  QUnit.test("fabric.util.toFixed", function (assert) {
+    assert.ok(typeof fabric.util.toFixed === "function")
 
     function test(what) {
-      expect(fabric.util.toFixed(what, 2)).toEqual(166.67)
-      expect(fabric.util.toFixed(what, 5)).toEqual(166.66667)
-      expect(fabric.util.toFixed(what, 0)).toEqual(167)
+      assert.equal(
+        fabric.util.toFixed(what, 2),
+        166.67,
+        "should leave 2 fractional digits"
+      )
+      assert.equal(
+        fabric.util.toFixed(what, 5),
+        166.66667,
+        "should leave 5 fractional digits"
+      )
+      assert.equal(
+        fabric.util.toFixed(what, 0),
+        167,
+        "should leave 0 fractional digits"
+      )
 
       var fractionless =
         typeof what == "number"
           ? parseInt(what)
           : what.substring(0, what.indexOf("."))
 
-      expect(fabric.util.toFixed(fractionless, 2)).toEqual(166)
+      assert.equal(
+        fabric.util.toFixed(fractionless, 2),
+        166,
+        "should leave fractionless number as is"
+      )
     }
 
     test.call(this, "166.66666666666666666666") // string
     test.call(this, 166.66666666666666666666) // number
   })
 
-  test("fabric.util.removeFromArray", function (assert) {
+  QUnit.test("fabric.util.removeFromArray", function (assert) {
     var testArray = [1, 2, 3, 4, 5]
 
-    expect(typeof fabric.util.removeFromArray === "function").toBeTruthy()
+    assert.ok(typeof fabric.util.removeFromArray === "function")
 
     fabric.util.removeFromArray(testArray, 2)
-    expect([1, 3, 4, 5]).toEqual(testArray)
-    expect(fabric.util.removeFromArray(testArray, 1)).toEqual(testArray)
+    assert.deepEqual([1, 3, 4, 5], testArray)
+    assert.equal(
+      fabric.util.removeFromArray(testArray, 1),
+      testArray,
+      "should return reference to original array"
+    )
 
     testArray = [1, 2, 3, 1]
     fabric.util.removeFromArray(testArray, 1)
-    expect([2, 3, 1]).toEqual(testArray)
+    assert.deepEqual(
+      [2, 3, 1],
+      testArray,
+      "only first occurance of value should be deleted"
+    )
 
     testArray = [1, 2, 3]
     fabric.util.removeFromArray(testArray, 12)
-    expect([1, 2, 3]).toEqual(testArray)
+    assert.deepEqual(
+      [1, 2, 3],
+      testArray,
+      "deleting unexistent value should not affect array"
+    )
 
     testArray = []
     fabric.util.removeFromArray(testArray, 1)
-    expect([]).toEqual(testArray)
+    assert.deepEqual(
+      [],
+      testArray,
+      "deleting any value from empty array should not affect it"
+    )
 
     testArray = ["0"]
     fabric.util.removeFromArray(testArray, 0)
-    expect(["0"]).toEqual(testArray)
+    assert.deepEqual(
+      ["0"],
+      testArray,
+      "should use (strict) identity comparison, rather than equality one"
+    )
   })
 
-  test("fabric.util.degreesToRadians", function (assert) {
-    expect(typeof fabric.util.degreesToRadians === "function").toBeTruthy()
-    expect(fabric.util.degreesToRadians(0)).toEqual(0)
-    expect(fabric.util.degreesToRadians(90)).toEqual(Math.PI / 2)
-    expect(fabric.util.degreesToRadians(180)).toEqual(Math.PI)
+  QUnit.test("fabric.util.degreesToRadians", function (assert) {
+    assert.ok(typeof fabric.util.degreesToRadians === "function")
+    assert.equal(fabric.util.degreesToRadians(0), 0)
+    assert.equal(fabric.util.degreesToRadians(90), Math.PI / 2)
+    assert.equal(fabric.util.degreesToRadians(180), Math.PI)
 
-    expect(fabric.util.degreesToRadians()).toEqual(NaN)
+    assert.deepEqual(fabric.util.degreesToRadians(), NaN)
   })
 
-  test("fabric.util.radiansToDegrees", function (assert) {
-    expect(typeof fabric.util.radiansToDegrees === "function").toBeTruthy()
+  QUnit.test("fabric.util.radiansToDegrees", function (assert) {
+    assert.ok(typeof fabric.util.radiansToDegrees === "function")
 
-    expect(fabric.util.radiansToDegrees(0)).toEqual(0)
-    expect(fabric.util.radiansToDegrees(Math.PI / 2)).toEqual(90)
-    expect(fabric.util.radiansToDegrees(Math.PI)).toEqual(180)
+    assert.equal(fabric.util.radiansToDegrees(0), 0)
+    assert.equal(fabric.util.radiansToDegrees(Math.PI / 2), 90)
+    assert.equal(fabric.util.radiansToDegrees(Math.PI), 180)
 
-    expect(fabric.util.radiansToDegrees()).toEqual(NaN)
+    assert.deepEqual(fabric.util.radiansToDegrees(), NaN)
   })
 
-  test("fabric.util.getRandomInt", function (assert) {
-    expect(typeof fabric.util.getRandomInt === "function").toBeTruthy()
+  QUnit.test("fabric.util.getRandomInt", function (assert) {
+    assert.ok(typeof fabric.util.getRandomInt === "function")
 
     var randomInts = []
     for (var i = 100; i--; ) {
       var randomInt = fabric.util.getRandomInt(100, 200)
       randomInts.push(randomInt)
-      expect(randomInt >= 100 && randomInt <= 200).toBeTruthy()
+      assert.ok(randomInt >= 100 && randomInt <= 200)
     }
 
     var areAllTheSame = randomInts.every(function (value) {
       return value === randomInts[0]
     })
 
-    expect(!areAllTheSame).toBeTruthy()
+    assert.ok(!areAllTheSame)
   })
 
-  test("fabric.util.falseFunction", function (assert) {
-    expect(typeof fabric.util.falseFunction === "function").toBeTruthy()
-    expect(fabric.util.falseFunction()).toEqual(false)
+  QUnit.test("fabric.util.falseFunction", function (assert) {
+    assert.ok(typeof fabric.util.falseFunction === "function")
+    assert.equal(fabric.util.falseFunction(), false)
   })
 
-  test("String.prototype.trim", function (assert) {
-    expect(typeof String.prototype.trim === "function").toBeTruthy()
-    expect("\t\n   foo bar \n    \xA0  ".trim()).toEqual("foo bar")
+  QUnit.test("String.prototype.trim", function (assert) {
+    assert.ok(typeof String.prototype.trim === "function")
+    assert.equal("\t\n   foo bar \n    \xA0  ".trim(), "foo bar")
   })
 
-  test("fabric.util.string.camelize", function (assert) {
+  QUnit.test("fabric.util.string.camelize", function (assert) {
     var camelize = fabric.util.string.camelize
 
-    expect(typeof camelize === "function").toBeTruthy()
+    assert.ok(typeof camelize === "function")
 
-    expect(camelize("foo")).toEqual("foo")
-    expect(camelize("foo-bar")).toEqual("fooBar")
-    expect(camelize("Foo-bar-Baz")).toEqual("FooBarBaz")
-    expect(camelize("FooBarBaz")).toEqual("FooBarBaz")
-    expect(camelize("-bar")).toEqual("Bar")
-    expect(camelize("")).toEqual("")
-    expect(camelize("and_something_with_underscores")).toEqual("and_something_with_underscores")
-    expect(camelize("underscores_and-dashes")).toEqual("underscores_andDashes")
-    expect(camelize("--double")).toEqual("Double")
+    assert.equal(camelize("foo"), "foo")
+    assert.equal(camelize("foo-bar"), "fooBar")
+    assert.equal(camelize("Foo-bar-Baz"), "FooBarBaz")
+    assert.equal(camelize("FooBarBaz"), "FooBarBaz")
+    assert.equal(camelize("-bar"), "Bar")
+    assert.equal(camelize(""), "")
+    assert.equal(
+      camelize("and_something_with_underscores"),
+      "and_something_with_underscores"
+    )
+    assert.equal(camelize("underscores_and-dashes"), "underscores_andDashes")
+    assert.equal(camelize("--double"), "Double")
   })
 
-  test("fabric.util.string.graphemeSplit", function (assert) {
+  QUnit.test("fabric.util.string.graphemeSplit", function (assert) {
     var gSplit = fabric.util.string.graphemeSplit
 
-    expect(typeof gSplit === "function").toBeTruthy()
+    assert.ok(typeof gSplit === "function")
 
-    expect(gSplit("foo")).toEqual(["f", "o", "o"])
-    expect(gSplit("f🙂o")).toEqual(["f", "🙂", "o"])
+    assert.deepEqual(
+      gSplit("foo"),
+      ["f", "o", "o"],
+      "normal test get splitted by char"
+    )
+    assert.deepEqual(
+      gSplit("f🙂o"),
+      ["f", "🙂", "o"],
+      "normal test get splitted by char"
+    )
   })
 
-  test("fabric.util.string.escapeXml", function (assert) {
+  QUnit.test("fabric.util.string.escapeXml", function (assert) {
     var escapeXml = fabric.util.string.escapeXml
 
-    expect(typeof escapeXml === "function").toBeTruthy()
+    assert.ok(typeof escapeXml === "function")
 
     // borrowed from Prototype.js
-    expect("foo bar").toEqual(escapeXml("foo bar"))
-    expect("foo &lt;span&gt;bar&lt;/span&gt;").toEqual(escapeXml("foo <span>bar</span>"))
+    assert.equal("foo bar", escapeXml("foo bar"))
+    assert.equal(
+      "foo &lt;span&gt;bar&lt;/span&gt;",
+      escapeXml("foo <span>bar</span>")
+    )
     //equal('foo ß bar', escapeXml('foo ß bar'));
 
     //equal('ウィメンズ2007\nクルーズコレクション', escapeXml('ウィメンズ2007\nクルーズコレクション'));
 
-    expect(
-      "a&lt;a href=&quot;blah&quot;&gt;blub&lt;/a&gt;b&lt;span&gt;&lt;div&gt;&lt;/div&gt;&lt;/span&gt;cdef&lt;strong&gt;!!!!&lt;/strong&gt;g"
-    ).toEqual(escapeXml(
-      'a<a href="blah">blub</a>b<span><div></div></span>cdef<strong>!!!!</strong>g'
-    ))
+    assert.equal(
+      "a&lt;a href=&quot;blah&quot;&gt;blub&lt;/a&gt;b&lt;span&gt;&lt;div&gt;&lt;/div&gt;&lt;/span&gt;cdef&lt;strong&gt;!!!!&lt;/strong&gt;g",
+      escapeXml(
+        'a<a href="blah">blub</a>b<span><div></div></span>cdef<strong>!!!!</strong>g'
+      )
+    )
 
-    expect("1\n2").toEqual(escapeXml("1\n2"))
+    assert.equal("1\n2", escapeXml("1\n2"))
   })
 
-  test("fabric.util.string.capitalize", function (assert) {
+  QUnit.test("fabric.util.string.capitalize", function (assert) {
     var capitalize = fabric.util.string.capitalize
 
-    expect(typeof capitalize === "function").toBeTruthy()
+    assert.ok(typeof capitalize === "function")
 
-    expect(capitalize("foo")).toEqual("Foo")
-    expect(capitalize("")).toEqual("")
-    expect(capitalize("Foo")).toEqual("Foo")
-    expect(capitalize("foo-bar-baz")).toEqual("Foo-bar-baz")
-    expect(capitalize("FOO")).toEqual("Foo")
-    expect(capitalize("FoobaR")).toEqual("Foobar")
-    expect(capitalize("2foo")).toEqual("2foo")
+    assert.equal(capitalize("foo"), "Foo")
+    assert.equal(capitalize(""), "")
+    assert.equal(capitalize("Foo"), "Foo")
+    assert.equal(capitalize("foo-bar-baz"), "Foo-bar-baz")
+    assert.equal(capitalize("FOO"), "Foo")
+    assert.equal(capitalize("FoobaR"), "Foobar")
+    assert.equal(capitalize("2foo"), "2foo")
   })
 
-  test("fabric.util.object.extend", function (assert) {
+  QUnit.test("fabric.util.object.extend", function (assert) {
     var extend = fabric.util.object.extend
 
-    expect(typeof extend === "function").toBeTruthy()
+    assert.ok(typeof extend === "function")
 
     var destination = { x: 1 },
       source = { y: 2 }
 
     extend(destination, source)
 
-    expect(destination.x).toEqual(1)
-    expect(destination.y).toEqual(2)
-    expect(source.x).toEqual(undefined)
-    expect(source.y).toEqual(2)
+    assert.equal(destination.x, 1)
+    assert.equal(destination.y, 2)
+    assert.equal(source.x, undefined)
+    assert.equal(source.y, 2)
 
     destination = { x: 1 }
     source = { x: 2 }
 
     extend(destination, source)
 
-    expect(destination.x).toEqual(2)
-    expect(source.x).toEqual(2)
+    assert.equal(destination.x, 2)
+    assert.equal(source.x, 2)
   })
 
-  test("fabric.util.object.extend deep", function (assert) {
+  QUnit.test("fabric.util.object.extend deep", function (assert) {
     var extend = fabric.util.object.extend
     var d = function () {}
     var destination = { x: 1 },
@@ -211,29 +262,29 @@
 
     extend(destination, source, true)
 
-    expect(destination.x).toEqual(1)
-    expect(destination.y).toEqual(2)
-    expect(destination.a).toEqual(source.a)
-    expect(destination.a).not.toEqual(source.a)
-    expect(typeof source.a.c[3] === "function").toBeTruthy()
-    expect(destination.a.c[3]).toEqual(source.a.c[3])
+    assert.equal(destination.x, 1, "x is still in destination")
+    assert.equal(destination.y, 2, "y has been added")
+    assert.deepEqual(destination.a, source.a, "a has been copied deeply")
+    assert.notEqual(destination.a, source.a, "is not the same object")
+    assert.ok(typeof source.a.c[3] === "function", "is a function")
+    assert.equal(destination.a.c[3], source.a.c[3], "functions get referenced")
   })
 
-  test("fabric.util.object.clone", function (assert) {
+  QUnit.test("fabric.util.object.clone", function (assert) {
     var clone = fabric.util.object.clone
 
-    expect(typeof clone === "function").toBeTruthy()
+    assert.ok(typeof clone === "function")
 
     var obj = { x: 1, y: [1, 2, 3] },
       _clone = clone(obj)
 
-    expect(_clone.x).toEqual(1)
-    expect(obj).not.toEqual(_clone)
-    expect(_clone.y).toEqual(obj.y)
+    assert.equal(_clone.x, 1)
+    assert.notEqual(obj, _clone)
+    assert.equal(_clone.y, obj.y)
   })
 
-  test("Function.prototype.bind", function (assert) {
-    expect(typeof Function.prototype.bind === "function").toBeTruthy()
+  QUnit.test("Function.prototype.bind", function (assert) {
+    assert.ok(typeof Function.prototype.bind === "function")
 
     var obj = {}
     function fn() {
@@ -241,13 +292,13 @@
     }
 
     var bound = fn.bind(obj)
-    expect([obj, undefined, undefined]).toEqual(bound())
-    expect([obj, 1, undefined]).toEqual(bound(1))
-    expect([obj, 1, null]).toEqual(bound(1, null))
+    assert.deepEqual([obj, undefined, undefined], bound())
+    assert.deepEqual([obj, 1, undefined], bound(1))
+    assert.deepEqual([obj, 1, null], bound(1, null))
 
     bound = fn.bind(obj, 1)
-    expect([obj, 1, undefined]).toEqual(bound())
-    expect([obj, 1, 2]).toEqual(bound(2))
+    assert.deepEqual([obj, 1, undefined], bound())
+    assert.deepEqual([obj, 1, 2], bound(2))
 
     function Point(x, y) {
       this.x = x
@@ -258,52 +309,58 @@
     var YAxisPoint = Point.bind(obj, 0)
     var axisPoint = new YAxisPoint(5)
 
-    expect(0).toEqual(axisPoint.x)
-    expect(5).toEqual(axisPoint.y)
+    assert.deepEqual(0, axisPoint.x)
+    assert.deepEqual(5, axisPoint.y)
 
-    expect(axisPoint instanceof Point).toBeTruthy()
+    assert.ok(axisPoint instanceof Point)
     // assert.ok(axisPoint instanceof YAxisPoint); <-- fails
   })
 
-  test("fabric.util.getById", function (assert) {
-    expect(typeof fabric.util.getById === "function").toBeTruthy()
+  QUnit.test("fabric.util.getById", function (assert) {
+    assert.ok(typeof fabric.util.getById === "function")
 
     var el = fabric.document.createElement("div")
     el.id = "foobarbaz"
     fabric.document.body.appendChild(el)
 
-    expect(el).toEqual(fabric.util.getById(el))
-    expect(el).toEqual(fabric.util.getById("foobarbaz"))
-    expect(null).toEqual(fabric.util.getById("likely-non-existent-id"))
+    assert.equal(el, fabric.util.getById(el))
+    assert.equal(el, fabric.util.getById("foobarbaz"))
+    assert.equal(null, fabric.util.getById("likely-non-existent-id"))
   })
 
-  test("fabric.util.toArray", function (assert) {
-    expect(typeof fabric.util.toArray === "function").toBeTruthy()
+  QUnit.test("fabric.util.toArray", function (assert) {
+    assert.ok(typeof fabric.util.toArray === "function")
 
-    expect(["x", "y"]).toEqual(fabric.util.toArray({ 0: "x", 1: "y", length: 2 }))
-    expect([1, 3]).toEqual(fabric.util.toArray(
-      (function () {
-        return arguments
-      })(1, 3)
-    ))
+    assert.deepEqual(
+      ["x", "y"],
+      fabric.util.toArray({ 0: "x", 1: "y", length: 2 })
+    )
+    assert.deepEqual(
+      [1, 3],
+      fabric.util.toArray(
+        (function () {
+          return arguments
+        })(1, 3)
+      )
+    )
 
     var nodelist = fabric.document.getElementsByTagName("div"),
       converted = fabric.util.toArray(nodelist)
 
-    expect(converted instanceof Array).toBeTruthy()
-    expect(nodelist.length).toEqual(converted.length)
-    expect(nodelist[0]).toEqual(converted[0])
-    expect(nodelist[1]).toEqual(converted[1])
+    assert.ok(converted instanceof Array)
+    assert.equal(nodelist.length, converted.length)
+    assert.equal(nodelist[0], converted[0])
+    assert.equal(nodelist[1], converted[1])
   })
 
-  test("fabric.util.makeElement", function (assert) {
+  QUnit.test("fabric.util.makeElement", function (assert) {
     var makeElement = fabric.util.makeElement
-    expect(typeof makeElement === "function").toBeTruthy()
+    assert.ok(typeof makeElement === "function")
 
     var el = makeElement("div")
 
-    expect(el.tagName.toLowerCase()).toEqual("div")
-    expect(el.nodeType).toEqual(1)
+    assert.equal(el.tagName.toLowerCase(), "div")
+    assert.equal(el.nodeType, 1)
 
     el = makeElement("p", {
       class: "blah",
@@ -311,47 +368,47 @@
       "some_random-attribute": "woot"
     })
 
-    expect(el.tagName.toLowerCase()).toEqual("p")
-    expect(el.nodeType).toEqual(1)
-    expect(el.className).toEqual("blah")
-    expect(el.htmlFor).toEqual("boo_hoo")
-    expect(el.getAttribute("some_random-attribute")).toEqual("woot")
+    assert.equal(el.tagName.toLowerCase(), "p")
+    assert.equal(el.nodeType, 1)
+    assert.equal(el.className, "blah")
+    assert.equal(el.htmlFor, "boo_hoo")
+    assert.equal(el.getAttribute("some_random-attribute"), "woot")
   })
 
-  test("fabric.util.addClass", function (assert) {
+  QUnit.test("fabric.util.addClass", function (assert) {
     var addClass = fabric.util.addClass
-    expect(typeof addClass === "function").toBeTruthy()
+    assert.ok(typeof addClass === "function")
 
     var el = fabric.document.createElement("div")
     addClass(el, "foo")
-    expect(el.className).toEqual("foo")
+    assert.equal(el.className, "foo")
 
     addClass(el, "bar")
-    expect(el.className).toEqual("foo bar")
+    assert.equal(el.className, "foo bar")
 
     addClass(el, "baz qux")
-    expect(el.className).toEqual("foo bar baz qux")
+    assert.equal(el.className, "foo bar baz qux")
 
     addClass(el, "foo")
-    expect(el.className).toEqual("foo bar baz qux")
+    assert.equal(el.className, "foo bar baz qux")
   })
 
-  test("fabric.util.wrapElement", function (assert) {
+  QUnit.test("fabric.util.wrapElement", function (assert) {
     var wrapElement = fabric.util.wrapElement
-    expect(typeof wrapElement === "function").toBeTruthy()
+    assert.ok(typeof wrapElement === "function")
 
     var el = fabric.document.createElement("p")
     var wrapper = wrapElement(el, "div")
 
-    expect(wrapper.tagName.toLowerCase()).toEqual("div")
-    expect(wrapper.firstChild).toEqual(el)
+    assert.equal(wrapper.tagName.toLowerCase(), "div")
+    assert.equal(wrapper.firstChild, el)
 
     el = fabric.document.createElement("p")
     wrapper = wrapElement(el, "div", { class: "foo" })
 
-    expect(wrapper.tagName.toLowerCase()).toEqual("div")
-    expect(wrapper.firstChild).toEqual(el)
-    expect(wrapper.className).toEqual("foo")
+    assert.equal(wrapper.tagName.toLowerCase(), "div")
+    assert.equal(wrapper.firstChild, el)
+    assert.equal(wrapper.className, "foo")
 
     var childEl = fabric.document.createElement("span")
     var parentEl = fabric.document.createElement("p")
@@ -361,37 +418,37 @@
     wrapper = wrapElement(childEl, "strong")
 
     // wrapper is now in between parent and child
-    expect(wrapper.parentNode).toEqual(parentEl)
-    expect(wrapper.firstChild).toEqual(childEl)
+    assert.equal(wrapper.parentNode, parentEl)
+    assert.equal(wrapper.firstChild, childEl)
   })
 
-  test("fabric.util.makeElementUnselectable", function (assert) {
+  QUnit.test("fabric.util.makeElementUnselectable", function (assert) {
     var makeElementUnselectable = fabric.util.makeElementUnselectable
 
-    expect(typeof makeElementUnselectable === "function").toBeTruthy()
+    assert.ok(typeof makeElementUnselectable === "function")
 
     var el = fabric.document.createElement("p")
     el.appendChild(fabric.document.createTextNode("foo"))
 
-    expect(el).toEqual(makeElementUnselectable(el))
+    assert.equal(el, makeElementUnselectable(el), 'should be "chainable"')
     if (typeof el.onselectstart !== "undefined") {
-      expect(el.onselectstart).toEqual(fabric.util.falseFunction)
+      assert.equal(el.onselectstart, fabric.util.falseFunction)
     }
 
     // not sure if it's a good idea to test implementation details here
     // functional test would probably make more sense
     if (typeof el.unselectable === "string") {
-      expect("on").toEqual(el.unselectable)
+      assert.equal("on", el.unselectable)
     } else if (typeof el.userSelect !== "undefined") {
-      expect("none").toEqual(el.userSelect)
+      assert.equal("none", el.userSelect)
     }
   })
 
-  test("fabric.util.makeElementSelectable", function (assert) {
+  QUnit.test("fabric.util.makeElementSelectable", function (assert) {
     var makeElementSelectable = fabric.util.makeElementSelectable,
       makeElementUnselectable = fabric.util.makeElementUnselectable
 
-    expect(typeof makeElementSelectable === "function").toBeTruthy()
+    assert.ok(typeof makeElementSelectable === "function")
 
     var el = fabric.document.createElement("p")
     el.appendChild(fabric.document.createTextNode("foo"))
@@ -400,17 +457,17 @@
     makeElementSelectable(el)
 
     if (typeof el.onselectstart !== "undefined") {
-      expect(el.onselectstart).toEqual(null)
+      assert.equal(el.onselectstart, null)
     }
     if (typeof el.unselectable === "string") {
-      expect("").toEqual(el.unselectable)
+      assert.equal("", el.unselectable)
     } else if (typeof el.userSelect !== "undefined") {
-      expect("").toEqual(el.userSelect)
+      assert.equal("", el.userSelect)
     }
   })
 
-  test("fabric.loadSVGFromURL", function (assert) {
-    expect("function").toEqual(typeof fabric.loadSVGFromURL)
+  QUnit.test("fabric.loadSVGFromURL", function (assert) {
+    assert.equal("function", typeof fabric.loadSVGFromURL)
   })
 
   var SVG_DOC_AS_STRING =
@@ -421,18 +478,18 @@
         397,215 423,301 350,250 277,301 303,215 231,161 321,161" />\
     </svg>'
 
-  test("fabric.loadSVGFromString", function (assert) {
+  QUnit.test("fabric.loadSVGFromString", function (assert) {
     var done = assert.async()
-    expect("function").toEqual(typeof fabric.loadSVGFromString)
+    assert.equal("function", typeof fabric.loadSVGFromString)
 
     fabric.loadSVGFromString(SVG_DOC_AS_STRING, function (loadedObjects) {
-      expect(loadedObjects[0] instanceof fabric.Polygon).toBeTruthy()
-      expect("red").toEqual(loadedObjects[0].fill)
+      assert.ok(loadedObjects[0] instanceof fabric.Polygon)
+      assert.equal("red", loadedObjects[0].fill)
       setTimeout(done, 1000)
     })
   })
 
-  test("fabric.loadSVGFromString with surrounding whitespace", function (
+  QUnit.test("fabric.loadSVGFromString with surrounding whitespace", function (
     assert
   ) {
     var done = assert.async()
@@ -444,15 +501,15 @@
     })
 
     setTimeout(function () {
-      expect(loadedObjects[0] instanceof fabric.Polygon).toBeTruthy()
-      expect("red").toEqual(loadedObjects[0] && loadedObjects[0].fill)
+      assert.ok(loadedObjects[0] instanceof fabric.Polygon)
+      assert.equal("red", loadedObjects[0] && loadedObjects[0].fill)
       done()
     }, 1000)
   })
 
-  test("fabric.util.loadImage", function (assert) {
+  QUnit.test("fabric.util.loadImage", function (assert) {
     var done = assert.async()
-    expect(typeof fabric.util.loadImage === "function").toBeTruthy()
+    assert.ok(typeof fabric.util.loadImage === "function")
 
     if (IMG_URL.indexOf("/home/travis") === 0) {
       // image can not be accessed on travis so we're returning early
@@ -463,14 +520,17 @@
     fabric.util.loadImage(IMG_URL, function (obj, isError) {
       if (obj) {
         var oImg = new fabric.Image(obj)
-        expect(/fixtures\/very_large_image\.jpg$/.test(oImg.getSrc())).toBeTruthy()
-        expect(!isError).toBeTruthy()
+        assert.ok(
+          /fixtures\/very_large_image\.jpg$/.test(oImg.getSrc()),
+          "image should have correct src"
+        )
+        assert.ok(!isError)
       }
       done()
     })
   })
 
-  test("fabric.util.loadImage with no args", function (assert) {
+  QUnit.test("fabric.util.loadImage with no args", function (assert) {
     var done = assert.async()
     if (IMG_URL.indexOf("/home/travis") === 0) {
       // image can not be accessed on travis so we're returning early
@@ -480,12 +540,12 @@
     }
 
     fabric.util.loadImage("", function () {
-      expect(1).toBeTruthy()
+      assert.ok(1, "callback should be invoked")
       done()
     })
   })
 
-  test("fabric.util.loadImage with crossOrigin", function (assert) {
+  QUnit.test("fabric.util.loadImage with crossOrigin", function (assert) {
     var done = assert.async()
     if (IMG_URL.indexOf("/home/travis") === 0) {
       // image can not be accessed on travis so we're returning early
@@ -497,9 +557,9 @@
       fabric.util.loadImage(
         IMG_URL,
         function (img, isError) {
-          expect(img.src).toEqual(IMG_URL)
-          expect(img.crossOrigin).toEqual("anonymous")
-          expect(!isError).toBeTruthy()
+          assert.equal(img.src, IMG_URL, "src is set")
+          assert.equal(img.crossOrigin, "anonymous", "crossOrigin is set")
+          assert.ok(!isError)
           done()
         },
         null,
@@ -510,7 +570,7 @@
     }
   })
 
-  test(
+  QUnit.test(
     "fabric.util.loadImage with url for a non exsiting image",
     function (assert) {
       var done = assert.async()
@@ -518,7 +578,11 @@
         fabric.util.loadImage(
           IMG_URL_NON_EXISTING,
           function (img, error) {
-            expect(error).toEqual(true)
+            assert.equal(
+              error,
+              true,
+              "callback should be invoked with error set to true"
+            )
             done()
           },
           this
@@ -545,33 +609,36 @@
         397,215 423,301 350,250 277,301 303,215 231,161 321,161" />\
     </svg>'
 
-  test("fabric.util.groupSVGElements", function (assert) {
+  QUnit.test("fabric.util.groupSVGElements", function (assert) {
     var done = assert.async()
-    expect(typeof fabric.util.groupSVGElements === "function").toBeTruthy()
+    assert.ok(typeof fabric.util.groupSVGElements === "function")
 
     var group1
     fabric.loadSVGFromString(SVG_WITH_1_ELEMENT, function (objects, options) {
       group1 = fabric.util.groupSVGElements(objects, options)
-      expect(group1 instanceof fabric.Polygon).toBeTruthy()
+      assert.ok(
+        group1 instanceof fabric.Polygon,
+        "it returns just the first element in case is just one"
+      )
       done()
     })
   })
 
-  test("fabric.util.groupSVGElements #2", function (assert) {
+  QUnit.test("fabric.util.groupSVGElements #2", function (assert) {
     var done = assert.async()
     var group2
     fabric.loadSVGFromString(SVG_WITH_2_ELEMENTS, function (objects, options) {
       group2 = fabric.util.groupSVGElements(objects, options)
-      expect(group2 instanceof fabric.Group).toBeTruthy()
+      assert.ok(group2 instanceof fabric.Group)
       done()
     })
   })
 
-  test("fabric.util.createClass", function (assert) {
+  QUnit.test("fabric.util.createClass", function (assert) {
     var Klass = fabric.util.createClass()
 
-    expect(typeof Klass === "function").toBeTruthy()
-    expect(typeof new Klass() === "object").toBeTruthy()
+    assert.ok(typeof Klass === "function")
+    assert.ok(typeof new Klass() === "object")
 
     var Person = fabric.util.createClass({
       initialize: function (firstName, lastName) {
@@ -583,15 +650,15 @@
       }
     })
 
-    expect(typeof Person === "function").toBeTruthy()
-    expect(typeof new Person() === "object").toBeTruthy()
+    assert.ok(typeof Person === "function")
+    assert.ok(typeof new Person() === "object")
 
     var john = new Person("John", "Meadows")
-    expect(john instanceof Person).toBeTruthy()
+    assert.ok(john instanceof Person)
 
-    expect(john.firstName).toEqual("John")
-    expect(john.lastName).toEqual("Meadows")
-    expect(john + "").toEqual("My name is John Meadows")
+    assert.equal(john.firstName, "John")
+    assert.equal(john.lastName, "Meadows")
+    assert.equal(john + "", "My name is John Meadows")
 
     var WebDeveloper = fabric.util.createClass(Person, {
       initialize: function (firstName, lastName, skills) {
@@ -607,44 +674,53 @@
       }
     })
 
-    expect(typeof WebDeveloper === "function").toBeTruthy()
+    assert.ok(typeof WebDeveloper === "function")
     var dan = new WebDeveloper("Dan", "Trink", ["HTML", "CSS", "Javascript"])
-    expect(dan instanceof Person).toBeTruthy()
-    expect(dan instanceof WebDeveloper).toBeTruthy()
+    assert.ok(dan instanceof Person)
+    assert.ok(dan instanceof WebDeveloper)
 
-    expect(dan.firstName).toEqual("Dan")
-    expect(dan.lastName).toEqual("Trink")
-    expect(dan.skills).toEqual(["HTML", "CSS", "Javascript"])
+    assert.equal(dan.firstName, "Dan")
+    assert.equal(dan.lastName, "Trink")
+    assert.deepEqual(dan.skills, ["HTML", "CSS", "Javascript"])
 
-    expect(dan + "").toEqual("My name is Dan Trink and my skills are HTML, CSS, Javascript")
+    assert.equal(
+      dan + "",
+      "My name is Dan Trink and my skills are HTML, CSS, Javascript"
+    )
   })
 
   // element doesn't seem to have style on node
   if (!fabric.isLikelyNode) {
-    test("fabric.util.setStyle", function (assert) {
-      expect(typeof fabric.util.setStyle === "function").toBeTruthy()
+    QUnit.test("fabric.util.setStyle", function (assert) {
+      assert.ok(typeof fabric.util.setStyle === "function")
 
       var el = fabric.document.createElement("div")
 
       fabric.util.setStyle(el, "color:red")
-      expect(el.style.color).toEqual("red")
+      assert.equal(el.style.color, "red")
     })
   }
 
-  test("fabric.util.addListener", function (assert) {
-    expect(typeof fabric.util.addListener === "function").toBeTruthy()
+  QUnit.test("fabric.util.addListener", function (assert) {
+    assert.ok(
+      typeof fabric.util.addListener === "function",
+      "fabric.util.addListener is a function"
+    )
     fabric.util.addListener(null, "mouseup")
-    expect(true).toBeTruthy()
+    assert.ok(true, "test did not throw on null element addListener")
   })
 
-  test("fabric.util.removeListener", function (assert) {
-    expect(typeof fabric.util.removeListener === "function").toBeTruthy()
+  QUnit.test("fabric.util.removeListener", function (assert) {
+    assert.ok(
+      typeof fabric.util.removeListener === "function",
+      "fabric.util.removeListener is a function"
+    )
     fabric.util.removeListener(null, "mouseup")
-    expect(true).toBeTruthy()
+    assert.ok(true, "test did not throw on null element removeListener")
   })
 
-  test("fabric.util.drawDashedLine", function (assert) {
-    expect(typeof fabric.util.drawDashedLine === "function").toBeTruthy()
+  QUnit.test("fabric.util.drawDashedLine", function (assert) {
+    assert.ok(typeof fabric.util.drawDashedLine === "function")
 
     var canvas = new fabric.StaticCanvas(null, { enableRetinaScaling: false })
 
@@ -653,8 +729,8 @@
     fabric.util.drawDashedLine(ctx, 0, 0, 100, 100, [5, 5])
   })
 
-  test("fabric.util.array.invoke", function (assert) {
-    expect(typeof fabric.util.array.invoke === "function").toBeTruthy()
+  QUnit.test("fabric.util.array.invoke", function (assert) {
+    assert.ok(typeof fabric.util.array.invoke === "function")
 
     var obj1 = {
       toString: function () {
@@ -672,20 +748,29 @@
       }
     }
 
-    expect(["obj1", "obj2", "obj3"]).toEqual(fabric.util.array.invoke([obj1, obj2, obj3], "toString"))
+    assert.deepEqual(
+      ["obj1", "obj2", "obj3"],
+      fabric.util.array.invoke([obj1, obj2, obj3], "toString")
+    )
 
-    expect(["f", "b", "b"]).toEqual(fabric.util.array.invoke(["foo", "bar", "baz"], "charAt", 0))
+    assert.deepEqual(
+      ["f", "b", "b"],
+      fabric.util.array.invoke(["foo", "bar", "baz"], "charAt", 0)
+    )
 
-    expect(["o", "a", "a"]).toEqual(fabric.util.array.invoke(["foo", "bar", "baz"], "charAt", 1))
+    assert.deepEqual(
+      ["o", "a", "a"],
+      fabric.util.array.invoke(["foo", "bar", "baz"], "charAt", 1)
+    )
   })
 
-  test("fabric.util.array.min", function (assert) {
-    expect(typeof fabric.util.array.min === "function").toBeTruthy()
+  QUnit.test("fabric.util.array.min", function (assert) {
+    assert.ok(typeof fabric.util.array.min === "function")
 
-    expect(1).toEqual(fabric.util.array.min([1, 3, 2]))
-    expect(-1).toEqual(fabric.util.array.min([3, 1, "f", 3, -1, 3]))
-    expect(-3).toEqual(fabric.util.array.min([-1, -2, -3]))
-    expect("a").toEqual(fabric.util.array.min(["a", "c", "b"]))
+    assert.equal(1, fabric.util.array.min([1, 3, 2]))
+    assert.equal(-1, fabric.util.array.min([3, 1, "f", 3, -1, 3]))
+    assert.equal(-3, fabric.util.array.min([-1, -2, -3]))
+    assert.equal("a", fabric.util.array.min(["a", "c", "b"]))
 
     var obj1 = {
       valueOf: function () {
@@ -703,16 +788,16 @@
       }
     }
 
-    expect(obj1).toEqual(fabric.util.array.min([obj1, obj3, obj2]))
+    assert.equal(obj1, fabric.util.array.min([obj1, obj3, obj2]))
   })
 
-  test("fabric.util.array.max", function (assert) {
-    expect(typeof fabric.util.array.max === "function").toBeTruthy()
+  QUnit.test("fabric.util.array.max", function (assert) {
+    assert.ok(typeof fabric.util.array.max === "function")
 
-    expect(3).toEqual(fabric.util.array.max([1, 3, 2]))
-    expect(3).toEqual(fabric.util.array.max([3, 1, "f", 3, -1, 3]))
-    expect(-1).toEqual(fabric.util.array.max([-1, -2, -3]))
-    expect("c").toEqual(fabric.util.array.max(["a", "c", "b"]))
+    assert.equal(3, fabric.util.array.max([1, 3, 2]))
+    assert.equal(3, fabric.util.array.max([3, 1, "f", 3, -1, 3]))
+    assert.equal(-1, fabric.util.array.max([-1, -2, -3]))
+    assert.equal("c", fabric.util.array.max(["a", "c", "b"]))
 
     var obj1 = {
       valueOf: function () {
@@ -730,11 +815,11 @@
       }
     }
 
-    expect(obj3).toEqual(fabric.util.array.max([obj1, obj3, obj2]))
+    assert.equal(obj3, fabric.util.array.max([obj1, obj3, obj2]))
   })
 
-  test("fabric.util.populateWithProperties", function (assert) {
-    expect(typeof fabric.util.populateWithProperties === "function").toBeTruthy()
+  QUnit.test("fabric.util.populateWithProperties", function (assert) {
+    assert.ok(typeof fabric.util.populateWithProperties === "function")
 
     var source = {
         foo: "bar",
@@ -744,92 +829,119 @@
       destination = {}
 
     fabric.util.populateWithProperties(source, destination)
-    expect(typeof destination.foo === "undefined").toBeTruthy()
-    expect(typeof destination.baz === "undefined").toBeTruthy()
-    expect(typeof destination.qux === "undefined").toBeTruthy()
+    assert.ok(typeof destination.foo === "undefined")
+    assert.ok(typeof destination.baz === "undefined")
+    assert.ok(typeof destination.qux === "undefined")
 
     fabric.util.populateWithProperties(source, destination, ["foo"])
-    expect(destination.foo).toEqual("bar")
-    expect(typeof destination.baz === "undefined").toBeTruthy()
-    expect(typeof destination.qux === "undefined").toBeTruthy()
+    assert.equal(destination.foo, "bar")
+    assert.ok(typeof destination.baz === "undefined")
+    assert.ok(typeof destination.qux === "undefined")
 
     fabric.util.populateWithProperties(source, destination, [
       "foo",
       "baz",
       "ffffffffff"
     ])
-    expect(destination.foo).toEqual("bar")
-    expect(destination.baz).toEqual(123)
-    expect(typeof destination.qux === "undefined").toBeTruthy()
-    expect(typeof destination.ffffffffff === "undefined").toBeTruthy()
+    assert.equal(destination.foo, "bar")
+    assert.equal(destination.baz, 123)
+    assert.ok(typeof destination.qux === "undefined")
+    assert.ok(typeof destination.ffffffffff === "undefined")
   })
 
-  test("getKlass", function (assert) {
-    expect(fabric.util.getKlass("circle")).toEqual(fabric.Circle)
-    expect(fabric.util.getKlass("rect")).toEqual(fabric.Rect)
-    expect(fabric.util.getKlass("RemoveWhite", "fabric.Image.filters")).toEqual(fabric.Image.filters.RemoveWhite)
-    expect(fabric.util.getKlass("Sepia2", "fabric.Image.filters")).toEqual(fabric.Image.filters.Sepia2)
+  QUnit.test("getKlass", function (assert) {
+    assert.equal(fabric.util.getKlass("circle"), fabric.Circle)
+    assert.equal(fabric.util.getKlass("rect"), fabric.Rect)
+    assert.equal(
+      fabric.util.getKlass("RemoveWhite", "fabric.Image.filters"),
+      fabric.Image.filters.RemoveWhite
+    )
+    assert.equal(
+      fabric.util.getKlass("Sepia2", "fabric.Image.filters"),
+      fabric.Image.filters.Sepia2
+    )
   })
 
-  test("resolveNamespace", function (assert) {
-    expect(fabric.util.resolveNamespace("fabric")).toEqual(fabric)
-    expect(fabric.util.resolveNamespace("fabric.Image")).toEqual(fabric.Image)
-    expect(fabric.util.resolveNamespace("fabric.Image.filters")).toEqual(fabric.Image.filters)
+  QUnit.test("resolveNamespace", function (assert) {
+    assert.equal(fabric.util.resolveNamespace("fabric"), fabric)
+    assert.equal(fabric.util.resolveNamespace("fabric.Image"), fabric.Image)
+    assert.equal(
+      fabric.util.resolveNamespace("fabric.Image.filters"),
+      fabric.Image.filters
+    )
   })
 
-  test("clearFabricFontCache", function (assert) {
-    expect(typeof fabric.util.clearFabricFontCache === "function").toBeTruthy()
+  QUnit.test("clearFabricFontCache", function (assert) {
+    assert.ok(typeof fabric.util.clearFabricFontCache === "function")
     fabric.charWidthsCache = {
       arial: { some: "cache" },
       helvetica: { some: "cache" }
     }
     fabric.util.clearFabricFontCache("arial")
-    expect(fabric.charWidthsCache.arial).toEqual(undefined)
-    expect(fabric.charWidthsCache.helvetica.some).toEqual("cache")
+    assert.equal(
+      fabric.charWidthsCache.arial,
+      undefined,
+      "arial cache is deleted"
+    )
+    assert.equal(
+      fabric.charWidthsCache.helvetica.some,
+      "cache",
+      "helvetica cache is still available"
+    )
     fabric.util.clearFabricFontCache()
-    expect(fabric.charWidthsCache).toEqual({})
+    assert.deepEqual(fabric.charWidthsCache, {}, "all cache is deleted")
   })
 
-  test("clearFabricFontCache wrong case", function (assert) {
+  QUnit.test("clearFabricFontCache wrong case", function (assert) {
     fabric.charWidthsCache = {
       arial: { some: "cache" },
       helvetica: { some: "cache" }
     }
     fabric.util.clearFabricFontCache("ARIAL")
-    expect(fabric.charWidthsCache.arial).toEqual(undefined)
-    expect(fabric.charWidthsCache.helvetica.some).toEqual("cache")
+    assert.equal(
+      fabric.charWidthsCache.arial,
+      undefined,
+      "arial cache is deleted"
+    )
+    assert.equal(
+      fabric.charWidthsCache.helvetica.some,
+      "cache",
+      "helvetica cache is still available"
+    )
   })
 
-  test("parsePreserveAspectRatioAttribute", function (assert) {
-    expect(typeof fabric.util.parsePreserveAspectRatioAttribute === "function").toBeTruthy()
+  QUnit.test("parsePreserveAspectRatioAttribute", function (assert) {
+    assert.ok(
+      typeof fabric.util.parsePreserveAspectRatioAttribute === "function"
+    )
     var parsed
     parsed = fabric.util.parsePreserveAspectRatioAttribute("none")
-    expect(parsed.meetOrSlice).toEqual("meet")
-    expect(parsed.alignX).toEqual("none")
-    expect(parsed.alignY).toEqual("none")
+    assert.equal(parsed.meetOrSlice, "meet")
+    assert.equal(parsed.alignX, "none")
+    assert.equal(parsed.alignY, "none")
     parsed = fabric.util.parsePreserveAspectRatioAttribute("none slice")
-    expect(parsed.meetOrSlice).toEqual("slice")
-    expect(parsed.alignX).toEqual("none")
-    expect(parsed.alignY).toEqual("none")
+    assert.equal(parsed.meetOrSlice, "slice")
+    assert.equal(parsed.alignX, "none")
+    assert.equal(parsed.alignY, "none")
     parsed = fabric.util.parsePreserveAspectRatioAttribute("XmidYmax meet")
-    expect(parsed.meetOrSlice).toEqual("meet")
-    expect(parsed.alignX).toEqual("mid")
-    expect(parsed.alignY).toEqual("max")
+    assert.equal(parsed.meetOrSlice, "meet")
+    assert.equal(parsed.alignX, "mid")
+    assert.equal(parsed.alignY, "max")
   })
 
-  test("multiplyTransformMatrices", function (assert) {
-    expect(typeof fabric.util.multiplyTransformMatrices === "function").toBeTruthy()
+  QUnit.test("multiplyTransformMatrices", function (assert) {
+    assert.ok(typeof fabric.util.multiplyTransformMatrices === "function")
     var m1 = [1, 1, 1, 1, 1, 1],
       m2 = [1, 1, 1, 1, 1, 1],
       m3
     m3 = fabric.util.multiplyTransformMatrices(m1, m2)
-    expect(m3).toEqual([2, 2, 2, 2, 3, 3])
+    assert.deepEqual(m3, [2, 2, 2, 2, 3, 3])
     m3 = fabric.util.multiplyTransformMatrices(m1, m2, true)
-    expect(m3).toEqual([2, 2, 2, 2, 0, 0])
+    assert.deepEqual(m3, [2, 2, 2, 2, 0, 0])
   })
 
-  test("resetObjectTransform", function (assert) {
-    expect(typeof fabric.util.resetObjectTransform === "function").toBeTruthy()
+  QUnit.test("resetObjectTransform", function (assert) {
+    assert.ok(typeof fabric.util.resetObjectTransform === "function")
     var rect = new fabric.Rect({
       top: 1,
       width: 100,
@@ -842,25 +954,25 @@
       skewX: 30,
       skewY: 30
     })
-    expect(rect.skewX).toEqual(30)
-    expect(rect.skewY).toEqual(30)
-    expect(rect.scaleX).toEqual(2)
-    expect(rect.scaleY).toEqual(1)
-    expect(rect.flipX).toEqual(true)
-    expect(rect.flipY).toEqual(true)
-    expect(rect.angle).toEqual(30)
+    assert.equal(rect.skewX, 30)
+    assert.equal(rect.skewY, 30)
+    assert.equal(rect.scaleX, 2)
+    assert.equal(rect.scaleY, 1)
+    assert.equal(rect.flipX, true)
+    assert.equal(rect.flipY, true)
+    assert.equal(rect.angle, 30)
     fabric.util.resetObjectTransform(rect)
-    expect(rect.skewX).toEqual(0)
-    expect(rect.skewY).toEqual(0)
-    expect(rect.scaleX).toEqual(1)
-    expect(rect.scaleY).toEqual(1)
-    expect(rect.flipX).toEqual(false)
-    expect(rect.flipY).toEqual(false)
-    expect(rect.angle).toEqual(0)
+    assert.equal(rect.skewX, 0)
+    assert.equal(rect.skewY, 0)
+    assert.equal(rect.scaleX, 1)
+    assert.equal(rect.scaleY, 1)
+    assert.equal(rect.flipX, false)
+    assert.equal(rect.flipY, false)
+    assert.equal(rect.angle, 0)
   })
 
-  test("saveObjectTransform", function (assert) {
-    expect(typeof fabric.util.saveObjectTransform === "function").toBeTruthy()
+  QUnit.test("saveObjectTransform", function (assert) {
+    assert.ok(typeof fabric.util.saveObjectTransform === "function")
     var rect = new fabric.Rect({
       top: 1,
       width: 100,
@@ -874,112 +986,138 @@
       skewY: 30
     })
     var transform = fabric.util.saveObjectTransform(rect)
-    expect(transform.skewX).toEqual(30)
-    expect(transform.skewY).toEqual(30)
-    expect(transform.scaleX).toEqual(2)
-    expect(transform.scaleY).toEqual(1)
-    expect(transform.flipX).toEqual(true)
-    expect(transform.flipY).toEqual(true)
-    expect(transform.angle).toEqual(30)
+    assert.equal(transform.skewX, 30)
+    assert.equal(transform.skewY, 30)
+    assert.equal(transform.scaleX, 2)
+    assert.equal(transform.scaleY, 1)
+    assert.equal(transform.flipX, true)
+    assert.equal(transform.flipY, true)
+    assert.equal(transform.angle, 30)
   })
 
-  test("invertTransform", function (assert) {
-    expect(typeof fabric.util.invertTransform === "function").toBeTruthy()
+  QUnit.test("invertTransform", function (assert) {
+    assert.ok(typeof fabric.util.invertTransform === "function")
     var m1 = [1, 2, 3, 4, 5, 6],
       m3
     m3 = fabric.util.invertTransform(m1)
-    expect(m3).toEqual([-2, 1, 1.5, -0.5, 1, -2])
+    assert.deepEqual(m3, [-2, 1, 1.5, -0.5, 1, -2])
   })
 
-  test("fabric.util.request", function (assert) {
-    expect(typeof fabric.util.request === "function").toBeTruthy()
+  QUnit.test("fabric.util.request", function (assert) {
+    assert.ok(
+      typeof fabric.util.request === "function",
+      "fabric.util.request is a function"
+    )
   })
 
-  test("fabric.util.getPointer", function (assert) {
-    expect(typeof fabric.util.getPointer === "function").toBeTruthy()
+  QUnit.test("fabric.util.getPointer", function (assert) {
+    assert.ok(
+      typeof fabric.util.getPointer === "function",
+      "fabric.util.getPointer is a function"
+    )
   })
 
-  test("rotateVector", function (assert) {
-    expect(typeof fabric.util.rotateVector === "function").toBeTruthy()
+  QUnit.test("rotateVector", function (assert) {
+    assert.ok(typeof fabric.util.rotateVector === "function")
   })
 
-  test("rotatePoint", function (assert) {
-    expect(typeof fabric.util.rotatePoint === "function").toBeTruthy()
+  QUnit.test("rotatePoint", function (assert) {
+    assert.ok(typeof fabric.util.rotatePoint === "function")
     var origin = new fabric.Point(3, 0)
     var point = new fabric.Point(4, 0)
     var rotated = fabric.util.rotatePoint(point, origin, Math.PI)
-    expect(Math.round(rotated.x)).toEqual(2)
-    expect(Math.round(rotated.y)).toEqual(0)
+    assert.equal(Math.round(rotated.x), 2)
+    assert.equal(Math.round(rotated.y), 0)
     var rotated = fabric.util.rotatePoint(point, origin, Math.PI / 2)
-    expect(Math.round(rotated.x)).toEqual(3)
-    expect(Math.round(rotated.y)).toEqual(-2)
+    assert.equal(Math.round(rotated.x), 3)
+    assert.equal(Math.round(rotated.y), -2)
   })
 
-  test("transformPoint", function (assert) {
-    expect(typeof fabric.util.transformPoint === "function").toBeTruthy()
+  QUnit.test("transformPoint", function (assert) {
+    assert.ok(typeof fabric.util.transformPoint === "function")
     var point = new fabric.Point(2, 2)
     var matrix = [3, 0, 0, 2, 10, 4]
     var tp = fabric.util.transformPoint(point, matrix)
-    expect(Math.round(tp.x)).toEqual(16)
-    expect(Math.round(tp.y)).toEqual(8)
+    assert.equal(Math.round(tp.x), 16)
+    assert.equal(Math.round(tp.y), 8)
   })
 
-  test("makeBoundingBoxFromPoints", function (assert) {
-    expect(typeof fabric.util.makeBoundingBoxFromPoints === "function").toBeTruthy()
+  QUnit.test("makeBoundingBoxFromPoints", function (assert) {
+    assert.ok(typeof fabric.util.makeBoundingBoxFromPoints === "function")
   })
 
-  test("parseUnit", function (assert) {
-    expect(typeof fabric.util.parseUnit === "function").toBeTruthy()
-    expect(Math.round(fabric.util.parseUnit("30mm"), 0)).toEqual(113)
-    expect(Math.round(fabric.util.parseUnit("30cm"), 0)).toEqual(1134)
-    expect(Math.round(fabric.util.parseUnit("30in"), 0)).toEqual(2880)
-    expect(Math.round(fabric.util.parseUnit("30pt"), 0)).toEqual(40)
-    expect(Math.round(fabric.util.parseUnit("30pc"), 0)).toEqual(480)
+  QUnit.test("parseUnit", function (assert) {
+    assert.ok(typeof fabric.util.parseUnit === "function")
+    assert.equal(
+      Math.round(fabric.util.parseUnit("30mm"), 0),
+      113,
+      "30mm is pixels"
+    )
+    assert.equal(
+      Math.round(fabric.util.parseUnit("30cm"), 0),
+      1134,
+      "30cm is pixels"
+    )
+    assert.equal(
+      Math.round(fabric.util.parseUnit("30in"), 0),
+      2880,
+      "30in is pixels"
+    )
+    assert.equal(
+      Math.round(fabric.util.parseUnit("30pt"), 0),
+      40,
+      "30mm is pixels"
+    )
+    assert.equal(
+      Math.round(fabric.util.parseUnit("30pc"), 0),
+      480,
+      "30mm is pixels"
+    )
   })
 
-  test("createCanvasElement", function (assert) {
-    expect(typeof fabric.util.createCanvasElement === "function").toBeTruthy()
+  QUnit.test("createCanvasElement", function (assert) {
+    assert.ok(typeof fabric.util.createCanvasElement === "function")
     var element = fabric.util.createCanvasElement()
-    expect(element.getContext).toBeTruthy()
+    assert.ok(element.getContext)
   })
 
-  test("createImage", function (assert) {
-    expect(typeof fabric.util.createImage === "function").toBeTruthy()
+  QUnit.test("createImage", function (assert) {
+    assert.ok(typeof fabric.util.createImage === "function")
     var element = fabric.util.createImage()
-    expect(element.naturalHeight).toEqual(0)
-    expect(element.naturalWidth).toEqual(0)
+    assert.equal(element.naturalHeight, 0)
+    assert.equal(element.naturalWidth, 0)
   })
 
-  // test('createAccessors', function(assert) {
+  // QUnit.test('createAccessors', function(assert) {
   //   assert.ok(typeof fabric.util.createAccessors === 'function');
   // });
 
-  test("qrDecompose with identity matrix", function (assert) {
-    expect(typeof fabric.util.qrDecompose === "function").toBeTruthy()
+  QUnit.test("qrDecompose with identity matrix", function (assert) {
+    assert.ok(typeof fabric.util.qrDecompose === "function")
     var options = fabric.util.qrDecompose(fabric.iMatrix)
-    expect(options.scaleX).toEqual(1)
-    expect(options.scaleY).toEqual(1)
-    expect(options.skewX).toEqual(0)
-    expect(options.skewY).toEqual(0)
-    expect(options.angle).toEqual(0)
-    expect(options.translateX).toEqual(0)
-    expect(options.translateY).toEqual(0)
+    assert.equal(options.scaleX, 1, "imatrix has scale 1")
+    assert.equal(options.scaleY, 1, "imatrix has scale 1")
+    assert.equal(options.skewX, 0, "imatrix has skewX 0")
+    assert.equal(options.skewY, 0, "imatrix has skewY 0")
+    assert.equal(options.angle, 0, "imatrix has angle 0")
+    assert.equal(options.translateX, 0, "imatrix has translateX 0")
+    assert.equal(options.translateY, 0, "imatrix has translateY 0")
   })
 
-  test("qrDecompose with matrix", function (assert) {
-    expect(typeof fabric.util.qrDecompose === "function").toBeTruthy()
+  QUnit.test("qrDecompose with matrix", function (assert) {
+    assert.ok(typeof fabric.util.qrDecompose === "function")
     var options = fabric.util.qrDecompose([2, 0.4, 0.5, 3, 100, 200])
-    expect(Math.round(options.scaleX, 4)).toEqual(2)
-    expect(Math.round(options.scaleY, 4)).toEqual(3)
-    expect(Math.round(options.skewX, 4)).toEqual(28)
-    expect(options.skewY).toEqual(0)
-    expect(Math.round(options.angle, 4)).toEqual(11)
-    expect(options.translateX).toEqual(100)
-    expect(options.translateY).toEqual(200)
+    assert.equal(Math.round(options.scaleX, 4), 2, "imatrix has scale")
+    assert.equal(Math.round(options.scaleY, 4), 3, "imatrix has scale")
+    assert.equal(Math.round(options.skewX, 4), 28, "imatrix has skewX")
+    assert.equal(options.skewY, 0, "imatrix has skewY 0")
+    assert.equal(Math.round(options.angle, 4), 11, "imatrix has angle 0")
+    assert.equal(options.translateX, 100, "imatrix has translateX 100")
+    assert.equal(options.translateY, 200, "imatrix has translateY 200")
   })
 
-  test("composeMatrix with defaults", function (assert) {
-    expect(typeof fabric.util.composeMatrix === "function").toBeTruthy()
+  QUnit.test("composeMatrix with defaults", function (assert) {
+    assert.ok(typeof fabric.util.composeMatrix === "function")
     var matrix = fabric.util
       .composeMatrix({
         scaleX: 2,
@@ -992,17 +1130,21 @@
       .map(function (val) {
         return fabric.util.toFixed(val, 2)
       })
-    expect(matrix).toEqual([1.96, 0.38, 0.47, 3.15, 100, 200])
+    assert.deepEqual(
+      matrix,
+      [1.96, 0.38, 0.47, 3.15, 100, 200],
+      "default is identity matrix"
+    )
   })
 
-  test("composeMatrix with options", function (assert) {
-    expect(typeof fabric.util.composeMatrix === "function").toBeTruthy()
+  QUnit.test("composeMatrix with options", function (assert) {
+    assert.ok(typeof fabric.util.composeMatrix === "function")
     var matrix = fabric.util.composeMatrix({})
-    expect(matrix).toEqual(fabric.iMatrix)
+    assert.deepEqual(matrix, fabric.iMatrix, "default is identity matrix")
   })
 
-  test("drawArc", function (assert) {
-    expect(typeof fabric.util.drawArc === "function").toBeTruthy()
+  QUnit.test("drawArc", function (assert) {
+    assert.ok(typeof fabric.util.drawArc === "function")
     var canvas = (this.canvas = new fabric.StaticCanvas(null, {
       enableRetinaScaling: false,
       width: 600,
@@ -1013,8 +1155,8 @@
     fabric.util.drawArc(ctx, 0, 0, [50, 30, 0, 1, 1, 100, 100])
   })
 
-  test("get bounds of arc", function (assert) {
-    expect(typeof fabric.util.getBoundsOfArc === "function").toBeTruthy()
+  QUnit.test("get bounds of arc", function (assert) {
+    assert.ok(typeof fabric.util.getBoundsOfArc === "function")
     var bounds = fabric.util.getBoundsOfArc(0, 0, 50, 30, 0, 1, 1, 100, 100)
     var expectedBounds = [
       { x: 0, y: -8.318331151877368 },
@@ -1022,120 +1164,136 @@
       { x: 100.00000000000003, y: 19.99999999999999 },
       { x: 147.19721858646224, y: 100 }
     ]
-    expect(bounds).toEqual(expectedBounds)
+    assert.deepEqual(bounds, expectedBounds, "bounds are as expected")
   })
 
-  test("fabric.util.limitDimsByArea", function (assert) {
-    expect(typeof fabric.util.limitDimsByArea === "function").toBeTruthy()
+  QUnit.test("fabric.util.limitDimsByArea", function (assert) {
+    assert.ok(typeof fabric.util.limitDimsByArea === "function")
     var dims = fabric.util.limitDimsByArea(1, 10000)
-    expect(dims.x).toEqual(100)
-    expect(dims.y).toEqual(100)
+    assert.equal(dims.x, 100)
+    assert.equal(dims.y, 100)
   })
 
-  test("fabric.util.limitDimsByArea ar > 1", function (assert) {
+  QUnit.test("fabric.util.limitDimsByArea ar > 1", function (assert) {
     var dims = fabric.util.limitDimsByArea(3, 10000)
-    expect(dims.x).toEqual(173)
-    expect(dims.y).toEqual(57)
+    assert.equal(dims.x, 173)
+    assert.equal(dims.y, 57)
   })
 
-  test("fabric.util.limitDimsByArea ar < 1", function (assert) {
+  QUnit.test("fabric.util.limitDimsByArea ar < 1", function (assert) {
     var dims = fabric.util.limitDimsByArea(1 / 3, 10000)
-    expect(dims.x).toEqual(57)
-    expect(dims.y).toEqual(173)
+    assert.equal(dims.x, 57)
+    assert.equal(dims.y, 173)
   })
 
-  test("fabric.util.capValue ar < 1", function (assert) {
-    expect(typeof fabric.util.capValue === "function").toBeTruthy()
+  QUnit.test("fabric.util.capValue ar < 1", function (assert) {
+    assert.ok(typeof fabric.util.capValue === "function")
     var val = fabric.util.capValue(3, 10, 70)
-    expect(val).toEqual(10)
+    assert.equal(val, 10, "value is not capped")
   })
 
-  test("fabric.util.capValue ar < 1", function (assert) {
-    expect(typeof fabric.util.capValue === "function").toBeTruthy()
+  QUnit.test("fabric.util.capValue ar < 1", function (assert) {
+    assert.ok(typeof fabric.util.capValue === "function")
     var val = fabric.util.capValue(3, 1, 70)
-    expect(val).toEqual(3)
+    assert.equal(val, 3, "min cap")
   })
 
-  test("fabric.util.capValue ar < 1", function (assert) {
-    expect(typeof fabric.util.capValue === "function").toBeTruthy()
+  QUnit.test("fabric.util.capValue ar < 1", function (assert) {
+    assert.ok(typeof fabric.util.capValue === "function")
     var val = fabric.util.capValue(3, 80, 70)
-    expect(val).toEqual(70)
+    assert.equal(val, 70, "max cap")
   })
 
-  test("fabric.util.cos", function (assert) {
-    expect(typeof fabric.util.cos === "function").toBeTruthy()
-    expect(fabric.util.cos(0)).toEqual(1)
-    expect(fabric.util.cos(Math.PI / 2)).toEqual(0)
-    expect(fabric.util.cos(Math.PI)).toEqual(-1)
-    expect(fabric.util.cos((3 * Math.PI) / 2)).toEqual(0)
+  QUnit.test("fabric.util.cos", function (assert) {
+    assert.ok(typeof fabric.util.cos === "function")
+    assert.equal(fabric.util.cos(0), 1, "cos 0 correct")
+    assert.equal(fabric.util.cos(Math.PI / 2), 0, "cos 90 correct")
+    assert.equal(fabric.util.cos(Math.PI), -1, "cos 180 correct")
+    assert.equal(fabric.util.cos((3 * Math.PI) / 2), 0, " cos 270 correct")
   })
 
-  test("fabric.util.getSvgAttributes", function (assert) {
-    expect(typeof fabric.util.getSvgAttributes === "function").toBeTruthy()
-    expect(fabric.util.getSvgAttributes("")).toEqual(["instantiated_by_use", "style", "id", "class"])
-    expect(fabric.util.getSvgAttributes("linearGradient")).toEqual([
-      "instantiated_by_use",
-      "style",
-      "id",
-      "class",
-      "x1",
-      "y1",
-      "x2",
-      "y2",
-      "gradientUnits",
-      "gradientTransform"
-    ])
-    expect(fabric.util.getSvgAttributes("radialGradient")).toEqual([
-      "instantiated_by_use",
-      "style",
-      "id",
-      "class",
-      "gradientUnits",
-      "gradientTransform",
-      "cx",
-      "cy",
-      "r",
-      "fx",
-      "fy",
-      "fr"
-    ])
-    expect(fabric.util.getSvgAttributes("stop")).toEqual([
-      "instantiated_by_use",
-      "style",
-      "id",
-      "class",
-      "offset",
-      "stop-color",
-      "stop-opacity"
-    ])
+  QUnit.test("fabric.util.getSvgAttributes", function (assert) {
+    assert.ok(typeof fabric.util.getSvgAttributes === "function")
+    assert.deepEqual(
+      fabric.util.getSvgAttributes(""),
+      ["instantiated_by_use", "style", "id", "class"],
+      "common attribs"
+    )
+    assert.deepEqual(
+      fabric.util.getSvgAttributes("linearGradient"),
+      [
+        "instantiated_by_use",
+        "style",
+        "id",
+        "class",
+        "x1",
+        "y1",
+        "x2",
+        "y2",
+        "gradientUnits",
+        "gradientTransform"
+      ],
+      "linearGradient attribs"
+    )
+    assert.deepEqual(
+      fabric.util.getSvgAttributes("radialGradient"),
+      [
+        "instantiated_by_use",
+        "style",
+        "id",
+        "class",
+        "gradientUnits",
+        "gradientTransform",
+        "cx",
+        "cy",
+        "r",
+        "fx",
+        "fy",
+        "fr"
+      ],
+      "radialGradient attribs"
+    )
+    assert.deepEqual(
+      fabric.util.getSvgAttributes("stop"),
+      [
+        "instantiated_by_use",
+        "style",
+        "id",
+        "class",
+        "offset",
+        "stop-color",
+        "stop-opacity"
+      ],
+      "stop attribs"
+    )
   })
 
-  test("fabric.util.enlivenPatterns", function (assert) {
-    expect(typeof fabric.util.enlivenPatterns === "function").toBeTruthy()
+  QUnit.test("fabric.util.enlivenPatterns", function (assert) {
+    assert.ok(typeof fabric.util.enlivenPatterns === "function")
     fabric.util.enlivenPatterns([], function () {
-      expect(true).toBeTruthy()
+      assert.ok(true, "callBack is called when no patterns are available")
     })
   })
 
-  test("fabric.util.copyCanvasElement", function (assert) {
-    expect(typeof fabric.util.copyCanvasElement === "function").toBeTruthy()
+  QUnit.test("fabric.util.copyCanvasElement", function (assert) {
+    assert.ok(typeof fabric.util.copyCanvasElement === "function")
     var c = fabric.util.createCanvasElement()
     c.width = 10
     c.height = 20
     c.getContext("2d").fillStyle = "red"
     c.getContext("2d").fillRect(0, 0, 10, 10)
     var b = fabric.util.copyCanvasElement(c)
-    expect(b.width).toEqual(10)
-    expect(b.height).toEqual(20)
+    assert.equal(b.width, 10, "width has been copied")
+    assert.equal(b.height, 20, "height has been copied")
     var data = b.getContext("2d").getImageData(1, 1, 1, 1).data
-    expect(data[0]).toEqual(255)
-    expect(data[1]).toEqual(0)
-    expect(data[2]).toEqual(0)
-    expect(data[3]).toEqual(255)
+    assert.equal(data[0], 255, "red color has been copied")
+    assert.equal(data[1], 0, "red color has been copied")
+    assert.equal(data[2], 0, "red color has been copied")
+    assert.equal(data[3], 255, "red color has been copied")
   })
 
-  test("fabric.util.findScaleToCover", function (assert) {
-    expect(typeof fabric.util.findScaleToCover === "function").toBeTruthy()
+  QUnit.test("fabric.util.findScaleToCover", function (assert) {
+    assert.ok(typeof fabric.util.findScaleToCover === "function")
     var scale = fabric.util.findScaleToCover(
       {
         width: 100,
@@ -1146,7 +1304,7 @@
         height: 50
       }
     )
-    expect(scale).toEqual(0.5)
+    assert.equal(scale, 0.5, "scaleToCover is 0.5")
     var scale = fabric.util.findScaleToCover(
       {
         width: 10,
@@ -1157,11 +1315,11 @@
         height: 50
       }
     )
-    expect(scale).toEqual(5)
+    assert.equal(scale, 5, "scaleToCover is 5")
   })
 
-  test("fabric.util.findScaleToFit", function (assert) {
-    expect(typeof fabric.util.findScaleToFit === "function").toBeTruthy()
+  QUnit.test("fabric.util.findScaleToFit", function (assert) {
+    assert.ok(typeof fabric.util.findScaleToFit === "function")
     var scale = fabric.util.findScaleToFit(
       {
         width: 100,
@@ -1172,7 +1330,7 @@
         height: 50
       }
     )
-    expect(scale).toEqual(0.25)
+    assert.equal(scale, 0.25, "findScaleToFit is 0.25")
     var scale = fabric.util.findScaleToFit(
       {
         width: 10,
@@ -1183,16 +1341,16 @@
         height: 50
       }
     )
-    expect(scale).toEqual(2)
+    assert.equal(scale, 2, "findScaleToFit is 2")
   })
 
-  test("fabric.util.isTouchEvent", function (assert) {
-    expect(typeof fabric.util.isTouchEvent === "function").toBeTruthy()
-    expect(fabric.util.isTouchEvent({ type: "touchstart" })).toBeTruthy()
-    expect(fabric.util.isTouchEvent({ type: "touchend" })).toBeTruthy()
-    expect(fabric.util.isTouchEvent({ type: "touchmove" })).toBeTruthy()
-    expect(fabric.util.isTouchEvent({ pointerType: "touch" })).toBeTruthy()
-    expect(fabric.util.isTouchEvent({ type: "mousedown" })).toBeFalsy()
-    expect(fabric.util.isTouchEvent({ pointerType: "mouse" })).toBeFalsy()
+  QUnit.test("fabric.util.isTouchEvent", function (assert) {
+    assert.ok(typeof fabric.util.isTouchEvent === "function")
+    assert.ok(fabric.util.isTouchEvent({ type: "touchstart" }))
+    assert.ok(fabric.util.isTouchEvent({ type: "touchend" }))
+    assert.ok(fabric.util.isTouchEvent({ type: "touchmove" }))
+    assert.ok(fabric.util.isTouchEvent({ pointerType: "touch" }))
+    assert.notOk(fabric.util.isTouchEvent({ type: "mousedown" }))
+    assert.notOk(fabric.util.isTouchEvent({ pointerType: "mouse" }))
   })
 })()

@@ -54,21 +54,21 @@
     getPathObject("M 100 100 L 300 100 L 200 300 z", callback)
   }
 
-  describe("fabric.Path", {
+  QUnit.module("fabric.Path", {
     beforeEach: function () {
       fabric.Object.__uid = 0
     }
   })
 
-  test("constructor", function (assert) {
+  QUnit.test("constructor", function (assert) {
     var done = assert.async()
-    expect(fabric.Path).toBeTruthy()
+    assert.ok(fabric.Path)
 
     makePathObject(function (path) {
-      expect(path instanceof fabric.Path).toBeTruthy()
-      expect(path instanceof fabric.Object).toBeTruthy()
+      assert.ok(path instanceof fabric.Path)
+      assert.ok(path instanceof fabric.Object)
 
-      expect(path.get("type")).toEqual("path")
+      assert.equal(path.get("type"), "path")
 
       var error
       try {
@@ -77,35 +77,38 @@
         error = err
       }
 
-      expect(typeof error === "undefined").toBeTruthy()
+      assert.ok(
+        typeof error === "undefined",
+        "should not throw error on empty path"
+      )
       done()
     })
   })
 
-  test("initialize", function (assert) {
+  QUnit.test("initialize", function (assert) {
     var done = assert.async()
     var path = new fabric.Path("M 100 100 L 200 100 L 170 200 z", {
       top: 0,
       strokeWidth: 0
     })
 
-    expect(path.left).toEqual(100)
-    expect(path.top).toEqual(0)
+    assert.equal(path.left, 100)
+    assert.equal(path.top, 0)
     done()
   })
 
-  test("initialize with strokeWidth", function (assert) {
+  QUnit.test("initialize with strokeWidth", function (assert) {
     var done = assert.async()
     var path = new fabric.Path("M 100 100 L 200 100 L 170 200 z", {
       strokeWidth: 50
     })
 
-    expect(path.left).toEqual(75)
-    expect(path.top).toEqual(75)
+    assert.equal(path.left, 75)
+    assert.equal(path.top, 75)
     done()
   })
 
-  test("initialize with strokeWidth with originX and originY", function (
+  QUnit.test("initialize with strokeWidth with originX and originY", function (
     assert
   ) {
     var done = assert.async()
@@ -115,67 +118,81 @@
       originY: "center"
     })
 
-    expect(path.left).toEqual(150)
-    expect(path.top).toEqual(150)
+    assert.equal(path.left, 150)
+    assert.equal(path.top, 150)
     done()
   })
 
-  test("toString", function (assert) {
+  QUnit.test("toString", function (assert) {
     var done = assert.async()
     makePathObject(function (path) {
-      expect(typeof path.toString === "function").toBeTruthy()
-      expect(path.toString()).toEqual('#<fabric.Path (4): { "top": 100, "left": 100 }>')
+      assert.ok(typeof path.toString === "function")
+      assert.equal(
+        path.toString(),
+        '#<fabric.Path (4): { "top": 100, "left": 100 }>'
+      )
       done()
     })
   })
 
-  test("toObject", function (assert) {
+  QUnit.test("toObject", function (assert) {
     var done = assert.async()
     makePathObject(function (path) {
-      expect(typeof path.toObject === "function").toBeTruthy()
-      expect(path.toObject()).toEqual(REFERENCE_PATH_OBJECT)
+      assert.ok(typeof path.toObject === "function")
+      assert.deepEqual(path.toObject(), REFERENCE_PATH_OBJECT)
       done()
     })
   })
 
-  test("toObject", function (assert) {
+  QUnit.test("toObject", function (assert) {
     var done = assert.async()
     makePathObject(function (path) {
       path.top = fabric.Object.prototype.top
       path.left = fabric.Object.prototype.left
       path.includeDefaultValues = false
       var obj = path.toObject()
-      expect(obj.top).toEqual(fabric.Object.prototype.top)
-      expect(obj.left).toEqual(fabric.Object.prototype.left)
+      assert.equal(
+        obj.top,
+        fabric.Object.prototype.top,
+        "top is available also when equal to prototype"
+      )
+      assert.equal(
+        obj.left,
+        fabric.Object.prototype.left,
+        "left is available also when equal to prototype"
+      )
       done()
     })
   })
 
-  test("toSVG", function (assert) {
+  QUnit.test("toSVG", function (assert) {
     var done = assert.async()
     makePathObject(function (path) {
-      expect(typeof path.toSVG === "function").toBeTruthy()
-      expect(path.toSVG()).toEqual(
+      assert.ok(typeof path.toSVG === "function")
+      assert.deepEqual(
+        path.toSVG(),
         '<g transform="matrix(1 0 0 1 200.5 200.5)"  >\n<path style="stroke: rgb(0,0,255); stroke-width: 1; stroke-dasharray: none; stroke-linecap: butt; stroke-dashoffset: 0; stroke-linejoin: miter; stroke-miterlimit: 4; fill: rgb(255,0,0); fill-rule: nonzero; opacity: 1;"  transform=" translate(-200, -200)" d="M 100 100 L 300 100 L 200 300 z" stroke-linecap="round" />\n</g>\n'
       )
       done()
     })
   })
 
-  test("toSVG with a clipPath path", function (assert) {
+  QUnit.test("toSVG with a clipPath path", function (assert) {
     var done = assert.async()
     makePathObject(function (path) {
       makePathObject(function (path2) {
         path.clipPath = path2
-        expect(path.toSVG()).toEqual(
-          '<g transform="matrix(1 0 0 1 200.5 200.5)" clip-path="url(#CLIPPATH_0)"  >\n<clipPath id="CLIPPATH_0" >\n\t<path transform="matrix(1 0 0 1 200.5 200.5) translate(-200, -200)" d="M 100 100 L 300 100 L 200 300 z" stroke-linecap="round" />\n</clipPath>\n<path style="stroke: rgb(0,0,255); stroke-width: 1; stroke-dasharray: none; stroke-linecap: butt; stroke-dashoffset: 0; stroke-linejoin: miter; stroke-miterlimit: 4; fill: rgb(255,0,0); fill-rule: nonzero; opacity: 1;"  transform=" translate(-200, -200)" d="M 100 100 L 300 100 L 200 300 z" stroke-linecap="round" />\n</g>\n'
+        assert.deepEqual(
+          path.toSVG(),
+          '<g transform="matrix(1 0 0 1 200.5 200.5)" clip-path="url(#CLIPPATH_0)"  >\n<clipPath id="CLIPPATH_0" >\n\t<path transform="matrix(1 0 0 1 200.5 200.5) translate(-200, -200)" d="M 100 100 L 300 100 L 200 300 z" stroke-linecap="round" />\n</clipPath>\n<path style="stroke: rgb(0,0,255); stroke-width: 1; stroke-dasharray: none; stroke-linecap: butt; stroke-dashoffset: 0; stroke-linejoin: miter; stroke-miterlimit: 4; fill: rgb(255,0,0); fill-rule: nonzero; opacity: 1;"  transform=" translate(-200, -200)" d="M 100 100 L 300 100 L 200 300 z" stroke-linecap="round" />\n</g>\n',
+          "path clipPath toSVG should match"
         )
         done()
       })
     })
   })
 
-  test("toSVG with a clipPath path absolutePositioned", function (
+  QUnit.test("toSVG with a clipPath path absolutePositioned", function (
     assert
   ) {
     var done = assert.async()
@@ -183,35 +200,41 @@
       makePathObject(function (path2) {
         path.clipPath = path2
         path.clipPath.absolutePositioned = true
-        expect(path.toSVG()).toEqual(
-          '<g clip-path="url(#CLIPPATH_0)"  >\n<g transform="matrix(1 0 0 1 200.5 200.5)"  >\n<clipPath id="CLIPPATH_0" >\n\t<path transform="matrix(1 0 0 1 200.5 200.5) translate(-200, -200)" d="M 100 100 L 300 100 L 200 300 z" stroke-linecap="round" />\n</clipPath>\n<path style="stroke: rgb(0,0,255); stroke-width: 1; stroke-dasharray: none; stroke-linecap: butt; stroke-dashoffset: 0; stroke-linejoin: miter; stroke-miterlimit: 4; fill: rgb(255,0,0); fill-rule: nonzero; opacity: 1;"  transform=" translate(-200, -200)" d="M 100 100 L 300 100 L 200 300 z" stroke-linecap="round" />\n</g>\n</g>\n'
+        assert.deepEqual(
+          path.toSVG(),
+          '<g clip-path="url(#CLIPPATH_0)"  >\n<g transform="matrix(1 0 0 1 200.5 200.5)"  >\n<clipPath id="CLIPPATH_0" >\n\t<path transform="matrix(1 0 0 1 200.5 200.5) translate(-200, -200)" d="M 100 100 L 300 100 L 200 300 z" stroke-linecap="round" />\n</clipPath>\n<path style="stroke: rgb(0,0,255); stroke-width: 1; stroke-dasharray: none; stroke-linecap: butt; stroke-dashoffset: 0; stroke-linejoin: miter; stroke-miterlimit: 4; fill: rgb(255,0,0); fill-rule: nonzero; opacity: 1;"  transform=" translate(-200, -200)" d="M 100 100 L 300 100 L 200 300 z" stroke-linecap="round" />\n</g>\n</g>\n',
+          "path clipPath toSVG absolute should match"
         )
         done()
       })
     })
   })
 
-  test("path array not shared when cloned", function (assert) {
+  QUnit.test("path array not shared when cloned", function (assert) {
     var done = assert.async()
     makePathObject(function (originalPath) {
       originalPath.clone(function (clonedPath) {
         clonedPath.path[0][1] = 200
-        expect(originalPath.path[0][1]).toEqual(100)
+        assert.equal(originalPath.path[0][1], 100)
         done()
       })
     })
   })
 
-  test("toDatalessObject", function (assert) {
+  QUnit.test("toDatalessObject", function (assert) {
     var done = assert.async()
     makePathObject(function (path) {
-      expect(typeof path.toDatalessObject === "function").toBeTruthy()
-      expect(path.toDatalessObject()).toEqual(REFERENCE_PATH_OBJECT)
+      assert.ok(typeof path.toDatalessObject === "function")
+      assert.deepEqual(
+        path.toDatalessObject(),
+        REFERENCE_PATH_OBJECT,
+        "if not sourcePath the object is same"
+      )
       done()
     })
   })
 
-  test("toDatalessObject with sourcePath", function (assert) {
+  QUnit.test("toDatalessObject with sourcePath", function (assert) {
     var done = assert.async()
     makePathObject(function (path) {
       var src = "http://example.com/"
@@ -219,42 +242,46 @@
       var clonedRef = fabric.util.object.clone(REFERENCE_PATH_OBJECT)
       clonedRef.sourcePath = src
       delete clonedRef.path
-      expect(path.toDatalessObject()).toEqual(clonedRef)
+      assert.deepEqual(
+        path.toDatalessObject(),
+        clonedRef,
+        "if sourcePath the object looses path"
+      )
       done()
     })
   })
 
-  test("complexity", function (assert) {
+  QUnit.test("complexity", function (assert) {
     var done = assert.async()
     makePathObject(function (path) {
-      expect(typeof path.complexity === "function").toBeTruthy()
+      assert.ok(typeof path.complexity === "function")
       done()
     })
   })
 
-  test("fromObject", function (assert) {
+  QUnit.test("fromObject", function (assert) {
     var done = assert.async()
-    expect(typeof fabric.Path.fromObject === "function").toBeTruthy()
+    assert.ok(typeof fabric.Path.fromObject === "function")
     fabric.Path.fromObject(REFERENCE_PATH_OBJECT, function (path) {
-      expect(path instanceof fabric.Path).toBeTruthy()
-      expect(path.toObject()).toEqual(REFERENCE_PATH_OBJECT)
+      assert.ok(path instanceof fabric.Path)
+      assert.deepEqual(path.toObject(), REFERENCE_PATH_OBJECT)
       done()
     })
   })
 
-  test("fromObject with sourcePath", function (assert) {
+  QUnit.test("fromObject with sourcePath", function (assert) {
     var done = assert.async()
-    expect(typeof fabric.Path.fromObject === "function").toBeTruthy()
+    assert.ok(typeof fabric.Path.fromObject === "function")
     fabric.Path.fromObject(REFERENCE_PATH_OBJECT, function (path) {
-      expect(path instanceof fabric.Path).toBeTruthy()
-      expect(path.toObject()).toEqual(REFERENCE_PATH_OBJECT)
+      assert.ok(path instanceof fabric.Path)
+      assert.deepEqual(path.toObject(), REFERENCE_PATH_OBJECT)
       done()
     })
   })
 
-  test("fromElement", function (assert) {
+  QUnit.test("fromElement", function (assert) {
     var done = assert.async()
-    expect(typeof fabric.Path.fromElement === "function").toBeTruthy()
+    assert.ok(typeof fabric.Path.fromElement === "function")
     var namespace = "http://www.w3.org/2000/svg"
     var elPath = fabric.document.createElementNS(namespace, "path")
 
@@ -273,27 +300,30 @@
     elPath.setAttributeNS(namespace, "transform", "scale(2)")
 
     fabric.Path.fromElement(elPath, function (path) {
-      expect(path instanceof fabric.Path).toBeTruthy()
+      assert.ok(path instanceof fabric.Path)
 
-      expect(path.toObject()).toEqual(fabric.util.object.extend(REFERENCE_PATH_OBJECT, {
-        strokeDashArray: [5, 2],
-        strokeLineCap: "round",
-        strokeLineJoin: "bevil",
-        strokeMiterLimit: 5
-      }))
+      assert.deepEqual(
+        path.toObject(),
+        fabric.util.object.extend(REFERENCE_PATH_OBJECT, {
+          strokeDashArray: [5, 2],
+          strokeLineCap: "round",
+          strokeLineJoin: "bevil",
+          strokeMiterLimit: 5
+        })
+      )
 
       var ANGLE_DEG = 90
       elPath.setAttributeNS(namespace, "transform", "rotate(" + ANGLE_DEG + ")")
       fabric.Path.fromElement(elPath, function (path) {
-        expect(path.get("transformMatrix")).toEqual([0, 1, -1, 0, 0, 0])
+        assert.deepEqual(path.get("transformMatrix"), [0, 1, -1, 0, 0, 0])
         done()
       })
     })
   })
 
-  test("numbers with leading decimal point", function (assert) {
+  QUnit.test("numbers with leading decimal point", function (assert) {
     var done = assert.async()
-    expect(typeof fabric.Path.fromElement === "function").toBeTruthy()
+    assert.ok(typeof fabric.Path.fromElement === "function")
     var namespace = "http://www.w3.org/2000/svg"
     var elPath = fabric.document.createElementNS(namespace, "path")
 
@@ -301,26 +331,30 @@
     elPath.setAttributeNS(namespace, "transform", "scale(.2)")
 
     fabric.Path.fromElement(elPath, function (path) {
-      expect(path instanceof fabric.Path).toBeTruthy()
-      expect(path.transformMatrix).toEqual([0.2, 0, 0, 0.2, 0, 0])
+      assert.ok(path instanceof fabric.Path)
+      assert.deepEqual(
+        path.transformMatrix,
+        [0.2, 0, 0, 0.2, 0, 0],
+        "transform has been parsed"
+      )
       done()
     })
   })
 
-  test("multiple sequences in path commands", function (assert) {
+  QUnit.test("multiple sequences in path commands", function (assert) {
     var done = assert.async()
     var el = getPathElement("M100 100 l 200 200 300 300 400 -50 z")
     fabric.Path.fromElement(el, function (obj) {
-      expect(obj.path[0]).toEqual(["M", 100, 100])
-      expect(obj.path[1]).toEqual(["L", 300, 300])
-      expect(obj.path[2]).toEqual(["L", 600, 600])
-      expect(obj.path[3]).toEqual(["L", 1000, 550])
+      assert.deepEqual(obj.path[0], ["M", 100, 100])
+      assert.deepEqual(obj.path[1], ["L", 300, 300])
+      assert.deepEqual(obj.path[2], ["L", 600, 600])
+      assert.deepEqual(obj.path[3], ["L", 1000, 550])
 
       el = getPathElement(
         "c 0,-53.25604 43.17254,-96.42858 96.42857,-96.42857 53.25603,0 96.42857,43.17254 96.42857,96.42857"
       )
       fabric.Path.fromElement(el, function (obj) {
-        expect(obj.path[0]).toEqual([
+        assert.deepEqual(obj.path[0], [
           "C",
           0,
           -53.25604,
@@ -329,7 +363,7 @@
           96.42857,
           -96.42857
         ])
-        expect(obj.path[1]).toEqual([
+        assert.deepEqual(obj.path[1], [
           "C",
           149.6846,
           -96.42857,
@@ -343,21 +377,21 @@
     })
   })
 
-  test("multiple M/m coordinates converted all L", function (assert) {
+  QUnit.test("multiple M/m coordinates converted all L", function (assert) {
     var done = assert.async()
     var el = getPathElement("M100 100 200 200 150 50 m 300 300 400 -50 50 100")
     fabric.Path.fromElement(el, function (obj) {
-      expect(obj.path[0]).toEqual(["M", 100, 100])
-      expect(obj.path[1]).toEqual(["L", 200, 200])
-      expect(obj.path[2]).toEqual(["L", 150, 50])
-      expect(obj.path[3]).toEqual(["M", 450, 350])
-      expect(obj.path[4]).toEqual(["L", 850, 300])
-      expect(obj.path[5]).toEqual(["L", 900, 400])
+      assert.deepEqual(obj.path[0], ["M", 100, 100])
+      assert.deepEqual(obj.path[1], ["L", 200, 200])
+      assert.deepEqual(obj.path[2], ["L", 150, 50])
+      assert.deepEqual(obj.path[3], ["M", 450, 350])
+      assert.deepEqual(obj.path[4], ["L", 850, 300])
+      assert.deepEqual(obj.path[5], ["L", 900, 400])
       done()
     })
   })
 
-  test("multiple M/m commands converted all as M commands", function (
+  QUnit.test("multiple M/m commands converted all as M commands", function (
     assert
   ) {
     var done = assert.async()
@@ -365,24 +399,24 @@
       "M100 100 M 200 200 M150 50 m 300 300 m 400 -50 m 50 100"
     )
     fabric.Path.fromElement(el, function (obj) {
-      expect(obj.path[0]).toEqual(["M", 100, 100])
-      expect(obj.path[1]).toEqual(["M", 200, 200])
-      expect(obj.path[2]).toEqual(["M", 150, 50])
-      expect(obj.path[3]).toEqual(["M", 450, 350])
-      expect(obj.path[4]).toEqual(["M", 850, 300])
-      expect(obj.path[5]).toEqual(["M", 900, 400])
+      assert.deepEqual(obj.path[0], ["M", 100, 100])
+      assert.deepEqual(obj.path[1], ["M", 200, 200])
+      assert.deepEqual(obj.path[2], ["M", 150, 50])
+      assert.deepEqual(obj.path[3], ["M", 450, 350])
+      assert.deepEqual(obj.path[4], ["M", 850, 300])
+      assert.deepEqual(obj.path[5], ["M", 900, 400])
       done()
     })
   })
 
-  test("compressed path commands", function (assert) {
+  QUnit.test("compressed path commands", function (assert) {
     var done = assert.async()
     var el = getPathElement(
       "M56.224 84.12C-.047.132-.138.221-.322.215.046-.131.137-.221.322-.215z"
     )
     fabric.Path.fromElement(el, function (obj) {
-      expect(obj.path[0]).toEqual(["M", 56.224, 84.12])
-      expect(obj.path[1]).toEqual([
+      assert.deepEqual(obj.path[0], ["M", 56.224, 84.12])
+      assert.deepEqual(obj.path[1], [
         "C",
         -0.047,
         0.132,
@@ -391,7 +425,7 @@
         -0.322,
         0.215
       ])
-      expect(obj.path[2]).toEqual([
+      assert.deepEqual(obj.path[2], [
         "C",
         0.046,
         -0.131,
@@ -400,19 +434,19 @@
         0.322,
         -0.215
       ])
-      expect(obj.path[3]).toEqual(["z"])
+      assert.deepEqual(obj.path[3], ["z"])
       done()
     })
   })
 
-  test("compressed path commands with e^x", function (assert) {
+  QUnit.test("compressed path commands with e^x", function (assert) {
     var done = assert.async()
     var el = getPathElement(
       "M56.224e2 84.12E-2C-.047.132-.138.221-.322.215.046-.131.137-.221.322-.215m-.050 -20.100z"
     )
     fabric.Path.fromElement(el, function (obj) {
-      expect(obj.path[0]).toEqual(["M", 5622.4, 0.8412])
-      expect(obj.path[1]).toEqual([
+      assert.deepEqual(obj.path[0], ["M", 5622.4, 0.8412])
+      assert.deepEqual(obj.path[1], [
         "C",
         -0.047,
         0.132,
@@ -421,7 +455,7 @@
         -0.322,
         0.215
       ])
-      expect(obj.path[2]).toEqual([
+      assert.deepEqual(obj.path[2], [
         "C",
         0.046,
         -0.131,
@@ -430,8 +464,8 @@
         0.322,
         -0.215
       ])
-      expect(obj.path[3]).toEqual(["M", 0.272, -20.315])
-      expect(obj.path[4]).toEqual(["z"])
+      assert.deepEqual(obj.path[3], ["M", 0.272, -20.315])
+      assert.deepEqual(obj.path[4], ["z"])
       done()
     })
   })
