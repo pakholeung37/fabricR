@@ -6,8 +6,9 @@ import {
 } from "./util"
 import { log } from "./log"
 import Gradient from "./gradient.class"
-import Group from "./shapes/group.class"
-import Image from "./shapes/image.class"
+// TODO solove circular reference
+// import Group from "./shapes/group.class"
+// import Image from "./shapes/image.class"
 const ElementsParser = function (
   elements,
   callback,
@@ -65,7 +66,7 @@ ElementsParser.prototype.createCallback = function (index, el) {
     var _options
     _this.resolveGradient(obj, el, "fill")
     _this.resolveGradient(obj, el, "stroke")
-    if (obj instanceof Image && obj._originalElement) {
+    if (obj instanceof fabric.Image && obj._originalElement) {
       _options = obj.parsePreserveAspectRatioAttribute(el)
     }
     obj._removeTransformMatrix(_options)
@@ -151,7 +152,7 @@ ElementsParser.prototype.resolveClipPath = function (obj, usingElement) {
     if (container.length === 1) {
       clipPath = container[0]
     } else {
-      clipPath = new Group(container)
+      clipPath = new fabric.Group(container)
     }
     gTransform = multiplyTransformMatrices(
       objTransformInv,

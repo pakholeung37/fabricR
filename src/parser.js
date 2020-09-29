@@ -1,5 +1,8 @@
 import ElementsParser from "./elements_parser"
 import FaObject from "./shapes/object.class"
+// TODO circular reference
+// import Text from "./shapes/text.class"
+import Color from "./color.class"
 import {
   clone,
   extend,
@@ -8,6 +11,8 @@ import {
   toArray,
   request,
   degreesToRadians,
+  cos as _cos,
+  sin as _sin,
   multiplyTransformMatrices,
   parsePreserveAspectRatioAttribute
 } from "./util"
@@ -185,7 +190,7 @@ function _setStrokeFillOpacity(attributes) {
       continue
     }
 
-    var color = new fabric.Color(attributes[attr])
+    var color = new Color(attributes[attr])
     attributes[attr] = color
       .setAlpha(
         toFixed(color.getAlpha() * attributes[colorAttributes[attr]], 2)
@@ -222,8 +227,8 @@ function _getMultipleNodes(doc, nodeNames) {
  */
 export const parseTransformAttribute = (function () {
   function rotateMatrix(matrix, args) {
-    var cos = cos(args[0]),
-      sin = sin(args[0]),
+    var cos = _cos(args[0]),
+      sin = _sin(args[0]),
       x = 0,
       y = 0
     if (args.length === 3) {
@@ -1017,11 +1022,7 @@ export function parseAttributes(element, attributes, svgUid) {
     element.parentNode &&
     svgValidParentsRegEx.test(element.parentNode.nodeName)
   ) {
-    parentAttributes = fabric.parseAttributes(
-      element.parentNode,
-      attributes,
-      svgUid
-    )
+    parentAttributes = parseAttributes(element.parentNode, attributes, svgUid)
   }
 
   var ownAttributes = attributes.reduce(function (memo, attr) {
@@ -1036,14 +1037,14 @@ export function parseAttributes(element, attributes, svgUid) {
   // (see: http://www.w3.org/TR/SVG/styling.html#UsingPresentationAttributes)
   var cssAttrs = extend(
     getGlobalStylesForElement(element, svgUid),
-    fabric.parseStyleAttribute(element)
+    parseStyleAttribute(element)
   )
   ownAttributes = extend(ownAttributes, cssAttrs)
   if (cssAttrs[cPath]) {
     element.setAttribute(cPath, cssAttrs[cPath])
   }
   fontSize = parentFontSize =
-    parentAttributes.fontSize || Text.DEFAULT_SVG_FONT_SIZE
+    parentAttributes.fontSize || fabric.Text.DEFAULT_SVG_FONT_SIZE
   if (ownAttributes[fSize]) {
     // looks like the minimum should be 9px when dealing with ems. this is what looks like in browsers.
     ownAttributes[fSize] = fontSize = parseUnit(
@@ -1066,7 +1067,7 @@ export function parseAttributes(element, attributes, svgUid) {
     normalizedStyle[normalizedAttr] = normalizedValue
   }
   if (normalizedStyle && normalizedStyle.font) {
-    fabric.parseFontDeclaration(normalizedStyle.font, normalizedStyle)
+    parseFontDeclaration(normalizedStyle.font, normalizedStyle)
   }
   var mergedAttrs = extend(parentAttributes, normalizedStyle)
   return svgValidParentsRegEx.test(element.nodeName)
@@ -1242,7 +1243,7 @@ export function loadSVGFromURL(url, callback, reviver, options) {
       return false
     }
 
-    fabric.parseSVGDocument(
+    parseSVGDocument(
       xml.documentElement,
       function (results, _options, elements, allElements) {
         callback && callback(results, _options, elements, allElements)
@@ -1265,7 +1266,7 @@ export function loadSVGFromURL(url, callback, reviver, options) {
 export function loadSVGFromString(string, callback, reviver, options) {
   var parser = new fabric.window.DOMParser(),
     doc = parser.parseFromString(string.trim(), "text/xml")
-  fabric.parseSVGDocument(
+  parseSVGDocument(
     doc.documentElement,
     function (results, _options, elements, allElements) {
       callback(results, _options, elements, allElements)
@@ -1278,10 +1279,14 @@ export function loadSVGFromString(string, callback, reviver, options) {
 getGlobalThis().fabric.parseTransformAttribute = parseTransformAttribute
 getGlobalThis().fabric.parseSVGDocument = parseSVGDocument
 getGlobalThis().fabric.parseFontDeclaration = parseFontDeclaration
+getGlobalThis().fabric.gradientDefs = gradientDefs
 getGlobalThis().fabric.getGradientDefs = getGradientDefs
 getGlobalThis().fabric.parseAttributes = parseAttributes
 getGlobalThis().fabric.parseElements = parseElements
 getGlobalThis().fabric.parsePointsAttribute = parsePointsAttribute
 getGlobalThis().fabric.getCSSRules = getCSSRules
+getGlobalThis().fabric.cssRules = cssRules
 getGlobalThis().fabric.loadSVGFromURL = loadSVGFromURL
 getGlobalThis().fabric.loadSVGFromString = loadSVGFromString
+getGlobalThis().fabric.parseStyleAttribute = parseStyleAttribute
+getGlobalThis().fabric.clipPaths = clipPaths

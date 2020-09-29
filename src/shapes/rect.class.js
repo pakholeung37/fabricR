@@ -1,6 +1,6 @@
 import Object from "./object.class"
 import { extend, clone, createClass, drawDashedLine } from "../util"
-
+import { parseAttributes } from "../parser"
 /**
  * Rectangle class
  * @class fabric.Rect
@@ -197,7 +197,7 @@ Rect.fromElement = function (element, callback, options) {
   }
   options = options || {}
 
-  var parsedAttributes = fabric.parseAttributes(element, Rect.ATTRIBUTE_NAMES)
+  var parsedAttributes = parseAttributes(element, Rect.ATTRIBUTE_NAMES)
   parsedAttributes.left = parsedAttributes.left || 0
   parsedAttributes.top = parsedAttributes.top || 0
   parsedAttributes.height = parsedAttributes.height || 0

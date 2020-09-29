@@ -11,7 +11,7 @@ import {
   parsePath,
   isArray
 } from "../util"
-
+import { parseAttributes, loadSVGFromURL } from "../parser"
 /**
  * Path class
  * @class Path
@@ -369,7 +369,7 @@ const Path = createClass(
 Path.fromObject = function (object, callback) {
   if (typeof object.sourcePath === "string") {
     var pathUrl = object.sourcePath
-    fabric.loadSVGFromURL(pathUrl, function (elements) {
+    loadSVGFromURL(pathUrl, function (elements) {
       var path = elements[0]
       path.setOptions(object)
       callback && callback(path)
@@ -398,7 +398,7 @@ Path.ATTRIBUTE_NAMES = fabric.SHARED_ATTRIBUTES.concat(["d"])
  * @param {Function} [callback] Options callback invoked after parsing is finished
  */
 Path.fromElement = function (element, callback, options) {
-  var parsedAttributes = fabric.parseAttributes(element, Path.ATTRIBUTE_NAMES)
+  var parsedAttributes = parseAttributes(element, Path.ATTRIBUTE_NAMES)
   parsedAttributes.fromSVG = true
   callback(new Path(parsedAttributes.d, extend(parsedAttributes, options)))
 }

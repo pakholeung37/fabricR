@@ -1,6 +1,6 @@
 import Object from "./object.class"
 import { toFixed, extend, createClass, min, max, drawDashedLine } from "../util"
-
+import { parseAttributes, parsePointsAttribute } from "../parser"
 /**
  * Polyline class
  * @class fabric.Polyline
@@ -233,8 +233,8 @@ Polyline.fromElementGenerator = function (_class) {
     }
     options || (options = {})
 
-    var points = fabric.parsePointsAttribute(element.getAttribute("points")),
-      parsedAttributes = fabric.parseAttributes(
+    var points = parsePointsAttribute(element.getAttribute("points")),
+      parsedAttributes = parseAttributes(
         element,
         fabric[_class].ATTRIBUTE_NAMES
       )

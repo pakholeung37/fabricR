@@ -1,7 +1,7 @@
 import Object from "./object.class"
 import { extend, clone, createClass, drawDashedLine } from "../util"
 import StaticCanvas from "../static_canvas.class"
-
+import { parseAttributes } from "../parser"
 var coordProps = { x1: 1, x2: 1, y1: 1, y2: 1 }
 /**
  * Line class
@@ -289,7 +289,7 @@ Line.ATTRIBUTE_NAMES = fabric.SHARED_ATTRIBUTES.concat("x1 y1 x2 y2".split(" "))
  */
 Line.fromElement = function (element, callback, options) {
   options = options || {}
-  var parsedAttributes = fabric.parseAttributes(element, Line.ATTRIBUTE_NAMES),
+  var parsedAttributes = parseAttributes(element, Line.ATTRIBUTE_NAMES),
     points = [
       parsedAttributes.x1 || 0,
       parsedAttributes.y1 || 0,

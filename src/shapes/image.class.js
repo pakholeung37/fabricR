@@ -17,6 +17,7 @@ import {
 } from "../util"
 import WebglFilterBackend from "../filters/webgl_backend.class"
 import Canvas2dFilterBackend from "../filters/2d_backend.class"
+import { parseAttributes } from "../parser"
 /**
  * Image class
  * @class Image
@@ -875,7 +876,7 @@ Image.ATTRIBUTE_NAMES = fabric.SHARED_ATTRIBUTES.concat(
  * @return {Image} Instance of Image
  */
 Image.fromElement = function (element, callback, options) {
-  var parsedAttributes = fabric.parseAttributes(element, Image.ATTRIBUTE_NAMES)
+  var parsedAttributes = parseAttributes(element, Image.ATTRIBUTE_NAMES)
   Image.fromURL(
     parsedAttributes["xlink:href"],
     callback,

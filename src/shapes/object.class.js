@@ -1737,7 +1737,7 @@ const Object = createClass(
     cloneAsImage: function (callback, options) {
       var canvasEl = this.toCanvasElement(options)
       if (callback) {
-        callback(new Image(canvasEl))
+        callback(new fabric.Image(canvasEl))
       }
       return this
     },

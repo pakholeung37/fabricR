@@ -1,6 +1,6 @@
 import Object from "./object.class"
 import { cos, sin, createClass } from "../util"
-
+import { parseAttributes } from "../parser"
 var pi = Math.PI
 
 /**
@@ -177,7 +177,7 @@ Circle.ATTRIBUTE_NAMES = fabric.SHARED_ATTRIBUTES.concat("cx cy r".split(" "))
  * @throws {Error} If value of `r` attribute is missing or invalid
  */
 Circle.fromElement = function (element, callback) {
-  var parsedAttributes = fabric.parseAttributes(element, Circle.ATTRIBUTE_NAMES)
+  var parsedAttributes = parseAttributes(element, Circle.ATTRIBUTE_NAMES)
 
   if (!isValidRadius(parsedAttributes)) {
     throw new Error(
@@ -210,5 +210,6 @@ Circle.fromObject = function (object, callback) {
   return Object._fromObject("Circle", object, callback)
 }
 
-getGlobalThis().fabric.Circle = Circle
 export default Circle
+
+getGlobalThis().fabric.Circle = Circle

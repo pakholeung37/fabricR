@@ -146,9 +146,9 @@ export function skewCursorStyleHandler(eventData, control, fabricObject) {
  */
 export function scaleSkewCursorStyleHandler(eventData, control, fabricObject) {
   if (eventData[fabricObject.canvas.altActionKey]) {
-    return controls.skewCursorStyleHandler(eventData, control, fabricObject)
+    return skewCursorStyleHandler(eventData, control, fabricObject)
   }
-  return controls.scaleCursorStyleHandler(eventData, control, fabricObject)
+  return scaleCursorStyleHandler(eventData, control, fabricObject)
 }
 
 /**
@@ -704,9 +704,9 @@ export const scalingY = wrapWithFixedAnchor(scaleObjectY)
 export function scalingYOrSkewingX(eventData, transform, x, y) {
   // ok some safety needed here.
   if (eventData[transform.target.canvas.altActionKey]) {
-    return controls.skewHandlerX(eventData, transform, x, y)
+    return skewHandlerX(eventData, transform, x, y)
   }
-  return controls.scalingY(eventData, transform, x, y)
+  return scalingY(eventData, transform, x, y)
 }
 
 /**
@@ -721,9 +721,9 @@ export function scalingYOrSkewingX(eventData, transform, x, y) {
 export function scalingXOrSkewingY(eventData, transform, x, y) {
   // ok some safety needed here.
   if (eventData[transform.target.canvas.altActionKey]) {
-    return controls.skewHandlerY(eventData, transform, x, y)
+    return skewHandlerY(eventData, transform, x, y)
   }
-  return controls.scalingX(eventData, transform, x, y)
+  return scalingX(eventData, transform, x, y)
 }
 
 /**

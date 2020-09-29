@@ -6,7 +6,7 @@ import {
   populateWithProperties
 } from "./util"
 import Color from "./color.class"
-
+import { parseTransformAttribute } from "./parser"
 /* _FROM_SVG_START_ */
 function getColorStop(el, multiplier) {
   var style = el.getAttribute("style"),
@@ -482,7 +482,7 @@ extend(Gradient, {
       colorStops.push(getColorStop(colorStopEls[i], multiplier))
     }
 
-    transformMatrix = fabric.parseTransformAttribute(gradientTransform)
+    transformMatrix = parseTransformAttribute(gradientTransform)
 
     __convertPercentUnitsToValues(instance, coords, svgOptions, gradientUnits)
 
@@ -547,4 +547,4 @@ function __convertPercentUnitsToValues(
 
 export default Gradient
 
-getGlobalThis().Gradient = Gradient
+getGlobalThis().fabric.Gradient = Gradient

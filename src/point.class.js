@@ -320,4 +320,4 @@ Point.prototype = /** @lends Point.prototype */ {
   }
 }
 
-getGlobalThis().Point = Point
+getGlobalThis().fabric.Point = Point

@@ -7,7 +7,7 @@ import {
   createCanvasElement,
   graphemeSplit
 } from "../util"
-
+import { parseAttributes } from "../parser"
 /**
  * Text class
  * @class Text
@@ -1518,7 +1518,7 @@ Text.fromElement = function (element, callback, options) {
     return callback(null)
   }
 
-  var parsedAttributes = fabric.parseAttributes(element, Text.ATTRIBUTE_NAMES),
+  var parsedAttributes = parseAttributes(element, Text.ATTRIBUTE_NAMES),
     parsedAnchor = parsedAttributes.textAnchor || "left"
   options = extend(options ? clone(options) : {}, parsedAttributes)
 

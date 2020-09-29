@@ -1,6 +1,6 @@
 import { createClass } from "../util"
 import Object from "./object.class"
-
+import { parseAttributes } from "../parser"
 var piBy2 = Math.PI * 2
 
 /**
@@ -152,7 +152,7 @@ Ellipse.ATTRIBUTE_NAMES = fabric.SHARED_ATTRIBUTES.concat(
  * @return {Ellipse}
  */
 Ellipse.fromElement = function (element, callback) {
-  var parsedAttributes = fabric.parseAttributes(
+  var parsedAttributes = parseAttributes(
     element,
     Ellipse.ATTRIBUTE_NAMES
   )

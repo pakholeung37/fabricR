@@ -1,4 +1,5 @@
 import FaObject from "../shapes/object.class"
+import Group from "../shapes/group.class"
 import Pattern from "../pattern.class"
 import Point from "../point.class"
 import { min, max } from "./lang_array"

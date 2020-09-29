@@ -13,6 +13,7 @@ import {
   createClass,
   clone
 } from "../util"
+import { loadSVGFromURL } from "../parser"
 /**
  * Group class
  * @class Group
@@ -439,7 +440,7 @@ const Group = createClass(
       this._objects = []
       var options = this.toObject()
       delete options.objects
-      var activeSelection = new ActiveSelection([])
+      var activeSelection = new fabric.ActiveSelection([])
       activeSelection.set(options)
       activeSelection.type = "activeSelection"
       canvas.remove(this)
@@ -585,7 +586,7 @@ Group.fromObject = function (object, callback) {
   delete options.objects
   if (typeof objects === "string") {
     // it has to be an url or something went wrong.
-    fabric.loadSVGFromURL(objects, function (elements) {
+    loadSVGFromURL(objects, function (elements) {
       var group = groupSVGElements(elements, object, objects)
       group.set(options)
       callback && callback(group)

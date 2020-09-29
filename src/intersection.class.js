@@ -158,4 +158,4 @@ Intersection.intersectPolygonRectangle = function (points, r1, r2) {
   return result
 }
 
-getGlobalThis().Intersection = Intersection
+getGlobalThis().fabric.Intersection = Intersection
