@@ -1,23 +1,19 @@
 ;(function () {
   // var canvas = this.canvas = new fabric.StaticCanvas(null, {enableRetinaScaling: false});
 
-  QUnit.module("fabric.Object - clipPath", {
+  describe("fabric.Object - clipPath", {
     afterEach: function () {
       // canvas.clear();
       // canvas.calcOffset();
     }
   })
 
-  QUnit.test("constructor & properties", function (assert) {
+  test("constructor & properties", function (assert) {
     var cObj = new fabric.Object()
-    assert.equal(
-      cObj.clipPath,
-      undefined,
-      "clipPath should not be defined out of the box"
-    )
+    expect(cObj.clipPath).toEqual(undefined)
   })
 
-  QUnit.test("toObject with clipPath", function (assert) {
+  test("toObject with clipPath", function (assert) {
     var emptyObjectRepr = {
       version: fabric.version,
       type: "object",
@@ -52,7 +48,7 @@
     }
 
     var cObj = new fabric.Object()
-    assert.deepEqual(emptyObjectRepr, cObj.toObject())
+    expect(emptyObjectRepr).toEqual(cObj.toObject())
 
     cObj.clipPath = new fabric.Object()
     var expected = fabric.util.object.clone(emptyObjectRepr)
@@ -62,22 +58,22 @@
       absolutePositioned: cObj.clipPath.absolutePositioned
     })
     expected.clipPath = expectedClipPath
-    assert.deepEqual(expected, cObj.toObject())
+    expect(expected).toEqual(cObj.toObject())
   })
 
-  QUnit.test("from object with clipPath", function (assert) {
+  test("from object with clipPath", function (assert) {
     var done = assert.async()
     var rect = new fabric.Rect({ width: 100, height: 100 })
     rect.clipPath = new fabric.Circle({ radius: 50 })
     var toObject = rect.toObject()
     fabric.Rect.fromObject(toObject, function (rect) {
-      assert.ok(rect.clipPath instanceof fabric.Circle, "clipPath is enlived")
-      assert.equal(rect.clipPath.radius, 50, "radius is restored correctly")
+      expect(rect.clipPath instanceof fabric.Circle).toBeTruthy()
+      expect(rect.clipPath.radius).toEqual(50)
       done()
     })
   })
 
-  QUnit.test(
+  test(
     "from object with clipPath inverted, absolutePositioned",
     function (assert) {
       var done = assert.async()
@@ -89,46 +85,31 @@
       })
       var toObject = rect.toObject()
       fabric.Rect.fromObject(toObject, function (rect) {
-        assert.ok(rect.clipPath instanceof fabric.Circle, "clipPath is enlived")
-        assert.equal(rect.clipPath.radius, 50, "radius is restored correctly")
-        assert.equal(
-          rect.clipPath.inverted,
-          true,
-          "inverted is restored correctly"
-        )
-        assert.equal(
-          rect.clipPath.absolutePositioned,
-          true,
-          "absolutePositioned is restored correctly"
-        )
+        expect(rect.clipPath instanceof fabric.Circle).toBeTruthy()
+        expect(rect.clipPath.radius).toEqual(50)
+        expect(rect.clipPath.inverted).toEqual(true)
+        expect(rect.clipPath.absolutePositioned).toEqual(true)
         done()
       })
     }
   )
 
-  QUnit.test("from object with clipPath, nested", function (assert) {
+  test("from object with clipPath, nested", function (assert) {
     var done = assert.async()
     var rect = new fabric.Rect({ width: 100, height: 100 })
     rect.clipPath = new fabric.Circle({ radius: 50 })
     rect.clipPath.clipPath = new fabric.Text("clipPath")
     var toObject = rect.toObject()
     fabric.Rect.fromObject(toObject, function (rect) {
-      assert.ok(rect.clipPath instanceof fabric.Circle, "clipPath is enlived")
-      assert.equal(rect.clipPath.radius, 50, "radius is restored correctly")
-      assert.ok(
-        rect.clipPath.clipPath instanceof fabric.Text,
-        "neted clipPath is enlived"
-      )
-      assert.equal(
-        rect.clipPath.clipPath.text,
-        "clipPath",
-        "instance is restored correctly"
-      )
+      expect(rect.clipPath instanceof fabric.Circle).toBeTruthy()
+      expect(rect.clipPath.radius).toEqual(50)
+      expect(rect.clipPath.clipPath instanceof fabric.Text).toBeTruthy()
+      expect(rect.clipPath.clipPath.text).toEqual("clipPath")
       done()
     })
   })
 
-  QUnit.test(
+  test(
     "from object with clipPath, nested inverted, absolutePositioned",
     function (assert) {
       var done = assert.async()
@@ -140,75 +121,52 @@
       })
       var toObject = rect.toObject()
       fabric.Rect.fromObject(toObject, function (rect) {
-        assert.ok(rect.clipPath instanceof fabric.Circle, "clipPath is enlived")
-        assert.equal(rect.clipPath.radius, 50, "radius is restored correctly")
-        assert.ok(
-          rect.clipPath.clipPath instanceof fabric.Text,
-          "neted clipPath is enlived"
-        )
-        assert.equal(
-          rect.clipPath.clipPath.text,
-          "clipPath",
-          "instance is restored correctly"
-        )
-        assert.equal(
-          rect.clipPath.clipPath.inverted,
-          true,
-          "instance inverted is restored correctly"
-        )
-        assert.equal(
-          rect.clipPath.clipPath.absolutePositioned,
-          true,
-          "instance absolutePositioned is restored correctly"
-        )
+        expect(rect.clipPath instanceof fabric.Circle).toBeTruthy()
+        expect(rect.clipPath.radius).toEqual(50)
+        expect(rect.clipPath.clipPath instanceof fabric.Text).toBeTruthy()
+        expect(rect.clipPath.clipPath.text).toEqual("clipPath")
+        expect(rect.clipPath.clipPath.inverted).toEqual(true)
+        expect(rect.clipPath.clipPath.absolutePositioned).toEqual(true)
         done()
       })
     }
   )
 
-  QUnit.test("_setClippingProperties fix the context props", function (assert) {
+  test("_setClippingProperties fix the context props", function (assert) {
     var canvas = new fabric.Canvas()
     var rect = new fabric.Rect({ width: 100, height: 100 })
     canvas.contextContainer.fillStyle = "red"
     canvas.contextContainer.strokeStyle = "blue"
     canvas.contextContainer.globalAlpha = 0.3
     rect._setClippingProperties(canvas.contextContainer)
-    assert.equal(
-      canvas.contextContainer.fillStyle,
-      "#000000",
-      "fillStyle is reset"
-    )
-    assert.equal(
-      new fabric.Color(canvas.contextContainer.strokeStyle).getAlpha(),
-      0,
-      "stroke style is reset"
-    )
-    assert.equal(canvas.contextContainer.globalAlpha, 1, "globalAlpha is reset")
+    expect(canvas.contextContainer.fillStyle).toEqual("#000000")
+    expect(new fabric.Color(canvas.contextContainer.strokeStyle).getAlpha()).toEqual(0)
+    expect(canvas.contextContainer.globalAlpha).toEqual(1)
   })
 
-  QUnit.test("clipPath caching detection", function (assert) {
+  test("clipPath caching detection", function (assert) {
     var cObj = new fabric.Object()
     var clipPath = new fabric.Object()
     cObj.statefullCache = true
     cObj.saveState({ propertySet: "cacheProperties" })
     var change = cObj.hasStateChanged("cacheProperties")
-    assert.equal(change, false, "cache is clean")
+    expect(change).toEqual(false)
 
     cObj.clipPath = clipPath
     change = cObj.hasStateChanged("cacheProperties")
-    assert.equal(change, true, "cache is dirty")
+    expect(change).toEqual(true)
 
     cObj.saveState({ propertySet: "cacheProperties" })
 
     change = cObj.hasStateChanged("cacheProperties")
-    assert.equal(change, false, "cache is clean again")
+    expect(change).toEqual(false)
 
     cObj.clipPath.fill = "red"
     change = cObj.hasStateChanged("cacheProperties")
-    assert.equal(change, true, "cache change in clipPath is detected")
+    expect(change).toEqual(true)
   })
 
-  QUnit.test("clipPath caching detection with canvas object", function (
+  test("clipPath caching detection with canvas object", function (
     assert
   ) {
     var canvas = new fabric.StaticCanvas(null, { renderOnAddRemove: false })
@@ -219,19 +177,19 @@
     cObj.statefullCache = true
     cObj.saveState({ propertySet: "cacheProperties" })
     var change = cObj.hasStateChanged("cacheProperties")
-    assert.equal(change, false, "cache is clean - canvas")
+    expect(change).toEqual(false)
 
     cObj.clipPath = clipPath
     change = cObj.hasStateChanged("cacheProperties")
-    assert.equal(change, true, "cache is dirty - canvas")
+    expect(change).toEqual(true)
 
     cObj.saveState({ propertySet: "cacheProperties" })
 
     change = cObj.hasStateChanged("cacheProperties")
-    assert.equal(change, false, "cache is clean again - canvas")
+    expect(change).toEqual(false)
 
     cObj.clipPath.fill = "red"
     change = cObj.hasStateChanged("cacheProperties")
-    assert.equal(change, true, "cache change in clipPath is detected - canvas")
+    expect(change).toEqual(true)
   })
 })()

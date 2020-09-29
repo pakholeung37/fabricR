@@ -1,5 +1,5 @@
 ;(function () {
-  QUnit.module("fabric.Gradient")
+  describe("fabric.Gradient")
 
   function createLinearGradient(units) {
     return new fabric.Gradient({
@@ -86,123 +86,113 @@
   var SVG_RADIAL_PERCENTAGE =
     '<radialGradient id="SVGID_0" gradientUnits="objectBoundingBox" gradientTransform="matrix(1 0 0 1 0 0)"  cx="100" cy="200" r="50" fx="0" fy="10">\n<stop offset="0%" style="stop-color:red;"/>\n<stop offset="100%" style="stop-color:green;stop-opacity: 0"/>\n</radialGradient>\n'
 
-  QUnit.test("constructor linearGradient", function (assert) {
-    assert.ok(fabric.Gradient)
+  test("constructor linearGradient", function (assert) {
+    expect(fabric.Gradient).toBeTruthy()
 
     var gradient = createLinearGradient()
-    assert.ok(
-      gradient instanceof fabric.Gradient,
-      "should inherit from fabric.Gradient"
-    )
+    expect(gradient instanceof fabric.Gradient).toBeTruthy()
   })
 
-  QUnit.test("constructor radialGradient", function (assert) {
-    assert.ok(fabric.Gradient)
+  test("constructor radialGradient", function (assert) {
+    expect(fabric.Gradient).toBeTruthy()
 
     var gradient = createRadialGradient()
-    assert.ok(
-      gradient instanceof fabric.Gradient,
-      "should inherit from fabric.Gradient"
-    )
+    expect(gradient instanceof fabric.Gradient).toBeTruthy()
   })
 
-  QUnit.test("properties linearGradient", function (assert) {
+  test("properties linearGradient", function (assert) {
     var gradient = createLinearGradient()
 
-    assert.equal(gradient.coords.x1, 0)
-    assert.equal(gradient.coords.y1, 10)
-    assert.equal(gradient.coords.x2, 100)
-    assert.equal(gradient.coords.y2, 200)
+    expect(gradient.coords.x1).toEqual(0)
+    expect(gradient.coords.y1).toEqual(10)
+    expect(gradient.coords.x2).toEqual(100)
+    expect(gradient.coords.y2).toEqual(200)
 
-    assert.equal(gradient.type, "linear")
+    expect(gradient.type).toEqual("linear")
 
-    assert.equal(gradient.colorStops[0].offset, 0)
-    assert.equal(gradient.colorStops[0].color, "red")
-    assert.equal(gradient.colorStops[0].opacity, 0)
+    expect(gradient.colorStops[0].offset).toEqual(0)
+    expect(gradient.colorStops[0].color).toEqual("red")
+    expect(gradient.colorStops[0].opacity).toEqual(0)
 
-    assert.equal(gradient.colorStops[1].offset, 1)
-    assert.equal(gradient.colorStops[1].color, "green")
-    assert.ok(!("opacity" in gradient.colorStops[1]))
+    expect(gradient.colorStops[1].offset).toEqual(1)
+    expect(gradient.colorStops[1].color).toEqual("green")
+    expect(!("opacity" in gradient.colorStops[1])).toBeTruthy()
   })
 
-  QUnit.test("properties radialGradient", function (assert) {
+  test("properties radialGradient", function (assert) {
     var gradient = createRadialGradient()
 
-    assert.equal(gradient.coords.x1, 0)
-    assert.equal(gradient.coords.y1, 10)
-    assert.equal(gradient.coords.x2, 100)
-    assert.equal(gradient.coords.y2, 200)
-    assert.equal(gradient.coords.r1, 0)
-    assert.equal(gradient.coords.r2, 50)
+    expect(gradient.coords.x1).toEqual(0)
+    expect(gradient.coords.y1).toEqual(10)
+    expect(gradient.coords.x2).toEqual(100)
+    expect(gradient.coords.y2).toEqual(200)
+    expect(gradient.coords.r1).toEqual(0)
+    expect(gradient.coords.r2).toEqual(50)
 
-    assert.equal(gradient.type, "radial")
+    expect(gradient.type).toEqual("radial")
 
-    assert.equal(gradient.colorStops[0].offset, 0)
-    assert.equal(gradient.colorStops[0].color, "red")
-    assert.ok(!("opacity" in gradient.colorStops[0]))
+    expect(gradient.colorStops[0].offset).toEqual(0)
+    expect(gradient.colorStops[0].color).toEqual("red")
+    expect(!("opacity" in gradient.colorStops[0])).toBeTruthy()
 
-    assert.equal(gradient.colorStops[1].offset, 1)
-    assert.equal(gradient.colorStops[1].color, "green")
-    assert.equal(gradient.colorStops[1].opacity, 0)
+    expect(gradient.colorStops[1].offset).toEqual(1)
+    expect(gradient.colorStops[1].color).toEqual("green")
+    expect(gradient.colorStops[1].opacity).toEqual(0)
   })
 
-  QUnit.test("toObject linearGradient", function (assert) {
+  test("toObject linearGradient", function (assert) {
     var gradient = createLinearGradient()
     gradient.gradientTransform = [1, 0, 0, 1, 50, 50]
-    assert.ok(typeof gradient.toObject === "function")
+    expect(typeof gradient.toObject === "function").toBeTruthy()
 
     var object = gradient.toObject()
 
-    assert.equal(object.coords.x1, gradient.coords.x1)
-    assert.equal(object.coords.x2, gradient.coords.x2)
-    assert.equal(object.coords.y1, gradient.coords.y1)
-    assert.equal(object.coords.y2, gradient.coords.y2)
-    assert.equal(object.gradientUnits, gradient.gradientUnits)
-    assert.equal(object.type, gradient.type)
-    assert.deepEqual(object.gradientTransform, gradient.gradientTransform)
-    assert.equal(object.colorStops, gradient.colorStops)
+    expect(object.coords.x1).toEqual(gradient.coords.x1)
+    expect(object.coords.x2).toEqual(gradient.coords.x2)
+    expect(object.coords.y1).toEqual(gradient.coords.y1)
+    expect(object.coords.y2).toEqual(gradient.coords.y2)
+    expect(object.gradientUnits).toEqual(gradient.gradientUnits)
+    expect(object.type).toEqual(gradient.type)
+    expect(object.gradientTransform).toEqual(gradient.gradientTransform)
+    expect(object.colorStops).toEqual(gradient.colorStops)
   })
 
-  QUnit.test("toObject with custom props", function (assert) {
+  test("toObject with custom props", function (assert) {
     var gradient = createLinearGradient()
     gradient.id = "myId"
     var object = gradient.toObject(["id"])
-    assert.equal(object.id, "myId")
+    expect(object.id).toEqual("myId")
   })
 
-  QUnit.test("toObject radialGradient", function (assert) {
+  test("toObject radialGradient", function (assert) {
     var gradient = createRadialGradient()
 
-    assert.ok(typeof gradient.toObject === "function")
+    expect(typeof gradient.toObject === "function").toBeTruthy()
 
     var object = gradient.toObject()
 
-    assert.equal(object.coords.x1, gradient.coords.x1)
-    assert.equal(object.coords.x2, gradient.coords.x2)
-    assert.equal(object.coords.y1, gradient.coords.y1)
-    assert.equal(object.coords.y2, gradient.coords.y2)
-    assert.equal(object.coords.r1, gradient.coords.r1)
-    assert.equal(object.coords.r2, gradient.coords.r2)
+    expect(object.coords.x1).toEqual(gradient.coords.x1)
+    expect(object.coords.x2).toEqual(gradient.coords.x2)
+    expect(object.coords.y1).toEqual(gradient.coords.y1)
+    expect(object.coords.y2).toEqual(gradient.coords.y2)
+    expect(object.coords.r1).toEqual(gradient.coords.r1)
+    expect(object.coords.r2).toEqual(gradient.coords.r2)
 
-    assert.equal(object.type, gradient.type)
+    expect(object.type).toEqual(gradient.type)
 
-    assert.equal(object.colorStops, gradient.colorStops)
+    expect(object.colorStops).toEqual(gradient.colorStops)
   })
 
-  QUnit.test("toLive linearGradient", function (assert) {
+  test("toLive linearGradient", function (assert) {
     var canvas = new fabric.StaticCanvas(null, { enableRetinaScaling: false })
     var gradient = createLinearGradient()
     var gradientHTML = canvas.contextContainer.createLinearGradient(0, 0, 1, 1)
-    assert.ok(typeof gradient.toLive === "function")
+    expect(typeof gradient.toLive === "function").toBeTruthy()
     var gradientCtx = gradient.toLive(canvas.contextContainer)
-    assert.equal(
-      gradientCtx.toString(),
-      gradientHTML.toString(),
-      "is a gradient for canvas radial"
-    )
+    expect(gradientCtx.toString()).toEqual(gradientHTML.toString())
   })
 
-  QUnit.test("toLive radialGradient", function (assert) {
+  test("toLive radialGradient", function (assert) {
     var canvas = new fabric.StaticCanvas(null, { enableRetinaScaling: false })
     var gradient = createRadialGradient()
     var gradientHTML = canvas.contextContainer.createRadialGradient(
@@ -213,17 +203,13 @@
       2,
       2
     )
-    assert.ok(typeof gradient.toLive === "function")
+    expect(typeof gradient.toLive === "function").toBeTruthy()
     var gradientCtx = gradient.toLive(canvas.contextContainer)
-    assert.equal(
-      gradientCtx.toString(),
-      gradientHTML.toString(),
-      "is a gradient for canvas radial"
-    )
+    expect(gradientCtx.toString()).toEqual(gradientHTML.toString())
   })
 
-  QUnit.test("fromElement linearGradient", function (assert) {
-    assert.ok(typeof fabric.Gradient.fromElement === "function")
+  test("fromElement linearGradient", function (assert) {
+    expect(typeof fabric.Gradient.fromElement === "function").toBeTruthy()
 
     var namespace = "http://www.w3.org/2000/svg"
     var element = fabric.document.createElementNS(namespace, "linearGradient")
@@ -243,27 +229,27 @@
     var object = new fabric.Object({ width: 100, height: 100 })
     var gradient = fabric.Gradient.fromElement(element, object, "")
 
-    assert.ok(gradient instanceof fabric.Gradient)
-    assert.equal(gradient.type, "linear")
-    assert.equal(gradient.coords.x1, 0)
-    assert.equal(gradient.coords.y1, 0)
-    assert.equal(gradient.coords.x2, 1)
-    assert.equal(gradient.coords.y2, 0)
-    assert.equal(gradient.gradientUnits, "percentage")
+    expect(gradient instanceof fabric.Gradient).toBeTruthy()
+    expect(gradient.type).toEqual("linear")
+    expect(gradient.coords.x1).toEqual(0)
+    expect(gradient.coords.y1).toEqual(0)
+    expect(gradient.coords.x2).toEqual(1)
+    expect(gradient.coords.y2).toEqual(0)
+    expect(gradient.gradientUnits).toEqual("percentage")
 
-    assert.equal(gradient.colorStops[0].offset, 1)
-    assert.equal(gradient.colorStops[1].offset, 0)
+    expect(gradient.colorStops[0].offset).toEqual(1)
+    expect(gradient.colorStops[1].offset).toEqual(0)
 
-    assert.equal(gradient.colorStops[0].color, "rgb(0,0,0)")
-    assert.equal(gradient.colorStops[1].color, "rgb(255,255,255)")
+    expect(gradient.colorStops[0].color).toEqual("rgb(0,0,0)")
+    expect(gradient.colorStops[1].color).toEqual("rgb(255,255,255)")
 
-    assert.equal(gradient.colorStops[0].opacity, 0)
+    expect(gradient.colorStops[0].opacity).toEqual(0)
   })
 
-  QUnit.test(
+  test(
     "fromElement linearGradient with floats percentage - objectBoundingBox",
     function (assert) {
-      assert.ok(typeof fabric.Gradient.fromElement === "function")
+      expect(typeof fabric.Gradient.fromElement === "function").toBeTruthy()
 
       var namespace = "http://www.w3.org/2000/svg"
       var element = fabric.document.createElementNS(namespace, "linearGradient")
@@ -288,20 +274,20 @@
       var object = new fabric.Object({ width: 200, height: 200 })
       var gradient = fabric.Gradient.fromElement(element, object, "")
 
-      assert.ok(gradient instanceof fabric.Gradient)
+      expect(gradient instanceof fabric.Gradient).toBeTruthy()
 
-      assert.equal(gradient.coords.x1, 0.1)
-      assert.equal(gradient.coords.y1, 0.002)
-      assert.equal(gradient.coords.x2, 200)
-      assert.equal(gradient.coords.y2, 0.2)
-      assert.equal(gradient.gradientUnits, "percentage")
+      expect(gradient.coords.x1).toEqual(0.1)
+      expect(gradient.coords.y1).toEqual(0.002)
+      expect(gradient.coords.x2).toEqual(200)
+      expect(gradient.coords.y2).toEqual(0.2)
+      expect(gradient.gradientUnits).toEqual("percentage")
     }
   )
 
-  QUnit.test(
+  test(
     "fromElement linearGradient with floats percentage - userSpaceOnUse",
     function (assert) {
-      assert.ok(typeof fabric.Gradient.fromElement === "function")
+      expect(typeof fabric.Gradient.fromElement === "function").toBeTruthy()
 
       var namespace = "http://www.w3.org/2000/svg"
       var element = fabric.document.createElementNS(namespace, "linearGradient")
@@ -334,19 +320,19 @@
         viewBoxHeight: 300
       })
 
-      assert.ok(gradient instanceof fabric.Gradient)
-      assert.equal(gradient.gradientUnits, "pixels")
-      assert.equal(gradient.offsetX, -10)
-      assert.equal(gradient.offsetY, -15)
-      assert.equal(gradient.coords.x1, 40)
-      assert.equal(gradient.coords.y1, 0.6)
-      assert.equal(gradient.coords.x2, 200)
-      assert.equal(gradient.coords.y2, 60)
+      expect(gradient instanceof fabric.Gradient).toBeTruthy()
+      expect(gradient.gradientUnits).toEqual("pixels")
+      expect(gradient.offsetX).toEqual(-10)
+      expect(gradient.offsetY).toEqual(-15)
+      expect(gradient.coords.x1).toEqual(40)
+      expect(gradient.coords.y1).toEqual(0.6)
+      expect(gradient.coords.x2).toEqual(200)
+      expect(gradient.coords.y2).toEqual(60)
     }
   )
 
-  QUnit.test("fromElement linearGradient with Infinity", function (assert) {
-    assert.ok(typeof fabric.Gradient.fromElement === "function")
+  test("fromElement linearGradient with Infinity", function (assert) {
+    expect(typeof fabric.Gradient.fromElement === "function").toBeTruthy()
 
     var namespace = "http://www.w3.org/2000/svg"
     var element = fabric.document.createElementNS(namespace, "linearGradient")
@@ -375,24 +361,24 @@
     })
     var gradient = fabric.Gradient.fromElement(element, object, "")
 
-    assert.ok(gradient instanceof fabric.Gradient)
+    expect(gradient instanceof fabric.Gradient).toBeTruthy()
 
-    assert.equal(gradient.coords.x1, 0)
-    assert.equal(gradient.coords.y1, 1)
-    assert.equal(gradient.coords.x2, 1)
-    assert.equal(gradient.coords.y2, 0)
+    expect(gradient.coords.x1).toEqual(0)
+    expect(gradient.coords.y1).toEqual(1)
+    expect(gradient.coords.x2).toEqual(1)
+    expect(gradient.coords.y2).toEqual(0)
 
-    assert.equal(gradient.colorStops[0].offset, 1)
-    assert.equal(gradient.colorStops[1].offset, 0)
+    expect(gradient.colorStops[0].offset).toEqual(1)
+    expect(gradient.colorStops[1].offset).toEqual(0)
 
-    assert.equal(gradient.colorStops[0].color, "rgb(0,0,0)")
-    assert.equal(gradient.colorStops[1].color, "rgb(255,255,255)")
+    expect(gradient.colorStops[0].color).toEqual("rgb(0,0,0)")
+    expect(gradient.colorStops[1].color).toEqual("rgb(255,255,255)")
 
-    assert.equal(gradient.colorStops[0].opacity, 0)
+    expect(gradient.colorStops[0].opacity).toEqual(0)
   })
 
-  QUnit.test("fromElement without stop", function (assert) {
-    assert.ok(typeof fabric.Gradient.fromElement === "function")
+  test("fromElement without stop", function (assert) {
+    expect(typeof fabric.Gradient.fromElement === "function").toBeTruthy()
 
     var namespace = "http://www.w3.org/2000/svg"
     var element = fabric.document.createElementNS(namespace, "linearGradient")
@@ -411,14 +397,14 @@
     var object = new fabric.Object({ width: 100, height: 100 })
     var gradient = fabric.Gradient.fromElement(element, object, "")
 
-    assert.ok(gradient instanceof fabric.Gradient)
+    expect(gradient instanceof fabric.Gradient).toBeTruthy()
 
-    assert.equal(gradient.colorStops[0].offset, 1)
-    assert.equal(gradient.colorStops[1].offset, 0)
+    expect(gradient.colorStops[0].offset).toEqual(1)
+    expect(gradient.colorStops[1].offset).toEqual(0)
   })
 
-  QUnit.test("fromElement with x1,x2,y1,2 linear", function (assert) {
-    assert.ok(typeof fabric.Gradient.fromElement === "function")
+  test("fromElement with x1,x2,y1,2 linear", function (assert) {
+    expect(typeof fabric.Gradient.fromElement === "function").toBeTruthy()
 
     var namespace = "http://www.w3.org/2000/svg"
     var element = fabric.document.createElementNS(namespace, "linearGradient")
@@ -430,32 +416,20 @@
 
     var object = new fabric.Object({ width: 200, height: 200 })
     var gradient = fabric.Gradient.fromElement(element, object, "")
-    assert.equal(gradient.coords.x1, 0.3)
-    assert.equal(gradient.coords.y1, 0.1)
-    assert.equal(gradient.coords.x2, 0.2)
-    assert.equal(gradient.coords.y2, 1)
+    expect(gradient.coords.x1).toEqual(0.3)
+    expect(gradient.coords.y1).toEqual(0.1)
+    expect(gradient.coords.x2).toEqual(0.2)
+    expect(gradient.coords.y2).toEqual(1)
     object = new fabric.Object({ width: 200, height: 200, top: 50, left: 10 })
     gradient = fabric.Gradient.fromElement(element, object, "")
-    assert.equal(
-      gradient.coords.x1,
-      0.3,
-      "top and left do not change the output"
-    )
-    assert.equal(
-      gradient.coords.y1,
-      0.1,
-      "top and left do not change the output"
-    )
-    assert.equal(
-      gradient.coords.x2,
-      0.2,
-      "top and left do not change the output"
-    )
-    assert.equal(gradient.coords.y2, 1, "top and left do not change the output")
+    expect(gradient.coords.x1).toEqual(0.3)
+    expect(gradient.coords.y1).toEqual(0.1)
+    expect(gradient.coords.x2).toEqual(0.2)
+    expect(gradient.coords.y2).toEqual(1)
   })
 
-  QUnit.test("fromElement with x1,x2,y1,2 radial", function (assert) {
-    assert.ok(typeof fabric.Gradient.fromElement === "function")
+  test("fromElement with x1,x2,y1,2 radial", function (assert) {
+    expect(typeof fabric.Gradient.fromElement === "function").toBeTruthy()
 
     var namespace = "http://www.w3.org/2000/svg"
     var element = fabric.document.createElementNS(namespace, "radialGradient")
@@ -468,27 +442,27 @@
 
     var object = new fabric.Object({ width: 200, height: 200 })
     var gradient = fabric.Gradient.fromElement(element, object, "")
-    assert.equal(gradient.coords.x1, 0.3, "should not change with width height")
-    assert.equal(gradient.coords.y1, 0.2, "should not change with width height")
-    assert.equal(gradient.coords.x2, 0.1, "should not change with width height")
-    assert.equal(gradient.coords.y2, 1, "should not change with width height")
-    assert.equal(gradient.coords.r1, 0, "should not change with width height")
-    assert.equal(gradient.coords.r2, 1, "should not change with width height")
+    expect(gradient.coords.x1).toEqual(0.3)
+    expect(gradient.coords.y1).toEqual(0.2)
+    expect(gradient.coords.x2).toEqual(0.1)
+    expect(gradient.coords.y2).toEqual(1)
+    expect(gradient.coords.r1).toEqual(0)
+    expect(gradient.coords.r2).toEqual(1)
 
     object = new fabric.Object({ width: 200, height: 200, top: 10, left: 10 })
     gradient = fabric.Gradient.fromElement(element, object, "")
-    assert.equal(gradient.coords.x1, 0.3, "should not change with top left")
-    assert.equal(gradient.coords.y1, 0.2, "should not change with top left")
-    assert.equal(gradient.coords.x2, 0.1, "should not change with top left")
-    assert.equal(gradient.coords.y2, 1, "should not change with top left")
-    assert.equal(gradient.coords.r1, 0, "should not change with top left")
-    assert.equal(gradient.coords.r2, 1, "should not change with top left")
+    expect(gradient.coords.x1).toEqual(0.3)
+    expect(gradient.coords.y1).toEqual(0.2)
+    expect(gradient.coords.x2).toEqual(0.1)
+    expect(gradient.coords.y2).toEqual(1)
+    expect(gradient.coords.r1).toEqual(0)
+    expect(gradient.coords.r2).toEqual(1)
   })
 
-  QUnit.test("fromElement with x1,x2,y1,2 radial userSpaceOnUse", function (
+  test("fromElement with x1,x2,y1,2 radial userSpaceOnUse", function (
     assert
   ) {
-    assert.ok(typeof fabric.Gradient.fromElement === "function")
+    expect(typeof fabric.Gradient.fromElement === "function").toBeTruthy()
 
     var namespace = "http://www.w3.org/2000/svg"
     var element = fabric.document.createElementNS(namespace, "radialGradient")
@@ -502,27 +476,27 @@
 
     var object = new fabric.Object({ width: 200, height: 200 })
     var gradient = fabric.Gradient.fromElement(element, object, "")
-    assert.equal(gradient.coords.x1, 30, "should not change with width height")
-    assert.equal(gradient.coords.y1, 20, "should not change with width height")
-    assert.equal(gradient.coords.x2, 15, "should not change with width height")
-    assert.equal(gradient.coords.y2, 18, "should not change with width height")
-    assert.equal(gradient.coords.r1, 0, "should not change with width height")
-    assert.equal(gradient.coords.r2, 100, "should not change with width height")
+    expect(gradient.coords.x1).toEqual(30)
+    expect(gradient.coords.y1).toEqual(20)
+    expect(gradient.coords.x2).toEqual(15)
+    expect(gradient.coords.y2).toEqual(18)
+    expect(gradient.coords.r1).toEqual(0)
+    expect(gradient.coords.r2).toEqual(100)
 
     object = new fabric.Object({ width: 200, height: 200, top: 50, left: 60 })
     gradient = fabric.Gradient.fromElement(element, object, "")
-    assert.equal(gradient.coords.x1, 30, "should not change with top left")
-    assert.equal(gradient.coords.y1, 20, "should not change with top left")
-    assert.equal(gradient.coords.x2, 15, "should not change with top left")
-    assert.equal(gradient.coords.y2, 18, "should not change with top left")
-    assert.equal(gradient.coords.r1, 0, "should not change with top left")
-    assert.equal(gradient.coords.r2, 100, "should not change with top left")
+    expect(gradient.coords.x1).toEqual(30)
+    expect(gradient.coords.y1).toEqual(20)
+    expect(gradient.coords.x2).toEqual(15)
+    expect(gradient.coords.y2).toEqual(18)
+    expect(gradient.coords.r1).toEqual(0)
+    expect(gradient.coords.r2).toEqual(100)
   })
 
-  QUnit.test("fromElement with x1,x2,y1,2 linear userSpaceOnUse", function (
+  test("fromElement with x1,x2,y1,2 linear userSpaceOnUse", function (
     assert
   ) {
-    assert.ok(typeof fabric.Gradient.fromElement === "function")
+    expect(typeof fabric.Gradient.fromElement === "function").toBeTruthy()
 
     var namespace = "http://www.w3.org/2000/svg"
     var element = fabric.document.createElementNS(namespace, "linearGradient")
@@ -535,21 +509,21 @@
 
     var object = new fabric.Object({ width: 200, height: 200 })
     var gradient = fabric.Gradient.fromElement(element, object, "")
-    assert.equal(gradient.coords.x1, 30, "should not change with width height")
-    assert.equal(gradient.coords.y1, 20, "should not change with width height")
-    assert.equal(gradient.coords.x2, 15, "should not change with width height")
-    assert.equal(gradient.coords.y2, 18, "should not change with width height")
+    expect(gradient.coords.x1).toEqual(30)
+    expect(gradient.coords.y1).toEqual(20)
+    expect(gradient.coords.x2).toEqual(15)
+    expect(gradient.coords.y2).toEqual(18)
 
     object = new fabric.Object({ width: 200, height: 200, top: 40, left: 40 })
     gradient = fabric.Gradient.fromElement(element, object, "")
-    assert.equal(gradient.coords.x1, 30, "should not change with top left")
-    assert.equal(gradient.coords.y1, 20, "should not change with top left")
-    assert.equal(gradient.coords.x2, 15, "should not change with top left")
-    assert.equal(gradient.coords.y2, 18, "should not change with top left")
+    expect(gradient.coords.x1).toEqual(30)
+    expect(gradient.coords.y1).toEqual(20)
+    expect(gradient.coords.x2).toEqual(15)
+    expect(gradient.coords.y2).toEqual(18)
   })
 
-  QUnit.test("fromElement radialGradient defaults", function (assert) {
-    assert.ok(typeof fabric.Gradient.fromElement === "function")
+  test("fromElement radialGradient defaults", function (assert) {
+    expect(typeof fabric.Gradient.fromElement === "function").toBeTruthy()
 
     var namespace = "http://www.w3.org/2000/svg"
     var element = fabric.document.createElementNS(namespace, "radialGradient")
@@ -568,24 +542,24 @@
     var object = new fabric.Object({ width: 100, height: 100 })
     var gradient = fabric.Gradient.fromElement(element, object, "", {})
 
-    assert.ok(gradient instanceof fabric.Gradient)
+    expect(gradient instanceof fabric.Gradient).toBeTruthy()
 
-    assert.equal(gradient.coords.x1, 0.5)
-    assert.equal(gradient.coords.y1, 0.5)
-    assert.equal(gradient.coords.x2, 0.5)
-    assert.equal(gradient.coords.y2, 0.5)
-    assert.equal(gradient.coords.r1, 0)
-    assert.equal(gradient.coords.r2, 0.5)
+    expect(gradient.coords.x1).toEqual(0.5)
+    expect(gradient.coords.y1).toEqual(0.5)
+    expect(gradient.coords.x2).toEqual(0.5)
+    expect(gradient.coords.y2).toEqual(0.5)
+    expect(gradient.coords.r1).toEqual(0)
+    expect(gradient.coords.r2).toEqual(0.5)
 
-    assert.equal(gradient.colorStops[0].offset, 1)
-    assert.equal(gradient.colorStops[1].offset, 0)
+    expect(gradient.colorStops[0].offset).toEqual(1)
+    expect(gradient.colorStops[1].offset).toEqual(0)
 
-    assert.equal(gradient.colorStops[0].color, "rgb(0,0,0)")
-    assert.equal(gradient.colorStops[1].color, "rgb(255,255,255)")
+    expect(gradient.colorStops[0].color).toEqual("rgb(0,0,0)")
+    expect(gradient.colorStops[1].color).toEqual("rgb(255,255,255)")
   })
 
-  QUnit.test("fromElement radialGradient with transform", function (assert) {
-    assert.ok(typeof fabric.Gradient.fromElement === "function")
+  test("fromElement radialGradient with transform", function (assert) {
+    expect(typeof fabric.Gradient.fromElement === "function").toBeTruthy()
 
     var namespace = "http://www.w3.org/2000/svg"
     var element = fabric.document.createElementNS(namespace, "radialGradient")
@@ -607,7 +581,7 @@
     )
     var object = new fabric.Object({ width: 100, height: 100 })
     var gradient = fabric.Gradient.fromElement(element, object, "", {})
-    assert.deepEqual(gradient.gradientTransform, [
+    expect(gradient.gradientTransform).toEqual([
       3.321,
       -0.6998,
       0.4077,
@@ -617,10 +591,10 @@
     ])
   })
 
-  QUnit.test(
+  test(
     "fromElement linearGradient colorStop attributes/styles",
     function (assert) {
-      assert.ok(typeof fabric.Gradient.fromElement === "function")
+      expect(typeof fabric.Gradient.fromElement === "function").toBeTruthy()
 
       var namespace = "http://www.w3.org/2000/svg"
       var element = fabric.document.createElementNS(namespace, "linearGradient")
@@ -662,34 +636,34 @@
       var object = new fabric.Object({ width: 100, height: 100 })
       var gradient = fabric.Gradient.fromElement(element, object, "")
 
-      assert.ok(gradient instanceof fabric.Gradient)
+      expect(gradient instanceof fabric.Gradient).toBeTruthy()
 
-      assert.equal(gradient.coords.x1, 0)
-      assert.equal(gradient.coords.y1, 0)
-      assert.equal(gradient.coords.x2, 1)
-      assert.equal(gradient.coords.y2, 0)
+      expect(gradient.coords.x1).toEqual(0)
+      expect(gradient.coords.y1).toEqual(0)
+      expect(gradient.coords.x2).toEqual(1)
+      expect(gradient.coords.y2).toEqual(0)
 
-      assert.equal(gradient.colorStops[0].offset, 1)
-      assert.equal(gradient.colorStops[1].offset, 0.75)
-      assert.equal(gradient.colorStops[2].offset, 0.5)
-      assert.equal(gradient.colorStops[3].offset, 0)
+      expect(gradient.colorStops[0].offset).toEqual(1)
+      expect(gradient.colorStops[1].offset).toEqual(0.75)
+      expect(gradient.colorStops[2].offset).toEqual(0.5)
+      expect(gradient.colorStops[3].offset).toEqual(0)
 
-      assert.equal(gradient.colorStops[0].color, "rgb(255,0,0)")
-      assert.equal(gradient.colorStops[1].color, "rgb(0,0,255)")
-      assert.equal(gradient.colorStops[2].color, "rgb(0,0,0)")
-      assert.equal(gradient.colorStops[3].color, "rgb(0,0,0)")
+      expect(gradient.colorStops[0].color).toEqual("rgb(255,0,0)")
+      expect(gradient.colorStops[1].color).toEqual("rgb(0,0,255)")
+      expect(gradient.colorStops[2].color).toEqual("rgb(0,0,0)")
+      expect(gradient.colorStops[3].color).toEqual("rgb(0,0,0)")
 
-      assert.equal(gradient.colorStops[0].opacity, 0.5)
-      assert.equal(gradient.colorStops[1].opacity, 0.9)
-      assert.equal(gradient.colorStops[2].opacity, 1)
-      assert.equal(gradient.colorStops[3].opacity, 1)
+      expect(gradient.colorStops[0].opacity).toEqual(0.5)
+      expect(gradient.colorStops[1].opacity).toEqual(0.9)
+      expect(gradient.colorStops[2].opacity).toEqual(1)
+      expect(gradient.colorStops[3].opacity).toEqual(1)
     }
   )
 
-  QUnit.test(
+  test(
     "fromElement radialGradient colorStop attributes/styles",
     function (assert) {
-      assert.ok(typeof fabric.Gradient.fromElement === "function")
+      expect(typeof fabric.Gradient.fromElement === "function").toBeTruthy()
 
       var namespace = "http://www.w3.org/2000/svg"
       var element = fabric.document.createElementNS(namespace, "radialGradient")
@@ -731,69 +705,69 @@
       var object = new fabric.Object({ width: 100, height: 100 })
       var gradient = fabric.Gradient.fromElement(element, object, "")
 
-      assert.ok(gradient instanceof fabric.Gradient)
+      expect(gradient instanceof fabric.Gradient).toBeTruthy()
 
-      assert.equal(gradient.colorStops[0].offset, 1)
-      assert.equal(gradient.colorStops[1].offset, 0.75)
-      assert.equal(gradient.colorStops[2].offset, 0.5)
-      assert.equal(gradient.colorStops[3].offset, 0)
+      expect(gradient.colorStops[0].offset).toEqual(1)
+      expect(gradient.colorStops[1].offset).toEqual(0.75)
+      expect(gradient.colorStops[2].offset).toEqual(0.5)
+      expect(gradient.colorStops[3].offset).toEqual(0)
 
-      assert.equal(gradient.colorStops[0].color, "rgb(255,0,0)")
-      assert.equal(gradient.colorStops[1].color, "rgb(0,0,255)")
-      assert.equal(gradient.colorStops[2].color, "rgb(0,0,0)")
-      assert.equal(gradient.colorStops[3].color, "rgb(0,0,0)")
+      expect(gradient.colorStops[0].color).toEqual("rgb(255,0,0)")
+      expect(gradient.colorStops[1].color).toEqual("rgb(0,0,255)")
+      expect(gradient.colorStops[2].color).toEqual("rgb(0,0,0)")
+      expect(gradient.colorStops[3].color).toEqual("rgb(0,0,0)")
 
-      assert.equal(gradient.colorStops[0].opacity, 0.5)
-      assert.equal(gradient.colorStops[1].opacity, 0.9)
-      assert.equal(gradient.colorStops[2].opacity, 1)
-      assert.equal(gradient.colorStops[3].opacity, 1)
+      expect(gradient.colorStops[0].opacity).toEqual(0.5)
+      expect(gradient.colorStops[1].opacity).toEqual(0.9)
+      expect(gradient.colorStops[2].opacity).toEqual(1)
+      expect(gradient.colorStops[3].opacity).toEqual(1)
     }
   )
 
-  QUnit.test("toSVG", function (assert) {
+  test("toSVG", function (assert) {
     var gradient = createLinearGradient()
-    assert.ok(typeof gradient.toSVG === "function")
+    expect(typeof gradient.toSVG === "function").toBeTruthy()
   })
 
-  QUnit.test("toSVG linear", function (assert) {
+  test("toSVG linear", function (assert) {
     fabric.Object.__uid = 0
     var gradient = createLinearGradient()
     var obj = new fabric.Object({ width: 100, height: 100 })
-    assert.equal(gradient.toSVG(obj), SVG_LINEAR)
+    expect(gradient.toSVG(obj)).toEqual(SVG_LINEAR)
   })
 
-  QUnit.test("toSVG radial", function (assert) {
+  test("toSVG radial", function (assert) {
     fabric.Object.__uid = 0
     var gradient = createRadialGradient()
     var obj = new fabric.Object({ width: 100, height: 100 })
-    assert.equal(gradient.toSVG(obj), SVG_RADIAL)
+    expect(gradient.toSVG(obj)).toEqual(SVG_RADIAL)
   })
 
-  QUnit.test("toSVG radial with r1 > 0", function (assert) {
+  test("toSVG radial with r1 > 0", function (assert) {
     fabric.Object.__uid = 0
     var gradient = createRadialGradientWithInternalRadius()
     var obj = new fabric.Object({ width: 100, height: 100 })
-    assert.equal(gradient.toSVG(obj), SVG_INTERNALRADIUS)
+    expect(gradient.toSVG(obj)).toEqual(SVG_INTERNALRADIUS)
   })
 
-  QUnit.test("toSVG radial with r1 > 0 swapped", function (assert) {
+  test("toSVG radial with r1 > 0 swapped", function (assert) {
     fabric.Object.__uid = 0
     var gradient = createRadialGradientSwapped()
     var obj = new fabric.Object({ width: 100, height: 100 })
-    assert.equal(gradient.toSVG(obj), SVG_SWAPPED)
+    expect(gradient.toSVG(obj)).toEqual(SVG_SWAPPED)
   })
 
-  QUnit.test("toSVG linear objectBoundingBox", function (assert) {
+  test("toSVG linear objectBoundingBox", function (assert) {
     fabric.Object.__uid = 0
     var gradient = createLinearGradient("percentage")
     var obj = new fabric.Object({ width: 100, height: 100 })
-    assert.equal(gradient.toSVG(obj), SVG_LINEAR_PERCENTAGE)
+    expect(gradient.toSVG(obj)).toEqual(SVG_LINEAR_PERCENTAGE)
   })
 
-  QUnit.test("toSVG radial objectBoundingBox", function (assert) {
+  test("toSVG radial objectBoundingBox", function (assert) {
     fabric.Object.__uid = 0
     var gradient = createRadialGradient("percentage")
     var obj = new fabric.Object({ width: 100, height: 100 })
-    assert.equal(gradient.toSVG(obj), SVG_RADIAL_PERCENTAGE)
+    expect(gradient.toSVG(obj)).toEqual(SVG_RADIAL_PERCENTAGE)
   })
 })()

@@ -1,6 +1,6 @@
 ;(function () {
   var canvas = (this.canvas = new fabric.Canvas())
-  QUnit.module("fabric.Textbox", {
+  describe("fabric.Textbox", {
     afterEach: function () {
       canvas.clear()
     }
@@ -54,93 +54,59 @@
     splitByGrapheme: false
   }
 
-  QUnit.test("constructor", function (assert) {
+  test("constructor", function (assert) {
     var textbox = new fabric.Textbox("test")
-    assert.ok(textbox instanceof fabric.Textbox)
-    assert.ok(textbox instanceof fabric.IText)
-    assert.ok(textbox instanceof fabric.Text)
+    expect(textbox instanceof fabric.Textbox).toBeTruthy()
+    expect(textbox instanceof fabric.IText).toBeTruthy()
+    expect(textbox instanceof fabric.Text).toBeTruthy()
   })
 
-  QUnit.test("constructor with width", function (assert) {
+  test("constructor with width", function (assert) {
     var textbox = new fabric.Textbox("test", { width: 400 })
-    assert.equal(textbox.width, 400, "width is taken by contstructor")
+    expect(textbox.width).toEqual(400)
   })
 
-  QUnit.test("constructor with width too small", function (assert) {
+  test("constructor with width too small", function (assert) {
     var textbox = new fabric.Textbox("test", { width: 5 })
-    assert.equal(
-      Math.round(textbox.width),
-      56,
-      "width is calculated by constructor"
-    )
+    expect(Math.round(textbox.width)).toEqual(56)
   })
 
-  QUnit.test("initial properties", function (assert) {
+  test("initial properties", function (assert) {
     var textbox = new fabric.Textbox("test")
-    assert.equal(textbox.text, "test")
-    assert.equal(textbox.type, "textbox")
-    assert.deepEqual(textbox.styles, {})
-    assert.ok(
-      textbox.cacheProperties.indexOf("width") > -1,
-      "width is in cacheProperties"
-    )
+    expect(textbox.text).toEqual("test")
+    expect(textbox.type).toEqual("textbox")
+    expect(textbox.styles).toEqual({})
+    expect(textbox.cacheProperties.indexOf("width") > -1).toBeTruthy()
   })
 
-  QUnit.test("toObject", function (assert) {
+  test("toObject", function (assert) {
     var textbox = new fabric.Textbox("x")
     var obj = textbox.toObject()
-    assert.deepEqual(obj, TEXTBOX_OBJECT, "JSON OUTPUT MATCH")
+    expect(obj).toEqual(TEXTBOX_OBJECT)
   })
 
-  QUnit.test("fromObject", function (assert) {
+  test("fromObject", function (assert) {
     var done = assert.async()
     fabric.Textbox.fromObject(TEXTBOX_OBJECT, function (textbox) {
-      assert.equal(textbox.text, "x", "properties are respected")
-      assert.ok(
-        textbox instanceof fabric.Textbox,
-        "the generated object is a textbox"
-      )
+      expect(textbox.text).toEqual("x")
+      expect(textbox instanceof fabric.Textbox).toBeTruthy()
       done()
     })
   })
 
-  QUnit.test("isEndOfWrapping", function (assert) {
+  test("isEndOfWrapping", function (assert) {
     var textbox = new fabric.Textbox("a q o m s g\np q r s t w", {
       width: 70
     })
-    assert.equal(
-      textbox.isEndOfWrapping(0),
-      false,
-      "first line is not end of wrapping"
-    )
-    assert.equal(
-      textbox.isEndOfWrapping(1),
-      false,
-      "second line is not end of wrapping"
-    )
-    assert.equal(
-      textbox.isEndOfWrapping(2),
-      true,
-      "line before an hard break is end of wrapping"
-    )
-    assert.equal(
-      textbox.isEndOfWrapping(3),
-      false,
-      "line 3 is not end of wrapping"
-    )
-    assert.equal(
-      textbox.isEndOfWrapping(4),
-      false,
-      "line 4 is not end of wrapping"
-    )
-    assert.equal(
-      textbox.isEndOfWrapping(5),
-      true,
-      "last line is end of wrapping"
-    )
+    expect(textbox.isEndOfWrapping(0)).toEqual(false)
+    expect(textbox.isEndOfWrapping(1)).toEqual(false)
+    expect(textbox.isEndOfWrapping(2)).toEqual(true)
+    expect(textbox.isEndOfWrapping(3)).toEqual(false)
+    expect(textbox.isEndOfWrapping(4)).toEqual(false)
+    expect(textbox.isEndOfWrapping(5)).toEqual(true)
   })
 
-  QUnit.test("_removeExtraneousStyles", function (assert) {
+  test("_removeExtraneousStyles", function (assert) {
     var textbox = new fabric.Textbox("a q o m s g\np q r s t w", {
       width: 40,
       styles: {
@@ -152,61 +118,37 @@
         5: { 0: { fontSize: 4 } }
       }
     })
-    assert.deepEqual(
-      textbox.styles[3],
-      { 0: { fontSize: 4 } },
-      "style line 3 exists"
-    )
-    assert.deepEqual(
-      textbox.styles[4],
-      { 0: { fontSize: 4 } },
-      "style line 4 exists"
-    )
-    assert.deepEqual(
-      textbox.styles[5],
-      { 0: { fontSize: 4 } },
-      "style line 5 exists"
-    )
+    expect(textbox.styles[3]).toEqual({ 0: { fontSize: 4 } })
+    expect(textbox.styles[4]).toEqual({ 0: { fontSize: 4 } })
+    expect(textbox.styles[5]).toEqual({ 0: { fontSize: 4 } })
     textbox._removeExtraneousStyles()
-    assert.equal(textbox.styles[2], undefined, "style line 2 has been removed")
-    assert.equal(textbox.styles[3], undefined, "style line 3 has been removed")
-    assert.equal(textbox.styles[4], undefined, "style line 4 has been removed")
-    assert.equal(textbox.styles[5], undefined, "style line 5 has been removed")
+    expect(textbox.styles[2]).toEqual(undefined)
+    expect(textbox.styles[3]).toEqual(undefined)
+    expect(textbox.styles[4]).toEqual(undefined)
+    expect(textbox.styles[5]).toEqual(undefined)
   })
 
-  QUnit.test("isEmptyStyles", function (assert) {
+  test("isEmptyStyles", function (assert) {
     var textbox = new fabric.Textbox("x x", {
       width: 5,
       styles: { 0: { 0: { fill: "red" } } }
     })
-    assert.equal(textbox._textLines.length, 2, "lines are wrapped")
-    assert.equal(
-      textbox._unwrappedTextLines.length,
-      1,
-      "there is only one text line"
-    )
-    assert.equal(textbox.isEmptyStyles(), false, "style is not empty")
-    assert.equal(
-      textbox.isEmptyStyles(0),
-      false,
-      "style is not empty at line 0"
-    )
-    assert.equal(textbox.isEmptyStyles(1), true, "style is empty at line 1")
+    expect(textbox._textLines.length).toEqual(2)
+    expect(textbox._unwrappedTextLines.length).toEqual(1)
+    expect(textbox.isEmptyStyles()).toEqual(false)
+    expect(textbox.isEmptyStyles(0)).toEqual(false)
+    expect(textbox.isEmptyStyles(1)).toEqual(true)
   })
 
-  QUnit.test("isEmptyStyles does not crash on null styles", function (assert) {
+  test("isEmptyStyles does not crash on null styles", function (assert) {
     var textbox = new fabric.Textbox("x x", { width: 5 })
     textbox.styles = null
-    assert.equal(textbox._textLines.length, 2, "lines are wrapped")
-    assert.equal(
-      textbox._unwrappedTextLines.length,
-      1,
-      "there is only one text line"
-    )
-    assert.equal(textbox.isEmptyStyles(1), true, "style is empty")
+    expect(textbox._textLines.length).toEqual(2)
+    expect(textbox._unwrappedTextLines.length).toEqual(1)
+    expect(textbox.isEmptyStyles(1)).toEqual(true)
   })
 
-  QUnit.test("isEmptyStyles alternate lines", function (assert) {
+  test("isEmptyStyles alternate lines", function (assert) {
     var textbox = new fabric.Textbox("xa xb xc xd xe\nya yb", {
       width: 5,
       styles: {
@@ -219,57 +161,33 @@
         1: { 3: { fill: "red" }, 4: { fill: "blue" } }
       }
     })
-    assert.equal(textbox._textLines.length, 7, "lines are wrapped")
-    assert.equal(
-      textbox._unwrappedTextLines.length,
-      2,
-      "there is only one text line"
-    )
-    assert.equal(textbox.isEmptyStyles(), false, "style is not empty")
-    assert.equal(
-      textbox.isEmptyStyles(0),
-      false,
-      "style is not empty at line 0"
-    )
-    assert.equal(textbox.isEmptyStyles(1), true, "style is empty at line 1")
-    assert.equal(textbox.isEmptyStyles(2), true, "style is empty at line 2")
-    assert.equal(textbox.isEmptyStyles(3), false, "style is empty at line 3")
-    assert.equal(textbox.isEmptyStyles(4), true, "style is empty at line 4")
-    assert.equal(textbox.isEmptyStyles(5), true, "style is empty at line 5")
-    assert.equal(textbox.isEmptyStyles(6), false, "style is empty at line 6")
+    expect(textbox._textLines.length).toEqual(7)
+    expect(textbox._unwrappedTextLines.length).toEqual(2)
+    expect(textbox.isEmptyStyles()).toEqual(false)
+    expect(textbox.isEmptyStyles(0)).toEqual(false)
+    expect(textbox.isEmptyStyles(1)).toEqual(true)
+    expect(textbox.isEmptyStyles(2)).toEqual(true)
+    expect(textbox.isEmptyStyles(3)).toEqual(false)
+    expect(textbox.isEmptyStyles(4)).toEqual(true)
+    expect(textbox.isEmptyStyles(5)).toEqual(true)
+    expect(textbox.isEmptyStyles(6)).toEqual(false)
   })
-  QUnit.test("wrapping with charspacing", function (assert) {
+  test("wrapping with charspacing", function (assert) {
     var textbox = new fabric.Textbox("xa xb xc xd xe ya yb id", {
       width: 190
     })
-    assert.equal(
-      textbox.textLines[0],
-      "xa xb xc xd",
-      "first line match expectations"
-    )
+    expect(textbox.textLines[0]).toEqual("xa xb xc xd")
     textbox.charSpacing = 100
     textbox.initDimensions()
-    assert.equal(
-      textbox.textLines[0],
-      "xa xb xc",
-      "first line match expectations spacing 100"
-    )
+    expect(textbox.textLines[0]).toEqual("xa xb xc")
     textbox.charSpacing = 300
     textbox.initDimensions()
-    assert.equal(
-      textbox.textLines[0],
-      "xa xb",
-      "first line match expectations spacing 300"
-    )
+    expect(textbox.textLines[0]).toEqual("xa xb")
     textbox.charSpacing = 800
     textbox.initDimensions()
-    assert.equal(
-      textbox.textLines[0],
-      "xa",
-      "first line match expectations spacing 800"
-    )
+    expect(textbox.textLines[0]).toEqual("xa")
   })
-  QUnit.test(
+  test(
     "wrapping with charspacing and splitByGrapheme positive",
     function (assert) {
       var textbox = new fabric.Textbox("xaxbxcxdeyaybid", {
@@ -277,14 +195,10 @@
         splitByGrapheme: true,
         charSpacing: 400
       })
-      assert.deepEqual(
-        textbox.textLines,
-        ["xaxbx", "cxdey", "aybid"],
-        "lines match splitByGrapheme charSpacing 400"
-      )
+      expect(textbox.textLines).toEqual(["xaxbx", "cxdey", "aybid"])
     }
   )
-  QUnit.test(
+  test(
     "wrapping with charspacing and splitByGrapheme negative",
     function (assert) {
       var textbox = new fabric.Textbox("xaxbxcxdeyaybid", {
@@ -292,62 +206,34 @@
         splitByGrapheme: true,
         charSpacing: -100
       })
-      assert.deepEqual(
-        textbox.textLines,
-        ["xaxbxcxdeyay", "bid"],
-        "lines match splitByGrapheme charSpacing -100"
-      )
+      expect(textbox.textLines).toEqual(["xaxbxcxdeyay", "bid"])
     }
   )
-  QUnit.test("wrapping with different things", function (assert) {
+  test("wrapping with different things", function (assert) {
     var textbox = new fabric.Textbox("xa xb\txc\rxd xe ya yb id", {
       width: 16
     })
-    assert.equal(textbox.textLines[0], "xa", "0 line match expectations")
-    assert.equal(textbox.textLines[1], "xb", "1 line match expectations")
-    assert.equal(textbox.textLines[2], "xc", "2 line match expectations")
-    assert.equal(textbox.textLines[3], "xd", "3 line match expectations")
-    assert.equal(textbox.textLines[4], "xe", "4 line match expectations")
-    assert.equal(textbox.textLines[5], "ya", "5 line match expectations")
-    assert.equal(textbox.textLines[6], "yb", "6 line match expectations")
+    expect(textbox.textLines[0]).toEqual("xa")
+    expect(textbox.textLines[1]).toEqual("xb")
+    expect(textbox.textLines[2]).toEqual("xc")
+    expect(textbox.textLines[3]).toEqual("xd")
+    expect(textbox.textLines[4]).toEqual("xe")
+    expect(textbox.textLines[5]).toEqual("ya")
+    expect(textbox.textLines[6]).toEqual("yb")
   })
-  QUnit.test("wrapping with splitByGrapheme", function (assert) {
+  test("wrapping with splitByGrapheme", function (assert) {
     var textbox = new fabric.Textbox("xaxbxcxdxeyaybid", {
       width: 1,
       splitByGrapheme: true
     })
-    assert.equal(
-      textbox.textLines[0],
-      "x",
-      "0 line match expectations splitByGrapheme"
-    )
-    assert.equal(
-      textbox.textLines[1],
-      "a",
-      "1 line match expectations splitByGrapheme"
-    )
-    assert.equal(
-      textbox.textLines[2],
-      "x",
-      "2 line match expectations splitByGrapheme"
-    )
-    assert.equal(
-      textbox.textLines[3],
-      "b",
-      "3 line match expectations splitByGrapheme"
-    )
-    assert.equal(
-      textbox.textLines[4],
-      "x",
-      "4 line match expectations splitByGrapheme"
-    )
-    assert.equal(
-      textbox.textLines[5],
-      "c",
-      "5 line match expectations splitByGrapheme"
-    )
+    expect(textbox.textLines[0]).toEqual("x")
+    expect(textbox.textLines[1]).toEqual("a")
+    expect(textbox.textLines[2]).toEqual("x")
+    expect(textbox.textLines[3]).toEqual("b")
+    expect(textbox.textLines[4]).toEqual("x")
+    expect(textbox.textLines[5]).toEqual("c")
   })
-  QUnit.test("wrapping with custom space", function (assert) {
+  test("wrapping with custom space", function (assert) {
     var textbox = new fabric.Textbox("xa xb xc xd xe ya yb id", {
       width: 2000
     })
@@ -358,8 +244,8 @@
       ["x", "e", " ", "y", "a"],
       ["y", "b", " ", "i", "d"]
     ]
-    assert.deepEqual(line1, expected1, "wrapping without reserved")
-    assert.deepEqual(textbox.dynamicMinWidth, 40, "wrapping without reserved")
+    expect(line1).toEqual(expected1)
+    expect(textbox.dynamicMinWidth).toEqual(40)
     var line2 = textbox._wrapLine("xa xb xc xd xe ya yb id", 0, 100, 50)
     var expected2 = [
       ["x", "a"],
@@ -371,20 +257,20 @@
       ["y", "b"],
       ["i", "d"]
     ]
-    assert.deepEqual(line2, expected2, "wrapping without reserved")
-    assert.deepEqual(textbox.dynamicMinWidth, 90, "wrapping without reserved")
+    expect(line2).toEqual(expected2)
+    expect(textbox.dynamicMinWidth).toEqual(90)
   })
-  QUnit.test("wrapping an empty line", function (assert) {
+  test("wrapping an empty line", function (assert) {
     var textbox = new fabric.Textbox("", {
       width: 10
     })
     var line1 = textbox._wrapLine("", 0, 100, 0)
-    assert.deepEqual(line1, [[]], "wrapping without splitByGrapheme")
+    expect(line1).toEqual([[]])
     textbox.splitByGrapheme = true
     var line2 = textbox._wrapLine("", 0, 100, 0)
-    assert.deepEqual(line2, [[]], "wrapping with splitByGrapheme")
+    expect(line2).toEqual([[]])
   })
-  QUnit.test("texbox will change width from the mr corner", function (assert) {
+  test("texbox will change width from the mr corner", function (assert) {
     var text = new fabric.Textbox("xa xb xc xd xe ya yb id", { strokeWidth: 0 })
     canvas.add(text)
     canvas.setActiveObject(text)
@@ -407,9 +293,9 @@
       clientY: eventStub.clientY,
       type: "mouseup"
     })
-    assert.equal(text.width, originalWidth + 20, "width increased")
+    expect(text.width).toEqual(originalWidth + 20)
   })
-  QUnit.test("texbox will change width from the ml corner", function (assert) {
+  test("texbox will change width from the ml corner", function (assert) {
     var text = new fabric.Textbox("xa xb xc xd xe ya yb id", {
       strokeWidth: 0,
       left: 40
@@ -435,9 +321,9 @@
       clientY: eventStub.clientY,
       type: "mouseup"
     })
-    assert.equal(text.width, originalWidth + 20, "width increased")
+    expect(text.width).toEqual(originalWidth + 20)
   })
-  QUnit.test("_removeExtraneousStyles", function (assert) {
+  test("_removeExtraneousStyles", function (assert) {
     var iText = new fabric.Textbox("a\nqqo", {
       styles: {
         0: { 0: { fontSize: 4 } },
@@ -447,22 +333,14 @@
         4: { 0: { fontSize: 4 } }
       }
     })
-    assert.deepEqual(
-      iText.styles[3],
-      { 0: { fontSize: 4 } },
-      "style line 3 exists"
-    )
-    assert.deepEqual(
-      iText.styles[4],
-      { 0: { fontSize: 4 } },
-      "style line 4 exists"
-    )
+    expect(iText.styles[3]).toEqual({ 0: { fontSize: 4 } })
+    expect(iText.styles[4]).toEqual({ 0: { fontSize: 4 } })
     iText._removeExtraneousStyles()
-    assert.equal(iText.styles[3], undefined, "style line 3 has been removed")
-    assert.equal(iText.styles[4], undefined, "style line 4 has been removed")
+    expect(iText.styles[3]).toEqual(undefined)
+    expect(iText.styles[4]).toEqual(undefined)
   })
 
-  QUnit.test("get2DCursorLocation with splitByGrapheme", function (assert) {
+  test("get2DCursorLocation with splitByGrapheme", function (assert) {
     var iText = new fabric.Textbox("aaaaaaaaaaaaaaaaaaaaaaaa", {
       width: 60,
       splitByGrapheme: true
@@ -479,30 +357,30 @@
     //   [ '石', '墨', '分' ],
     //   [ '裂' ] ]
 
-    assert.equal(loc.lineIndex, 0)
-    assert.equal(loc.charIndex, 0)
+    expect(loc.lineIndex).toEqual(0)
+    expect(loc.charIndex).toEqual(0)
 
     // '由石墨|分裂的石墨分裂由石墨分裂由石墨分裂的石墨分裂'
     iText.selectionStart = iText.selectionEnd = 4
     loc = iText.get2DCursorLocation()
 
-    assert.equal(loc.lineIndex, 1, "selection end 4 line 1")
-    assert.equal(loc.charIndex, 1, "selection end 4 char 1")
+    expect(loc.lineIndex).toEqual(1)
+    expect(loc.charIndex).toEqual(1)
 
     iText.selectionStart = iText.selectionEnd = 7
     loc = iText.get2DCursorLocation()
 
-    assert.equal(loc.lineIndex, 2, "selection end 7 line 2")
-    assert.equal(loc.charIndex, 1, "selection end 7 char 1")
+    expect(loc.lineIndex).toEqual(2)
+    expect(loc.charIndex).toEqual(1)
 
     iText.selectionStart = iText.selectionEnd = 14
     loc = iText.get2DCursorLocation()
 
-    assert.equal(loc.lineIndex, 4, "selection end 14 line 4")
-    assert.equal(loc.charIndex, 2, "selection end 14 char 2")
+    expect(loc.lineIndex).toEqual(4)
+    expect(loc.charIndex).toEqual(2)
   })
 
-  QUnit.test("missingNewlineOffset with splitByGrapheme", function (assert) {
+  test("missingNewlineOffset with splitByGrapheme", function (assert) {
     var textbox = new fabric.Textbox("aaa\naaaaaa\na\naaaaaaaaaaaa\naaa", {
       width: 80,
       splitByGrapheme: true
@@ -518,34 +396,26 @@
     //   [ 'a', 'a', 'a' ] ]
 
     var offset = textbox.missingNewlineOffset(0)
-    assert.equal(
-      offset,
-      1,
-      "line 0 is interrupted by a \n so has an offset of 1"
-    )
+    expect(offset).toEqual(1)
 
     offset = textbox.missingNewlineOffset(1)
-    assert.equal(
-      offset,
-      0,
-      "line 1 is wrapped without a \n so it does have an extra char count"
-    )
+    expect(offset).toEqual(0)
   })
 
-  QUnit.test("missingNewlineOffset with normal split", function (assert) {
+  test("missingNewlineOffset with normal split", function (assert) {
     var texbox = new fabric.Textbox("aaa\naaaaaa\na\naaaaaaaaaaaa\naaa", {
       width: 160
     })
 
     var offset = texbox.missingNewlineOffset(0)
-    assert.equal(offset, 1, "it returns always 1")
+    expect(offset).toEqual(1)
     var offset = texbox.missingNewlineOffset(1)
-    assert.equal(offset, 1, "it returns always 1")
+    expect(offset).toEqual(1)
     var offset = texbox.missingNewlineOffset(2)
-    assert.equal(offset, 1, "it returns always 1")
+    expect(offset).toEqual(1)
   })
 
-  QUnit.test("_getLineStyle", function (assert) {
+  test("_getLineStyle", function (assert) {
     var textbox = new fabric.Textbox("aaa aaq ggg gg\noee eee", {
       styles: {
         1: { 0: { fontSize: 4 } }
@@ -553,12 +423,12 @@
       width: 80
     })
 
-    assert.equal(textbox._getLineStyle(0), false, "wrapped line 0 has no style")
-    assert.equal(textbox._getLineStyle(1), false, "wrapped line 1 has no style")
-    assert.equal(textbox._getLineStyle(4), true, "wrapped line 2 has style")
+    expect(textbox._getLineStyle(0)).toEqual(false)
+    expect(textbox._getLineStyle(1)).toEqual(false)
+    expect(textbox._getLineStyle(4)).toEqual(true)
   })
 
-  QUnit.test("_setLineStyle", function (assert) {
+  test("_setLineStyle", function (assert) {
     var textbox = new fabric.Textbox("aaa aaq ggg gg\noee eee", {
       styles: {
         1: { 0: { fontSize: 4 } }
@@ -566,23 +436,23 @@
       width: 80
     })
 
-    assert.equal(textbox._getLineStyle(0), false, "wrapped line 0 has no style")
-    assert.equal(textbox._getLineStyle(1), false, "wrapped line 1 has no style")
-    assert.equal(textbox._getLineStyle(2), false, "wrapped line 2 has no style")
-    assert.equal(textbox._getLineStyle(3), false, "wrapped line 3 has no style")
+    expect(textbox._getLineStyle(0)).toEqual(false)
+    expect(textbox._getLineStyle(1)).toEqual(false)
+    expect(textbox._getLineStyle(2)).toEqual(false)
+    expect(textbox._getLineStyle(3)).toEqual(false)
 
-    assert.deepEqual(textbox.styles[0], undefined, "style is undefined")
+    expect(textbox.styles[0]).toEqual(undefined)
     textbox._setLineStyle(0)
 
-    assert.equal(textbox._getLineStyle(0), true, "wrapped line 0 has style")
-    assert.equal(textbox._getLineStyle(1), true, "wrapped line 1 has style")
-    assert.equal(textbox._getLineStyle(2), true, "wrapped line 2 has style")
-    assert.equal(textbox._getLineStyle(3), true, "wrapped line 3 has style")
+    expect(textbox._getLineStyle(0)).toEqual(true)
+    expect(textbox._getLineStyle(1)).toEqual(true)
+    expect(textbox._getLineStyle(2)).toEqual(true)
+    expect(textbox._getLineStyle(3)).toEqual(true)
 
-    assert.deepEqual(textbox.styles[0], {}, "style is an empty object")
+    expect(textbox.styles[0]).toEqual({})
   })
 
-  QUnit.test("_deleteStyleDeclaration", function (assert) {
+  test("_deleteStyleDeclaration", function (assert) {
     var textbox = new fabric.Textbox("aaa aaq ggg gg oee eee", {
       styles: {
         0: {
@@ -608,10 +478,10 @@
       width: 5
     })
     textbox._deleteStyleDeclaration(2, 2)
-    assert.equal(textbox.styles[0][10], undefined, "style has been removed")
+    expect(textbox.styles[0][10]).toEqual(undefined)
   })
 
-  QUnit.test("_setStyleDeclaration", function (assert) {
+  test("_setStyleDeclaration", function (assert) {
     var textbox = new fabric.Textbox("aaa aaq ggg gg oee eee", {
       styles: {
         0: {
@@ -636,17 +506,13 @@
       },
       width: 5
     })
-    assert.equal(
-      typeof textbox._setStyleDeclaration,
-      "function",
-      "function exists"
-    )
+    expect(typeof textbox._setStyleDeclaration).toEqual("function")
     var newStyle = { fontSize: 10 }
     textbox._setStyleDeclaration(2, 2, newStyle)
-    assert.equal(textbox.styles[0][10], newStyle, "style has been changed")
+    expect(textbox.styles[0][10]).toEqual(newStyle)
   })
 
-  QUnit.test("styleHas", function (assert) {
+  test("styleHas", function (assert) {
     var textbox = new fabric.Textbox("aaa aaq ggg gg oee eee", {
       styles: {
         0: {
@@ -660,19 +526,11 @@
       },
       width: 5
     })
-    assert.equal(textbox.styleHas("fontSize"), true, "style has fontSize")
-    assert.equal(
-      textbox.styleHas("fontSize", 0),
-      true,
-      "style has fontSize on line 0"
-    )
+    expect(textbox.styleHas("fontSize")).toEqual(true)
+    expect(textbox.styleHas("fontSize", 0)).toEqual(true)
     // assert.equal(textbox.styleHas('fontSize', 1), false, 'style does not have fontSize on line 1');
-    assert.equal(textbox.styleHas("fontFamily"), true, "style has fontFamily")
+    expect(textbox.styleHas("fontFamily")).toEqual(true)
     // assert.equal(textbox.styleHas('fontFamily', 0), false, 'style does not have fontFamily on line 0');
-    assert.equal(
-      textbox.styleHas("fontFamily", 1),
-      true,
-      "style has fontFamily on line 1"
-    )
+    expect(textbox.styleHas("fontFamily", 1)).toEqual(true)
   })
 })()

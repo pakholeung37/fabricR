@@ -1,5 +1,5 @@
 ;(function () {
-  QUnit.module("fabric.util - path.js")
+  describe("fabric.util - path.js")
   // eslint-disable-next-line max-len
   var path =
     "M 2 5 l 2 -2 L 4 4 h 3 H 9 C 8 3 10 3 10 3 c 1 -1 2 0 1 1 S 8 5 9 7 v 1 s 2 -1 1 2 Q 9 10 10 11 T 12 11 t -1 -1 v 2 T 10 12 S 9 12 7 11 c 0 -1 0 -1 -2 -2 z m 0 2 l 1 0 l 0 1 l -1 0 z M 1 1 a 1 1 30 1 0 2 2 A 2 2 30 1 0 6 6"
@@ -95,16 +95,12 @@
       6
     ]
   ]
-  QUnit.test("fabric.util.parsePath", function (assert) {
-    assert.ok(typeof fabric.util.parsePath === "function")
-    assert.ok(typeof fabric.util.makePathSimpler === "function")
+  test("fabric.util.parsePath", function (assert) {
+    expect(typeof fabric.util.parsePath === "function").toBeTruthy()
+    expect(typeof fabric.util.makePathSimpler === "function").toBeTruthy()
     var parsed = fabric.util.parsePath(path)
     parsed.forEach(function (command, index) {
-      assert.deepEqual(
-        command,
-        expectedParse[index],
-        "should be parsed in an array of commands " + index
-      )
+      expect(command).toEqual(expectedParse[index])
     })
     var simplified = fabric.util.makePathSimpler(parsed)
     simplified.forEach(function (command, index) {
@@ -112,14 +108,10 @@
         // because firefox i have no idea.
         return
       }
-      assert.deepEqual(
-        command,
-        expectedSimplified[index],
-        "should contain a subset of equivalent commands " + index
-      )
+      expect(command).toEqual(expectedSimplified[index])
     })
   })
-  QUnit.test(
+  test(
     "fabric.util.parsePath can parse arcs correctly when no spaces between flags",
     function (assert) {
       // eslint-disable-next-line max-len
@@ -127,83 +119,39 @@
       var expected = ["a", 10.56, 10.56, 0, 0, 0, -1.484, -0.133]
       var parsed = fabric.util.parsePath(pathWithWeirdArc)
       var command = parsed[0]
-      assert.deepEqual(command, expected, "Arc should be parsed correctly.")
+      expect(command).toEqual(expected)
     }
   )
-  QUnit.test("fabric.util.getPathSegmentsInfo", function (assert) {
-    assert.ok(typeof fabric.util.getPathSegmentsInfo === "function")
+  test("fabric.util.getPathSegmentsInfo", function (assert) {
+    expect(typeof fabric.util.getPathSegmentsInfo === "function").toBeTruthy()
     var parsed = fabric.util.makePathSimpler(fabric.util.parsePath(path))
     var infos = fabric.util.getPathSegmentsInfo(parsed)
-    assert.deepEqual(infos[0].length, 0, "the command 0 a M has a length 0")
-    assert.deepEqual(
-      infos[1].length,
-      2.8284271247461903,
-      "the command 1 a L has a length 2.82"
-    )
-    assert.deepEqual(
-      infos[2].length,
-      1,
-      "the command 2 a L with one step on Y has a length 1"
-    )
-    assert.deepEqual(
-      infos[3].length,
-      3,
-      "the command 3 a L with 3 step on X has a length 3"
-    )
-    assert.deepEqual(
-      infos[4].length,
-      2,
-      "the command 4 a L with 2 step on X has a length 0"
-    )
-    assert.deepEqual(
-      infos[5].length,
-      2.061820497903685,
-      "the command 5 a C has a approximated lenght of 2.061"
-    )
-    assert.deepEqual(
-      infos[6].length,
-      2.786311794934689,
-      "the command 6 a C has a approximated lenght of 2.786"
-    )
-    assert.deepEqual(
-      infos[7].length,
-      4.123555017527272,
-      "the command 7 a C has a approximated lenght of 4.123"
-    )
-    assert.deepEqual(
-      infos[8].length,
-      1,
-      "the command 8 a L with 1 step on the Y has an exact lenght of 1"
-    )
-    assert.deepEqual(
-      infos[9].length,
-      3.1338167707969693,
-      "the command 9 a C has a approximated lenght of 3.183"
-    )
-    assert.deepEqual(
-      infos[10].length,
-      1.512191042774622,
-      "the command 10 a Q has a approximated lenght of 1.512"
-    )
-    assert.deepEqual(
-      infos[11].length,
-      2.2674203737413428,
-      "the command 11 a Q has a approximated lenght of 2.267"
-    )
+    expect(infos[0].length).toEqual(0)
+    expect(infos[1].length).toEqual(2.8284271247461903)
+    expect(infos[2].length).toEqual(1)
+    expect(infos[3].length).toEqual(3)
+    expect(infos[4].length).toEqual(2)
+    expect(infos[5].length).toEqual(2.061820497903685)
+    expect(infos[6].length).toEqual(2.786311794934689)
+    expect(infos[7].length).toEqual(4.123555017527272)
+    expect(infos[8].length).toEqual(1)
+    expect(infos[9].length).toEqual(3.1338167707969693)
+    expect(infos[10].length).toEqual(1.512191042774622)
+    expect(infos[11].length).toEqual(2.2674203737413428)
   })
 
-  QUnit.test("fabric.util.getPathSegmentsInfo test Z command", function (
+  test("fabric.util.getPathSegmentsInfo test Z command", function (
     assert
   ) {
-    assert.ok(typeof fabric.util.getPathSegmentsInfo === "function")
+    expect(typeof fabric.util.getPathSegmentsInfo === "function").toBeTruthy()
     var parsed = fabric.util.makePathSimpler(
       fabric.util.parsePath("M 0 0 h 20, v 20 L 0, 20 Z")
     )
     var infos = fabric.util.getPathSegmentsInfo(parsed)
-    assert.deepEqual(infos[0].length, 0, "the command 0 a M has a length 0")
-    assert.deepEqual(infos[1].length, 20, "the command 1 a L has length 20")
-    assert.deepEqual(infos[2].length, 20, "the command 2 a L has length 20")
-    assert.deepEqual(infos[3].length, 20, "the command 3 a L has length 20")
-    assert.deepEqual(infos[4].length, 20, "the command 4 a Z has length 20")
+    expect(infos[0].length).toEqual(0)
+    expect(infos[1].length).toEqual(20)
+    expect(infos[2].length).toEqual(20)
+    expect(infos[3].length).toEqual(20)
+    expect(infos[4].length).toEqual(20)
   })
 })()
