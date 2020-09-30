@@ -231,14 +231,14 @@ describe("fabric.StaticCanvas", () => {
     expect("backgroundVpt" in canvas).toBeTruthy()
     expect("overlayVpt" in canvas).toBeTruthy()
 
-    expect(canvas.includeDefaultValues).toEqual(true)
-    expect(canvas.stateful).toEqual(false)
-    expect(canvas.renderOnAddRemove).toEqual(true)
-    expect(canvas.controlsAboveOverlay).toEqual(false)
-    expect(canvas.allowTouchScrolling).toEqual(false)
-    expect(canvas.imageSmoothingEnabled).toEqual(true)
-    expect(canvas.backgroundVpt).toEqual(true)
-    expect(canvas.overlayVpt).toEqual(true)
+    expect(canvas.includeDefaultValues).toBe(true)
+    expect(canvas.stateful).toBe(false)
+    expect(canvas.renderOnAddRemove).toBe(true)
+    expect(canvas.controlsAboveOverlay).toBe(false)
+    expect(canvas.allowTouchScrolling).toBe(false)
+    expect(canvas.imageSmoothingEnabled).toBe(true)
+    expect(canvas.backgroundVpt).toBe(true)
+    expect(canvas.overlayVpt).toBe(true)
 
     expect(canvas.viewportTransform).not.toBe(canvas2.viewportTransform)
   })
@@ -246,7 +246,7 @@ describe("fabric.StaticCanvas", () => {
   test("getObjects", function () {
     expect(typeof canvas.getObjects === "function").toBeTruthy()
     expect([]).toEqual(canvas.getObjects())
-    expect(canvas.getObjects().length).toEqual(0)
+    expect(canvas.getObjects().length).toBe(0)
   })
 
   test("getObjects with type", function () {
@@ -255,7 +255,7 @@ describe("fabric.StaticCanvas", () => {
 
     canvas.add(rect, circle)
 
-    expect(canvas.getObjects().length).toEqual(2)
+    expect(canvas.getObjects().length).toBe(2)
 
     expect(canvas.getObjects("rect")).toEqual([rect])
     expect(canvas.getObjects("circle")).toEqual([circle])
@@ -263,7 +263,7 @@ describe("fabric.StaticCanvas", () => {
 
   test("getElement", function () {
     expect(typeof canvas.getElement === "function").toBeTruthy()
-    expect(canvas.getElement()).toEqual(lowerCanvasEl)
+    expect(canvas.getElement()).toBe(lowerCanvasEl)
   })
 
   test("item", function () {
@@ -271,12 +271,12 @@ describe("fabric.StaticCanvas", () => {
 
     expect(typeof canvas.item === "function").toBeTruthy()
     canvas.add(rect)
-    expect(canvas.item(0)).toEqual(rect)
+    expect(canvas.item(0)).toBe(rect)
   })
 
   test("calcOffset", function () {
     expect(typeof canvas.calcOffset === "function").toBeTruthy()
-    expect(canvas.calcOffset()).toEqual(canvas)
+    expect(canvas.calcOffset()).toBe(canvas)
   })
 
   test("add", function () {
@@ -286,11 +286,11 @@ describe("fabric.StaticCanvas", () => {
       rect4 = makeRect()
 
     expect(typeof canvas.add === "function").toBeTruthy()
-    expect(canvas.add(rect1)).toEqual(canvas)
+    expect(canvas.add(rect1)).toBe(canvas)
     expect(canvas.item(0)).toBe(rect1)
 
     canvas.add(rect2, rect3, rect4)
-    expect(canvas.getObjects().length).toEqual(4)
+    expect(canvas.getObjects().length).toBe(4)
 
     expect(canvas.item(1)).toBe(rect2)
     expect(canvas.item(2)).toBe(rect3)
@@ -311,17 +311,17 @@ describe("fabric.StaticCanvas", () => {
 
     canvas.on("after:render", countRenderAll)
 
-    expect(canvas.add(rect)).toEqual(canvas)
-    expect(renderAllCount).toEqual(0)
+    expect(canvas.add(rect)).toBe(canvas)
+    expect(renderAllCount).toBe(0)
 
-    expect(canvas.item(0)).toEqual(rect)
+    expect(canvas.item(0)).toBe(rect)
 
     canvas.add(makeRect(), makeRect(), makeRect())
-    expect(canvas.getObjects().length).toEqual(4)
-    expect(renderAllCount).toEqual(0)
+    expect(canvas.getObjects().length).toBe(4)
+    expect(renderAllCount).toBe(0)
 
     canvas.renderAll()
-    expect(renderAllCount).toEqual(1)
+    expect(renderAllCount).toBe(1)
 
     canvas.off("after:render", countRenderAll)
     canvas.renderOnAddRemove = originalRenderOnAddition
@@ -366,7 +366,7 @@ describe("fabric.StaticCanvas", () => {
     expect(canvas.item(1)).toBe(rect)
     canvas.insertAt(rect, 2)
     expect(canvas.item(2)).toBe(rect)
-    expect(canvas.insertAt(rect, 2)).toEqual(canvas)
+    expect(canvas.insertAt(rect, 2)).toBe(canvas)
   })
 
   test("insertAt renderOnAddRemove disabled", function () {
@@ -385,19 +385,19 @@ describe("fabric.StaticCanvas", () => {
     canvas.on("after:render", countRenderAll)
 
     canvas.add(rect1, rect2)
-    expect(renderAllCount).toEqual(0)
+    expect(renderAllCount).toBe(0)
 
     var rect = makeRect()
 
     canvas.insertAt(rect, 1)
-    expect(renderAllCount).toEqual(0)
+    expect(renderAllCount).toBe(0)
 
     expect(canvas.item(1)).toBe(rect)
     canvas.insertAt(rect, 2)
-    expect(renderAllCount).toEqual(0)
+    expect(renderAllCount).toBe(0)
 
     canvas.renderAll()
-    expect(renderAllCount).toEqual(1)
+    expect(renderAllCount).toBe(1)
 
     canvas.off("after:render", countRenderAll)
     canvas.renderOnAddRemove = originalRenderOnAddition
@@ -412,14 +412,14 @@ describe("fabric.StaticCanvas", () => {
     canvas.add(rect1, rect2, rect3, rect4)
 
     expect(typeof canvas.remove === "function").toBeTruthy()
-    expect(canvas.remove(rect1)).toEqual(canvas)
+    expect(canvas.remove(rect1)).toBe(canvas)
     expect(canvas.item(0)).toBe(rect2)
 
     canvas.remove(rect2, rect3)
     expect(canvas.item(0)).toBe(rect4)
 
     canvas.remove(rect4)
-    expect(canvas.isEmpty()).toEqual(true)
+    expect(canvas.isEmpty()).toBe(true)
   })
 
   test("remove renderOnAddRemove disabled", function () {
@@ -438,14 +438,14 @@ describe("fabric.StaticCanvas", () => {
     canvas.on("after:render", countRenderAll)
 
     canvas.add(rect1, rect2)
-    expect(renderAllCount).toEqual(0)
+    expect(renderAllCount).toBe(0)
 
-    expect(canvas.remove(rect1)).toEqual(canvas)
-    expect(renderAllCount).toEqual(0)
+    expect(canvas.remove(rect1)).toBe(canvas)
+    expect(renderAllCount).toBe(0)
     expect(canvas.item(0)).toBe(rect2)
 
     canvas.renderAll()
-    expect(renderAllCount).toEqual(1)
+    expect(renderAllCount).toBe(1)
 
     canvas.off("after:render", countRenderAll)
     canvas.renderOnAddRemove = originalRenderOnAddition
@@ -475,12 +475,12 @@ describe("fabric.StaticCanvas", () => {
     expect(objectsRemoved[1]).toBe(circle1)
     expect(objectsRemoved[2]).toBe(circle2)
 
-    expect(canvas.isEmpty()).toEqual(true)
+    expect(canvas.isEmpty()).toBe(true)
   })
 
   test("clearContext", function () {
     expect(typeof canvas.clearContext === "function").toBeTruthy()
-    expect(canvas.clearContext(canvas.contextContainer)).toEqual(canvas)
+    expect(canvas.clearContext(canvas.contextContainer)).toBe(canvas)
   })
 
   test("clear", function () {
@@ -490,17 +490,17 @@ describe("fabric.StaticCanvas", () => {
     canvas.overlayColor = "#FF0000"
     canvas.backgroundImage = bg
     canvas.overlayImage = bg
-    expect(canvas.clear()).toEqual(canvas)
-    expect(canvas.getObjects().length).toEqual(0)
-    expect(canvas.backgroundColor).toEqual("")
-    expect(canvas.overlayColor).toEqual("")
-    expect(canvas.backgroundImage).toEqual(null)
-    expect(canvas.overlayImage).toEqual(null)
+    expect(canvas.clear()).toBe(canvas)
+    expect(canvas.getObjects().length).toBe(0)
+    expect(canvas.backgroundColor).toBe("")
+    expect(canvas.overlayColor).toBe("")
+    expect(canvas.backgroundImage).toBe(null)
+    expect(canvas.overlayImage).toBe(null)
   })
 
   test("renderAll", function () {
     expect(typeof canvas.renderAll === "function").toBeTruthy()
-    expect(canvas).toEqual(canvas.renderAll())
+    expect(canvas).toBe(canvas.renderAll())
   })
 
   // test('setDimensions', function(done) {
@@ -515,16 +515,16 @@ describe("fabric.StaticCanvas", () => {
   test("toCanvasElement", function () {
     expect(typeof canvas.toCanvasElement === "function").toBeTruthy()
     var canvasEl = canvas.toCanvasElement()
-    expect(canvasEl.width).toEqual(canvas.getWidth())
-    expect(canvasEl.height).toEqual(canvas.getHeight())
+    expect(canvasEl.width).toBe(canvas.getWidth())
+    expect(canvasEl.height).toBe(canvas.getHeight())
   })
 
   test("toCanvasElement with multiplier", function () {
     expect(typeof canvas.toCanvasElement === "function").toBeTruthy()
     var multiplier = 2
     var canvasEl = canvas.toCanvasElement(multiplier)
-    expect(canvasEl.width).toEqual(canvas.getWidth() * multiplier)
-    expect(canvasEl.height).toEqual(canvas.getHeight() * multiplier)
+    expect(canvasEl.width).toBe(canvas.getWidth() * multiplier)
+    expect(canvasEl.height).toBe(canvas.getHeight() * multiplier)
   })
 
   test("toDataURL", function () {
@@ -540,10 +540,10 @@ describe("fabric.StaticCanvas", () => {
     var dataURL = canvas.toDataURL()
     // don't compare actual data url, as it is often browser-dependent
     // this.doneIdentical(emptyImageCanvasData, canvas.toDataURL('png'));
-    expect(typeof dataURL).toEqual("string")
-    expect(dataURL.substring(0, 21)).toEqual("data:image/png;base64")
+    expect(typeof dataURL).toBe("string")
+    expect(dataURL.substring(0, 21)).toBe("data:image/png;base64")
     //we can just compare that the dataUrl generated differs from the dataURl of an empty canvas.
-    expect(dataURL.substring(200, 210) !== "AAAAAAAAAA").toEqual(true)
+    expect(dataURL.substring(200, 210) !== "AAAAAAAAAA").toBe(true)
   })
 
   test("toDataURL with enableRetinaScaling: true and no multiplier", function (done) {
@@ -557,8 +557,8 @@ describe("fabric.StaticCanvas", () => {
     c.cancelRequestedRender()
     var img = fabric.document.createElement("img")
     img.onload = function () {
-      expect(img.width).toEqual(c.width * fabric.devicePixelRatio)
-      expect(img.height).toEqual(c.height * fabric.devicePixelRatio)
+      expect(img.width).toBe(c.width * fabric.devicePixelRatio)
+      expect(img.height).toBe(c.height * fabric.devicePixelRatio)
       fabric.devicePixelRatio = 1
       done()
     }
@@ -576,8 +576,8 @@ describe("fabric.StaticCanvas", () => {
     c.cancelRequestedRender()
     var img = fabric.document.createElement("img")
     img.onload = function () {
-      expect(img.width).toEqual(c.width * fabric.devicePixelRatio)
-      expect(img.height).toEqual(c.height * fabric.devicePixelRatio)
+      expect(img.width).toBe(c.width * fabric.devicePixelRatio)
+      expect(img.height).toBe(c.height * fabric.devicePixelRatio)
       fabric.devicePixelRatio = 1
       done()
     }
@@ -595,8 +595,8 @@ describe("fabric.StaticCanvas", () => {
     c.cancelRequestedRender()
     var img = fabric.document.createElement("img")
     img.onload = function () {
-      expect(img.width).toEqual(c.width * fabric.devicePixelRatio * 3)
-      expect(img.height).toEqual(c.height * fabric.devicePixelRatio * 3)
+      expect(img.width).toBe(c.width * fabric.devicePixelRatio * 3)
+      expect(img.height).toBe(c.height * fabric.devicePixelRatio * 3)
       fabric.devicePixelRatio = 1
       done()
     }
@@ -614,8 +614,8 @@ describe("fabric.StaticCanvas", () => {
     c.cancelRequestedRender()
     var img = fabric.document.createElement("img")
     img.onload = function () {
-      expect(img.width).toEqual(c.width)
-      expect(img.height).toEqual(c.height)
+      expect(img.width).toBe(c.width)
+      expect(img.height).toBe(c.height)
       fabric.devicePixelRatio = 1
       done()
     }
@@ -633,8 +633,8 @@ describe("fabric.StaticCanvas", () => {
     c.cancelRequestedRender()
     var img = fabric.document.createElement("img")
     img.onload = function () {
-      expect(img.width).toEqual(c.width)
-      expect(img.height).toEqual(c.height)
+      expect(img.width).toBe(c.width)
+      expect(img.height).toBe(c.height)
       fabric.devicePixelRatio = 1
       done()
     }
@@ -652,8 +652,8 @@ describe("fabric.StaticCanvas", () => {
     c.cancelRequestedRender()
     var img = fabric.document.createElement("img")
     img.onload = function () {
-      expect(img.width).toEqual(c.width * 3)
-      expect(img.height).toEqual(c.height * 3)
+      expect(img.width).toBe(c.width * 3)
+      expect(img.height).toBe(c.height * 3)
       fabric.devicePixelRatio = 1
       done()
     }
@@ -671,8 +671,8 @@ describe("fabric.StaticCanvas", () => {
     c.cancelRequestedRender()
     var img = fabric.document.createElement("img")
     img.onload = function () {
-      expect(img.width).toEqual(c.width)
-      expect(img.height).toEqual(c.height)
+      expect(img.width).toBe(c.width)
+      expect(img.height).toBe(c.height)
       fabric.devicePixelRatio = 1
       done()
     }
@@ -682,7 +682,7 @@ describe("fabric.StaticCanvas", () => {
   test("toDataURL jpeg", function () {
     try {
       var dataURL = canvas.toDataURL({ format: "jpeg" })
-      expect(dataURL.substring(0, 22)).toEqual("data:image/jpeg;base64")
+      expect(dataURL.substring(0, 22)).toBe("data:image/jpeg;base64")
     } catch (err) {
       // node-canvas does not support jpeg data urls
       expect(true).toBeTruthy()
@@ -699,8 +699,8 @@ describe("fabric.StaticCanvas", () => {
       })
 
     fabric.Image.fromURL(dataURL, function (img) {
-      expect(img.width).toEqual(croppingWidth)
-      expect(img.height).toEqual(croppingHeight)
+      expect(img.width).toBe(croppingWidth)
+      expect(img.height).toBe(croppingHeight)
       done()
     })
   })
@@ -709,10 +709,10 @@ describe("fabric.StaticCanvas", () => {
     expect(typeof canvas.centerObjectH === "function").toBeTruthy()
     var rect = makeRect({ left: 102, top: 202 })
     canvas.add(rect)
-    expect(canvas.centerObjectH(rect)).toEqual(canvas)
-    expect(rect.getCenterPoint().x).toEqual(canvas.width / 2)
+    expect(canvas.centerObjectH(rect)).toBe(canvas)
+    expect(rect.getCenterPoint().x).toBe(canvas.width / 2)
     canvas.setZoom(4)
-    expect(rect.getCenterPoint().x).toEqual(canvas.height / 2)
+    expect(rect.getCenterPoint().x).toBe(canvas.height / 2)
     canvas.setZoom(1)
   })
 
@@ -720,23 +720,23 @@ describe("fabric.StaticCanvas", () => {
     expect(typeof canvas.centerObjectV === "function").toBeTruthy()
     var rect = makeRect({ left: 102, top: 202 })
     canvas.add(rect)
-    expect(canvas.centerObjectV(rect)).toEqual(canvas)
-    expect(rect.getCenterPoint().y).toEqual(canvas.height / 2)
+    expect(canvas.centerObjectV(rect)).toBe(canvas)
+    expect(rect.getCenterPoint().y).toBe(canvas.height / 2)
     canvas.setZoom(2)
-    expect(rect.getCenterPoint().y).toEqual(canvas.height / 2)
+    expect(rect.getCenterPoint().y).toBe(canvas.height / 2)
   })
 
   test("centerObject", function () {
     expect(typeof canvas.centerObject === "function").toBeTruthy()
     var rect = makeRect({ left: 102, top: 202 })
     canvas.add(rect)
-    expect(canvas.centerObject(rect)).toEqual(canvas)
+    expect(canvas.centerObject(rect)).toBe(canvas)
 
-    expect(rect.getCenterPoint().y).toEqual(canvas.height / 2)
-    expect(rect.getCenterPoint().x).toEqual(canvas.height / 2)
+    expect(rect.getCenterPoint().y).toBe(canvas.height / 2)
+    expect(rect.getCenterPoint().x).toBe(canvas.height / 2)
     canvas.setZoom(4)
-    expect(rect.getCenterPoint().y).toEqual(canvas.height / 2)
-    expect(rect.getCenterPoint().x).toEqual(canvas.height / 2)
+    expect(rect.getCenterPoint().y).toBe(canvas.height / 2)
+    expect(rect.getCenterPoint().x).toBe(canvas.height / 2)
     canvas.setZoom(1)
   })
 
@@ -747,21 +747,19 @@ describe("fabric.StaticCanvas", () => {
     canvas.viewportTransform = [1, 0, 0, 1, 0, 0]
     canvas.add(rect)
     var oldY = rect.top
-    expect(canvas.viewportCenterObjectH(rect)).toEqual(canvas)
-    expect(rect.getCenterPoint().x).toEqual(canvas.width / 2)
-    expect(rect.top).toEqual(oldY)
+    expect(canvas.viewportCenterObjectH(rect)).toBe(canvas)
+    expect(rect.getCenterPoint().x).toBe(canvas.width / 2)
+    expect(rect.top).toBe(oldY)
     canvas.setZoom(2)
     canvas.viewportCenterObjectH(rect)
-    expect(rect.getCenterPoint().x).toEqual(
-      canvas.width / (2 * canvas.getZoom())
-    )
-    expect(rect.top).toEqual(oldY)
+    expect(rect.getCenterPoint().x).toBe(canvas.width / (2 * canvas.getZoom()))
+    expect(rect.top).toBe(oldY)
     canvas.absolutePan({ x: pan, y: pan })
     canvas.viewportCenterObjectH(rect)
-    expect(rect.getCenterPoint().x).toEqual(
+    expect(rect.getCenterPoint().x).toBe(
       (canvas.width / 2 + pan) / canvas.getZoom()
     )
-    expect(rect.top).toEqual(oldY)
+    expect(rect.top).toBe(oldY)
   })
 
   test("viewportCenterObjectV", function () {
@@ -771,21 +769,19 @@ describe("fabric.StaticCanvas", () => {
     canvas.viewportTransform = [1, 0, 0, 1, 0, 0]
     canvas.add(rect)
     var oldX = rect.left
-    expect(canvas.viewportCenterObjectV(rect)).toEqual(canvas)
-    expect(rect.getCenterPoint().y).toEqual(canvas.height / 2)
-    expect(rect.left).toEqual(oldX)
+    expect(canvas.viewportCenterObjectV(rect)).toBe(canvas)
+    expect(rect.getCenterPoint().y).toBe(canvas.height / 2)
+    expect(rect.left).toBe(oldX)
     canvas.setZoom(2)
     canvas.viewportCenterObjectV(rect)
-    expect(rect.getCenterPoint().y).toEqual(
-      canvas.height / (2 * canvas.getZoom())
-    )
-    expect(rect.left).toEqual(oldX)
+    expect(rect.getCenterPoint().y).toBe(canvas.height / (2 * canvas.getZoom()))
+    expect(rect.left).toBe(oldX)
     canvas.absolutePan({ x: pan, y: pan })
     canvas.viewportCenterObjectV(rect)
-    expect(rect.getCenterPoint().y).toEqual(
+    expect(rect.getCenterPoint().y).toBe(
       (canvas.height / 2 + pan) / canvas.getZoom()
     )
-    expect(rect.left).toEqual(oldX)
+    expect(rect.left).toBe(oldX)
   })
 
   test("viewportCenterObject", function () {
@@ -794,25 +790,21 @@ describe("fabric.StaticCanvas", () => {
       pan = 10
     canvas.viewportTransform = [1, 0, 0, 1, 0, 0]
     canvas.add(rect)
-    expect(canvas.viewportCenterObject(rect)).toEqual(canvas)
-    expect(rect.getCenterPoint().y).toEqual(canvas.height / 2)
-    expect(rect.getCenterPoint().x).toEqual(canvas.width / 2)
+    expect(canvas.viewportCenterObject(rect)).toBe(canvas)
+    expect(rect.getCenterPoint().y).toBe(canvas.height / 2)
+    expect(rect.getCenterPoint().x).toBe(canvas.width / 2)
 
     canvas.setZoom(2)
     canvas.viewportCenterObject(rect)
-    expect(rect.getCenterPoint().y).toEqual(
-      canvas.height / (2 * canvas.getZoom())
-    )
-    expect(rect.getCenterPoint().x).toEqual(
-      canvas.width / (2 * canvas.getZoom())
-    )
+    expect(rect.getCenterPoint().y).toBe(canvas.height / (2 * canvas.getZoom()))
+    expect(rect.getCenterPoint().x).toBe(canvas.width / (2 * canvas.getZoom()))
 
     canvas.absolutePan({ x: pan, y: pan })
     canvas.viewportCenterObject(rect)
-    expect(rect.getCenterPoint().y).toEqual(
+    expect(rect.getCenterPoint().y).toBe(
       (canvas.height / 2 + pan) / canvas.getZoom()
     )
-    expect(rect.getCenterPoint().x).toEqual(
+    expect(rect.getCenterPoint().x).toBe(
       (canvas.width / 2 + pan) / canvas.getZoom()
     )
     canvas.viewportTransform = [1, 0, 0, 1, 0, 0]
@@ -822,16 +814,16 @@ describe("fabric.StaticCanvas", () => {
     expect(typeof canvas.straightenObject === "function").toBeTruthy()
     var rect = makeRect({ angle: 10 })
     canvas.add(rect)
-    expect(canvas.straightenObject(rect)).toEqual(canvas)
-    expect(rect.get("angle")).toEqual(0)
+    expect(canvas.straightenObject(rect)).toBe(canvas)
+    expect(rect.get("angle")).toBe(0)
 
     rect.rotate("60")
     canvas.straightenObject(rect)
-    expect(rect.get("angle")).toEqual(90)
+    expect(rect.get("angle")).toBe(90)
 
     rect.rotate("100")
     canvas.straightenObject(rect)
-    expect(rect.get("angle")).toEqual(90)
+    expect(rect.get("angle")).toBe(90)
   })
 
   test("toSVG", function () {
@@ -839,7 +831,7 @@ describe("fabric.StaticCanvas", () => {
     canvas.clear()
     canvas.viewportTransform = [1, 0, 0, 1, 0, 0]
     var svg = canvas.toSVG()
-    expect(svg).toEqual(CANVAS_SVG)
+    expect(svg).toBe(CANVAS_SVG)
   })
 
   test("toSVG with different encoding (ISO-8859-1)", function () {
@@ -849,7 +841,7 @@ describe("fabric.StaticCanvas", () => {
     var svg = canvas.toSVG({ encoding: "ISO-8859-1" })
     var svgDefaultEncoding = canvas.toSVG()
     expect(svg != svgDefaultEncoding).toBeTruthy()
-    expect(svg).toEqual(
+    expect(svg).toBe(
       CANVAS_SVG.replace('encoding="UTF-8"', 'encoding="ISO-8859-1"')
     )
   })
@@ -859,7 +851,7 @@ describe("fabric.StaticCanvas", () => {
     var withPreamble = canvas.toSVG()
     var withoutPreamble = canvas.toSVG({ suppressPreamble: true })
     expect(withPreamble != withoutPreamble).toBeTruthy()
-    expect(withoutPreamble.slice(0, 4)).toEqual("<svg")
+    expect(withoutPreamble.slice(0, 4)).toBe("<svg")
   })
 
   test("toSVG with viewBox", function () {
@@ -869,7 +861,7 @@ describe("fabric.StaticCanvas", () => {
     var svg = canvas.toSVG({
       viewBox: { x: 100, y: 100, width: 300, height: 300 }
     })
-    expect(svg).toEqual(CANVAS_SVG_VIEWBOX)
+    expect(svg).toBe(CANVAS_SVG_VIEWBOX)
   })
 
   test("toSVG with reviver", function () {
@@ -919,7 +911,7 @@ describe("fabric.StaticCanvas", () => {
     }
 
     canvas.toSVG(null, reviver)
-    expect(reviverCount).toEqual(14)
+    expect(reviverCount).toBe(14)
 
     canvas.renderOnAddRemove = true
   })
@@ -975,7 +967,7 @@ describe("fabric.StaticCanvas", () => {
     }
 
     canvas.toSVG(null, reviver)
-    expect(reviverCount).toEqual(len + 2)
+    expect(reviverCount).toBe(len + 2)
     canvas.setBackgroundImage(null)
     canvas.setOverlayImage(null)
     canvas.renderOnAddRemove = true
@@ -1028,7 +1020,7 @@ describe("fabric.StaticCanvas", () => {
     }
 
     canvas.toSVG(null, reviver)
-    expect(reviverCount).toEqual(len - 2)
+    expect(reviverCount).toBe(len - 2)
     canvas.renderOnAddRemove = true
   })
 
@@ -1045,7 +1037,7 @@ describe("fabric.StaticCanvas", () => {
       '<?xml version="1.0" encoding="UTF-8" standalone="no" ?>\n<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">\n<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" version="1.1" width="400" height="400" viewBox="0 0 400 400" xml:space="preserve">\n<desc>Created with Fabric.js ' +
       fabric.version +
       '</desc>\n<defs>\n<clipPath id="CLIPPATH_0" >\n\t<rect transform="matrix(1 0 0 1 100.5 100.5)" x="-100" y="-100" rx="0" ry="0" width="200" height="200" />\n</clipPath>\n</defs>\n<g clip-path="url(#CLIPPATH_0)" >\n<g transform="matrix(1 0 0 1 200.5 200.5)"  >\n<circle style="stroke: none; stroke-width: 1; stroke-dasharray: none; stroke-linecap: butt; stroke-dashoffset: 0; stroke-linejoin: miter; stroke-miterlimit: 4; fill: rgb(0,0,0); fill-rule: nonzero; opacity: 1;"  cx="0" cy="0" r="200" />\n</g>\n</g>\n</svg>'
-    expect(svg).toEqual(expectedSVG)
+    expect(svg).toBe(expectedSVG)
   })
 
   test("toSVG with exclude from export background", function () {
@@ -1061,7 +1053,7 @@ describe("fabric.StaticCanvas", () => {
       fabric.version +
       '</desc>\n<defs>\n</defs>\n<g transform="matrix(1 0 0 1 0 0)"  >\n\t<image style="stroke: none; stroke-width: 0; stroke-dasharray: none; stroke-linecap: butt; stroke-dashoffset: 0; stroke-linejoin: miter; stroke-miterlimit: 4; fill: rgb(0,0,0); fill-rule: nonzero; opacity: 1;"  xlink:href="" x="0" y="0" width="0" height="0"></image>\n</g>\n<g transform="matrix(1 0 0 1 0 0)"  >\n\t<image style="stroke: none; stroke-width: 0; stroke-dasharray: none; stroke-linecap: butt; stroke-dashoffset: 0; stroke-linejoin: miter; stroke-miterlimit: 4; fill: rgb(0,0,0); fill-rule: nonzero; opacity: 1;"  xlink:href="" x="0" y="0" width="0" height="0"></image>\n</g>\n</svg>'
     var svg1 = canvas.toSVG()
-    expect(svg1).toEqual(expectedSVG)
+    expect(svg1).toBe(expectedSVG)
     imageBG.excludeFromExport = true
     imageOL.excludeFromExport = true
     var expectedSVG2 =
@@ -1069,7 +1061,7 @@ describe("fabric.StaticCanvas", () => {
       fabric.version +
       "</desc>\n<defs>\n</defs>\n</svg>"
     var svg2 = canvas.toSVG()
-    expect(svg2).toEqual(expectedSVG2)
+    expect(svg2).toBe(expectedSVG2)
     canvas.backgroundImage = null
     canvas.overlayImage = null
     canvas.renderOnAddRemove = true
@@ -1077,12 +1069,12 @@ describe("fabric.StaticCanvas", () => {
 
   test("toJSON", function () {
     expect(typeof canvas.toJSON === "function").toBeTruthy()
-    expect(JSON.stringify(canvas.toJSON())).toEqual(
+    expect(JSON.stringify(canvas.toJSON())).toBe(
       '{"version":"' + fabric.version + '","objects":[]}'
     )
     canvas.backgroundColor = "#ff5555"
     canvas.overlayColor = "rgba(0,0,0,0.2)"
-    expect(JSON.stringify(canvas.toJSON())).toEqual(
+    expect(JSON.stringify(canvas.toJSON())).toBe(
       '{"version":"' +
         fabric.version +
         '","objects":[],"background":"#ff5555","overlay":"rgba(0,0,0,0.2)"}'
@@ -1129,7 +1121,7 @@ describe("fabric.StaticCanvas", () => {
       canvas.backgroundImage = image
       image.custom = "yes"
       var json = canvas.toJSON(["custom"])
-      expect(json.backgroundImage.custom).toEqual("yes")
+      expect(json.backgroundImage.custom).toBe("yes")
       canvas.backgroundImage = null
       done()
     })
@@ -1155,7 +1147,7 @@ describe("fabric.StaticCanvas", () => {
       canvas.overlayImage = image
       image.custom = "yes"
       var json = canvas.toJSON(["custom"])
-      expect(json.overlayImage.custom).toEqual("yes")
+      expect(json.overlayImage.custom).toBe("yes")
       canvas.overlayImage = null
       done()
     })
@@ -1166,7 +1158,7 @@ describe("fabric.StaticCanvas", () => {
       sourcePath: "http://example.com/"
     })
     canvas.add(path)
-    expect(JSON.stringify(canvas.toDatalessJSON())).toEqual(PATH_DATALESS_JSON)
+    expect(JSON.stringify(canvas.toDatalessJSON())).toBe(PATH_DATALESS_JSON)
   })
 
   test("toObject", function () {
@@ -1180,7 +1172,7 @@ describe("fabric.StaticCanvas", () => {
     var rect = makeRect()
     canvas.add(rect)
 
-    expect(canvas.toObject().objects[0].type).toEqual(rect.type)
+    expect(canvas.toObject().objects[0].type).toBe(rect.type)
   })
 
   test("toObject non includeDefaultValues", function () {
@@ -1206,10 +1198,10 @@ describe("fabric.StaticCanvas", () => {
       rect3 = makeRect()
     canvas.clear()
     canvas.add(rect, rect2, rect3)
-    expect(canvas.toObject().objects.length).toEqual(3)
+    expect(canvas.toObject().objects.length).toBe(3)
     rect.excludeFromExport = true
     rect2.excludeFromExport = true
-    expect(canvas.toObject().objects.length).toEqual(1)
+    expect(canvas.toObject().objects.length).toBe(1)
   })
 
   test("toObject excludeFromExport bgImage overlay", function () {
@@ -1228,8 +1220,8 @@ describe("fabric.StaticCanvas", () => {
     rect.excludeFromExport = true
     rect2.excludeFromExport = true
     canvasToObject = canvas.toObject()
-    expect(canvasToObject.backgroundImage).toEqual(undefined)
-    expect(canvasToObject.overlayImage).toEqual(undefined)
+    expect(canvasToObject.backgroundImage).toBe(undefined)
+    expect(canvasToObject.overlayImage).toBe(undefined)
   })
 
   test("toDatalessObject", function () {
@@ -1243,7 +1235,7 @@ describe("fabric.StaticCanvas", () => {
     var rect = makeRect()
     canvas.add(rect)
 
-    expect(canvas.toObject().objects[0].type).toEqual(rect.type)
+    expect(canvas.toObject().objects[0].type).toBe(rect.type)
     // TODO (kangax): need to test this method with fabric.Path to ensure that path is not populated
   })
 
@@ -1282,14 +1274,14 @@ describe("fabric.StaticCanvas", () => {
       var obj = canvas.item(0)
 
       expect(!canvas.isEmpty()).toBeTruthy()
-      expect(obj.type).toEqual("path")
-      expect(canvas.backgroundColor).toEqual("#ff5555")
+      expect(obj.type).toBe("path")
+      expect(canvas.backgroundColor).toBe("#ff5555")
 
-      expect(obj.get("left")).toEqual(268)
-      expect(obj.get("top")).toEqual(266)
-      expect(obj.get("width")).toEqual(49.803999999999995)
-      expect(obj.get("height")).toEqual(48.027)
-      expect(obj.get("fill")).toEqual("rgb(0,0,0)")
+      expect(obj.get("left")).toBe(268)
+      expect(obj.get("top")).toBe(266)
+      expect(obj.get("width")).toBe(49.803999999999995)
+      expect(obj.get("height")).toBe(48.027)
+      expect(obj.get("fill")).toBe("rgb(0,0,0)")
       expect(obj.get("stroke")).toBe(null)
       expect(obj.get("strokeWidth")).toBe(1)
       expect(obj.get("scaleX")).toBe(1)
@@ -1310,15 +1302,15 @@ describe("fabric.StaticCanvas", () => {
       var obj = canvas.item(0)
 
       expect(!canvas.isEmpty()).toBeTruthy()
-      expect(obj.type).toEqual("path")
-      expect(canvas.backgroundColor).toEqual("#ff5555")
-      expect(canvas.overlayColor).toEqual("rgba(0,0,0,0.2)")
+      expect(obj.type).toBe("path")
+      expect(canvas.backgroundColor).toBe("#ff5555")
+      expect(canvas.overlayColor).toBe("rgba(0,0,0,0.2)")
 
-      expect(obj.get("left")).toEqual(268)
-      expect(obj.get("top")).toEqual(266)
-      expect(obj.get("width")).toEqual(49.803999999999995)
-      expect(obj.get("height")).toEqual(48.027)
-      expect(obj.get("fill")).toEqual("rgb(0,0,0)")
+      expect(obj.get("left")).toBe(268)
+      expect(obj.get("top")).toBe(266)
+      expect(obj.get("width")).toBe(49.803999999999995)
+      expect(obj.get("height")).toBe(48.027)
+      expect(obj.get("fill")).toBe("rgb(0,0,0)")
       expect(obj.get("stroke")).toBe(null)
       expect(obj.get("strokeWidth")).toBe(1)
       expect(obj.get("scaleX")).toBe(1)
@@ -1340,15 +1332,15 @@ describe("fabric.StaticCanvas", () => {
       var obj = canvas.item(0)
 
       expect(!canvas.isEmpty()).toBeTruthy()
-      expect(obj.type).toEqual("path")
-      expect(canvas.backgroundColor).toEqual("#ff5555")
-      expect(canvas.overlayColor).toEqual("rgba(0,0,0,0.2)")
+      expect(obj.type).toBe("path")
+      expect(canvas.backgroundColor).toBe("#ff5555")
+      expect(canvas.overlayColor).toBe("rgba(0,0,0,0.2)")
 
-      expect(obj.get("left")).toEqual(268)
-      expect(obj.get("top")).toEqual(266)
-      expect(obj.get("width")).toEqual(49.803999999999995)
-      expect(obj.get("height")).toEqual(48.027)
-      expect(obj.get("fill")).toEqual("rgb(0,0,0)")
+      expect(obj.get("left")).toBe(268)
+      expect(obj.get("top")).toBe(266)
+      expect(obj.get("width")).toBe(49.803999999999995)
+      expect(obj.get("height")).toBe(48.027)
+      expect(obj.get("fill")).toBe("rgb(0,0,0)")
       expect(obj.get("stroke")).toBe(null)
       expect(obj.get("strokeWidth")).toBe(1)
       expect(obj.get("scaleX")).toBe(1)
@@ -1373,7 +1365,7 @@ describe("fabric.StaticCanvas", () => {
     )
     canvas.loadFromJSON(serialized, function () {
       expect(!canvas.isEmpty()).toBeTruthy()
-      expect(canvas.backgroundColor).toEqual("green")
+      expect(canvas.backgroundColor).toBe("green")
       expect(canvas.backgroundImage instanceof fabric.Image).toBeTruthy()
       done()
     })
@@ -1389,15 +1381,15 @@ describe("fabric.StaticCanvas", () => {
     var jsonWithoutFoo = JSON.stringify(canvas.toJSON(["padding"]))
     var jsonWithFoo = JSON.stringify(canvas.toJSON(["padding", "foo"]))
 
-    expect(jsonWithFoo).toEqual(RECT_JSON_WITH_PADDING)
+    expect(jsonWithFoo).toBe(RECT_JSON_WITH_PADDING)
     expect(jsonWithoutFoo !== RECT_JSON_WITH_PADDING).toBeTruthy()
 
     canvas.clear()
     canvas.loadFromJSON(jsonWithFoo, function () {
       var obj = canvas.item(0)
 
-      expect(obj.padding).toEqual(123)
-      expect(obj.foo).toEqual("bar")
+      expect(obj.padding).toBe(123)
+      expect(obj.foo).toBe("bar")
       done()
     })
   })
@@ -1408,10 +1400,10 @@ describe("fabric.StaticCanvas", () => {
     canvas.loadFromJSON(json, function () {
       canvas.renderAll()
 
-      expect("text").toEqual(canvas.item(0).type)
-      expect(150).toEqual(canvas.item(0).left)
-      expect(200).toEqual(canvas.item(0).top)
-      expect("NAME HERE").toEqual(canvas.item(0).text)
+      expect("text").toBe(canvas.item(0).type)
+      expect(150).toBe(canvas.item(0).left)
+      expect(200).toBe(canvas.item(0).top)
+      expect("NAME HERE").toBe(canvas.item(0).text)
 
       done()
     })
@@ -1422,7 +1414,7 @@ describe("fabric.StaticCanvas", () => {
       '{"clipPath": {"type":"text","left":150,"top":200,"width":128,"height":64.32,"fill":"#000000","stroke":"","strokeWidth":"","scaleX":0.8,"scaleY":0.8,"angle":0,"flipX":false,"flipY":false,"opacity":1,"text":"NAME HERE","fontSize":24,"fontWeight":"","fontFamily":"Delicious_500","fontStyle":"","lineHeight":"","textDecoration":"","textAlign":"center","path":"","strokeStyle":"","backgroundColor":""}}'
     canvas.loadFromJSON(json, function () {
       canvas.renderAll()
-      expect("text").toEqual(canvas.clipPath.type)
+      expect("text").toBe(canvas.clipPath.type)
       done()
     })
   })
@@ -1437,13 +1429,13 @@ describe("fabric.StaticCanvas", () => {
     canvas.add(rect1, rect2, rect3)
 
     canvas.sendToBack(rect3)
-    expect(canvas.item(0)).toEqual(rect3)
+    expect(canvas.item(0)).toBe(rect3)
 
     canvas.sendToBack(rect2)
-    expect(canvas.item(0)).toEqual(rect2)
+    expect(canvas.item(0)).toBe(rect2)
 
     canvas.sendToBack(rect2)
-    expect(canvas.item(0)).toEqual(rect2)
+    expect(canvas.item(0)).toBe(rect2)
   })
 
   test("bringToFront", function () {
@@ -1456,13 +1448,13 @@ describe("fabric.StaticCanvas", () => {
     canvas.add(rect1, rect2, rect3)
 
     canvas.bringToFront(rect1)
-    expect(canvas.item(2)).toEqual(rect1)
+    expect(canvas.item(2)).toBe(rect1)
 
     canvas.bringToFront(rect2)
-    expect(canvas.item(2)).toEqual(rect2)
+    expect(canvas.item(2)).toBe(rect2)
 
     canvas.bringToFront(rect2)
-    expect(canvas.item(2)).toEqual(rect2)
+    expect(canvas.item(2)).toBe(rect2)
   })
 
   test("sendBackwards", function () {
@@ -1475,42 +1467,42 @@ describe("fabric.StaticCanvas", () => {
     canvas.add(rect1, rect2, rect3)
 
     // [ 1, 2, 3 ]
-    expect(canvas.item(0)).toEqual(rect1)
-    expect(canvas.item(1)).toEqual(rect2)
-    expect(canvas.item(2)).toEqual(rect3)
+    expect(canvas.item(0)).toBe(rect1)
+    expect(canvas.item(1)).toBe(rect2)
+    expect(canvas.item(2)).toBe(rect3)
 
     canvas.sendBackwards(rect3)
 
     // moved 3 one level back — [1, 3, 2]
-    expect(canvas.item(0)).toEqual(rect1)
-    expect(canvas.item(2)).toEqual(rect2)
-    expect(canvas.item(1)).toEqual(rect3)
+    expect(canvas.item(0)).toBe(rect1)
+    expect(canvas.item(2)).toBe(rect2)
+    expect(canvas.item(1)).toBe(rect3)
 
     canvas.sendBackwards(rect3)
 
     // moved 3 one level back — [3, 1, 2]
-    expect(canvas.item(1)).toEqual(rect1)
-    expect(canvas.item(2)).toEqual(rect2)
-    expect(canvas.item(0)).toEqual(rect3)
+    expect(canvas.item(1)).toBe(rect1)
+    expect(canvas.item(2)).toBe(rect2)
+    expect(canvas.item(0)).toBe(rect3)
 
     canvas.sendBackwards(rect3)
 
     // 3 stays at the deepEqual position — [2, 3, 1]
-    expect(canvas.item(1)).toEqual(rect1)
-    expect(canvas.item(2)).toEqual(rect2)
-    expect(canvas.item(0)).toEqual(rect3)
+    expect(canvas.item(1)).toBe(rect1)
+    expect(canvas.item(2)).toBe(rect2)
+    expect(canvas.item(0)).toBe(rect3)
 
     canvas.sendBackwards(rect2)
 
-    expect(canvas.item(2)).toEqual(rect1)
-    expect(canvas.item(1)).toEqual(rect2)
-    expect(canvas.item(0)).toEqual(rect3)
+    expect(canvas.item(2)).toBe(rect1)
+    expect(canvas.item(1)).toBe(rect2)
+    expect(canvas.item(0)).toBe(rect3)
 
     canvas.sendBackwards(rect2)
 
-    expect(canvas.item(2)).toEqual(rect1)
-    expect(canvas.item(0)).toEqual(rect2)
-    expect(canvas.item(1)).toEqual(rect3)
+    expect(canvas.item(2)).toBe(rect1)
+    expect(canvas.item(0)).toBe(rect2)
+    expect(canvas.item(1)).toBe(rect3)
   })
 
   test("bringForward", function () {
@@ -1523,37 +1515,37 @@ describe("fabric.StaticCanvas", () => {
     canvas.add(rect1, rect2, rect3)
 
     // initial position — [ 1, 2, 3 ]
-    expect(canvas.item(0)).toEqual(rect1)
-    expect(canvas.item(1)).toEqual(rect2)
-    expect(canvas.item(2)).toEqual(rect3)
+    expect(canvas.item(0)).toBe(rect1)
+    expect(canvas.item(1)).toBe(rect2)
+    expect(canvas.item(2)).toBe(rect3)
 
     canvas.bringForward(rect1)
 
     // 1 moves one way up — [ 2, 1, 3 ]
-    expect(canvas.item(1)).toEqual(rect1)
-    expect(canvas.item(0)).toEqual(rect2)
-    expect(canvas.item(2)).toEqual(rect3)
+    expect(canvas.item(1)).toBe(rect1)
+    expect(canvas.item(0)).toBe(rect2)
+    expect(canvas.item(2)).toBe(rect3)
 
     canvas.bringForward(rect1)
 
     // 1 moves one way up again — [ 2, 3, 1 ]
-    expect(canvas.item(2)).toEqual(rect1)
-    expect(canvas.item(0)).toEqual(rect2)
-    expect(canvas.item(1)).toEqual(rect3)
+    expect(canvas.item(2)).toBe(rect1)
+    expect(canvas.item(0)).toBe(rect2)
+    expect(canvas.item(1)).toBe(rect3)
 
     canvas.bringForward(rect1)
 
     // 1 is already all the way on top and so doesn't change position — [ 2, 3, 1 ]
-    expect(canvas.item(2)).toEqual(rect1)
-    expect(canvas.item(0)).toEqual(rect2)
-    expect(canvas.item(1)).toEqual(rect3)
+    expect(canvas.item(2)).toBe(rect1)
+    expect(canvas.item(0)).toBe(rect2)
+    expect(canvas.item(1)).toBe(rect3)
 
     canvas.bringForward(rect3)
 
     // 1 is already all the way on top and so doesn't change position — [ 2, 1, 3 ]
-    expect(canvas.item(1)).toEqual(rect1)
-    expect(canvas.item(0)).toEqual(rect2)
-    expect(canvas.item(2)).toEqual(rect3)
+    expect(canvas.item(1)).toBe(rect1)
+    expect(canvas.item(0)).toBe(rect2)
+    expect(canvas.item(2)).toBe(rect3)
   })
 
   test("moveTo", function () {
@@ -1566,51 +1558,51 @@ describe("fabric.StaticCanvas", () => {
     canvas.add(rect1, rect2, rect3)
 
     // [ 1, 2, 3 ]
-    expect(canvas.item(0)).toEqual(rect1)
-    expect(canvas.item(1)).toEqual(rect2)
-    expect(canvas.item(2)).toEqual(rect3)
+    expect(canvas.item(0)).toBe(rect1)
+    expect(canvas.item(1)).toBe(rect2)
+    expect(canvas.item(2)).toBe(rect3)
 
     canvas.moveTo(rect3, 0)
 
     // moved 3 to level 0 — [3, 1, 2]
-    expect(canvas.item(1)).toEqual(rect1)
-    expect(canvas.item(2)).toEqual(rect2)
-    expect(canvas.item(0)).toEqual(rect3)
+    expect(canvas.item(1)).toBe(rect1)
+    expect(canvas.item(2)).toBe(rect2)
+    expect(canvas.item(0)).toBe(rect3)
 
     canvas.moveTo(rect3, 1)
 
     // moved 3 to level 1 — [1, 3, 2]
-    expect(canvas.item(0)).toEqual(rect1)
-    expect(canvas.item(2)).toEqual(rect2)
-    expect(canvas.item(1)).toEqual(rect3)
+    expect(canvas.item(0)).toBe(rect1)
+    expect(canvas.item(2)).toBe(rect2)
+    expect(canvas.item(1)).toBe(rect3)
 
     canvas.moveTo(rect3, 2)
 
     // moved 3 to level 2 — [1, 2, 3]
-    expect(canvas.item(0)).toEqual(rect1)
-    expect(canvas.item(1)).toEqual(rect2)
-    expect(canvas.item(2)).toEqual(rect3)
+    expect(canvas.item(0)).toBe(rect1)
+    expect(canvas.item(1)).toBe(rect2)
+    expect(canvas.item(2)).toBe(rect3)
 
     canvas.moveTo(rect3, 2)
 
     // moved 3 to same level 2 and so doesn't change position — [1, 2, 3]
-    expect(canvas.item(0)).toEqual(rect1)
-    expect(canvas.item(1)).toEqual(rect2)
-    expect(canvas.item(2)).toEqual(rect3)
+    expect(canvas.item(0)).toBe(rect1)
+    expect(canvas.item(1)).toBe(rect2)
+    expect(canvas.item(2)).toBe(rect3)
 
     canvas.moveTo(rect2, 0)
 
     // moved 2 to level 0 — [2, 1, 3]
-    expect(canvas.item(1)).toEqual(rect1)
-    expect(canvas.item(0)).toEqual(rect2)
-    expect(canvas.item(2)).toEqual(rect3)
+    expect(canvas.item(1)).toBe(rect1)
+    expect(canvas.item(0)).toBe(rect2)
+    expect(canvas.item(2)).toBe(rect3)
 
     canvas.moveTo(rect2, 2)
 
     // moved 2 to level 2 — [1, 3, 2]
-    expect(canvas.item(0)).toEqual(rect1)
-    expect(canvas.item(2)).toEqual(rect2)
-    expect(canvas.item(1)).toEqual(rect3)
+    expect(canvas.item(0)).toBe(rect1)
+    expect(canvas.item(2)).toBe(rect2)
+    expect(canvas.item(1)).toBe(rect3)
   })
 
   test("item", function () {
@@ -1621,32 +1613,32 @@ describe("fabric.StaticCanvas", () => {
 
     canvas.add(rect1, rect2)
 
-    expect(canvas.item(0)).toEqual(rect1)
-    expect(canvas.item(1)).toEqual(rect2)
+    expect(canvas.item(0)).toBe(rect1)
+    expect(canvas.item(1)).toBe(rect2)
 
     canvas.remove(canvas.item(0))
 
-    expect(canvas.item(0)).toEqual(rect2)
+    expect(canvas.item(0)).toBe(rect2)
   })
 
   test("complexity", function () {
     expect(typeof canvas.complexity === "function").toBeTruthy()
-    expect(canvas.complexity()).toEqual(0)
+    expect(canvas.complexity()).toBe(0)
 
     canvas.add(makeRect())
-    expect(canvas.complexity()).toEqual(1)
+    expect(canvas.complexity()).toBe(1)
 
     canvas.add(makeRect(), makeRect())
-    expect(canvas.complexity()).toEqual(3)
+    expect(canvas.complexity()).toBe(3)
   })
 
   test("toString", function () {
     expect(typeof canvas.toString === "function").toBeTruthy()
 
-    expect(canvas.toString()).toEqual("#<fabric.Canvas (0): { objects: 0 }>")
+    expect(canvas.toString()).toBe("#<fabric.Canvas (0): { objects: 0 }>")
 
     canvas.add(makeRect())
-    expect(canvas.toString()).toEqual("#<fabric.Canvas (1): { objects: 1 }>")
+    expect(canvas.toString()).toBe("#<fabric.Canvas (1): { objects: 1 }>")
   })
 
   test("dispose clear references", function () {
@@ -1654,10 +1646,10 @@ describe("fabric.StaticCanvas", () => {
     expect(typeof canvas2.dispose === "function").toBeTruthy()
     canvas2.add(makeRect(), makeRect(), makeRect())
     canvas2.dispose()
-    expect(canvas2.getObjects().length).toEqual(0)
+    expect(canvas2.getObjects().length).toBe(0)
     // original is qunit equal(null)
-    expect(canvas2.lowerCanvasEl).toEqual(undefined)
-    expect(canvas2.contextContainer).toEqual(null)
+    expect(canvas2.lowerCanvasEl).toBe(undefined)
+    expect(canvas2.contextContainer).toBe(null)
   })
 
   test("clone", function () {
@@ -1667,68 +1659,68 @@ describe("fabric.StaticCanvas", () => {
 
   test("getSetWidth", function () {
     expect(typeof canvas.getWidth === "function").toBeTruthy()
-    expect(canvas.getWidth()).toEqual(200)
-    expect(canvas.setWidth(444)).toEqual(canvas)
-    expect(canvas.getWidth()).toEqual(444)
-    expect(canvas.lowerCanvasEl.style.width).toEqual(444 + "px")
+    expect(canvas.getWidth()).toBe(200)
+    expect(canvas.setWidth(444)).toBe(canvas)
+    expect(canvas.getWidth()).toBe(444)
+    expect(canvas.lowerCanvasEl.style.width).toBe(444 + "px")
   })
 
   test("getSetHeight", function () {
     expect(typeof canvas.getHeight === "function").toBeTruthy()
-    expect(canvas.getHeight()).toEqual(200)
-    expect(canvas.setHeight(765)).toEqual(canvas)
-    expect(canvas.getHeight()).toEqual(765)
-    expect(canvas.lowerCanvasEl.style.height).toEqual(765 + "px")
+    expect(canvas.getHeight()).toBe(200)
+    expect(canvas.setHeight(765)).toBe(canvas)
+    expect(canvas.getHeight()).toBe(765)
+    expect(canvas.lowerCanvasEl.style.height).toBe(765 + "px")
   })
 
   test("setWidth css only", function () {
     canvas.setWidth(123)
     canvas.setWidth("100%", { cssOnly: true })
 
-    expect(canvas.lowerCanvasEl.style.width).toEqual("100%")
-    expect(canvas.getWidth()).toEqual(123)
+    expect(canvas.lowerCanvasEl.style.width).toBe("100%")
+    expect(canvas.getWidth()).toBe(123)
   })
 
   test("setHeight css only", function () {
     canvas.setHeight(123)
     canvas.setHeight("100%", { cssOnly: true })
 
-    expect(canvas.lowerCanvasEl.style.height).toEqual("100%")
-    expect(canvas.getHeight()).toEqual(123)
+    expect(canvas.lowerCanvasEl.style.height).toBe("100%")
+    expect(canvas.getHeight()).toBe(123)
   })
 
   test("setDimensions css only", function () {
     canvas.setDimensions({ width: 200, height: 200 })
     canvas.setDimensions({ width: "250px", height: "350px" }, { cssOnly: true })
-    expect(canvas.lowerCanvasEl.style.width).toEqual("250px")
-    expect(canvas.lowerCanvasEl.style.height).toEqual("350px")
-    expect(canvas.getWidth()).toEqual(200)
-    expect(canvas.getHeight()).toEqual(200)
+    expect(canvas.lowerCanvasEl.style.width).toBe("250px")
+    expect(canvas.lowerCanvasEl.style.height).toBe("350px")
+    expect(canvas.getWidth()).toBe(200)
+    expect(canvas.getHeight()).toBe(200)
   })
 
   test("setWidth backstore only", function () {
     canvas.setWidth(123)
     canvas.setWidth(500, { backstoreOnly: true })
 
-    expect(canvas.lowerCanvasEl.style.width).toEqual(123 + "px")
-    expect(canvas.getWidth()).toEqual(500)
+    expect(canvas.lowerCanvasEl.style.width).toBe(123 + "px")
+    expect(canvas.getWidth()).toBe(500)
   })
 
   test("setHeight backstore only", function () {
     canvas.setHeight(123)
     canvas.setHeight(500, { backstoreOnly: true })
 
-    expect(canvas.lowerCanvasEl.style.height).toEqual(123 + "px")
-    expect(canvas.getHeight()).toEqual(500)
+    expect(canvas.lowerCanvasEl.style.height).toBe(123 + "px")
+    expect(canvas.getHeight()).toBe(500)
   })
 
   test("setDimensions backstore only", function () {
     canvas.setDimensions({ width: 200, height: 200 })
     canvas.setDimensions({ width: 250, height: 350 }, { backstoreOnly: true })
-    expect(canvas.lowerCanvasEl.style.width).toEqual(200 + "px")
-    expect(canvas.lowerCanvasEl.style.height).toEqual(200 + "px")
-    expect(canvas.getWidth()).toEqual(250)
-    expect(canvas.getHeight()).toEqual(350)
+    expect(canvas.lowerCanvasEl.style.width).toBe(200 + "px")
+    expect(canvas.lowerCanvasEl.style.height).toBe(200 + "px")
+    expect(canvas.getWidth()).toBe(250)
+    expect(canvas.getHeight()).toBe(350)
     canvas.cancelRequestedRender()
   })
 
@@ -1741,23 +1733,23 @@ describe("fabric.StaticCanvas", () => {
     var callbackFired = false
     function onComplete() {
       callbackFired = true
-      expect(canvas.item(0)).toEqual(undefined)
+      expect(canvas.item(0)).toBe(undefined)
       expect(callbackFired).toBeTruthy()
       canvas.cancelRequestedRender()
       done()
     }
 
     expect(canvas.item(0) === rect).toBeTruthy()
-    expect(canvas.fxRemove(rect, { onComplete: onComplete })).toEqual(canvas)
+    expect(canvas.fxRemove(rect, { onComplete: onComplete })).toBe(canvas)
   })
 
   test("options in setBackgroundImage from URL", function (done) {
     canvas.setBackgroundImage(
       IMG_SRC,
       function () {
-        expect(canvas.backgroundImage.canvas).toEqual(canvas)
-        expect(canvas.backgroundImage.left).toEqual(50)
-        expect(canvas.backgroundImage.originX).toEqual("right")
+        expect(canvas.backgroundImage.canvas).toBe(canvas)
+        expect(canvas.backgroundImage.left).toBe(50)
+        expect(canvas.backgroundImage.originX).toBe("right")
         done()
       },
       {
@@ -1771,9 +1763,9 @@ describe("fabric.StaticCanvas", () => {
     canvas.setOverlayImage(
       IMG_SRC,
       function () {
-        expect(canvas.overlayImage.canvas).toEqual(canvas)
-        expect(canvas.overlayImage.left).toEqual(50)
-        expect(canvas.overlayImage.originX).toEqual("right")
+        expect(canvas.overlayImage.canvas).toBe(canvas)
+        expect(canvas.overlayImage.left).toBe(50)
+        expect(canvas.overlayImage.originX).toBe("right")
         done()
       },
       {
@@ -1797,17 +1789,17 @@ describe("fabric.StaticCanvas", () => {
     expect(typeof canvas.getZoom === "function").toBeTruthy()
     var vpt = [2, 0, 0, 2, 50, 50]
     canvas.viewportTransform = fabric.StaticCanvas.prototype.viewportTransform
-    expect(canvas.getZoom()).toEqual(1)
+    expect(canvas.getZoom()).toBe(1)
     canvas.setViewportTransform(vpt)
-    expect(canvas.getZoom()).toEqual(2)
+    expect(canvas.getZoom()).toBe(2)
     canvas.viewportTransform = fabric.StaticCanvas.prototype.viewportTransform
   })
 
   test("setZoom", function () {
     expect(typeof canvas.setZoom === "function").toBeTruthy()
-    expect(canvas.getZoom()).toEqual(1)
+    expect(canvas.getZoom()).toBe(1)
     canvas.setZoom(2)
-    expect(canvas.getZoom()).toEqual(2)
+    expect(canvas.getZoom()).toBe(2)
     canvas.viewportTransform = fabric.StaticCanvas.prototype.viewportTransform
   })
 
@@ -1849,7 +1841,7 @@ describe("fabric.StaticCanvas", () => {
   test("getContext", function () {
     expect(typeof canvas.getContext === "function").toBeTruthy()
     var context = canvas.getContext()
-    expect(context).toEqual(canvas.contextContainer)
+    expect(context).toBe(canvas.contextContainer)
   })
 
   test("calcViewportBoundaries", function () {
@@ -1897,38 +1889,38 @@ describe("fabric.StaticCanvas", () => {
     canvas.enableRetinaScaling = true
     fabric.devicePixelRatio = 2
     var isScaling = canvas._isRetinaScaling()
-    expect(isScaling).toEqual(true)
+    expect(isScaling).toBe(true)
 
     canvas.enableRetinaScaling = false
     fabric.devicePixelRatio = 2
     var isScaling = canvas._isRetinaScaling()
-    expect(isScaling).toEqual(false)
+    expect(isScaling).toBe(false)
 
     canvas.enableRetinaScaling = false
     fabric.devicePixelRatio = 1
     var isScaling = canvas._isRetinaScaling()
-    expect(isScaling).toEqual(false)
+    expect(isScaling).toBe(false)
 
     canvas.enableRetinaScaling = true
     fabric.devicePixelRatio = 1
     var isScaling = canvas._isRetinaScaling()
-    expect(isScaling).toEqual(false)
+    expect(isScaling).toBe(false)
   })
 
   test("getRetinaScaling", function () {
     canvas.enableRetinaScaling = true
     fabric.devicePixelRatio = 1
     var scaling = canvas.getRetinaScaling()
-    expect(scaling).toEqual(1)
+    expect(scaling).toBe(1)
 
     fabric.devicePixelRatio = 2
     var scaling = canvas.getRetinaScaling()
-    expect(scaling).toEqual(2)
+    expect(scaling).toBe(2)
 
     fabric.devicePixelRatio = 2
     canvas.enableRetinaScaling = false
     var scaling = canvas.getRetinaScaling()
-    expect(scaling).toEqual(1)
+    expect(scaling).toBe(1)
   })
 
   test("options in setBackgroundImage from image instance", function (done) {
@@ -1936,9 +1928,9 @@ describe("fabric.StaticCanvas", () => {
       canvas.setBackgroundImage(
         imageInstance,
         function () {
-          expect(canvas.backgroundImage.canvas).toEqual(canvas)
-          expect(canvas.backgroundImage.left).toEqual(100)
-          expect(canvas.backgroundImage.originX).toEqual("center")
+          expect(canvas.backgroundImage.canvas).toBe(canvas)
+          expect(canvas.backgroundImage.left).toBe(100)
+          expect(canvas.backgroundImage.originX).toBe("center")
 
           done()
         },
@@ -1955,10 +1947,10 @@ describe("fabric.StaticCanvas", () => {
       canvas.setOverlayImage(
         imageInstance,
         function () {
-          expect(canvas.overlayImage).toEqual(imageInstance)
-          expect(imageInstance.left).toEqual(100)
-          expect(imageInstance.originX).toEqual("center")
-          expect(imageInstance.canvas).toEqual(canvas)
+          expect(canvas.overlayImage).toBe(imageInstance)
+          expect(imageInstance.left).toBe(100)
+          expect(imageInstance.originX).toBe("center")
+          expect(imageInstance.canvas).toBe(canvas)
           done()
         },
         {
@@ -1993,7 +1985,7 @@ describe("fabric.StaticCanvas", () => {
       '<?xml version="1.0" encoding="UTF-8" standalone="no" ?>\n<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">\n<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" version="1.1" width="300" height="150" viewBox="0 0 300 150" xml:space="preserve">\n<desc>Created with Fabric.js ' +
       fabric.version +
       '</desc>\n<defs>\n</defs>\n<rect x="0" y="0" width="100%" height="100%" fill="red"></rect>\n</svg>'
-    expect(svg).toEqual(expectedSVG)
+    expect(svg).toBe(expectedSVG)
   })
 
   test("toSVG with background and zoom and svgViewportTransformation", function () {
@@ -2006,7 +1998,7 @@ describe("fabric.StaticCanvas", () => {
       '<?xml version="1.0" encoding="UTF-8" standalone="no" ?>\n<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">\n<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" version="1.1" width="300" height="150" viewBox="-20 -10 100 50" xml:space="preserve">\n<desc>Created with Fabric.js ' +
       fabric.version +
       '</desc>\n<defs>\n</defs>\n<rect x="0" y="0" width="100%" height="100%" fill="blue"></rect>\n</svg>'
-    expect(svg).toEqual(expectedSVG)
+    expect(svg).toBe(expectedSVG)
   })
 
   test("toSVG with background gradient", function () {
@@ -2030,7 +2022,7 @@ describe("fabric.StaticCanvas", () => {
       '<?xml version="1.0" encoding="UTF-8" standalone="no" ?>\n<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">\n<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" version="1.1" width="300" height="150" viewBox="0 0 300 150" xml:space="preserve">\n<desc>Created with Fabric.js ' +
       fabric.version +
       '</desc>\n<defs>\n<linearGradient id="SVGID_0" gradientUnits="userSpaceOnUse" gradientTransform="matrix(1 0 0 1 0 0) matrix(1 0 0 1 -150 -75)"  x1="0" y1="0" x2="300" y2="0">\n<stop offset="0%" style="stop-color:black;"/>\n<stop offset="100%" style="stop-color:white;"/>\n</linearGradient>\n</defs>\n<rect transform="matrix(1 0 0 1 0 0) translate(150,75)" x="-150" y="-75" width="300" height="150" fill="url(#SVGID_0)"></rect>\n</svg>'
-    expect(svg).toEqual(expectedSVG)
+    expect(svg).toBe(expectedSVG)
   })
 
   test("toSVG with background gradient and transforms", function () {
@@ -2056,7 +2048,7 @@ describe("fabric.StaticCanvas", () => {
       '<?xml version="1.0" encoding="UTF-8" standalone="no" ?>\n<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">\n<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" version="1.1" width="300" height="150" viewBox="-5 -1.5 300 37.5" xml:space="preserve">\n<desc>Created with Fabric.js ' +
       fabric.version +
       '</desc>\n<defs>\n<linearGradient id="SVGID_0" gradientUnits="userSpaceOnUse" gradientTransform="matrix(1 2 3 4 5 6) matrix(0.2 0.3 0.4 0.5 -153 -23.75)"  x1="0" y1="0" x2="300" y2="0">\n<stop offset="0%" style="stop-color:black;"/>\n<stop offset="100%" style="stop-color:white;"/>\n</linearGradient>\n</defs>\n<rect transform="matrix(-2 1 1.5 -0.5 1 -2) translate(150,75)" x="-150" y="-75" width="300" height="150" fill="url(#SVGID_0)"></rect>\n</svg>'
-    expect(svg).toEqual(expectedSVG)
+    expect(svg).toBe(expectedSVG)
   })
 
   test("toSVG with background pattern", function () {
@@ -2071,16 +2063,16 @@ describe("fabric.StaticCanvas", () => {
       '<?xml version="1.0" encoding="UTF-8" standalone="no" ?>\n<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">\n<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" version="1.1" width="300" height="150" viewBox="0 0 300 150" xml:space="preserve">\n<desc>Created with Fabric.js ' +
       fabric.version +
       '</desc>\n<defs>\n<pattern id="SVGID_0" x="0" y="0" width="0" height="0">\n<image x="0" y="0" width="0" height="0" xlink:href=""></image>\n</pattern>\n</defs>\n<rect transform="matrix(1 0 0 1 0 0) translate(150,75)" x="-150" y="-75" width="300" height="150" fill="url(#SVGID_0)"></rect>\n</svg>'
-    expect(svg).toEqual(expectedSVG)
+    expect(svg).toBe(expectedSVG)
   })
 
   test("requestRenderAll and cancelRequestedRender", function () {
     var canvas2 = new fabric.StaticCanvas()
-    expect(canvas2.isRendering).toEqual(undefined)
+    expect(canvas2.isRendering).toBe(undefined)
     canvas2.requestRenderAll()
     expect(canvas2.isRendering).not.toBe(0)
     canvas2.cancelRequestedRender()
-    expect(canvas2.isRendering).toEqual(0)
+    expect(canvas2.isRendering).toBe(0)
   })
 
   // test('backgroundImage', function(done) {

@@ -1,23 +1,20 @@
-;(function () {
-  var canvas = (this.canvas = new fabric.StaticCanvas(null, {
-    enableRetinaScaling: false
-  }))
+var canvas = new fabric.StaticCanvas(null, {
+  enableRetinaScaling: false
+})
 
-  describe("fabric.Object", {
-    afterEach: function () {
-      fabric.perfLimitSizeTotal = 2097152
-      fabric.maxCacheSideLimit = 4096
-      fabric.minCacheSideLimit = 256
-      fabric.devicePixelRatio = 1
-      canvas.enableRetinaScaling = false
-      canvas.setZoom(1)
-      canvas.clear()
-      canvas.backgroundColor = fabric.Canvas.prototype.backgroundColor
-      canvas.calcOffset()
-    }
+describe("fabric.Object", () => {
+  afterEach(function () {
+    fabric.perfLimitSizeTotal = 2097152
+    fabric.maxCacheSideLimit = 4096
+    fabric.minCacheSideLimit = 256
+    fabric.devicePixelRatio = 1
+    canvas.enableRetinaScaling = false
+    canvas.setZoom(1)
+    canvas.clear()
+    canvas.backgroundColor = fabric.Canvas.prototype.backgroundColor
+    canvas.calcOffset()
   })
-
-  test("constructor & properties", function (assert) {
+  test("constructor & properties", function () {
     expect(typeof fabric.Object === "function").toBeTruthy()
 
     var cObj = new fabric.Object()
@@ -26,12 +23,12 @@
     expect(cObj instanceof fabric.Object).toBeTruthy()
     expect(cObj.constructor === fabric.Object).toBeTruthy()
 
-    expect(cObj.type).toEqual("object")
-    expect(cObj.includeDefaultValues).toEqual(true)
-    expect(cObj.selectable).toEqual(true)
+    expect(cObj.type).toBe("object")
+    expect(cObj.includeDefaultValues).toBe(true)
+    expect(cObj.selectable).toBe(true)
   })
 
-  test("get", function (assert) {
+  test("get", function () {
     var cObj = new fabric.Object({
       left: 11,
       top: 22,
@@ -40,14 +37,14 @@
       opacity: 0.7
     })
 
-    expect(cObj.get("left")).toEqual(11)
-    expect(cObj.get("top")).toEqual(22)
-    expect(cObj.get("width")).toEqual(50)
-    expect(cObj.get("height")).toEqual(60)
-    expect(cObj.get("opacity")).toEqual(0.7)
+    expect(cObj.get("left")).toBe(11)
+    expect(cObj.get("top")).toBe(22)
+    expect(cObj.get("width")).toBe(50)
+    expect(cObj.get("height")).toBe(60)
+    expect(cObj.get("opacity")).toBe(0.7)
   })
 
-  test("set", function (assert) {
+  test("set", function () {
     var cObj = new fabric.Object({
       left: 11,
       top: 22,
@@ -62,56 +59,56 @@
     cObj.set("height", 61)
     cObj.set("opacity", 0.5)
 
-    expect(cObj.get("left")).toEqual(12)
-    expect(cObj.get("top")).toEqual(23)
-    expect(cObj.get("width")).toEqual(51)
-    expect(cObj.get("height")).toEqual(61)
-    expect(cObj.get("opacity")).toEqual(0.5)
+    expect(cObj.get("left")).toBe(12)
+    expect(cObj.get("top")).toBe(23)
+    expect(cObj.get("width")).toBe(51)
+    expect(cObj.get("height")).toBe(61)
+    expect(cObj.get("opacity")).toBe(0.5)
 
-    expect(cObj.set("opacity", 0.5)).toEqual(cObj)
+    expect(cObj.set("opacity", 0.5)).toBe(cObj)
   })
 
-  test("set with object of prop/values", function (assert) {
+  test("set with object of prop/values", function () {
     var cObj = new fabric.Object({})
 
-    expect(cObj).toEqual(cObj.set({ width: 99, height: 88, fill: "red" }))
+    expect(cObj).toBe(cObj.set({ width: 99, height: 88, fill: "red" }))
 
-    expect("red").toEqual(cObj.get("fill"))
-    expect(99).toEqual(cObj.get("width"))
-    expect(88).toEqual(cObj.get("height"))
+    expect("red").toBe(cObj.get("fill"))
+    expect(99).toBe(cObj.get("width"))
+    expect(88).toBe(cObj.get("height"))
   })
 
-  // test('Dinamically generated accessors', function(assert) {
+  // test('Dinamically generated accessors', function() {
   //   var cObj = new fabric.Object({ });
   //
-  //   assert.equal('function', typeof cObj.getWidth);
-  //   assert.equal('function', typeof cObj.setWidth);
+  //   .equal('function', typeof cObj.getWidth);
+  //   .equal('function', typeof cObj.setWidth);
   //
-  //   assert.equal('function', typeof cObj.getFill);
-  //   assert.equal('function', typeof cObj.setFill);
+  //   .equal('function', typeof cObj.getFill);
+  //   .equal('function', typeof cObj.setFill);
   //
-  //   assert.equal(cObj, cObj.setFill('red'), 'chainable');
-  //   assert.equal('red', cObj.getFill());
+  //   .equal(cObj, cObj.setFill('red'), 'chainable');
+  //   .equal('red', cObj.getFill());
   //
   //   cObj.setScaleX(2.3);
-  //   assert.equal(2.3, cObj.getScaleX());
+  //   .equal(2.3, cObj.getScaleX());
   //
   //   cObj.setOpacity(0.123);
-  //   assert.equal(0.123, cObj.getOpacity());
+  //   .equal(0.123, cObj.getOpacity());
   // });
 
-  test("stateProperties", function (assert) {
+  test("stateProperties", function () {
     var cObj = new fabric.Object()
     expect(cObj.stateProperties).toBeTruthy()
     expect(cObj.stateProperties.length > 0).toBeTruthy()
   })
 
-  test("transform", function (assert) {
+  test("transform", function () {
     var cObj = new fabric.Object()
     expect(typeof cObj.transform === "function").toBeTruthy()
   })
 
-  test("toJSON", function (assert) {
+  test("toJSON", function () {
     var emptyObjectJSON =
       '{"type":"object","version":"' +
       fabric.version +
@@ -132,7 +129,7 @@
 
     var cObj = new fabric.Object()
     expect(typeof cObj.toJSON === "function").toBeTruthy()
-    expect(JSON.stringify(cObj.toJSON())).toEqual(emptyObjectJSON)
+    expect(JSON.stringify(cObj.toJSON())).toBe(emptyObjectJSON)
 
     cObj
       .set("opacity", 0.88)
@@ -144,10 +141,10 @@
       .set("strokeLineJoin", "bevil")
       .set("strokeMiterLimit", 5)
 
-    expect(JSON.stringify(cObj.toJSON())).toEqual(augmentedJSON)
+    expect(JSON.stringify(cObj.toJSON())).toBe(augmentedJSON)
   })
 
-  test("toObject", function (assert) {
+  test("toObject", function () {
     var emptyObjectRepr = {
       version: fabric.version,
       type: "object",
@@ -240,7 +237,7 @@
 
       testedProperties.forEach(function (property) {
         cObj.set(property, fractionalValue)
-        expect(cObj.toObject()[property]).toEqual(expectedValue)
+        expect(cObj.toObject()[property]).toBe(expectedValue)
       }, this)
 
       fabric.Object.NUM_FRACTION_DIGITS = fractionDigitsDefault
@@ -251,7 +248,7 @@
     testFractionDigits.call(this, 0, 167)
   })
 
-  test("toObject without default values", function (assert) {
+  test("toObject without default values", function () {
     var emptyObjectRepr = {
       version: fabric.version,
       type: "object",
@@ -292,107 +289,110 @@
       .set("strokeMiterLimit", 5)
     toObjectObj = cObj.toObject()
     expect(augmentedObjectRepr).toEqual(toObjectObj)
-    expect(augmentedObjectRepr.strokeDashArray).not.toEqual(toObjectObj.strokeDashArray)
-    expect(augmentedObjectRepr.strokeDashArray).toEqual(toObjectObj.strokeDashArray)
+    expect(augmentedObjectRepr.strokeDashArray).not.toBe(
+      toObjectObj.strokeDashArray
+    )
+    expect(augmentedObjectRepr.strokeDashArray).toEqual(
+      toObjectObj.strokeDashArray
+    )
   })
 
-  test("toDatalessObject", function (assert) {
+  test("toDatalessObject", function () {
     var cObj = new fabric.Object()
     expect(typeof cObj.toDatalessObject === "function").toBeTruthy()
     expect(cObj.toObject()).toEqual(cObj.toDatalessObject())
   })
 
-  test("toString", function (assert) {
+  test("toString", function () {
     var cObj = new fabric.Object()
-    expect(cObj.toString()).toEqual("#<fabric.Object>")
+    expect(cObj.toString()).toBe("#<fabric.Object>")
     cObj.type = "moo"
-    expect(cObj.toString()).toEqual("#<fabric.Moo>")
+    expect(cObj.toString()).toBe("#<fabric.Moo>")
   })
 
-  test("render", function (assert) {
+  test("render", function () {
     var cObj = new fabric.Object()
     expect(typeof cObj.render === "function").toBeTruthy()
   })
 
-  test("rotate", function (assert) {
+  test("rotate", function () {
     var cObj = new fabric.Object()
     expect(typeof cObj.rotate === "function").toBeTruthy()
-    expect(cObj.get("angle")).toEqual(0)
-    expect(cObj.rotate(45)).toEqual(cObj)
-    expect(cObj.get("angle")).toEqual(45)
+    expect(cObj.get("angle")).toBe(0)
+    expect(cObj.rotate(45)).toBe(cObj)
+    expect(cObj.get("angle")).toBe(45)
   })
 
-  test("scale", function (assert) {
+  test("scale", function () {
     var cObj = new fabric.Object()
     expect(typeof cObj.scale === "function").toBeTruthy()
-    expect(cObj.get("scaleX")).toEqual(1)
-    expect(cObj.get("scaleY")).toEqual(1)
+    expect(cObj.get("scaleX")).toBe(1)
+    expect(cObj.get("scaleY")).toBe(1)
     cObj.scale(1.5)
-    expect(cObj.get("scaleX")).toEqual(1.5)
-    expect(cObj.get("scaleY")).toEqual(1.5)
-    expect(cObj.scale(2)).toEqual(cObj)
+    expect(cObj.get("scaleX")).toBe(1.5)
+    expect(cObj.get("scaleY")).toBe(1.5)
+    expect(cObj.scale(2)).toBe(cObj)
   })
 
-  test("setOpacity", function (assert) {
+  test("setOpacity", function () {
     var cObj = new fabric.Object()
-    expect(cObj.get("opacity")).toEqual(1)
+    expect(cObj.get("opacity")).toBe(1)
     cObj.set("opacity", 0.68)
-    expect(cObj.get("opacity")).toEqual(0.68)
-    expect(cObj.set("opacity", 1)).toEqual(cObj)
+    expect(cObj.get("opacity")).toBe(0.68)
+    expect(cObj.set("opacity", 1)).toBe(cObj)
   })
 
-  test("getAngle", function (assert) {
+  test("getAngle", function () {
     var cObj = new fabric.Object()
-    expect(cObj.get("angle")).toEqual(0)
+    expect(cObj.get("angle")).toBe(0)
     cObj.rotate(45)
-    expect(cObj.get("angle")).toEqual(45)
+    expect(cObj.get("angle")).toBe(45)
   })
 
-  test("rotate", function (assert) {
+  test("rotate", function () {
     var cObj = new fabric.Object()
-    expect(cObj.get("angle")).toEqual(0)
-    expect(cObj.set("angle", 45)).toEqual(cObj)
-    expect(cObj.get("angle")).toEqual(45)
+    expect(cObj.get("angle")).toBe(0)
+    expect(cObj.set("angle", 45)).toBe(cObj)
+    expect(cObj.get("angle")).toBe(45)
   })
 
-  test("drawBorders", function (assert) {
+  test("drawBorders", function () {
     var cObj = new fabric.Object(),
       canvas = fabric.document.createElement("canvas")
 
     var dummyContext = canvas.getContext("2d")
 
     expect(typeof cObj.drawBorders === "function").toBeTruthy()
-    expect(cObj.drawBorders(dummyContext)).toEqual(cObj)
+    expect(cObj.drawBorders(dummyContext)).toBe(cObj)
   })
 
-  test("drawControls", function (assert) {
+  test("drawControls", function () {
     var cObj = new fabric.Object(),
       _canvas = fabric.document.createElement("canvas")
     cObj.canvas = canvas
     var dummyContext = _canvas.getContext("2d")
     expect(typeof cObj.drawControls === "function").toBeTruthy()
-    expect(cObj.drawControls(dummyContext)).toEqual(cObj)
+    expect(cObj.drawControls(dummyContext)).toBe(cObj)
   })
 
-  test("clone", function (assert) {
+  test("clone", function () {
     var cObj = new fabric.Object({ left: 123, top: 456, opacity: 0.66 })
     expect(typeof cObj.clone === "function").toBeTruthy()
     cObj.clone(function (clone) {
-      expect(clone.get("left")).toEqual(123)
-      expect(clone.get("top")).toEqual(456)
-      expect(clone.get("opacity")).toEqual(0.66)
+      expect(clone.get("left")).toBe(123)
+      expect(clone.get("top")).toBe(456)
+      expect(clone.get("opacity")).toBe(0.66)
 
       // augmenting clone properties should not affect original instance
       clone.set("left", 12).set("scaleX", 2.5).rotate(33)
 
-      expect(cObj.get("left")).toEqual(123)
-      expect(cObj.get("scaleX")).toEqual(1)
-      expect(cObj.get("angle")).toEqual(0)
+      expect(cObj.get("left")).toBe(123)
+      expect(cObj.get("scaleX")).toBe(1)
+      expect(cObj.get("angle")).toBe(0)
     })
   })
 
-  test("cloneAsImage", function (assert) {
-    var done = assert.async()
+  test("cloneAsImage", function (done) {
     var cObj = new fabric.Rect({
       width: 100,
       height: 100,
@@ -403,13 +403,12 @@
     cObj.cloneAsImage(function (image) {
       expect(image).toBeTruthy()
       expect(image instanceof fabric.Image).toBeTruthy()
-      expect(image.width).toEqual(100)
+      expect(image.width).toBe(100)
       done()
     })
   })
 
-  test("cloneAsImage with retina scaling enabled", function (assert) {
-    var done = assert.async()
+  test("cloneAsImage with retina scaling enabled", function (done) {
     var cObj = new fabric.Rect({
       width: 100,
       height: 100,
@@ -421,7 +420,7 @@
       function (image) {
         expect(image).toBeTruthy()
         expect(image instanceof fabric.Image).toBeTruthy()
-        expect(image.width).toEqual(200)
+        expect(image.width).toBe(200)
         fabric.devicePixelRatio = 1
         done()
       },
@@ -429,7 +428,7 @@
     )
   })
 
-  test("toCanvasElement", function (assert) {
+  test("toCanvasElement", function () {
     var cObj = new fabric.Rect({
       width: 100,
       height: 100,
@@ -444,7 +443,7 @@
     expect(typeof canvasEl.getContext === "function").toBeTruthy()
   })
 
-  test("toCanvasElement activeSelection", function (assert) {
+  test("toCanvasElement activeSelection", function () {
     var cObj = new fabric.Rect({
       width: 100,
       height: 100,
@@ -465,37 +464,34 @@
       canvas: canvas
     })
 
-    expect(cObj.canvas).toEqual(canvas)
+    expect(cObj.canvas).toBe(canvas)
 
     activeSel.toCanvasElement()
 
-    expect(cObj.canvas).toEqual(canvas)
+    expect(cObj.canvas).toBe(canvas)
 
     activeSel.destroy()
 
-    expect(cObj.canvas).toEqual(canvas)
+    expect(cObj.canvas).toBe(canvas)
   })
 
-  test(
-    "toCanvasElement does not modify oCoords on zoomed canvas",
-    function (assert) {
-      var cObj = new fabric.Rect({
-        width: 100,
-        height: 100,
-        fill: "red",
-        strokeWidth: 0
-      })
-      canvas.setZoom(2)
-      canvas.add(cObj)
-      var originaloCoords = cObj.oCoords
-      var originalaCoords = cObj.aCoords
-      cObj.toCanvasElement()
-      expect(cObj.oCoords).toEqual(originaloCoords)
-      expect(cObj.aCoords).toEqual(originalaCoords)
-    }
-  )
+  test("toCanvasElement does not modify oCoords on zoomed canvas", function () {
+    var cObj = new fabric.Rect({
+      width: 100,
+      height: 100,
+      fill: "red",
+      strokeWidth: 0
+    })
+    canvas.setZoom(2)
+    canvas.add(cObj)
+    var originaloCoords = cObj.oCoords
+    var originalaCoords = cObj.aCoords
+    cObj.toCanvasElement()
+    expect(cObj.oCoords).toEqual(originaloCoords)
+    expect(cObj.aCoords).toEqual(originalaCoords)
+  })
 
-  test("toDataURL", function (assert) {
+  test("toDataURL", function () {
     var cObj = new fabric.Rect({
       width: 100,
       height: 100,
@@ -506,18 +502,18 @@
     expect(typeof cObj.toDataURL === "function").toBeTruthy()
 
     var dataURL = cObj.toDataURL()
-    expect(typeof dataURL).toEqual("string")
-    expect(dataURL.substring(0, 21)).toEqual("data:image/png;base64")
+    expect(typeof dataURL).toBe("string")
+    expect(dataURL.substring(0, 21)).toBe("data:image/png;base64")
 
     try {
       dataURL = cObj.toDataURL({ format: "jpeg" })
-      expect(dataURL.substring(0, 22)).toEqual("data:image/jpeg;base64")
+      expect(dataURL.substring(0, 22)).toBe("data:image/jpeg;base64")
     } catch (err) {
       fabric.log("jpeg toDataURL not supported")
     }
   })
 
-  test("toDataURL & reference to canvas", function (assert) {
+  test("toDataURL & reference to canvas", function () {
     // var data =
     //   'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAGQA'+
     //   'AABkCAYAAABw4pVUAAAA+UlEQVR4nO3RoRHAQBDEsOu/6YR+B2s'+
@@ -537,10 +533,10 @@
     var objCanvas = cObj.canvas
     cObj.toDataURL()
 
-    expect(objCanvas).toEqual(cObj.canvas)
+    expect(objCanvas).toBe(cObj.canvas)
   })
 
-  test("isType", function (assert) {
+  test("isType", function () {
     var cObj = new fabric.Object()
     expect(typeof cObj.isType === "function").toBeTruthy()
     expect(cObj.isType("object")).toBeTruthy()
@@ -550,7 +546,7 @@
     expect(!cObj.isType("object")).toBeTruthy()
   })
 
-  test("toggle", function (assert) {
+  test("toggle", function () {
     var object = new fabric.Object({
       left: 100,
       top: 124,
@@ -560,17 +556,17 @@
     expect(typeof object.toggle === "function").toBeTruthy()
 
     object.set("flipX", false)
-    expect(object.toggle("flipX")).toEqual(object)
-    expect(object.get("flipX")).toEqual(true)
+    expect(object.toggle("flipX")).toBe(object)
+    expect(object.get("flipX")).toBe(true)
     object.toggle("flipX")
-    expect(object.get("flipX")).toEqual(false)
+    expect(object.get("flipX")).toBe(false)
 
     object.set("left", 112.45)
     object.toggle("left")
-    expect(object.get("left")).toEqual(112.45)
+    expect(object.get("left")).toBe(112.45)
   })
 
-  test("_setLineDash", function (assert) {
+  test("_setLineDash", function () {
     var object = new fabric.Rect({
       left: 100,
       top: 124,
@@ -581,16 +577,16 @@
     })
     expect(typeof object._setLineDash === "function").toBeTruthy()
     object.strokeDashArray = [3, 2, 1]
-    expect(object.strokeDashArray.length).toEqual(3)
+    expect(object.strokeDashArray.length).toBe(3)
     object._setLineDash(canvas.contextContainer, object.strokeDashArray, null)
-    expect(object.strokeDashArray.length).toEqual(6)
+    expect(object.strokeDashArray.length).toBe(6)
 
-    expect(canvas.contextContainer.getLineDash().length).toEqual(6)
+    expect(canvas.contextContainer.getLineDash().length).toBe(6)
     object._setLineDash(canvas.contextContainer, [], null)
-    expect(canvas.contextContainer.getLineDash().length).toEqual(6)
+    expect(canvas.contextContainer.getLineDash().length).toBe(6)
   })
 
-  test("straighten", function (assert) {
+  test("straighten", function () {
     var object = new fabric.Object({
       left: 100,
       top: 124,
@@ -601,31 +597,30 @@
 
     object.rotate(123.456)
     object.straighten()
-    expect(object.get("angle")).toEqual(90)
+    expect(object.get("angle")).toBe(90)
 
     object.rotate(97.111)
     object.straighten()
-    expect(object.get("angle")).toEqual(90)
+    expect(object.get("angle")).toBe(90)
 
     object.rotate(3.45)
     object.straighten()
-    expect(object.get("angle")).toEqual(0)
+    expect(object.get("angle")).toBe(0)
 
     object.rotate(-157)
     object.straighten()
-    expect(object.get("angle")).toEqual(-180)
+    expect(object.get("angle")).toBe(-180)
 
     object.rotate(159)
     object.straighten()
-    expect(object.get("angle")).toEqual(180)
+    expect(object.get("angle")).toBe(180)
 
     object.rotate(999)
     object.straighten()
-    expect(object.get("angle")).toEqual(270)
+    expect(object.get("angle")).toBe(270)
   })
 
-  test("fxStraighten", function (assert) {
-    var done = assert.async()
+  test("fxStraighten", function (done) {
     var object = new fabric.Object({
       left: 20,
       top: 30,
@@ -646,18 +641,18 @@
 
     var callbacks = { onComplete: onComplete, onChange: onChange }
     expect(typeof object.fxStraighten === "function").toBeTruthy()
-    expect(object.fxStraighten(callbacks)).toEqual(object)
-    expect(fabric.util.toFixed(object.get("angle"), 0)).toEqual(43)
+    expect(object.fxStraighten(callbacks)).toBe(object)
+    expect(fabric.util.toFixed(object.get("angle"), 0)).toBe(43)
     setTimeout(function () {
       expect(onCompleteFired).toBeTruthy()
       expect(onChangeFired).toBeTruthy()
-      expect(object.get("angle")).toEqual(0)
-      expect(object.fxStraighten()).toEqual(object)
+      expect(object.get("angle")).toBe(0)
+      expect(object.fxStraighten()).toBe(object)
       done()
     }, 1000)
   })
 
-  test("on off fire are chainable", function (assert) {
+  test("on off fire are chainable", function () {
     var object = new fabric.Object({
       left: 20,
       top: 30,
@@ -667,18 +662,18 @@
     })
     var ret
     ret = object.fire("")
-    expect(ret).toEqual(object)
+    expect(ret).toBe(object)
     ret = object.on("hi", function () {})
-    expect(ret).toEqual(object)
+    expect(ret).toBe(object)
     ret = object.fire("bye")
-    expect(ret).toEqual(object)
+    expect(ret).toBe(object)
     ret = object.fire("hi")
-    expect(ret).toEqual(object)
+    expect(ret).toBe(object)
     ret = object.off("hi")
-    expect(ret).toEqual(object)
+    expect(ret).toBe(object)
   })
 
-  test("observable", function (assert) {
+  test("observable", function () {
     var object = new fabric.Object({
       left: 20,
       top: 30,
@@ -711,11 +706,11 @@
     })
     object.fire("baz", { param1: "abrakadabra", param2: 3.1415 })
 
-    expect("abrakadabra").toEqual(firedOptions.param1)
-    expect(3.1415).toEqual(firedOptions.param2)
+    expect("abrakadabra").toBe(firedOptions.param1)
+    expect(3.1415).toBe(firedOptions.param2)
   })
 
-  test("object:added", function (assert) {
+  test("object:added", function () {
     var object = new fabric.Object()
     var addedEventFired = false
 
@@ -727,7 +722,7 @@
     expect(addedEventFired).toBeTruthy()
   })
 
-  test("canvas reference", function (assert) {
+  test("canvas reference", function () {
     var object = new fabric.Object()
     var object2 = new fabric.Object()
 
@@ -738,7 +733,7 @@
     expect(object2.canvas === canvas).toBeTruthy()
   })
 
-  test("object:removed", function (assert) {
+  test("object:removed", function () {
     var object = new fabric.Object()
     var removedEventFired = false
 
@@ -752,25 +747,25 @@
     expect(removedEventFired).toBeTruthy()
   })
 
-  test("center", function (assert) {
+  test("center", function () {
     var object = new fabric.Object()
     object.strokeWidth = 0
     canvas.viewportTransform = [1, 0, 0, 1, 0, 0]
     expect(typeof object.center === "function").toBeTruthy()
 
     canvas.add(object)
-    expect(object.center()).toEqual(object)
+    expect(object.center()).toBe(object)
 
-    expect(object.getCenterPoint().x).toEqual(canvas.getWidth() / 2)
-    expect(object.getCenterPoint().y).toEqual(canvas.getHeight() / 2)
+    expect(object.getCenterPoint().x).toBe(canvas.getWidth() / 2)
+    expect(object.getCenterPoint().y).toBe(canvas.getHeight() / 2)
 
     canvas.setZoom(2)
     object.center()
-    expect(object.getCenterPoint().x).toEqual(canvas.getWidth() / 2)
-    expect(object.getCenterPoint().y).toEqual(canvas.getHeight() / 2)
+    expect(object.getCenterPoint().x).toBe(canvas.getWidth() / 2)
+    expect(object.getCenterPoint().y).toBe(canvas.getHeight() / 2)
   })
 
-  test("centerH", function (assert) {
+  test("centerH", function () {
     var object = new fabric.Object()
     object.strokeWidth = 0
     canvas.viewportTransform = [1, 0, 0, 1, 0, 0]
@@ -778,16 +773,16 @@
     var oldY = object.top
 
     canvas.add(object)
-    expect(object.centerH()).toEqual(object)
+    expect(object.centerH()).toBe(object)
 
-    expect(object.getCenterPoint().x).toEqual(canvas.getWidth() / 2)
-    expect(object.top).toEqual(oldY)
+    expect(object.getCenterPoint().x).toBe(canvas.getWidth() / 2)
+    expect(object.top).toBe(oldY)
     canvas.setZoom(2)
     object.centerH()
-    expect(object.getCenterPoint().x).toEqual(canvas.getWidth() / 2)
+    expect(object.getCenterPoint().x).toBe(canvas.getWidth() / 2)
   })
 
-  test("centerV", function (assert) {
+  test("centerV", function () {
     var object = new fabric.Object()
     object.strokeWidth = 0
     canvas.viewportTransform = [1, 0, 0, 1, 0, 0]
@@ -795,34 +790,38 @@
     var oldX = object.left
 
     canvas.add(object)
-    expect(object.centerV()).toEqual(object)
-    expect(object.left).toEqual(oldX)
-    expect(object.getCenterPoint().y).toEqual(canvas.getHeight() / 2)
+    expect(object.centerV()).toBe(object)
+    expect(object.left).toBe(oldX)
+    expect(object.getCenterPoint().y).toBe(canvas.getHeight() / 2)
 
     canvas.setZoom(2)
     object.centerV()
-    expect(object.getCenterPoint().y).toEqual(canvas.getHeight() / 2)
+    expect(object.getCenterPoint().y).toBe(canvas.getHeight() / 2)
   })
 
-  test("viewportCenter", function (assert) {
+  test("viewportCenter", function () {
     var object = new fabric.Object()
     object.strokeWidth = 0
     canvas.viewportTransform = [1, 0, 0, 1, 0, 0]
     expect(typeof object.viewportCenter === "function").toBeTruthy()
 
     canvas.add(object)
-    expect(object.viewportCenter()).toEqual(object)
+    expect(object.viewportCenter()).toBe(object)
 
-    expect(object.getCenterPoint().x).toEqual(canvas.getWidth() / 2)
-    expect(object.getCenterPoint().y).toEqual(canvas.getHeight() / 2)
+    expect(object.getCenterPoint().x).toBe(canvas.getWidth() / 2)
+    expect(object.getCenterPoint().y).toBe(canvas.getHeight() / 2)
 
     canvas.setZoom(2)
     object.viewportCenter()
-    expect(object.getCenterPoint().x).toEqual(canvas.getWidth() / (2 * canvas.getZoom()))
-    expect(object.getCenterPoint().y).toEqual(canvas.getHeight() / (2 * canvas.getZoom()))
+    expect(object.getCenterPoint().x).toBe(
+      canvas.getWidth() / (2 * canvas.getZoom())
+    )
+    expect(object.getCenterPoint().y).toBe(
+      canvas.getHeight() / (2 * canvas.getZoom())
+    )
   })
 
-  test("viewportCenterH", function (assert) {
+  test("viewportCenterH", function () {
     var object = new fabric.Object()
     object.strokeWidth = 0
     canvas.viewportTransform = [1, 0, 0, 1, 0, 0]
@@ -830,16 +829,18 @@
 
     var oldY = object.top
     canvas.add(object)
-    expect(object.viewportCenterH()).toEqual(object)
-    expect(object.getCenterPoint().x).toEqual(canvas.getWidth() / 2)
-    expect(object.top).toEqual(oldY)
+    expect(object.viewportCenterH()).toBe(object)
+    expect(object.getCenterPoint().x).toBe(canvas.getWidth() / 2)
+    expect(object.top).toBe(oldY)
     canvas.setZoom(2)
     object.viewportCenterH()
-    expect(object.getCenterPoint().x).toEqual(canvas.getWidth() / (2 * canvas.getZoom()))
-    expect(object.top).toEqual(oldY)
+    expect(object.getCenterPoint().x).toBe(
+      canvas.getWidth() / (2 * canvas.getZoom())
+    )
+    expect(object.top).toBe(oldY)
   })
 
-  test("viewportCenterV", function (assert) {
+  test("viewportCenterV", function () {
     var object = new fabric.Object()
     object.strokeWidth = 0
     canvas.viewportTransform = [1, 0, 0, 1, 0, 0]
@@ -848,61 +849,63 @@
     var oldX = object.left
 
     canvas.add(object)
-    expect(object.viewportCenterV()).toEqual(object)
-    expect(object.getCenterPoint().y).toEqual(canvas.getHeight() / 2)
-    expect(object.left).toEqual(oldX)
+    expect(object.viewportCenterV()).toBe(object)
+    expect(object.getCenterPoint().y).toBe(canvas.getHeight() / 2)
+    expect(object.left).toBe(oldX)
     canvas.setZoom(2)
     object.viewportCenterV()
-    expect(object.getCenterPoint().y).toEqual(canvas.getHeight() / (2 * canvas.getZoom()))
-    expect(object.left).toEqual(oldX)
+    expect(object.getCenterPoint().y).toBe(
+      canvas.getHeight() / (2 * canvas.getZoom())
+    )
+    expect(object.left).toBe(oldX)
   })
 
-  test("sendToBack", function (assert) {
+  test("sendToBack", function () {
     var object = new fabric.Object()
 
     expect(typeof object.sendToBack === "function").toBeTruthy()
 
     canvas.add(object)
-    expect(object.sendToBack()).toEqual(object)
+    expect(object.sendToBack()).toBe(object)
   })
 
-  test("bringToFront", function (assert) {
+  test("bringToFront", function () {
     var object = new fabric.Object()
 
     expect(typeof object.bringToFront === "function").toBeTruthy()
 
     canvas.add(object)
-    expect(object.bringToFront()).toEqual(object)
+    expect(object.bringToFront()).toBe(object)
   })
 
-  test("sendBackwards", function (assert) {
+  test("sendBackwards", function () {
     var object = new fabric.Object()
 
     expect(typeof object.sendBackwards === "function").toBeTruthy()
 
     canvas.add(object)
-    expect(object.sendBackwards()).toEqual(object)
+    expect(object.sendBackwards()).toBe(object)
   })
 
-  test("bringForward", function (assert) {
+  test("bringForward", function () {
     var object = new fabric.Object()
 
     expect(typeof object.bringForward === "function").toBeTruthy()
 
     canvas.add(object)
-    expect(object.bringForward()).toEqual(object)
+    expect(object.bringForward()).toBe(object)
   })
 
-  test("moveTo", function (assert) {
+  test("moveTo", function () {
     var object = new fabric.Object()
 
     expect(typeof object.moveTo === "function").toBeTruthy()
 
     canvas.add(object)
-    expect(object.moveTo()).toEqual(object)
+    expect(object.moveTo()).toBe(object)
   })
 
-  test("getTotalObjectScaling with zoom", function (assert) {
+  test("getTotalObjectScaling with zoom", function () {
     var object = new fabric.Object({ scaleX: 3, scaleY: 2 })
     canvas.setZoom(3)
     canvas.add(object)
@@ -913,7 +916,7 @@
     })
   })
 
-  test("getTotalObjectScaling with retina", function (assert) {
+  test("getTotalObjectScaling with retina", function () {
     var object = new fabric.Object({ scaleX: 3, scaleY: 2 })
     canvas.enableRetinaScaling = true
     fabric.devicePixelRatio = 4
@@ -925,7 +928,7 @@
     })
   })
 
-  test("getObjectScaling", function (assert) {
+  test("getObjectScaling", function () {
     var object = new fabric.Object({ scaleX: 3, scaleY: 2 })
     var objectScale = object.getObjectScaling()
     expect(objectScale).toEqual({
@@ -934,7 +937,7 @@
     })
   })
 
-  test("getObjectScaling in group", function (assert) {
+  test("getObjectScaling in group", function () {
     var object = new fabric.Object({ scaleX: 3, scaleY: 2 })
     var group = new fabric.Group()
     group.scaleX = 2
@@ -947,9 +950,7 @@
     })
   })
 
-  test("getObjectScaling in group with object rotated", function (
-    assert
-  ) {
+  test("getObjectScaling in group with object rotated", function () {
     var object = new fabric.Object({ scaleX: 3, scaleY: 2, angle: 45 })
     var group = new fabric.Group()
     group.scaleX = 2
@@ -964,48 +965,48 @@
     })
   })
 
-  test("dirty flag on set property", function (assert) {
+  test("dirty flag on set property", function () {
     var object = new fabric.Object({ scaleX: 3, scaleY: 2 })
     object.cacheProperties = ["propA", "propB"]
     object.dirty = false
-    expect(object.dirty).toEqual(false)
+    expect(object.dirty).toBe(false)
     object.set("propC", "3")
-    expect(object.dirty).toEqual(false)
+    expect(object.dirty).toBe(false)
     object.set("propA", "2")
-    expect(object.dirty).toEqual(true)
+    expect(object.dirty).toBe(true)
   })
 
-  test("_createCacheCanvas sets object as dirty", function (assert) {
+  test("_createCacheCanvas sets object as dirty", function () {
     var object = new fabric.Object({
       scaleX: 3,
       scaleY: 2,
       width: 1,
       height: 2
     })
-    expect(object.dirty).toEqual(true)
+    expect(object.dirty).toBe(true)
     object.dirty = false
-    expect(object.dirty).toEqual(false)
+    expect(object.dirty).toBe(false)
     object._createCacheCanvas()
-    expect(object.dirty).toEqual(true)
+    expect(object.dirty).toBe(true)
   })
 
-  test("isCacheDirty statefullCache disabled", function (assert) {
+  test("isCacheDirty statefullCache disabled", function () {
     var object = new fabric.Object({
       scaleX: 3,
       scaleY: 2,
       width: 1,
       height: 2
     })
-    expect(object.dirty).toEqual(true)
+    expect(object.dirty).toBe(true)
     object.cacheProperties = ["propA", "propB"]
     object.dirty = false
     object.statefullCache = false
-    expect(object.isCacheDirty()).toEqual(false)
+    expect(object.isCacheDirty()).toBe(false)
     object.dirty = true
-    expect(object.isCacheDirty()).toEqual(true)
+    expect(object.isCacheDirty()).toBe(true)
   })
 
-  test("isCacheDirty statefullCache enabled", function (assert) {
+  test("isCacheDirty statefullCache enabled", function () {
     var object = new fabric.Object({
       scaleX: 3,
       scaleY: 2,
@@ -1017,64 +1018,100 @@
     object.statefullCache = true
     object.propA = "A"
     object.setupState({ propertySet: "cacheProperties" })
-    expect(object.isCacheDirty()).toEqual(false)
+    expect(object.isCacheDirty()).toBe(false)
     object.propA = "B"
-    expect(object.isCacheDirty()).toEqual(true)
+    expect(object.isCacheDirty()).toBe(true)
   })
 
-  test(
-    "_getCacheCanvasDimensions returns dimensions and zoom for cache canvas",
-    function (assert) {
-      var object = new fabric.Object({ width: 10, height: 10, strokeWidth: 0 })
-      var dims = object._getCacheCanvasDimensions()
-      expect(dims).toEqual({ width: 12, height: 12, zoomX: 1, zoomY: 1, x: 10, y: 10 })
-      object.strokeWidth = 2
-      dims = object._getCacheCanvasDimensions()
-      expect(dims).toEqual({ width: 14, height: 14, zoomX: 1, zoomY: 1, x: 12, y: 12 })
-      object.scaleX = 2
-      object.scaleY = 3
-      dims = object._getCacheCanvasDimensions()
-      expect(dims).toEqual({ width: 26, height: 38, zoomX: 2, zoomY: 3, x: 24, y: 36 })
-    }
-  )
-
-  test("_getCacheCanvasDimensions and strokeUniform", function (assert) {
-    var object = new fabric.Object({ width: 10, height: 10, strokeWidth: 2 })
+  test("_getCacheCanvasDimensions returns dimensions and zoom for cache canvas", function () {
+    var object = new fabric.Object({ width: 10, height: 10, strokeWidth: 0 })
     var dims = object._getCacheCanvasDimensions()
-    expect(dims).toEqual({ width: 14, height: 14, zoomX: 1, zoomY: 1, x: 12, y: 12 })
-    object.strokeUniform = true
-    var dims = object._getCacheCanvasDimensions()
-    expect(dims).toEqual({ width: 14, height: 14, zoomX: 1, zoomY: 1, x: 12, y: 12 })
+    expect(dims).toEqual({
+      width: 12,
+      height: 12,
+      zoomX: 1,
+      zoomY: 1,
+      x: 10,
+      y: 10
+    })
+    object.strokeWidth = 2
+    dims = object._getCacheCanvasDimensions()
+    expect(dims).toEqual({
+      width: 14,
+      height: 14,
+      zoomX: 1,
+      zoomY: 1,
+      x: 12,
+      y: 12
+    })
     object.scaleX = 2
     object.scaleY = 3
     dims = object._getCacheCanvasDimensions()
-    expect(dims).toEqual({ width: 24, height: 34, zoomX: 2, zoomY: 3, x: 22, y: 32 })
+    expect(dims).toEqual({
+      width: 26,
+      height: 38,
+      zoomX: 2,
+      zoomY: 3,
+      x: 24,
+      y: 36
+    })
   })
 
-  test(
-    "_updateCacheCanvas check if cache canvas should be updated",
-    function (assert) {
-      fabric.perfLimitSizeTotal = 10000
-      fabric.maxCacheSideLimit = 4096
-      fabric.minCacheSideLimit = 1
-      var object = new fabric.Object({ width: 10, height: 10, strokeWidth: 0 })
-      object._createCacheCanvas()
-      expect(object.cacheWidth).toEqual(12)
-      expect(object.cacheHeight).toEqual(12)
-      expect(object._updateCacheCanvas()).toEqual(false)
-      object.scaleX = 2
-      expect(object._updateCacheCanvas()).toEqual(true)
-      expect(object.cacheWidth).toEqual(22)
-      expect(object.zoomX).toEqual(2)
-      object.width = 2
-      expect(object._updateCacheCanvas()).toEqual(true)
-      expect(object.cacheWidth).toEqual(6)
-      object.strokeWidth = 2
-      expect(object._updateCacheCanvas()).toEqual(true)
-    }
-  )
+  test("_getCacheCanvasDimensions and strokeUniform", function () {
+    var object = new fabric.Object({ width: 10, height: 10, strokeWidth: 2 })
+    var dims = object._getCacheCanvasDimensions()
+    expect(dims).toEqual({
+      width: 14,
+      height: 14,
+      zoomX: 1,
+      zoomY: 1,
+      x: 12,
+      y: 12
+    })
+    object.strokeUniform = true
+    var dims = object._getCacheCanvasDimensions()
+    expect(dims).toEqual({
+      width: 14,
+      height: 14,
+      zoomX: 1,
+      zoomY: 1,
+      x: 12,
+      y: 12
+    })
+    object.scaleX = 2
+    object.scaleY = 3
+    dims = object._getCacheCanvasDimensions()
+    expect(dims).toEqual({
+      width: 24,
+      height: 34,
+      zoomX: 2,
+      zoomY: 3,
+      x: 22,
+      y: 32
+    })
+  })
 
-  test("_limitCacheSize limit min to 256", function (assert) {
+  test("_updateCacheCanvas check if cache canvas should be updated", function () {
+    fabric.perfLimitSizeTotal = 10000
+    fabric.maxCacheSideLimit = 4096
+    fabric.minCacheSideLimit = 1
+    var object = new fabric.Object({ width: 10, height: 10, strokeWidth: 0 })
+    object._createCacheCanvas()
+    expect(object.cacheWidth).toBe(12)
+    expect(object.cacheHeight).toBe(12)
+    expect(object._updateCacheCanvas()).toBe(false)
+    object.scaleX = 2
+    expect(object._updateCacheCanvas()).toBe(true)
+    expect(object.cacheWidth).toBe(22)
+    expect(object.zoomX).toBe(2)
+    object.width = 2
+    expect(object._updateCacheCanvas()).toBe(true)
+    expect(object.cacheWidth).toBe(6)
+    object.strokeWidth = 2
+    expect(object._updateCacheCanvas()).toBe(true)
+  })
+
+  test("_limitCacheSize limit min to 256", function () {
     fabric.perfLimitSizeTotal = 50000
     fabric.maxCacheSideLimit = 4096
     fabric.minCacheSideLimit = 256
@@ -1083,16 +1120,14 @@
     var zoomX = dims.zoomX
     var zoomY = dims.zoomY
     var limitedDims = object._limitCacheSize(dims)
-    expect(dims).toEqual(limitedDims)
-    expect(dims.width).toEqual(256)
-    expect(dims.height).toEqual(256)
-    expect(zoomX).toEqual(dims.zoomX)
-    expect(zoomY).toEqual(dims.zoomY)
+    expect(dims).toBe(limitedDims)
+    expect(dims.width).toBe(256)
+    expect(dims.height).toBe(256)
+    expect(zoomX).toBe(dims.zoomX)
+    expect(zoomY).toBe(dims.zoomY)
   })
 
-  test("_limitCacheSize does not limit if not necessary", function (
-    assert
-  ) {
+  test("_limitCacheSize does not limit if not necessary", function () {
     fabric.perfLimitSizeTotal = 1000000
     fabric.maxCacheSideLimit = 4096
     fabric.minCacheSideLimit = 256
@@ -1101,16 +1136,14 @@
     var zoomX = dims.zoomX
     var zoomY = dims.zoomY
     var limitedDims = object._limitCacheSize(dims)
-    expect(dims).toEqual(limitedDims)
-    expect(dims.width).toEqual(402)
-    expect(dims.height).toEqual(402)
-    expect(zoomX).toEqual(dims.zoomX)
-    expect(zoomY).toEqual(dims.zoomY)
+    expect(dims).toBe(limitedDims)
+    expect(dims.width).toBe(402)
+    expect(dims.height).toBe(402)
+    expect(zoomX).toBe(dims.zoomX)
+    expect(zoomY).toBe(dims.zoomY)
   })
 
-  test("_limitCacheSize does cap up minCacheSideLimit", function (
-    assert
-  ) {
+  test("_limitCacheSize does cap up minCacheSideLimit", function () {
     fabric.perfLimitSizeTotal = 10000
     fabric.maxCacheSideLimit = 4096
     fabric.minCacheSideLimit = 256
@@ -1121,14 +1154,14 @@
     var zoomX = dims.zoomX
     var zoomY = dims.zoomY
     var limitedDims = object._limitCacheSize(dims)
-    expect(dims).toEqual(limitedDims)
-    expect(dims.width).toEqual(256)
-    expect(dims.height).toEqual(256)
-    expect((zoomX * dims.width) / width).toEqual(dims.zoomX)
-    expect((zoomY * dims.height) / height).toEqual(dims.zoomY)
+    expect(dims).toBe(limitedDims)
+    expect(dims.width).toBe(256)
+    expect(dims.height).toBe(256)
+    expect((zoomX * dims.width) / width).toBe(dims.zoomX)
+    expect((zoomY * dims.height) / height).toBe(dims.zoomY)
   })
 
-  test("_limitCacheSize does cap up if necessary", function (assert) {
+  test("_limitCacheSize does cap up if necessary", function () {
     fabric.perfLimitSizeTotal = 1000000
     fabric.maxCacheSideLimit = 4096
     fabric.minCacheSideLimit = 256
@@ -1143,62 +1176,56 @@
     var zoomX = dims.zoomX
     var zoomY = dims.zoomY
     var limitedDims = object._limitCacheSize(dims)
-    expect(dims).toEqual(limitedDims)
-    expect(dims.width).toEqual(1000)
-    expect(dims.height).toEqual(1000)
-    expect((zoomX * dims.width) / width).toEqual(dims.zoomX)
-    expect((zoomY * dims.height) / height).toEqual(dims.zoomY)
+    expect(dims).toBe(limitedDims)
+    expect(dims.width).toBe(1000)
+    expect(dims.height).toBe(1000)
+    expect((zoomX * dims.width) / width).toBe(dims.zoomX)
+    expect((zoomY * dims.height) / height).toBe(dims.zoomY)
   })
 
-  test(
-    "_limitCacheSize does cap up if necessary to maxCacheSideLimit",
-    function (assert) {
-      fabric.perfLimitSizeTotal = 100000000
-      fabric.maxCacheSideLimit = 4096
-      fabric.minCacheSideLimit = 256
-      var object = new fabric.Object({
-        width: 8192,
-        height: 8192,
-        strokeWidth: 0
-      })
-      var dims = object._getCacheCanvasDimensions()
-      var zoomX = dims.zoomX
-      var zoomY = dims.zoomY
-      var limitedDims = object._limitCacheSize(dims)
-      expect(dims).toEqual(limitedDims)
-      expect(dims.width).toEqual(fabric.maxCacheSideLimit)
-      expect(dims.height).toEqual(fabric.maxCacheSideLimit)
-      expect(dims.zoomX).toEqual((zoomX * 4096) / 8194)
-      expect(dims.zoomY).toEqual((zoomY * 4096) / 8194)
-    }
-  )
+  test("_limitCacheSize does cap up if necessary to maxCacheSideLimit", function () {
+    fabric.perfLimitSizeTotal = 100000000
+    fabric.maxCacheSideLimit = 4096
+    fabric.minCacheSideLimit = 256
+    var object = new fabric.Object({
+      width: 8192,
+      height: 8192,
+      strokeWidth: 0
+    })
+    var dims = object._getCacheCanvasDimensions()
+    var zoomX = dims.zoomX
+    var zoomY = dims.zoomY
+    var limitedDims = object._limitCacheSize(dims)
+    expect(dims).toBe(limitedDims)
+    expect(dims.width).toBe(fabric.maxCacheSideLimit)
+    expect(dims.height).toBe(fabric.maxCacheSideLimit)
+    expect(dims.zoomX).toBe((zoomX * 4096) / 8194)
+    expect(dims.zoomY).toBe((zoomY * 4096) / 8194)
+  })
 
-  test(
-    "_limitCacheSize does cap up if necessary to maxCacheSideLimit, different AR",
-    function (assert) {
-      fabric.perfLimitSizeTotal = 100000000
-      fabric.maxCacheSideLimit = 4096
-      fabric.minCacheSideLimit = 256
-      var object = new fabric.Object({
-        width: 16384,
-        height: 8192,
-        strokeWidth: 0
-      })
-      var dims = object._getCacheCanvasDimensions()
-      var width = dims.width
-      var height = dims.height
-      var zoomX = dims.zoomX
-      var zoomY = dims.zoomY
-      var limitedDims = object._limitCacheSize(dims)
-      expect(dims).toEqual(limitedDims)
-      expect(dims.width).toEqual(fabric.maxCacheSideLimit)
-      expect(dims.height).toEqual(fabric.maxCacheSideLimit)
-      expect(dims.zoomX).toEqual((zoomX * fabric.maxCacheSideLimit) / width)
-      expect(dims.zoomY).toEqual((zoomY * fabric.maxCacheSideLimit) / height)
-    }
-  )
+  test("_limitCacheSize does cap up if necessary to maxCacheSideLimit, different AR", function () {
+    fabric.perfLimitSizeTotal = 100000000
+    fabric.maxCacheSideLimit = 4096
+    fabric.minCacheSideLimit = 256
+    var object = new fabric.Object({
+      width: 16384,
+      height: 8192,
+      strokeWidth: 0
+    })
+    var dims = object._getCacheCanvasDimensions()
+    var width = dims.width
+    var height = dims.height
+    var zoomX = dims.zoomX
+    var zoomY = dims.zoomY
+    var limitedDims = object._limitCacheSize(dims)
+    expect(dims).toBe(limitedDims)
+    expect(dims.width).toBe(fabric.maxCacheSideLimit)
+    expect(dims.height).toBe(fabric.maxCacheSideLimit)
+    expect(dims.zoomX).toBe((zoomX * fabric.maxCacheSideLimit) / width)
+    expect(dims.zoomY).toBe((zoomY * fabric.maxCacheSideLimit) / height)
+  })
 
-  test("_setShadow", function (assert) {
+  test("_setShadow", function () {
     var canvas = new fabric.StaticCanvas(null, {
       enableRetinaScaling: false,
       width: 600,
@@ -1216,87 +1243,95 @@
       offsetY: 15
     })
     object._setShadow(context)
-    expect(context.shadowOffsetX).toEqual(object.shadow.offsetX)
-    expect(context.shadowOffsetY).toEqual(object.shadow.offsetY)
-    expect(context.shadowBlur).toEqual(object.shadow.blur)
+    expect(context.shadowOffsetX).toBe(object.shadow.offsetX)
+    expect(context.shadowOffsetY).toBe(object.shadow.offsetY)
+    expect(context.shadowBlur).toBe(object.shadow.blur)
     fabric.browserShadowBlurConstant = 1.5
     object._setShadow(context)
-    expect(context.shadowOffsetX).toEqual(object.shadow.offsetX)
-    expect(context.shadowOffsetY).toEqual(object.shadow.offsetY)
-    expect(context.shadowBlur).toEqual(object.shadow.blur * 1.5)
+    expect(context.shadowOffsetX).toBe(object.shadow.offsetX)
+    expect(context.shadowOffsetY).toBe(object.shadow.offsetY)
+    expect(context.shadowBlur).toBe(object.shadow.blur * 1.5)
     fabric.browserShadowBlurConstant = 1
     object.scaleX = 2
     object.scaleY = 3
     object._setShadow(context)
-    expect(context.shadowOffsetX).toEqual(object.shadow.offsetX * object.scaleX)
-    expect(context.shadowOffsetY).toEqual(object.shadow.offsetY * object.scaleY)
-    expect(context.shadowBlur).toEqual((object.shadow.blur * (object.scaleX + object.scaleY)) / 2)
+    expect(context.shadowOffsetX).toBe(object.shadow.offsetX * object.scaleX)
+    expect(context.shadowOffsetY).toBe(object.shadow.offsetY * object.scaleY)
+    expect(context.shadowBlur).toBe(
+      (object.shadow.blur * (object.scaleX + object.scaleY)) / 2
+    )
     object.group = group
     object._setShadow(context)
-    expect(context.shadowOffsetX).toEqual(object.shadow.offsetX * object.scaleX * group.scaleX)
-    expect(context.shadowOffsetY).toEqual(object.shadow.offsetY * object.scaleY * group.scaleY)
-    expect(context.shadowBlur).toEqual((object.shadow.blur *
-      (object.scaleX * group.scaleX + object.scaleY * group.scaleY)) /
-      2)
+    expect(context.shadowOffsetX).toBe(
+      object.shadow.offsetX * object.scaleX * group.scaleX
+    )
+    expect(context.shadowOffsetY).toBe(
+      object.shadow.offsetY * object.scaleY * group.scaleY
+    )
+    expect(context.shadowBlur).toBe(
+      (object.shadow.blur *
+        (object.scaleX * group.scaleX + object.scaleY * group.scaleY)) /
+        2
+    )
   })
 
-  test("willDrawShadow", function (assert) {
+  test("willDrawShadow", function () {
     var object = new fabric.Object({ shadow: { offsetX: 0, offsetY: 0 } })
-    expect(object.willDrawShadow()).toEqual(false)
+    expect(object.willDrawShadow()).toBe(false)
     object.shadow.offsetX = 1
-    expect(object.willDrawShadow()).toEqual(true)
+    expect(object.willDrawShadow()).toBe(true)
   })
 
-  test("_set  change a property", function (assert) {
+  test("_set  change a property", function () {
     var object = new fabric.Object({ fill: "blue" })
     object._set("fill", "red")
-    expect(object.fill).toEqual("red")
+    expect(object.fill).toBe("red")
   })
-  test("_set can rise the dirty flag", function (assert) {
+  test("_set can rise the dirty flag", function () {
     var object = new fabric.Object({ fill: "blue" })
     object.dirty = false
     object._set("fill", "red")
-    expect(object.dirty).toEqual(true)
+    expect(object.dirty).toBe(true)
   })
-  test("_set rise dirty flag only if value changed", function (assert) {
+  test("_set rise dirty flag only if value changed", function () {
     var object = new fabric.Object({ fill: "blue" })
     object.dirty = false
     object._set("fill", "blue")
-    expect(object.dirty).toEqual(false)
+    expect(object.dirty).toBe(false)
   })
-  test("isNotVisible", function (assert) {
+  test("isNotVisible", function () {
     var object = new fabric.Object({ fill: "blue", width: 100, height: 100 })
-    expect(object.isNotVisible()).toEqual(false)
+    expect(object.isNotVisible()).toBe(false)
     object = new fabric.Object({
       fill: "blue",
       width: 0,
       height: 0,
       strokeWidth: 1
     })
-    expect(object.isNotVisible()).toEqual(false)
+    expect(object.isNotVisible()).toBe(false)
     object = new fabric.Object({ opacity: 0, fill: "blue" })
-    expect(object.isNotVisible()).toEqual(true)
+    expect(object.isNotVisible()).toBe(true)
     object = new fabric.Object({ fill: "blue", visible: false })
-    expect(object.isNotVisible()).toEqual(true)
+    expect(object.isNotVisible()).toBe(true)
     object = new fabric.Object({
       fill: "blue",
       width: 0,
       height: 0,
       strokeWidth: 0
     })
-    expect(object.isNotVisible()).toEqual(true)
+    expect(object.isNotVisible()).toBe(true)
   })
-  test("shouldCache", function (assert) {
+  test("shouldCache", function () {
     var object = new fabric.Object()
     object.objectCaching = false
-    expect(object.shouldCache()).toEqual(false)
+    expect(object.shouldCache()).toBe(false)
     object.objectCaching = true
-    expect(object.shouldCache()).toEqual(true)
+    expect(object.shouldCache()).toBe(true)
     object.objectCaching = false
     object.needsItsOwnCache = function () {
       return true
     }
-    expect(object.shouldCache()).toEqual(true)
+    expect(object.shouldCache()).toBe(true)
 
     object.needsItsOwnCache = function () {
       return false
@@ -1308,7 +1343,7 @@
         return true
       }
     }
-    expect(object.shouldCache()).toEqual(false)
+    expect(object.shouldCache()).toBe(false)
 
     object.objectCaching = true
     object.group = {
@@ -1316,7 +1351,7 @@
         return false
       }
     }
-    expect(object.shouldCache()).toEqual(true)
+    expect(object.shouldCache()).toBe(true)
 
     object.objectCaching = false
     object.group = {
@@ -1324,7 +1359,7 @@
         return false
       }
     }
-    expect(object.shouldCache()).toEqual(false)
+    expect(object.shouldCache()).toBe(false)
 
     object.objectCaching = false
     object.group = {
@@ -1332,7 +1367,7 @@
         return true
       }
     }
-    expect(object.shouldCache()).toEqual(false)
+    expect(object.shouldCache()).toBe(false)
 
     object.needsItsOwnCache = function () {
       return true
@@ -1344,7 +1379,7 @@
         return true
       }
     }
-    expect(object.shouldCache()).toEqual(true)
+    expect(object.shouldCache()).toBe(true)
 
     object.objectCaching = false
     object.group = {
@@ -1352,37 +1387,37 @@
         return false
       }
     }
-    expect(object.shouldCache()).toEqual(true)
+    expect(object.shouldCache()).toBe(true)
   })
-  test("needsItsOwnCache", function (assert) {
+  test("needsItsOwnCache", function () {
     var object = new fabric.Object()
-    expect(object.needsItsOwnCache()).toEqual(false)
+    expect(object.needsItsOwnCache()).toBe(false)
     object.clipPath = {}
-    expect(object.needsItsOwnCache()).toEqual(true)
+    expect(object.needsItsOwnCache()).toBe(true)
     delete object.clipPath
 
     object.paintFirst = "stroke"
     object.stroke = "black"
     object.shadow = {}
-    expect(object.needsItsOwnCache()).toEqual(true)
+    expect(object.needsItsOwnCache()).toBe(true)
 
     object.paintFirst = "stroke"
     object.stroke = "black"
     object.shadow = null
-    expect(object.needsItsOwnCache()).toEqual(true)
+    expect(object.needsItsOwnCache()).toBe(true)
 
     object.paintFirst = "stroke"
     object.stroke = ""
     object.shadow = {}
-    expect(object.needsItsOwnCache()).toEqual(false)
+    expect(object.needsItsOwnCache()).toBe(false)
 
     object.paintFirst = "stroke"
     object.stroke = "black"
     object.fill = ""
     object.shadow = {}
-    expect(object.needsItsOwnCache()).toEqual(false)
+    expect(object.needsItsOwnCache()).toBe(false)
   })
-  test("hasStroke", function (assert) {
+  test("hasStroke", function () {
     var object = new fabric.Object({
       fill: "blue",
       width: 100,
@@ -1390,21 +1425,21 @@
       strokeWidth: 3,
       stroke: "black"
     })
-    expect(object.hasStroke()).toEqual(true)
+    expect(object.hasStroke()).toBe(true)
     object.stroke = ""
-    expect(object.hasStroke()).toEqual(false)
+    expect(object.hasStroke()).toBe(false)
     object.stroke = "transparent"
-    expect(object.hasStroke()).toEqual(false)
+    expect(object.hasStroke()).toBe(false)
     object.stroke = "black"
     object.strokeWidth = 0
-    expect(object.hasStroke()).toEqual(false)
+    expect(object.hasStroke()).toBe(false)
   })
-  test("hasFill", function (assert) {
+  test("hasFill", function () {
     var object = new fabric.Object({ fill: "blue", width: 100, height: 100 })
-    expect(object.hasFill()).toEqual(true)
+    expect(object.hasFill()).toBe(true)
     object.fill = ""
-    expect(object.hasFill()).toEqual(false)
+    expect(object.hasFill()).toBe(false)
     object.fill = "transparent"
-    expect(object.hasFill()).toEqual(false)
+    expect(object.hasFill()).toBe(false)
   })
-})()
+})

@@ -1,39 +1,34 @@
-;(function () {
-  var IMG_SRC = fabric.isLikelyNode
-    ? "file://" + __dirname + "/../fixtures/greyfloral.png"
-    : "../fixtures/greyfloral.png"
+var IMG_SRC = fabric.isLikelyNode
+  ? "file://" + __dirname + "/../fixtures/greyfloral.png"
+  : "../fixtures/greyfloral.png"
 
-  function setSrc(img, src, callback) {
-    img.onload = callback
-    img.src = src
-  }
+function setSrc(img, src, callback) {
+  img.onload = callback
+  img.src = src
+}
 
-  describe("fabric.Pattern")
+var img = fabric.document.createElement("img")
+setSrc(img, IMG_SRC)
 
-  var img = fabric.document.createElement("img")
-  setSrc(img, IMG_SRC)
+function createPattern(callback) {
+  return new fabric.Pattern(
+    {
+      source: img
+    },
+    callback
+  )
+}
 
-  function createPattern(callback) {
-    return new fabric.Pattern(
-      {
-        source: img
-      },
-      callback
-    )
-  }
-
-  test("constructor", function (assert) {
+describe("fabric.Pattern", () => {
+  test("constructor", function () {
     expect(fabric.Pattern).toBeTruthy()
     var pattern = createPattern()
     expect(pattern instanceof fabric.Pattern).toBeTruthy()
   })
 
-  test("constructor with source string and with callback", function (
-    assert
-  ) {
-    var done = assert.async()
+  test("constructor with source string and with callback", function (done) {
     function callback(pattern) {
-      expect(pattern.source.complete).toEqual(true)
+      expect(pattern.source.complete).toBe(true)
       done()
     }
     new fabric.Pattern(
@@ -44,16 +39,16 @@
     )
   })
 
-  test("properties", function (assert) {
+  test("properties", function () {
     var pattern = createPattern()
-    expect(pattern.source).toEqual(img)
-    expect(pattern.repeat).toEqual("repeat")
-    expect(pattern.offsetX).toEqual(0)
-    expect(pattern.offsetY).toEqual(0)
-    expect(pattern.crossOrigin).toEqual("")
+    expect(pattern.source).toBe(img)
+    expect(pattern.repeat).toBe("repeat")
+    expect(pattern.offsetX).toBe(0)
+    expect(pattern.offsetY).toBe(0)
+    expect(pattern.crossOrigin).toBe("")
   })
 
-  test("toObject", function (assert) {
+  test("toObject", function () {
     var pattern = createPattern()
 
     expect(typeof pattern.toObject === "function").toBeTruthy()
@@ -61,40 +56,40 @@
     var object = pattern.toObject()
 
     expect(object.source.indexOf("fixtures/greyfloral.png") > -1).toBeTruthy()
-    expect(object.repeat).toEqual("repeat")
-    expect(object.offsetX).toEqual(0)
-    expect(object.offsetY).toEqual(0)
-    expect(object.patternTransform).toEqual(null)
+    expect(object.repeat).toBe("repeat")
+    expect(object.offsetX).toBe(0)
+    expect(object.offsetY).toBe(0)
+    expect(object.patternTransform).toBe(null)
   })
 
-  test("toObject with custom props", function (assert) {
+  test("toObject with custom props", function () {
     var pattern = createPattern()
     pattern.patternTransform = [1, 0, 0, 2, 0, 0]
     pattern.id = "myId"
     var object = pattern.toObject(["id"])
-    expect(object.id).toEqual("myId")
+    expect(object.id).toBe("myId")
     expect(object.patternTransform).toEqual(pattern.patternTransform)
   })
 
-  test("toObject with custom props", function (assert) {
+  test("toObject with custom props", function () {
     var pattern = createPattern()
     pattern.patternTransform = [1, 0, 0, 2, 0, 0]
     pattern.id = "myId"
     var object = pattern.toObject(["id"])
-    expect(object.id).toEqual("myId")
+    expect(object.id).toBe("myId")
     expect(object.patternTransform).toEqual(pattern.patternTransform)
   })
 
-  test("toObject with crossOrigin", function (assert) {
+  test("toObject with crossOrigin", function () {
     var pattern = new fabric.Pattern({
       source: IMG_SRC,
       crossOrigin: "anonymous"
     })
     var object = pattern.toObject()
-    expect(object.crossOrigin).toEqual("anonymous")
+    expect(object.crossOrigin).toBe("anonymous")
   })
 
-  test("fromObject with crossOrigin", function (assert) {
+  test("fromObject with crossOrigin", function () {
     var pattern = new fabric.Pattern({
       source: IMG_SRC,
       crossOrigin: "anonymous"
@@ -102,33 +97,30 @@
 
     var object = pattern.toObject()
     var pattern2 = new fabric.Pattern(object)
-    expect(pattern2.crossOrigin).toEqual("anonymous")
+    expect(pattern2.crossOrigin).toBe("anonymous")
   })
 
-  test("toLive", function (assert) {
+  test("toLive", function () {
     var pattern = createPattern()
     var canvas = new fabric.StaticCanvas(null, { enableRetinaScaling: false })
     var patternHTML = canvas.contextContainer.createPattern(img, "repeat")
     expect(typeof pattern.toLive === "function").toBeTruthy()
 
     var created = pattern.toLive(canvas.contextContainer)
-    expect(created.toString()).toEqual(patternHTML.toString())
+    expect(created.toString()).toBe(patternHTML.toString())
   })
 
-  test(
-    "pattern serialization / deserialization (image source)",
-    function (assert) {
-      var pattern = createPattern()
-      var obj = pattern.toObject()
+  test("pattern serialization / deserialization (image source)", function () {
+    var pattern = createPattern()
+    var obj = pattern.toObject()
 
-      // node-canvas doesn't give <img> "src"
-      var patternDeserialized = new fabric.Pattern(obj)
-      expect(typeof patternDeserialized.source).toEqual("object")
-      expect(patternDeserialized.repeat).toEqual("repeat")
-    }
-  )
+    // node-canvas doesn't give <img> "src"
+    var patternDeserialized = new fabric.Pattern(obj)
+    expect(typeof patternDeserialized.source).toBe("object")
+    expect(patternDeserialized.repeat).toBe("repeat")
+  })
 
-  test("toSVG", function (assert) {
+  test("toSVG", function () {
     fabric.Object.__uid = 0
     var pattern = createPattern()
     var rect = new fabric.Rect({ width: 500, height: 500 })
@@ -137,10 +129,10 @@
       img.src +
       '"></image>\n</pattern>\n'
     expect(typeof pattern.toSVG === "function").toBeTruthy()
-    expect(pattern.toSVG(rect)).toEqual(expectedSVG)
+    expect(pattern.toSVG(rect)).toBe(expectedSVG)
   })
 
-  test("toSVG repeat-y", function (assert) {
+  test("toSVG repeat-y", function () {
     fabric.Object.__uid = 0
     var pattern = createPattern()
     pattern.repeat = "repeat-y"
@@ -150,10 +142,10 @@
       img.src +
       '"></image>\n</pattern>\n'
     expect(typeof pattern.toSVG === "function").toBeTruthy()
-    expect(pattern.toSVG(rect)).toEqual(expectedSVG)
+    expect(pattern.toSVG(rect)).toBe(expectedSVG)
   })
 
-  test("toSVG repeat-x", function (assert) {
+  test("toSVG repeat-x", function () {
     fabric.Object.__uid = 0
     var pattern = createPattern()
     pattern.repeat = "repeat-x"
@@ -163,10 +155,10 @@
       img.src +
       '"></image>\n</pattern>\n'
     expect(typeof pattern.toSVG === "function").toBeTruthy()
-    expect(pattern.toSVG(rect)).toEqual(expectedSVG)
+    expect(pattern.toSVG(rect)).toBe(expectedSVG)
   })
 
-  test("toSVG no-repeat", function (assert) {
+  test("toSVG no-repeat", function () {
     fabric.Object.__uid = 0
     var pattern = createPattern()
     pattern.repeat = "no-repeat"
@@ -176,10 +168,10 @@
       img.src +
       '"></image>\n</pattern>\n'
     expect(typeof pattern.toSVG === "function").toBeTruthy()
-    expect(pattern.toSVG(rect)).toEqual(expectedSVG)
+    expect(pattern.toSVG(rect)).toBe(expectedSVG)
   })
 
-  test("toSVG no-repeat offsetX and offsetY", function (assert) {
+  test("toSVG no-repeat offsetX and offsetY", function () {
     fabric.Object.__uid = 0
     var pattern = createPattern()
     pattern.repeat = "no-repeat"
@@ -191,10 +183,10 @@
       img.src +
       '"></image>\n</pattern>\n'
     expect(typeof pattern.toSVG === "function").toBeTruthy()
-    expect(pattern.toSVG(rect)).toEqual(expectedSVG)
+    expect(pattern.toSVG(rect)).toBe(expectedSVG)
   })
 
-  test("initPattern from object", function (assert) {
+  test("initPattern from object", function () {
     var fillObj = {
       type: "pattern",
       source:
@@ -203,4 +195,4 @@
     var obj = new fabric.Object({ fill: fillObj })
     expect(obj.fill instanceof fabric.Pattern).toBeTruthy()
   })
-})()
+})

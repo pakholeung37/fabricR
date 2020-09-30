@@ -1,56 +1,54 @@
-;(function () {
-  function getPoints() {
-    return [
-      { x: 10, y: 12 },
-      { x: 20, y: 22 }
-    ]
-  }
+function getPoints() {
+  return [
+    { x: 10, y: 12 },
+    { x: 20, y: 22 }
+  ]
+}
 
-  var REFERENCE_OBJECT = {
-    version: fabric.version,
-    type: "polygon",
-    originX: "left",
-    originY: "top",
-    left: 9.5,
-    top: 11.5,
-    width: 10,
-    height: 10,
-    fill: "rgb(0,0,0)",
-    stroke: null,
-    strokeWidth: 1,
-    strokeDashArray: null,
-    strokeLineCap: "butt",
-    strokeDashOffset: 0,
-    strokeLineJoin: "miter",
-    strokeMiterLimit: 4,
-    scaleX: 1,
-    scaleY: 1,
-    angle: 0,
-    flipX: false,
-    flipY: false,
-    opacity: 1,
-    points: getPoints(),
-    shadow: null,
-    visible: true,
-    backgroundColor: "",
-    fillRule: "nonzero",
-    paintFirst: "fill",
-    globalCompositeOperation: "source-over",
-    skewX: 0,
-    skewY: 0
-  }
+var REFERENCE_OBJECT = {
+  version: fabric.version,
+  type: "polygon",
+  originX: "left",
+  originY: "top",
+  left: 9.5,
+  top: 11.5,
+  width: 10,
+  height: 10,
+  fill: "rgb(0,0,0)",
+  stroke: null,
+  strokeWidth: 1,
+  strokeDashArray: null,
+  strokeLineCap: "butt",
+  strokeDashOffset: 0,
+  strokeLineJoin: "miter",
+  strokeMiterLimit: 4,
+  scaleX: 1,
+  scaleY: 1,
+  angle: 0,
+  flipX: false,
+  flipY: false,
+  opacity: 1,
+  points: getPoints(),
+  shadow: null,
+  visible: true,
+  backgroundColor: "",
+  fillRule: "nonzero",
+  paintFirst: "fill",
+  globalCompositeOperation: "source-over",
+  skewX: 0,
+  skewY: 0
+}
 
-  var REFERENCE_EMPTY_OBJECT = {
-    points: [],
-    width: 0,
-    height: 0,
-    top: 0,
-    left: 0
-  }
+var REFERENCE_EMPTY_OBJECT = {
+  points: [],
+  width: 0,
+  height: 0,
+  top: 0,
+  left: 0
+}
 
-  describe("fabric.Polygon")
-
-  test("constructor", function (assert) {
+describe("fabric.Polygon", () => {
+  test("constructor", function () {
     expect(fabric.Polygon).toBeTruthy()
 
     var polygon = new fabric.Polygon(getPoints())
@@ -58,19 +56,19 @@
     expect(polygon instanceof fabric.Polygon).toBeTruthy()
     expect(polygon instanceof fabric.Object).toBeTruthy()
 
-    expect(polygon.type).toEqual("polygon")
+    expect(polygon.type).toBe("polygon")
     expect(polygon.get("points")).toEqual([
       { x: 10, y: 12 },
       { x: 20, y: 22 }
     ])
   })
 
-  test("complexity", function (assert) {
+  test("complexity", function () {
     var polygon = new fabric.Polygon(getPoints())
     expect(typeof polygon.complexity === "function").toBeTruthy()
   })
 
-  test("toObject", function (assert) {
+  test("toObject", function () {
     var polygon = new fabric.Polygon(getPoints())
     expect(typeof polygon.toObject === "function").toBeTruthy()
 
@@ -84,7 +82,7 @@
     expect(objectWithOriginalPoints).toEqual(REFERENCE_OBJECT)
   })
 
-  test("toSVG", function (assert) {
+  test("toSVG", function () {
     var polygon = new fabric.Polygon(getPoints(), {
       fill: "red",
       stroke: "blue"
@@ -95,8 +93,7 @@
     expect(polygon.toSVG()).toEqual(EXPECTED_SVG)
   })
 
-  test("fromObject", function (assert) {
-    var done = assert.async()
+  test("fromObject", function (done) {
     expect(typeof fabric.Polygon.fromObject === "function").toBeTruthy()
     fabric.Polygon.fromObject(REFERENCE_OBJECT, function (polygon) {
       expect(polygon instanceof fabric.Polygon).toBeTruthy()
@@ -105,7 +102,7 @@
     })
   })
 
-  test("fromElement without points", function (assert) {
+  test("fromElement without points", function () {
     expect(typeof fabric.Polygon.fromElement === "function").toBeTruthy()
 
     var empty_object = fabric.util.object.extend({}, REFERENCE_OBJECT)
@@ -124,7 +121,7 @@
     })
   })
 
-  test("fromElement with empty points", function (assert) {
+  test("fromElement with empty points", function () {
     var namespace = "http://www.w3.org/2000/svg"
     var elPolygonWithEmptyPoints = fabric.document.createElementNS(
       namespace,
@@ -141,7 +138,7 @@
     })
   })
 
-  test("fromElement with points", function (assert) {
+  test("fromElement with points", function () {
     var namespace = "http://www.w3.org/2000/svg"
     var elPolygon = fabric.document.createElementNS(namespace, "polygon")
     elPolygon.setAttributeNS(namespace, "points", "10,12 20,22")
@@ -162,9 +159,7 @@
     })
   })
 
-  test("fromElement with points and custom attributes", function (
-    assert
-  ) {
+  test("fromElement with points and custom attributes", function () {
     var namespace = "http://www.w3.org/2000/svg"
     var elPolygonWithAttrs = fabric.document.createElementNS(
       namespace,
@@ -195,26 +190,28 @@
         { x: 30, y: 30 },
         { x: 10, y: 10 }
       ]
-      expect(polygonWithAttrs.toObject()).toEqual(fabric.util.object.extend(REFERENCE_OBJECT, {
-        width: 20,
-        height: 20,
-        fill: "rgb(255,255,255)",
-        stroke: "blue",
-        strokeWidth: 3,
-        strokeDashArray: [5, 2],
-        strokeLineCap: "round",
-        strokeLineJoin: "bevil",
-        strokeMiterLimit: 5,
-        opacity: 0.34,
-        points: expectedPoints,
-        top: 10,
-        left: 10
-      }))
+      expect(polygonWithAttrs.toObject()).toEqual(
+        fabric.util.object.extend(REFERENCE_OBJECT, {
+          width: 20,
+          height: 20,
+          fill: "rgb(255,255,255)",
+          stroke: "blue",
+          strokeWidth: 3,
+          strokeDashArray: [5, 2],
+          strokeLineCap: "round",
+          strokeLineJoin: "bevil",
+          strokeMiterLimit: 5,
+          opacity: 0.34,
+          points: expectedPoints,
+          top: 10,
+          left: 10
+        })
+      )
     })
   })
-  test("fromElement with null", function (assert) {
+  test("fromElement with null", function () {
     fabric.Polygon.fromElement(null, function (polygon) {
-      expect(polygon).toEqual(null)
+      expect(polygon).toBe(null)
     })
   })
-})()
+})

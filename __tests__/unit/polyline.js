@@ -1,56 +1,54 @@
-;(function () {
-  function getPoints() {
-    return [
-      { x: 10, y: 12 },
-      { x: 20, y: 22 }
-    ]
-  }
+function getPoints() {
+  return [
+    { x: 10, y: 12 },
+    { x: 20, y: 22 }
+  ]
+}
 
-  var REFERENCE_OBJECT = {
-    version: fabric.version,
-    type: "polyline",
-    originX: "left",
-    originY: "top",
-    left: 9.5,
-    top: 11.5,
-    width: 10,
-    height: 10,
-    fill: "rgb(0,0,0)",
-    stroke: null,
-    strokeWidth: 1,
-    strokeDashArray: null,
-    strokeLineCap: "butt",
-    strokeDashOffset: 0,
-    strokeLineJoin: "miter",
-    strokeMiterLimit: 4,
-    scaleX: 1,
-    scaleY: 1,
-    angle: 0,
-    flipX: false,
-    flipY: false,
-    opacity: 1,
-    points: getPoints(),
-    shadow: null,
-    visible: true,
-    backgroundColor: "",
-    fillRule: "nonzero",
-    paintFirst: "fill",
-    globalCompositeOperation: "source-over",
-    skewX: 0,
-    skewY: 0
-  }
+var REFERENCE_OBJECT = {
+  version: fabric.version,
+  type: "polyline",
+  originX: "left",
+  originY: "top",
+  left: 9.5,
+  top: 11.5,
+  width: 10,
+  height: 10,
+  fill: "rgb(0,0,0)",
+  stroke: null,
+  strokeWidth: 1,
+  strokeDashArray: null,
+  strokeLineCap: "butt",
+  strokeDashOffset: 0,
+  strokeLineJoin: "miter",
+  strokeMiterLimit: 4,
+  scaleX: 1,
+  scaleY: 1,
+  angle: 0,
+  flipX: false,
+  flipY: false,
+  opacity: 1,
+  points: getPoints(),
+  shadow: null,
+  visible: true,
+  backgroundColor: "",
+  fillRule: "nonzero",
+  paintFirst: "fill",
+  globalCompositeOperation: "source-over",
+  skewX: 0,
+  skewY: 0
+}
 
-  var REFERENCE_EMPTY_OBJECT = {
-    points: [],
-    width: 0,
-    height: 0,
-    top: 0,
-    left: 0
-  }
+var REFERENCE_EMPTY_OBJECT = {
+  points: [],
+  width: 0,
+  height: 0,
+  top: 0,
+  left: 0
+}
 
-  describe("fabric.Polyline")
-
-  test("constructor", function (assert) {
+describe("fabric.Polyline", () => {
+  test("constructor", function () {
     expect(fabric.Polyline).toBeTruthy()
 
     var polyline = new fabric.Polyline(getPoints())
@@ -58,19 +56,19 @@
     expect(polyline instanceof fabric.Polyline).toBeTruthy()
     expect(polyline instanceof fabric.Object).toBeTruthy()
 
-    expect(polyline.type).toEqual("polyline")
+    expect(polyline.type).toBe("polyline")
     expect(polyline.get("points")).toEqual([
       { x: 10, y: 12 },
       { x: 20, y: 22 }
     ])
   })
 
-  test("complexity", function (assert) {
+  test("complexity", function () {
     var polyline = new fabric.Polyline(getPoints())
     expect(typeof polyline.complexity === "function").toBeTruthy()
   })
 
-  test("toObject", function (assert) {
+  test("toObject", function () {
     var polyline = new fabric.Polyline(getPoints())
     expect(typeof polyline.toObject === "function").toBeTruthy()
     var objectWithOriginalPoints = fabric.util.object.extend(
@@ -83,7 +81,7 @@
     expect(objectWithOriginalPoints).toEqual(REFERENCE_OBJECT)
   })
 
-  test("toSVG", function (assert) {
+  test("toSVG", function () {
     var polyline = new fabric.Polygon(getPoints(), {
       fill: "red",
       stroke: "blue"
@@ -94,8 +92,7 @@
     expect(polyline.toSVG()).toEqual(EXPECTED_SVG)
   })
 
-  test("fromObject", function (assert) {
-    var done = assert.async()
+  test("fromObject", function (done) {
     expect(typeof fabric.Polyline.fromObject === "function").toBeTruthy()
     fabric.Polyline.fromObject(REFERENCE_OBJECT, function (polyline) {
       expect(polyline instanceof fabric.Polyline).toBeTruthy()
@@ -104,7 +101,7 @@
     })
   })
 
-  test("fromElement without points", function (assert) {
+  test("fromElement without points", function () {
     expect(typeof fabric.Polyline.fromElement === "function").toBeTruthy()
     var elPolylineWithoutPoints = fabric.document.createElementNS(
       "http://www.w3.org/2000/svg",
@@ -120,7 +117,7 @@
     })
   })
 
-  test("fromElement with empty points", function (assert) {
+  test("fromElement with empty points", function () {
     var namespace = "http://www.w3.org/2000/svg"
     var elPolylineWithEmptyPoints = fabric.document.createElementNS(
       namespace,
@@ -137,7 +134,7 @@
     })
   })
 
-  test("fromElement", function (assert) {
+  test("fromElement", function () {
     var namespace = "http://www.w3.org/2000/svg"
     var elPolyline = fabric.document.createElementNS(namespace, "polyline")
     elPolyline.setAttributeNS(namespace, "points", "10,12 20,22")
@@ -151,7 +148,7 @@
     })
   })
 
-  test("fromElement with custom attr", function (assert) {
+  test("fromElement with custom attr", function () {
     var namespace = "http://www.w3.org/2000/svg"
     var elPolylineWithAttrs = fabric.document.createElementNS(
       namespace,
@@ -185,27 +182,29 @@
         { x: 30, y: 30 },
         { x: 10, y: 10 }
       ]
-      expect(polylineWithAttrs.toObject()).toEqual(fabric.util.object.extend(REFERENCE_OBJECT, {
-        width: 20,
-        height: 20,
-        fill: "rgb(255,255,255)",
-        stroke: "blue",
-        strokeWidth: 3,
-        strokeDashArray: [5, 2],
-        strokeLineCap: "round",
-        strokeLineJoin: "bevil",
-        strokeMiterLimit: 5,
-        opacity: 0.34,
-        points: expectedPoints,
-        left: 10,
-        top: 10
-      }))
+      expect(polylineWithAttrs.toObject()).toEqual(
+        fabric.util.object.extend(REFERENCE_OBJECT, {
+          width: 20,
+          height: 20,
+          fill: "rgb(255,255,255)",
+          stroke: "blue",
+          strokeWidth: 3,
+          strokeDashArray: [5, 2],
+          strokeLineCap: "round",
+          strokeLineJoin: "bevil",
+          strokeMiterLimit: 5,
+          opacity: 0.34,
+          points: expectedPoints,
+          left: 10,
+          top: 10
+        })
+      )
     })
   })
 
-  test("fromElement with nothing", function (assert) {
+  test("fromElement with nothing", function () {
     fabric.Polyline.fromElement(null, function (polyline) {
-      expect(polyline).toEqual(null)
+      expect(polyline).toBe(null)
     })
   })
-})()
+})

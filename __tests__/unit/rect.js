@@ -1,42 +1,40 @@
-;(function () {
-  var REFERENCE_RECT = {
-    version: fabric.version,
-    type: "rect",
-    originX: "left",
-    originY: "top",
-    left: 0,
-    top: 0,
-    width: 0,
-    height: 0,
-    fill: "rgb(0,0,0)",
-    stroke: null,
-    strokeWidth: 1,
-    strokeDashArray: null,
-    strokeLineCap: "butt",
-    strokeDashOffset: 0,
-    strokeLineJoin: "miter",
-    strokeMiterLimit: 4,
-    scaleX: 1,
-    scaleY: 1,
-    angle: 0,
-    flipX: false,
-    flipY: false,
-    opacity: 1,
-    shadow: null,
-    visible: true,
-    backgroundColor: "",
-    fillRule: "nonzero",
-    paintFirst: "fill",
-    globalCompositeOperation: "source-over",
-    rx: 0,
-    ry: 0,
-    skewX: 0,
-    skewY: 0
-  }
+var REFERENCE_RECT = {
+  version: fabric.version,
+  type: "rect",
+  originX: "left",
+  originY: "top",
+  left: 0,
+  top: 0,
+  width: 0,
+  height: 0,
+  fill: "rgb(0,0,0)",
+  stroke: null,
+  strokeWidth: 1,
+  strokeDashArray: null,
+  strokeLineCap: "butt",
+  strokeDashOffset: 0,
+  strokeLineJoin: "miter",
+  strokeMiterLimit: 4,
+  scaleX: 1,
+  scaleY: 1,
+  angle: 0,
+  flipX: false,
+  flipY: false,
+  opacity: 1,
+  shadow: null,
+  visible: true,
+  backgroundColor: "",
+  fillRule: "nonzero",
+  paintFirst: "fill",
+  globalCompositeOperation: "source-over",
+  rx: 0,
+  ry: 0,
+  skewX: 0,
+  skewY: 0
+}
 
-  describe("fabric.Rect")
-
-  test("constructor", function (assert) {
+describe("fabric.Rect", () => {
+  test("constructor", function () {
     expect(fabric.Rect).toBeTruthy()
 
     var rect = new fabric.Rect()
@@ -47,20 +45,20 @@
     expect(rect.get("type")).toEqual("rect")
   })
 
-  test("complexity", function (assert) {
+  test("complexity", function () {
     var rect = new fabric.Rect()
 
     expect(typeof rect.complexity === "function").toBeTruthy()
   })
 
-  test("cache properties", function (assert) {
+  test("cache properties", function () {
     var rect = new fabric.Rect()
 
     expect(rect.cacheProperties.indexOf("rx") > -1).toBeTruthy()
     expect(rect.cacheProperties.indexOf("ry") > -1).toBeTruthy()
   })
 
-  test("toObject", function (assert) {
+  test("toObject", function () {
     var rect = new fabric.Rect()
     expect(typeof rect.toObject === "function").toBeTruthy()
 
@@ -68,8 +66,7 @@
     expect(object).toEqual(REFERENCE_RECT)
   })
 
-  test("fabric.Rect.fromObject", function (assert) {
-    var done = assert.async()
+  test("fabric.Rect.fromObject", function (done) {
     expect(typeof fabric.Rect.fromObject === "function").toBeTruthy()
 
     fabric.Rect.fromObject(REFERENCE_RECT, function (rect) {
@@ -105,8 +102,7 @@
     })
   })
 
-  test("fabric.Rect.fromObject with pattern fill", function (assert) {
-    var done = assert.async()
+  test("fabric.Rect.fromObject with pattern fill", function (done) {
     var fillObj = {
       type: "pattern",
       source:
@@ -118,7 +114,7 @@
     })
   })
 
-  test("fabric.Rect.fromElement", function (assert) {
+  test("fabric.Rect.fromElement", function () {
     expect(typeof fabric.Rect.fromElement === "function").toBeTruthy()
 
     var elRect = fabric.document.createElementNS(
@@ -133,9 +129,7 @@
     })
   })
 
-  test("fabric.Rect.fromElement with custom attributes", function (
-    assert
-  ) {
+  test("fabric.Rect.fromElement with custom attributes", function () {
     var namespace = "http://www.w3.org/2000/svg"
     var elRectWithAttrs = fabric.document.createElementNS(namespace, "rect")
 
@@ -161,7 +155,7 @@
     //elRectWithAttrs.setAttributeNS(namespace, 'transform', 'translate(-10,-20) scale(2) rotate(45) translate(5,10)');
     fabric.Rect.fromElement(elRectWithAttrs, function (rectWithAttrs) {
       expect(rectWithAttrs instanceof fabric.Rect).toBeTruthy()
-      expect(rectWithAttrs.strokeUniform).toEqual(true)
+      expect(rectWithAttrs.strokeUniform).toBe(true)
       var expectedObject = fabric.util.object.extend(REFERENCE_RECT, {
         left: 10,
         top: 20,
@@ -183,21 +177,21 @@
     })
   })
 
-  test("empty fromElement", function (assert) {
+  test("empty fromElement", function () {
     fabric.Rect.fromElement(null, function (rect) {
-      expect(rect).toEqual(null)
+      expect(rect).toBe(null)
     })
   })
 
-  test("clone with rounded corners", function (assert) {
+  test("clone with rounded corners", function () {
     var rect = new fabric.Rect({ width: 100, height: 100, rx: 20, ry: 30 })
     rect.clone(function (clone) {
-      expect(clone.get("rx")).toEqual(rect.get("rx"))
-      expect(clone.get("ry")).toEqual(rect.get("ry"))
+      expect(clone.get("rx")).toBe(rect.get("rx"))
+      expect(clone.get("ry")).toBe(rect.get("ry"))
     })
   })
 
-  test("toSVG with rounded corners", function (assert) {
+  test("toSVG with rounded corners", function () {
     var rect = new fabric.Rect({
       width: 100,
       height: 100,
@@ -207,12 +201,12 @@
     })
     var svg = rect.toSVG()
 
-    expect(svg).toEqual(
+    expect(svg).toBe(
       '<g transform="matrix(1 0 0 1 50 50)"  >\n<rect style="stroke: none; stroke-width: 0; stroke-dasharray: none; stroke-linecap: butt; stroke-dashoffset: 0; stroke-linejoin: miter; stroke-miterlimit: 4; fill: rgb(0,0,0); fill-rule: nonzero; opacity: 1;"  x="-50" y="-50" rx="20" ry="30" width="100" height="100" />\n</g>\n'
     )
   })
 
-  test("toSVG with alpha colors fill", function (assert) {
+  test("toSVG with alpha colors fill", function () {
     var rect = new fabric.Rect({
       width: 100,
       height: 100,
@@ -220,12 +214,12 @@
       fill: "rgba(255, 0, 0, 0.5)"
     })
     var svg = rect.toSVG()
-    expect(svg).toEqual(
+    expect(svg).toBe(
       '<g transform="matrix(1 0 0 1 50 50)"  >\n<rect style="stroke: none; stroke-width: 0; stroke-dasharray: none; stroke-linecap: butt; stroke-dashoffset: 0; stroke-linejoin: miter; stroke-miterlimit: 4; fill: rgb(255,0,0); fill-opacity: 0.5; fill-rule: nonzero; opacity: 1;"  x="-50" y="-50" rx="0" ry="0" width="100" height="100" />\n</g>\n'
     )
   })
 
-  test("toSVG with id", function (assert) {
+  test("toSVG with id", function () {
     var rect = new fabric.Rect({
       id: "myRect",
       width: 100,
@@ -234,12 +228,12 @@
       fill: "rgba(255, 0, 0, 0.5)"
     })
     var svg = rect.toSVG()
-    expect(svg).toEqual(
+    expect(svg).toBe(
       '<g transform="matrix(1 0 0 1 50 50)" id="myRect"  >\n<rect style="stroke: none; stroke-width: 0; stroke-dasharray: none; stroke-linecap: butt; stroke-dashoffset: 0; stroke-linejoin: miter; stroke-miterlimit: 4; fill: rgb(255,0,0); fill-opacity: 0.5; fill-rule: nonzero; opacity: 1;"  x="-50" y="-50" rx="0" ry="0" width="100" height="100" />\n</g>\n'
     )
   })
 
-  test("toSVG with alpha colors stroke", function (assert) {
+  test("toSVG with alpha colors stroke", function () {
     var rect = new fabric.Rect({
       width: 100,
       height: 100,
@@ -248,24 +242,24 @@
       stroke: "rgba(255, 0, 0, 0.5)"
     })
     var svg = rect.toSVG()
-    expect(svg).toEqual(
+    expect(svg).toBe(
       '<g transform="matrix(1 0 0 1 50 50)"  >\n<rect style="stroke: rgb(255,0,0); stroke-opacity: 0.5; stroke-width: 0; stroke-dasharray: none; stroke-linecap: butt; stroke-dashoffset: 0; stroke-linejoin: miter; stroke-miterlimit: 4; fill: none; fill-rule: nonzero; opacity: 1;"  x="-50" y="-50" rx="0" ry="0" width="100" height="100" />\n</g>\n'
     )
   })
 
-  test("toSVG with paintFirst set to stroke", function (assert) {
+  test("toSVG with paintFirst set to stroke", function () {
     var rect = new fabric.Rect({
       width: 100,
       height: 100,
       paintFirst: "stroke"
     })
     var svg = rect.toSVG()
-    expect(svg).toEqual(
+    expect(svg).toBe(
       '<g transform="matrix(1 0 0 1 50.5 50.5)"  >\n<rect style="stroke: none; stroke-width: 1; stroke-dasharray: none; stroke-linecap: butt; stroke-dashoffset: 0; stroke-linejoin: miter; stroke-miterlimit: 4; fill: rgb(0,0,0); fill-rule: nonzero; opacity: 1;"  paint-order="stroke"  x="-50" y="-50" rx="0" ry="0" width="100" height="100" />\n</g>\n'
     )
   })
 
-  test("toObject without default values", function (assert) {
+  test("toObject without default values", function () {
     var options = {
       type: "rect",
       width: 69,
@@ -279,18 +273,17 @@
     expect(rect.toObject()).toEqual(options)
   })
 
-  test("paintFirst life cycle", function (assert) {
-    var done = assert.async()
+  test("paintFirst life cycle", function (done) {
     var svg =
       '<svg><rect x="10" y="10" height="50" width="55" fill="red" stroke="blue" paint-order="stroke" /></svg>'
     fabric.loadSVGFromString(svg, function (envlivedObjects) {
       var rect = envlivedObjects[0]
       var rectObject = rect.toObject()
       var rectSvg = rect.toSVG()
-      expect(rect.paintFirst).toEqual("stroke")
-      expect(rectObject.paintFirst).toEqual("stroke")
+      expect(rect.paintFirst).toBe("stroke")
+      expect(rectObject.paintFirst).toBe("stroke")
       expect(rectSvg.indexOf('paint-order="stroke"') > -1).toBeTruthy()
       done()
     })
   })
-})()
+})

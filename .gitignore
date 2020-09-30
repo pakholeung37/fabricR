@@ -10,3 +10,4 @@ before_commit
 /dist/fabric.require.js
 /dist/fabric.min.js.gz
 dist
+.test_codemods

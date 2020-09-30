@@ -1,28 +1,26 @@
-;(function () {
-  var rectOptions = {
-    originX: "left",
-    originY: "top",
-    left: 35,
-    top: 45,
-    width: 20,
-    height: 40,
-    fill: "rgb(0,0,0)",
-    strokeWidth: 2,
-    angle: 0,
-    scaleX: 2,
-    scaleY: 2
-  }
+var rectOptions = {
+  originX: "left",
+  originY: "top",
+  left: 35,
+  top: 45,
+  width: 20,
+  height: 40,
+  fill: "rgb(0,0,0)",
+  strokeWidth: 2,
+  angle: 0,
+  scaleX: 2,
+  scaleY: 2
+}
 
-  describe("fabric.ObjectOrigins")
-
-  test("getCenterPoint", function (assert) {
+describe("fabric.ObjectOrigins", () => {
+  test("getCenterPoint", function () {
     var rect = new fabric.Rect(rectOptions),
       p
     p = rect.getCenterPoint()
     expect(p).toEqual(new fabric.Point(57, 87))
   })
 
-  test("translateToCenterPoint", function (assert) {
+  test("translateToCenterPoint", function () {
     var rect = new fabric.Rect(rectOptions),
       p,
       point = new fabric.Point(15, 20)
@@ -58,7 +56,7 @@
     expect(p).toEqual(new fabric.Point(-7, -22))
   })
 
-  test("translateToCenterPointRotated", function (assert) {
+  test("translateToCenterPointRotated", function () {
     var rect = new fabric.Rect(rectOptions),
       p,
       point = new fabric.Point(15, 20)
@@ -92,7 +90,7 @@
     expect(p).toEqual(new fabric.Point(21.068865352386116, -27.02306745986067))
   })
 
-  test("translateToOriginPoint", function (assert) {
+  test("translateToOriginPoint", function () {
     var rect = new fabric.Rect(rectOptions),
       p,
       point = new fabric.Point(15, 20)
@@ -125,7 +123,7 @@
     expect(p).toEqual(new fabric.Point(37, 62))
   })
 
-  test("translateToOriginPointRotated", function (assert) {
+  test("translateToOriginPointRotated", function () {
     var rect = new fabric.Rect(rectOptions),
       p,
       point = new fabric.Point(15, 20)
@@ -159,7 +157,7 @@
     expect(p).toEqual(new fabric.Point(8.931134647613884, 67.02306745986067))
   })
 
-  test("toLocalPoint", function (assert) {
+  test("toLocalPoint", function () {
     var rect = new fabric.Rect(rectOptions),
       p,
       point = new fabric.Point(15, 20)
@@ -195,7 +193,7 @@
     expect(p).toEqual(new fabric.Point(-20, -25))
   })
 
-  test("toLocalPointRotated", function (assert) {
+  test("toLocalPointRotated", function () {
     var rect = new fabric.Rect(rectOptions),
       p,
       point = new fabric.Point(15, 20)
@@ -229,10 +227,12 @@
     expect(p).toEqual(new fabric.Point(-74.722451794556, -93.00727238020387))
 
     p = rect.toLocalPoint(point)
-    expect(p).toEqual(new fabric.Point(-58.791317146942106, -3.9842049203432026))
+    expect(p).toEqual(
+      new fabric.Point(-58.791317146942106, -3.9842049203432026)
+    )
   })
 
-  test("adjustPosition", function (assert) {
+  test("adjustPosition", function () {
     var rect = new fabric.Rect(rectOptions)
 
     rect.strokeWidth = 0
@@ -241,54 +241,54 @@
     rect.adjustPosition("left")
     expect(rect.left).toEqual(35)
     expect(rect.top).toEqual(45)
-    expect(rect.originX).toEqual("left")
+    expect(rect.originX).toBe("left")
 
     rect.adjustPosition("center")
     expect(rect.left).toEqual(55)
     expect(rect.top).toEqual(45)
-    expect(rect.originX).toEqual("center")
+    expect(rect.originX).toBe("center")
 
     rect.adjustPosition("right")
     expect(rect.left).toEqual(75)
     expect(rect.top).toEqual(45)
-    expect(rect.originX).toEqual("right")
+    expect(rect.originX).toBe("right")
 
     rect.originX = "center"
     rect.originY = "center"
     rect.adjustPosition("left")
     expect(rect.left).toEqual(55)
     expect(rect.top).toEqual(45)
-    expect(rect.originX).toEqual("left")
+    expect(rect.originX).toBe("left")
 
     rect.adjustPosition("center")
     expect(rect.left).toEqual(75)
     expect(rect.top).toEqual(45)
-    expect(rect.originX).toEqual("center")
+    expect(rect.originX).toBe("center")
 
     rect.adjustPosition("right")
     expect(rect.left).toEqual(95)
     expect(rect.top).toEqual(45)
-    expect(rect.originX).toEqual("right")
+    expect(rect.originX).toBe("right")
 
     rect.originX = "right"
     rect.originY = "bottom"
     rect.adjustPosition("left")
     expect(rect.left).toEqual(55)
     expect(rect.top).toEqual(45)
-    expect(rect.originX).toEqual("left")
+    expect(rect.originX).toBe("left")
 
     rect.adjustPosition("center")
     expect(rect.left).toEqual(75)
     expect(rect.top).toEqual(45)
-    expect(rect.originX).toEqual("center")
+    expect(rect.originX).toBe("center")
 
     rect.adjustPosition("right")
     expect(rect.left).toEqual(95)
     expect(rect.top).toEqual(45)
-    expect(rect.originX).toEqual("right")
+    expect(rect.originX).toBe("right")
   })
 
-  test("adjustPositionRotated", function (assert) {
+  test("adjustPositionRotated", function () {
     var rect = new fabric.Rect(rectOptions)
 
     rect.angle = 35
@@ -298,54 +298,54 @@
     rect.adjustPosition("left")
     expect(rect.left).toEqual(35)
     expect(rect.top).toEqual(45)
-    expect(rect.originX).toEqual("left")
+    expect(rect.originX).toBe("left")
 
     rect.adjustPosition("center")
     expect(rect.left).toEqual(51.383040885779835)
     expect(rect.top).toEqual(56.471528727020925)
-    expect(rect.originX).toEqual("center")
+    expect(rect.originX).toBe("center")
 
     rect.adjustPosition("right")
     expect(rect.left).toEqual(67.76608177155967)
     expect(rect.top).toEqual(67.94305745404185)
-    expect(rect.originX).toEqual("right")
+    expect(rect.originX).toBe("right")
 
     rect.originX = "center"
     rect.originY = "center"
     rect.adjustPosition("left")
     expect(rect.left).toEqual(51.383040885779835)
     expect(rect.top).toEqual(56.471528727020925)
-    expect(rect.originX).toEqual("left")
+    expect(rect.originX).toBe("left")
 
     rect.adjustPosition("center")
     expect(rect.left).toEqual(67.76608177155967)
     expect(rect.top).toEqual(67.94305745404185)
-    expect(rect.originX).toEqual("center")
+    expect(rect.originX).toBe("center")
 
     rect.adjustPosition("right")
     expect(rect.left).toEqual(84.1491226573395)
     expect(rect.top).toEqual(79.41458618106277)
-    expect(rect.originX).toEqual("right")
+    expect(rect.originX).toBe("right")
 
     rect.originX = "right"
     rect.originY = "bottom"
     rect.adjustPosition("left")
     expect(rect.left).toEqual(51.383040885779835)
     expect(rect.top).toEqual(56.47152872702093)
-    expect(rect.originX).toEqual("left")
+    expect(rect.originX).toBe("left")
 
     rect.adjustPosition("center")
     expect(rect.left).toEqual(67.76608177155967)
     expect(rect.top).toEqual(67.94305745404185)
-    expect(rect.originX).toEqual("center")
+    expect(rect.originX).toBe("center")
 
     rect.adjustPosition("right")
     expect(rect.left).toEqual(84.1491226573395)
     expect(rect.top).toEqual(79.41458618106277)
-    expect(rect.originX).toEqual("right")
+    expect(rect.originX).toBe("right")
   })
 
-  test("translateToCenterPoint with numeric origins", function (assert) {
+  test("translateToCenterPoint with numeric origins", function () {
     var rect = new fabric.Rect(rectOptions),
       p,
       point = new fabric.Point(15, 20)
@@ -381,9 +381,7 @@
     expect(p).toEqual(new fabric.Point(-7, -22))
   })
 
-  test("translateToCenterPointRotated with numeric origins", function (
-    assert
-  ) {
+  test("translateToCenterPointRotated with numeric origins", function () {
     var rect = new fabric.Rect(rectOptions),
       p,
       point = new fabric.Point(15, 20)
@@ -417,7 +415,7 @@
     expect(p).toEqual(new fabric.Point(21.068865352386116, -27.02306745986067))
   })
 
-  test("translateToOriginPoint with numeric origins", function (assert) {
+  test("translateToOriginPoint with numeric origins", function () {
     var rect = new fabric.Rect(rectOptions),
       p,
       point = new fabric.Point(15, 20)
@@ -450,9 +448,7 @@
     expect(p).toEqual(new fabric.Point(37, 62))
   })
 
-  test("translateToOriginPointRotated with numeric origins", function (
-    assert
-  ) {
+  test("translateToOriginPointRotated with numeric origins", function () {
     var rect = new fabric.Rect(rectOptions),
       p,
       point = new fabric.Point(15, 20)
@@ -486,7 +482,7 @@
     expect(p).toEqual(new fabric.Point(8.931134647613884, 67.02306745986067))
   })
 
-  test("toLocalPoint with numeric origins", function (assert) {
+  test("toLocalPoint with numeric origins", function () {
     var rect = new fabric.Rect(rectOptions),
       p,
       point = new fabric.Point(15, 20)
@@ -522,7 +518,7 @@
     expect(p).toEqual(new fabric.Point(-20, -25))
   })
 
-  test("toLocalPointRotated with numeric origins", function (assert) {
+  test("toLocalPointRotated with numeric origins", function () {
     var rect = new fabric.Rect(rectOptions),
       p,
       point = new fabric.Point(15, 20)
@@ -556,10 +552,12 @@
     expect(p).toEqual(new fabric.Point(-74.722451794556, -93.00727238020387))
 
     p = rect.toLocalPoint(point)
-    expect(p).toEqual(new fabric.Point(-58.791317146942106, -3.9842049203432026))
+    expect(p).toEqual(
+      new fabric.Point(-58.791317146942106, -3.9842049203432026)
+    )
   })
 
-  test("adjustPosition with numeric origins", function (assert) {
+  test("adjustPosition with numeric origins", function () {
     var rect = new fabric.Rect(rectOptions)
 
     rect.strokeWidth = 0
@@ -568,54 +566,54 @@
     rect.adjustPosition(0)
     expect(rect.left).toEqual(35)
     expect(rect.top).toEqual(45)
-    expect(rect.originX).toEqual(0)
+    expect(rect.originX).toBe(0)
 
     rect.adjustPosition(0.5)
     expect(rect.left).toEqual(55)
     expect(rect.top).toEqual(45)
-    expect(rect.originX).toEqual(0.5)
+    expect(rect.originX).toBe(0.5)
 
     rect.adjustPosition(1)
     expect(rect.left).toEqual(75)
     expect(rect.top).toEqual(45)
-    expect(rect.originX).toEqual(1)
+    expect(rect.originX).toBe(1)
 
     rect.originX = 0.5
     rect.originY = 0.5
     rect.adjustPosition(0)
     expect(rect.left).toEqual(55)
     expect(rect.top).toEqual(45)
-    expect(rect.originX).toEqual(0)
+    expect(rect.originX).toBe(0)
 
     rect.adjustPosition(0.5)
     expect(rect.left).toEqual(75)
     expect(rect.top).toEqual(45)
-    expect(rect.originX).toEqual(0.5)
+    expect(rect.originX).toBe(0.5)
 
     rect.adjustPosition(1)
     expect(rect.left).toEqual(95)
     expect(rect.top).toEqual(45)
-    expect(rect.originX).toEqual(1)
+    expect(rect.originX).toBe(1)
 
     rect.originX = 1
     rect.originY = 1
     rect.adjustPosition(0)
     expect(rect.left).toEqual(55)
     expect(rect.top).toEqual(45)
-    expect(rect.originX).toEqual(0)
+    expect(rect.originX).toBe(0)
 
     rect.adjustPosition(0.5)
     expect(rect.left).toEqual(75)
     expect(rect.top).toEqual(45)
-    expect(rect.originX).toEqual(0.5)
+    expect(rect.originX).toBe(0.5)
 
     rect.adjustPosition(1)
     expect(rect.left).toEqual(95)
     expect(rect.top).toEqual(45)
-    expect(rect.originX).toEqual(1)
+    expect(rect.originX).toBe(1)
   })
 
-  test("adjustPositionRotated with numeric origins", function (assert) {
+  test("adjustPositionRotated with numeric origins", function () {
     var rect = new fabric.Rect(rectOptions)
 
     rect.angle = 35
@@ -625,50 +623,50 @@
     rect.adjustPosition(0)
     expect(rect.left).toEqual(35)
     expect(rect.top).toEqual(45)
-    expect(rect.originX).toEqual(0)
+    expect(rect.originX).toBe(0)
 
     rect.adjustPosition(0.5)
     expect(rect.left).toEqual(51.383040885779835)
     expect(rect.top).toEqual(56.471528727020925)
-    expect(rect.originX).toEqual(0.5)
+    expect(rect.originX).toBe(0.5)
 
     rect.adjustPosition(1)
     expect(rect.left).toEqual(67.76608177155967)
     expect(rect.top).toEqual(67.94305745404185)
-    expect(rect.originX).toEqual(1)
+    expect(rect.originX).toBe(1)
 
     rect.originX = 0.5
     rect.originY = 0.5
     rect.adjustPosition(0)
     expect(rect.left).toEqual(51.383040885779835)
     expect(rect.top).toEqual(56.471528727020925)
-    expect(rect.originX).toEqual(0)
+    expect(rect.originX).toBe(0)
 
     rect.adjustPosition(0.5)
     expect(rect.left).toEqual(67.76608177155967)
     expect(rect.top).toEqual(67.94305745404185)
-    expect(rect.originX).toEqual(0.5)
+    expect(rect.originX).toBe(0.5)
 
     rect.adjustPosition(1)
     expect(rect.left).toEqual(84.1491226573395)
     expect(rect.top).toEqual(79.41458618106277)
-    expect(rect.originX).toEqual(1)
+    expect(rect.originX).toBe(1)
 
     rect.originX = 1
     rect.originY = 1
     rect.adjustPosition(0)
     expect(rect.left).toEqual(51.383040885779835)
     expect(rect.top).toEqual(56.47152872702093)
-    expect(rect.originX).toEqual(0)
+    expect(rect.originX).toBe(0)
 
     rect.adjustPosition(0.5)
     expect(rect.left).toEqual(67.76608177155967)
     expect(rect.top).toEqual(67.94305745404185)
-    expect(rect.originX).toEqual(0.5)
+    expect(rect.originX).toBe(0.5)
 
     rect.adjustPosition(1)
     expect(rect.left).toEqual(84.1491226573395)
     expect(rect.top).toEqual(79.41458618106277)
-    expect(rect.originX).toEqual(1)
+    expect(rect.originX).toBe(1)
   })
-})()
+})

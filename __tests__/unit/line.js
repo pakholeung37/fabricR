@@ -1,85 +1,82 @@
-;(function () {
-  var LINE_OBJECT = {
-    version: fabric.version,
-    type: "line",
-    originX: "left",
-    originY: "top",
-    left: 11,
-    top: 12,
-    width: 2,
-    height: 2,
-    fill: "rgb(0,0,0)",
-    stroke: null,
-    strokeWidth: 1,
-    strokeDashArray: null,
-    strokeLineCap: "butt",
-    strokeDashOffset: 0,
-    strokeLineJoin: "miter",
-    strokeMiterLimit: 4,
-    scaleX: 1,
-    scaleY: 1,
-    angle: 0,
-    flipX: false,
-    flipY: false,
-    opacity: 1,
-    x1: -1,
-    y1: -1,
-    x2: 1,
-    y2: 1,
-    shadow: null,
-    visible: true,
-    backgroundColor: "",
-    fillRule: "nonzero",
-    paintFirst: "fill",
-    globalCompositeOperation: "source-over",
-    skewX: 0,
-    skewY: 0
-  }
+var LINE_OBJECT = {
+  version: fabric.version,
+  type: "line",
+  originX: "left",
+  originY: "top",
+  left: 11,
+  top: 12,
+  width: 2,
+  height: 2,
+  fill: "rgb(0,0,0)",
+  stroke: null,
+  strokeWidth: 1,
+  strokeDashArray: null,
+  strokeLineCap: "butt",
+  strokeDashOffset: 0,
+  strokeLineJoin: "miter",
+  strokeMiterLimit: 4,
+  scaleX: 1,
+  scaleY: 1,
+  angle: 0,
+  flipX: false,
+  flipY: false,
+  opacity: 1,
+  x1: -1,
+  y1: -1,
+  x2: 1,
+  y2: 1,
+  shadow: null,
+  visible: true,
+  backgroundColor: "",
+  fillRule: "nonzero",
+  paintFirst: "fill",
+  globalCompositeOperation: "source-over",
+  skewX: 0,
+  skewY: 0
+}
 
-  describe("fabric.Line")
-
-  test("constructor", function (assert) {
+describe("fabric.Line", () => {
+  test("constructor", function () {
     expect(fabric.Line).toBeTruthy()
     var line = new fabric.Line([10, 11, 20, 21])
 
     expect(line instanceof fabric.Line).toBeTruthy()
     expect(line instanceof fabric.Object).toBeTruthy()
 
-    expect(line.type).toEqual("line")
+    expect(line.type).toBe("line")
 
-    expect(line.get("x1")).toEqual(10)
-    expect(line.get("y1")).toEqual(11)
-    expect(line.get("x2")).toEqual(20)
-    expect(line.get("y2")).toEqual(21)
+    expect(line.get("x1")).toBe(10)
+    expect(line.get("y1")).toBe(11)
+    expect(line.get("x2")).toBe(20)
+    expect(line.get("y2")).toBe(21)
 
     var lineWithoutPoints = new fabric.Line()
 
-    expect(lineWithoutPoints.get("x1")).toEqual(0)
-    expect(lineWithoutPoints.get("y1")).toEqual(0)
-    expect(lineWithoutPoints.get("x2")).toEqual(0)
-    expect(lineWithoutPoints.get("y2")).toEqual(0)
+    expect(lineWithoutPoints.get("x1")).toBe(0)
+    expect(lineWithoutPoints.get("y1")).toBe(0)
+    expect(lineWithoutPoints.get("x2")).toBe(0)
+    expect(lineWithoutPoints.get("y2")).toBe(0)
   })
 
-  test("complexity", function (assert) {
+  test("complexity", function () {
     var line = new fabric.Line()
     expect(typeof line.complexity === "function").toBeTruthy()
   })
 
-  test("toSVG", function (assert) {
+  test("toSVG", function () {
     var line = new fabric.Line([11, 12, 13, 14])
     var EXPECTED_SVG =
       '<g transform="matrix(1 0 0 1 12.5 13.5)"  >\n<line style="stroke: none; stroke-width: 1; stroke-dasharray: none; stroke-linecap: butt; stroke-dashoffset: 0; stroke-linejoin: miter; stroke-miterlimit: 4; fill: rgb(0,0,0); fill-rule: nonzero; opacity: 1;"  x1="-1" y1="-1" x2="1" y2="1" />\n</g>\n'
-    expect(line.toSVG()).toEqual(EXPECTED_SVG)
+    expect(line.toSVG()).toBe(EXPECTED_SVG)
   })
 
-  test("toObject", function (assert) {
+  test("toObject", function () {
     var line = new fabric.Line([11, 12, 13, 14])
     expect(typeof line.toObject === "function").toBeTruthy()
     expect(LINE_OBJECT).toEqual(line.toObject())
   })
 
-  test("fromObject", function (assert) {
-    var done = assert.async()
+  test("fromObject", function (done) {
     expect(typeof fabric.Line.fromObject === "function").toBeTruthy()
     fabric.Line.fromObject(LINE_OBJECT, function (line) {
       expect(line instanceof fabric.Line).toBeTruthy()
@@ -88,7 +85,7 @@
     })
   })
 
-  test("fromElement", function (assert) {
+  test("fromElement", function () {
     expect(typeof fabric.Line.fromElement === "function").toBeTruthy()
 
     var namespace = "http://www.w3.org/2000/svg"
@@ -118,16 +115,16 @@
     fabric.Line.fromElement(lineEl, function (oLine) {
       expect(oLine instanceof fabric.Line).toBeTruthy()
 
-      expect(oLine.get("x1")).toEqual(x1)
-      expect(oLine.get("y1")).toEqual(y1)
-      expect(oLine.get("x2")).toEqual(x2)
-      expect(oLine.get("y2")).toEqual(y2)
-      expect(oLine.get("stroke")).toEqual(stroke)
-      expect(oLine.get("strokeWidth")).toEqual(strokeWidth)
+      expect(oLine.get("x1")).toBe(x1)
+      expect(oLine.get("y1")).toBe(y1)
+      expect(oLine.get("x2")).toBe(x2)
+      expect(oLine.get("y2")).toBe(y2)
+      expect(oLine.get("stroke")).toBe(stroke)
+      expect(oLine.get("strokeWidth")).toBe(strokeWidth)
       expect(oLine.get("strokeDashArray")).toEqual(strokeDashArray)
-      expect(oLine.get("strokeLineCap")).toEqual(strokeLineCap)
-      expect(oLine.get("strokeLineJoin")).toEqual(strokeLineJoin)
-      expect(oLine.get("strokeMiterLimit")).toEqual(strokeMiterLimit)
+      expect(oLine.get("strokeLineCap")).toBe(strokeLineCap)
+      expect(oLine.get("strokeLineJoin")).toBe(strokeLineJoin)
+      expect(oLine.get("strokeMiterLimit")).toBe(strokeMiterLimit)
 
       var lineElWithMissingAttributes = fabric.document.createElementNS(
         namespace,
@@ -137,49 +134,47 @@
       lineElWithMissingAttributes.setAttributeNS(namespace, "y1", 20)
 
       fabric.Line.fromElement(lineElWithMissingAttributes, function (oLine2) {
-        expect(oLine2.get("x2")).toEqual(0)
-        expect(oLine2.get("y2")).toEqual(0)
+        expect(oLine2.get("x2")).toBe(0)
+        expect(oLine2.get("y2")).toBe(0)
       })
     })
   })
 
-  test("straight lines may have 0 width or heigth", function (assert) {
+  test("straight lines may have 0 width or heigth", function () {
     var line1 = new fabric.Line([10, 10, 100, 10]),
       line2 = new fabric.Line([10, 10, 10, 100])
 
-    expect(line1.get("height")).toEqual(0)
-    expect(line2.get("width")).toEqual(0)
+    expect(line1.get("height")).toBe(0)
+    expect(line2.get("width")).toBe(0)
   })
 
-  test("changing x/y coords should update width/height", function (
-    assert
-  ) {
+  test("changing x/y coords should update width/height", function () {
     var line = new fabric.Line([50, 50, 100, 100])
 
-    expect(50).toEqual(line.width)
+    expect(50).toBe(line.width)
 
     line.set({ x1: 75, y1: 75, x2: 175, y2: 175 })
 
-    expect(100).toEqual(line.width)
-    expect(100).toEqual(line.height)
+    expect(100).toBe(line.width)
+    expect(100).toBe(line.height)
   })
 
-  test("stroke-width in a style", function (assert) {
+  test("stroke-width in a style", function () {
     var namespace = "http://www.w3.org/2000/svg"
     var lineEl = fabric.document.createElementNS(namespace, "line")
     lineEl.setAttribute("style", "stroke-width:4")
-    fabric.Line.fromElement(lineEl, function (oLine) {
+    fabric.Line.fromElement(lineEl, function () {
       expect(4).toBeTruthy()
     })
   })
 
   // this isn't implemented yet, so disabling for now
 
-  // test('x1,y1 less than x2,y2 should work', function(assert) {
+  // test('x1,y1 less than x2,y2 should work', function() {
   //   var line = new fabric.Line([ 400, 200, 300, 400]);
 
-  //   assert.equal(100, line.width);
-  //   assert.equal(200, line.height);
+  //   .equal(100, line.width);
+  //   .equal(200, line.height);
   // });
 
   var lineCoordsCases = [
@@ -472,14 +467,14 @@
   ]
 
   lineCoordsCases.forEach(function (c_) {
-    test("stroke-less line coords " + c_.description, function (assert) {
+    test("stroke-less line coords " + c_.description, function () {
       var points = c_.givenLineArgs.points
       var options = c_.givenLineArgs.options
 
       var givenLine = new fabric.Line(points, options)
 
-      expect(givenLine.left).toEqual(c_.expectedCoords.left)
-      expect(givenLine.top).toEqual(c_.expectedCoords.top)
+      expect(givenLine.left).toBe(c_.expectedCoords.left)
+      expect(givenLine.top).toBe(c_.expectedCoords.top)
     })
   })
 
@@ -559,10 +554,10 @@
   ]
 
   getLeftToOriginXCases.forEach(function (c_) {
-    test("Line.getLeftToOriginX() " + c_.description, function (assert) {
+    test("Line.getLeftToOriginX() " + c_.description, function () {
       var line = new fabric.Line(c_.givenPoints, { originX: c_.givenOrigin })
 
-      expect(line._getLeftToOriginX()).toEqual(c_.expectedLeft)
+      expect(line._getLeftToOriginX()).toBe(c_.expectedLeft)
     })
   })
 
@@ -642,10 +637,10 @@
   ]
 
   getTopToOriginYCases.forEach(function (c_) {
-    test("Line._getTopToOriginY() " + c_.description, function (assert) {
+    test("Line._getTopToOriginY() " + c_.description, function () {
       var line = new fabric.Line(c_.givenPoints, { originY: c_.givenOrigin })
 
-      expect(line._getTopToOriginY()).toEqual(c_.expectedTop)
+      expect(line._getTopToOriginY()).toBe(c_.expectedTop)
     })
   })
-})()
+})

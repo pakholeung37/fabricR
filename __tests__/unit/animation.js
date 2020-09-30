@@ -9,9 +9,9 @@ describe("fabric.util.animate", () => {
     fabric.util.animateColor("red", "blue", 16, {
       onComplete: function (val, changePerc, timePerc) {
         // animate color need some fixing
-        expect(val).toEqual("rgba(0,0,255,1)")
-        expect(changePerc).toEqual(1)
-        expect(timePerc).toEqual(1)
+        expect(val).toBe("rgba(0,0,255,1)")
+        expect(changePerc).toBe(1)
+        expect(timePerc).toBe(1)
         done()
       },
       onChange: testing
@@ -33,7 +33,7 @@ describe("fabric.util.animate", () => {
     expect(true).toBeTruthy()
 
     setTimeout(function () {
-      expect(40).toEqual(Math.round(object.left))
+      expect(40).toBe(Math.round(object.left))
       done()
     }, 1000)
   })
@@ -51,7 +51,7 @@ describe("fabric.util.animate", () => {
     expect(true).toBeTruthy()
 
     setTimeout(function () {
-      expect(Math.round(object.left)).toEqual(60)
+      expect(Math.round(object.left)).toBe(60)
       done()
     }, 1000)
   })
@@ -70,7 +70,7 @@ describe("fabric.util.animate", () => {
     expect(true).toBeTruthy()
 
     setTimeout(function () {
-      expect(Math.round(object.shadow.offsetX)).toEqual(100)
+      expect(Math.round(object.shadow.offsetX)).toBe(100)
       done()
     }, 1000)
   })
@@ -85,7 +85,7 @@ describe("fabric.util.animate", () => {
       expect(true).toBeTruthy()
 
       setTimeout(function () {
-        expect(object[prop]).toEqual(new fabric.Color("blue").toRgba())
+        expect(object[prop]).toBe(new fabric.Color("blue").toRgba())
         if (index === properties.length - 1) {
           done()
         }
@@ -106,7 +106,7 @@ describe("fabric.util.animate", () => {
     expect(true).toBeTruthy()
 
     setTimeout(function () {
-      expect(Math.round(object.left)).toEqual(-20)
+      expect(Math.round(object.left)).toBe(-20)
       done()
     }, 1000)
   })
@@ -126,7 +126,7 @@ describe("fabric.util.animate", () => {
     expect(true).toBeTruthy()
 
     setTimeout(function () {
-      expect(40).toEqual(Math.round(object.left))
+      expect(40).toBe(Math.round(object.left))
       done()
     }, 1000)
   })
@@ -135,8 +135,8 @@ describe("fabric.util.animate", () => {
     var object = new fabric.Object({ left: 123, top: 124 })
     object.animate({ left: 223, top: 224 })
     setTimeout(function () {
-      expect(223).toEqual(Math.round(object.get("left")))
-      expect(224).toEqual(Math.round(object.get("top")))
+      expect(223).toBe(Math.round(object.get("left")))
+      expect(224).toBe(Math.round(object.get("top")))
       done()
     }, 1000)
   })
@@ -161,11 +161,11 @@ describe("fabric.util.animate", () => {
     )
 
     setTimeout(function () {
-      expect(Math.round(object.get("left"))).toEqual(1)
-      expect(Math.round(object.get("top"))).toEqual(1)
+      expect(Math.round(object.get("left"))).toBe(1)
+      expect(Math.round(object.get("top"))).toBe(1)
 
-      expect(changedInvocations).toEqual(2)
-      expect(completeInvocations).toEqual(1)
+      expect(changedInvocations).toBe(2)
+      expect(completeInvocations).toBe(1)
 
       done()
     }, 1000)
@@ -186,8 +186,8 @@ describe("fabric.util.animate", () => {
     )
 
     setTimeout(function () {
-      expect(123).toEqual(Math.round(object.get("left")))
-      expect(124).toEqual(Math.round(object.get("top")))
+      expect(123).toBe(Math.round(object.get("left")))
+      expect(124).toBe(Math.round(object.get("top")))
       expect(context).toEqual(object)
       done()
     }, 100)
@@ -200,7 +200,7 @@ describe("fabric.util.animate", () => {
       { left: 100 },
       {
         onComplete: function () {
-          expect(Math.round(object.left)).toEqual(100)
+          expect(Math.round(object.left)).toBe(100)
           done()
         },
         duration: 160,
@@ -216,7 +216,7 @@ describe("fabric.util.animate", () => {
       { left: 100 },
       {
         onComplete: function () {
-          expect(Math.round(object.left)).toEqual(100)
+          expect(Math.round(object.left)).toBe(100)
           done()
         },
         duration: 160,
@@ -232,7 +232,7 @@ describe("fabric.util.animate", () => {
       { left: 100 },
       {
         onComplete: function () {
-          expect(Math.round(object.left)).toEqual(100)
+          expect(Math.round(object.left)).toBe(100)
           done()
         },
         duration: 160,
@@ -248,7 +248,7 @@ describe("fabric.util.animate", () => {
       { left: 100 },
       {
         onComplete: function () {
-          expect(Math.round(object.left)).toEqual(100)
+          expect(Math.round(object.left)).toBe(100)
           done()
         },
         duration: 160,
@@ -264,7 +264,7 @@ describe("fabric.util.animate", () => {
       { left: 100 },
       {
         onComplete: function () {
-          expect(Math.round(object.left)).toEqual(100)
+          expect(Math.round(object.left)).toBe(100)
           done()
         },
         duration: 160,
@@ -280,7 +280,7 @@ describe("fabric.util.animate", () => {
       { left: 100 },
       {
         onComplete: function () {
-          expect(Math.round(object.left)).toEqual(100)
+          expect(Math.round(object.left)).toBe(100)
           done()
         },
         duration: 160,
@@ -296,7 +296,7 @@ describe("fabric.util.animate", () => {
       { left: 100 },
       {
         onComplete: function () {
-          expect(Math.round(object.left)).toEqual(100)
+          expect(Math.round(object.left)).toBe(100)
           done()
         },
         duration: 160,
@@ -312,7 +312,7 @@ describe("fabric.util.animate", () => {
       { left: 100 },
       {
         onComplete: function () {
-          expect(Math.round(object.left)).toEqual(100)
+          expect(Math.round(object.left)).toBe(100)
           done()
         },
         duration: 160,
@@ -328,7 +328,7 @@ describe("fabric.util.animate", () => {
       { left: 100 },
       {
         onComplete: function () {
-          expect(Math.round(object.left)).toEqual(100)
+          expect(Math.round(object.left)).toBe(100)
           done()
         },
         duration: 160,
@@ -344,7 +344,7 @@ describe("fabric.util.animate", () => {
       { left: 100 },
       {
         onComplete: function () {
-          expect(Math.round(object.left)).toEqual(100)
+          expect(Math.round(object.left)).toBe(100)
           done()
         },
         duration: 160,
@@ -360,7 +360,7 @@ describe("fabric.util.animate", () => {
       { left: 100 },
       {
         onComplete: function () {
-          expect(Math.round(object.left)).toEqual(100)
+          expect(Math.round(object.left)).toBe(100)
           done()
         },
         duration: 160,
@@ -377,7 +377,7 @@ describe("fabric.util.animate", () => {
       { left: 100 },
       {
         onComplete: function () {
-          expect(Math.round(object.left)).toEqual(100)
+          expect(Math.round(object.left)).toBe(100)
           done()
         },
         duration: 160,
@@ -394,7 +394,7 @@ describe("fabric.util.animate", () => {
       { left: 100 },
       {
         onComplete: function () {
-          expect(Math.round(object.left)).toEqual(100)
+          expect(Math.round(object.left)).toBe(100)
           done()
         },
         duration: 160,
@@ -411,7 +411,7 @@ describe("fabric.util.animate", () => {
       { left: 100 },
       {
         onComplete: function () {
-          expect(Math.round(object.left)).toEqual(100)
+          expect(Math.round(object.left)).toBe(100)
           done()
         },
         duration: 160,
@@ -428,7 +428,7 @@ describe("fabric.util.animate", () => {
       { left: 100 },
       {
         onComplete: function () {
-          expect(Math.round(object.left)).toEqual(100)
+          expect(Math.round(object.left)).toBe(100)
           done()
         },
         duration: 160,
@@ -445,7 +445,7 @@ describe("fabric.util.animate", () => {
       { left: 100 },
       {
         onComplete: function () {
-          expect(Math.round(object.left)).toEqual(100)
+          expect(Math.round(object.left)).toBe(100)
           done()
         },
         duration: 160,
@@ -462,7 +462,7 @@ describe("fabric.util.animate", () => {
       { left: 100 },
       {
         onComplete: function () {
-          expect(Math.round(object.left)).toEqual(100)
+          expect(Math.round(object.left)).toBe(100)
           done()
         },
         duration: 160,
@@ -479,7 +479,7 @@ describe("fabric.util.animate", () => {
       { left: 100 },
       {
         onComplete: function () {
-          expect(Math.round(object.left)).toEqual(100)
+          expect(Math.round(object.left)).toBe(100)
           done()
         },
         duration: 160,
@@ -496,7 +496,7 @@ describe("fabric.util.animate", () => {
       { left: 100 },
       {
         onComplete: function () {
-          expect(Math.round(object.left)).toEqual(100)
+          expect(Math.round(object.left)).toBe(100)
           done()
         },
         duration: 160,
@@ -513,7 +513,7 @@ describe("fabric.util.animate", () => {
       { left: 100 },
       {
         onComplete: function () {
-          expect(Math.round(object.left)).toEqual(100)
+          expect(Math.round(object.left)).toBe(100)
           done()
         },
         duration: 160,
@@ -530,7 +530,7 @@ describe("fabric.util.animate", () => {
       { left: 100 },
       {
         onComplete: function () {
-          expect(Math.round(object.left)).toEqual(100)
+          expect(Math.round(object.left)).toBe(100)
           done()
         },
         duration: 160,
@@ -547,7 +547,7 @@ describe("fabric.util.animate", () => {
       { left: 100 },
       {
         onComplete: function () {
-          expect(Math.round(object.left)).toEqual(100)
+          expect(Math.round(object.left)).toBe(100)
           done()
         },
         duration: 160,
@@ -564,7 +564,7 @@ describe("fabric.util.animate", () => {
       { left: 100 },
       {
         onComplete: function () {
-          expect(Math.round(object.left)).toEqual(100)
+          expect(Math.round(object.left)).toBe(100)
           done()
         },
         duration: 160,
@@ -581,7 +581,7 @@ describe("fabric.util.animate", () => {
       { left: 100 },
       {
         onComplete: function () {
-          expect(Math.round(object.left)).toEqual(100)
+          expect(Math.round(object.left)).toBe(100)
           done()
         },
         duration: 160,
@@ -598,7 +598,7 @@ describe("fabric.util.animate", () => {
       { left: 100 },
       {
         onComplete: function () {
-          expect(Math.round(object.left)).toEqual(100)
+          expect(Math.round(object.left)).toBe(100)
           done()
         },
         duration: 160,
@@ -615,7 +615,7 @@ describe("fabric.util.animate", () => {
       { left: 100 },
       {
         onComplete: function () {
-          expect(Math.round(object.left)).toEqual(100)
+          expect(Math.round(object.left)).toBe(100)
           done()
         },
         duration: 160,
@@ -632,7 +632,7 @@ describe("fabric.util.animate", () => {
       { left: 100 },
       {
         onComplete: function () {
-          expect(Math.round(object.left)).toEqual(100)
+          expect(Math.round(object.left)).toBe(100)
           done()
         },
         duration: 160,
@@ -649,7 +649,7 @@ describe("fabric.util.animate", () => {
       { left: 100 },
       {
         onComplete: function () {
-          expect(Math.round(object.left)).toEqual(100)
+          expect(Math.round(object.left)).toBe(100)
           done()
         },
         duration: 160,
@@ -666,7 +666,7 @@ describe("fabric.util.animate", () => {
       { left: 100 },
       {
         onComplete: function () {
-          expect(Math.round(object.left)).toEqual(100)
+          expect(Math.round(object.left)).toBe(100)
           done()
         },
         duration: 160,
@@ -683,7 +683,7 @@ describe("fabric.util.animate", () => {
       { left: 100 },
       {
         onComplete: function () {
-          expect(Math.round(object.left)).toEqual(100)
+          expect(Math.round(object.left)).toBe(100)
           done()
         },
         duration: 160,

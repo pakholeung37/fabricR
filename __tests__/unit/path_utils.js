@@ -1,6 +1,4 @@
-;(function () {
-  describe("fabric.util - path.js")
-  // eslint-disable-next-line max-len
+describe("fabric.util - path.js", () => {
   var path =
     "M 2 5 l 2 -2 L 4 4 h 3 H 9 C 8 3 10 3 10 3 c 1 -1 2 0 1 1 S 8 5 9 7 v 1 s 2 -1 1 2 Q 9 10 10 11 T 12 11 t -1 -1 v 2 T 10 12 S 9 12 7 11 c 0 -1 0 -1 -2 -2 z m 0 2 l 1 0 l 0 1 l -1 0 z M 1 1 a 1 1 30 1 0 2 2 A 2 2 30 1 0 6 6"
   // eslint-disable-next-line
@@ -95,7 +93,7 @@
       6
     ]
   ]
-  test("fabric.util.parsePath", function (assert) {
+  test("fabric.util.parsePath", function () {
     expect(typeof fabric.util.parsePath === "function").toBeTruthy()
     expect(typeof fabric.util.makePathSimpler === "function").toBeTruthy()
     var parsed = fabric.util.parsePath(path)
@@ -111,18 +109,15 @@
       expect(command).toEqual(expectedSimplified[index])
     })
   })
-  test(
-    "fabric.util.parsePath can parse arcs correctly when no spaces between flags",
-    function (assert) {
-      // eslint-disable-next-line max-len
-      var pathWithWeirdArc = "a10.56 10.56 0 00-1.484-.133"
-      var expected = ["a", 10.56, 10.56, 0, 0, 0, -1.484, -0.133]
-      var parsed = fabric.util.parsePath(pathWithWeirdArc)
-      var command = parsed[0]
-      expect(command).toEqual(expected)
-    }
-  )
-  test("fabric.util.getPathSegmentsInfo", function (assert) {
+  test("fabric.util.parsePath can parse arcs correctly when no spaces between flags", function () {
+    // eslint-disable-next-line max-len
+    var pathWithWeirdArc = "a10.56 10.56 0 00-1.484-.133"
+    var expected = ["a", 10.56, 10.56, 0, 0, 0, -1.484, -0.133]
+    var parsed = fabric.util.parsePath(pathWithWeirdArc)
+    var command = parsed[0]
+    expect(command).toEqual(expected)
+  })
+  test("fabric.util.getPathSegmentsInfo", function () {
     expect(typeof fabric.util.getPathSegmentsInfo === "function").toBeTruthy()
     var parsed = fabric.util.makePathSimpler(fabric.util.parsePath(path))
     var infos = fabric.util.getPathSegmentsInfo(parsed)
@@ -140,9 +135,7 @@
     expect(infos[11].length).toEqual(2.2674203737413428)
   })
 
-  test("fabric.util.getPathSegmentsInfo test Z command", function (
-    assert
-  ) {
+  test("fabric.util.getPathSegmentsInfo test Z command", function () {
     expect(typeof fabric.util.getPathSegmentsInfo === "function").toBeTruthy()
     var parsed = fabric.util.makePathSimpler(
       fabric.util.parsePath("M 0 0 h 20, v 20 L 0, 20 Z")
@@ -154,4 +147,4 @@
     expect(infos[3].length).toEqual(20)
     expect(infos[4].length).toEqual(20)
   })
-})()
+})

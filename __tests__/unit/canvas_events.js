@@ -63,8 +63,8 @@ describe("fabric.Canvas events mixin", () => {
       }
       canvas._setupCurrentTransform(e, rect)
     }
-    expect(counter).toEqual(corners.length)
-    expect(t).toEqual(rect)
+    expect(counter).toBe(corners.length)
+    expect(t).toBe(rect)
 
     canvas.zoomToPoint({ x: 25, y: 25 }, 2)
 
@@ -80,8 +80,8 @@ describe("fabric.Canvas events mixin", () => {
       }
       canvas._beforeTransform(e, rect)
     }
-    expect(counter).toEqual(corners.length)
-    expect(t).toEqual(rect)
+    expect(counter).toBe(corners.length)
+    expect(t).toBe(rect)
 
     canvas.zoomToPoint({ x: 0, y: 0 }, 1)
   })
@@ -92,20 +92,20 @@ describe("fabric.Canvas events mixin", () => {
     canvas._currentTransform = null
     canvas.add(rect)
     // origin null
-    expect(canvas._pointer).toEqual(undefined)
+    expect(canvas._pointer).toBe(undefined)
     // origin null
-    expect(canvas._absolutePointer).toEqual(undefined)
+    expect(canvas._absolutePointer).toBe(undefined)
     // origin null
-    expect(canvas._target).toEqual(undefined)
+    expect(canvas._target).toBe(undefined)
     canvas.viewportTransform = [2, 0, 0, 2, 0, 0]
     canvas._cacheTransformEventData(e)
     expect(canvas._pointer).toEqual({ x: 30, y: 30 })
     expect(canvas._absolutePointer).toEqual(new fabric.Point(15, 15))
     expect(canvas._target === rect).toBeTruthy()
     canvas._resetTransformEventData()
-    expect(canvas._pointer).toEqual(null)
-    expect(canvas._absolutePointer).toEqual(null)
-    expect(canvas._target).toEqual(null)
+    expect(canvas._pointer).toBe(null)
+    expect(canvas._absolutePointer).toBe(null)
+    expect(canvas._target).toBe(null)
   })
 
   test("mouse:down with different buttons", function () {
@@ -119,19 +119,19 @@ describe("fabric.Canvas events mixin", () => {
     canvas._currentTransform = false
     canvas.isDrawingMode = false
     canvas.__onMouseDown({ button: 0, target: canvas.upperCanvasEl })
-    expect(clickCount).toEqual(1)
+    expect(clickCount).toBe(1)
     clickCount = 0
     canvas.__onMouseDown({ button: 2, target: canvas.upperCanvasEl })
-    expect(clickCount).toEqual(0)
+    expect(clickCount).toBe(0)
     canvas.fireRightClick = true
     canvas.__onMouseDown({ button: 2, target: canvas.upperCanvasEl })
-    expect(clickCount).toEqual(1)
+    expect(clickCount).toBe(1)
     clickCount = 0
     canvas.__onMouseDown({ button: 1, target: canvas.upperCanvasEl })
-    expect(clickCount).toEqual(0)
+    expect(clickCount).toBe(0)
     canvas.fireMiddleClick = true
     canvas.__onMouseDown({ button: 1, target: canvas.upperCanvasEl })
-    expect(clickCount).toEqual(1)
+    expect(clickCount).toBe(1)
   })
 
   test("mouse:down:before with different buttons", function () {
@@ -145,19 +145,19 @@ describe("fabric.Canvas events mixin", () => {
     canvas._currentTransform = false
     canvas.isDrawingMode = false
     canvas.__onMouseDown({ which: 1, target: canvas.upperCanvasEl })
-    expect(clickCount).toEqual(1)
+    expect(clickCount).toBe(1)
     clickCount = 0
     canvas.__onMouseDown({ which: 3, target: canvas.upperCanvasEl })
-    expect(clickCount).toEqual(1)
+    expect(clickCount).toBe(1)
     canvas.fireRightClick = true
     canvas.__onMouseDown({ which: 3, target: canvas.upperCanvasEl })
-    expect(clickCount).toEqual(2)
+    expect(clickCount).toBe(2)
     clickCount = 0
     canvas.__onMouseDown({ which: 2, target: canvas.upperCanvasEl })
-    expect(clickCount).toEqual(1)
+    expect(clickCount).toBe(1)
     canvas.fireMiddleClick = true
     canvas.__onMouseDown({ which: 2, target: canvas.upperCanvasEl })
-    expect(clickCount).toEqual(2)
+    expect(clickCount).toBe(2)
   })
 
   test("mouse:down and group selector", function () {
@@ -178,7 +178,7 @@ describe("fabric.Canvas events mixin", () => {
     canvas.discardActiveObject()
     rect.isEditing = true
     canvas.__onMouseDown(e)
-    expect(canvas._groupSelector).toEqual(null)
+    expect(canvas._groupSelector).toBe(null)
     canvas.__onMouseUp(e)
     canvas.discardActiveObject()
     rect.isEditing = false
@@ -224,7 +224,7 @@ describe("fabric.Canvas events mixin", () => {
       target: canvas.upperCanvasEl
     }
     canvas.__onMouseDown(e)
-    expect(canvas._activeObject).toEqual(blueCircle)
+    expect(canvas._activeObject).toBe(blueCircle)
     canvas.__onMouseUp(e)
     var e2 = {
       clientX: 240,
@@ -235,8 +235,8 @@ describe("fabric.Canvas events mixin", () => {
     }
     canvas.__onMouseDown(e2)
     var selection = canvas.getActiveObjects()
-    expect(selection[1]).toEqual(blueCircle)
-    expect(selection[0]).toEqual(redCircle)
+    expect(selection[1]).toBe(blueCircle)
+    expect(selection[0]).toBe(redCircle)
     canvas.__onMouseUp(e2)
     var e3 = {
       clientX: 140,
@@ -248,11 +248,11 @@ describe("fabric.Canvas events mixin", () => {
     canvas.__onMouseDown(e3)
     var selection = canvas.getActiveObjects()
     canvas.on("mouse:down", function (options) {
-      expect(options.target).toEqual(greenRect)
+      expect(options.target).toBe(greenRect)
     })
-    expect(selection[1]).toEqual(blueCircle)
-    expect(selection[0]).toEqual(redCircle)
-    expect(selection.length).toEqual(2)
+    expect(selection[1]).toBe(blueCircle)
+    expect(selection[0]).toBe(redCircle)
+    expect(selection.length).toBe(2)
     canvas.__onMouseUp(e3)
     var e4 = {
       clientX: 290,
@@ -263,18 +263,18 @@ describe("fabric.Canvas events mixin", () => {
     canvas.__onMouseDown(e4)
     var selection = canvas.getActiveObjects()
     canvas.on("mouse:down", function (options) {
-      expect(options.target).toEqual(greenRect)
+      expect(options.target).toBe(greenRect)
     })
-    expect(selection.length).toEqual(0)
+    expect(selection.length).toBe(0)
     canvas.__onMouseUp(e4)
   })
 
   test("specific bug #6314 for partial intersection with drag", function () {
-    var canvas = (this.canvas = new fabric.Canvas(null, {
+    var canvas = new fabric.Canvas(null, {
       enableRetinaScaling: false,
       width: 600,
       height: 600
-    }))
+    })
     var renderRequested = false
     var greenRect = new fabric.Rect({
       width: 300,
@@ -311,7 +311,7 @@ describe("fabric.Canvas events mixin", () => {
       which: 1,
       target: canvas.upperCanvasEl
     })
-    expect(renderRequested).toEqual(true)
+    expect(renderRequested).toBe(true)
   })
 
   test("mouse:up isClick = true", function () {
@@ -322,7 +322,7 @@ describe("fabric.Canvas events mixin", () => {
     })
     canvas.__onMouseDown(e)
     canvas.__onMouseUp(e)
-    expect(isClick).toEqual(true)
+    expect(isClick).toBe(true)
   })
 
   test("setDimensions and active brush", function () {
@@ -341,8 +341,8 @@ describe("fabric.Canvas events mixin", () => {
     }
     canva.setDimensions({ width: 200, height: 200 })
     canva.renderAll()
-    expect(rendered).toEqual(true)
-    expect(prepareFor).toEqual(true)
+    expect(rendered).toBe(true)
+    expect(prepareFor).toBe(true)
   })
 
   test("mouse:up isClick = false", function () {
@@ -355,7 +355,7 @@ describe("fabric.Canvas events mixin", () => {
     canvas.__onMouseDown(e)
     canvas.__onMouseMove(e2)
     canvas.__onMouseUp(e2)
-    expect(isClick).toEqual(false)
+    expect(isClick).toBe(false)
   })
 
   test("mouse:up should return target and currentTarget", function () {
@@ -379,8 +379,8 @@ describe("fabric.Canvas events mixin", () => {
     canvas.__onMouseDown(e1)
     canvas.__onMouseMove(e2)
     canvas.__onMouseUp(e2)
-    expect(opt.target).toEqual(rect1)
-    expect(opt.currentTarget).toEqual(rect2)
+    expect(opt.target).toBe(rect1)
+    expect(opt.currentTarget).toBe(rect2)
   })
 
   test("fires object:modified and object:moved", function () {
@@ -402,11 +402,11 @@ describe("fabric.Canvas events mixin", () => {
     canvas.__onMouseDown(e)
     canvas.__onMouseMove(e2)
     canvas.__onMouseUp(e2)
-    expect(count).toEqual(1)
-    expect(opt.e).toEqual(e2)
-    expect(opt.target).toEqual(rect)
-    expect(opt.transform.action).toEqual("drag")
-    expect(count2).toEqual(1)
+    expect(count).toBe(1)
+    expect(opt.e).toBe(e2)
+    expect(opt.target).toBe(rect)
+    expect(opt.transform.action).toBe("drag")
+    expect(count2).toBe(1)
   })
 
   test("drag small object when mousemove + drag, not active", function () {
@@ -425,10 +425,10 @@ describe("fabric.Canvas events mixin", () => {
     canvas.__onMouseMove(e1)
     canvas.__onMouseMove(e2)
     canvas.__onMouseUp(e2)
-    expect(rect.top).toEqual(4)
-    expect(rect.left).toEqual(4)
-    expect(rect.scaleX).toEqual(1)
-    expect(rect.scaleY).toEqual(1)
+    expect(rect.top).toBe(4)
+    expect(rect.left).toBe(4)
+    expect(rect.scaleX).toBe(1)
+    expect(rect.scaleY).toBe(1)
   })
 
   test("scale small object when mousemove + drag, active", function () {
@@ -442,16 +442,16 @@ describe("fabric.Canvas events mixin", () => {
       height: 3,
       strokeWidth: 0
     })
-    expect(rect.scaleX).toEqual(1)
-    expect(rect.scaleY).toEqual(1)
+    expect(rect.scaleX).toBe(1)
+    expect(rect.scaleY).toBe(1)
     canvas.add(rect)
     canvas.setActiveObject(rect)
     canvas.__onMouseDown(e)
     canvas.__onMouseMove(e1)
     canvas.__onMouseMove(e2)
     canvas.__onMouseUp(e2)
-    expect(rect.scaleX).toEqual(3)
-    expect(rect.scaleY).toEqual(3)
+    expect(rect.scaleX).toBe(3)
+    expect(rect.scaleY).toBe(3)
   })
 
   test("avoid multiple bindings", function () {
@@ -514,7 +514,7 @@ describe("fabric.Canvas events mixin", () => {
       var event = fabric.document.createEvent("HTMLEvents")
       event.initEvent(eventName, true, true)
       c.upperCanvasEl.dispatchEvent(event)
-      expect(counter).toEqual(1)
+      expect(counter).toBe(1)
     })
   })
   ;["DragEnter", "DragLeave", "DragOver", "Drop"].forEach(function (eventType) {
@@ -528,7 +528,7 @@ describe("fabric.Canvas events mixin", () => {
       var event = fabric.document.createEvent("HTMLEvents")
       event.initEvent(eventName, true, true)
       c.upperCanvasEl.dispatchEvent(event)
-      expect(counter).toEqual(1)
+      expect(counter).toBe(1)
     })
   })
   ;["DragEnter", "DragLeave", "DragOver", "Drop"].forEach(function (eventType) {
@@ -552,8 +552,8 @@ describe("fabric.Canvas events mixin", () => {
         event.clientX = 5
         event.clientY = 5
         c.upperCanvasEl.dispatchEvent(event)
-        expect(counter).toEqual(1)
-        expect(target).toEqual(rect)
+        expect(counter).toBe(1)
+        expect(target).toBe(rect)
       }
     )
   })
@@ -582,8 +582,8 @@ describe("fabric.Canvas events mixin", () => {
       event.clientX = 5
       event.clientY = 5
       c.upperCanvasEl.dispatchEvent(event)
-      expect(counter).toEqual(1)
-      expect(target).toEqual(rect)
+      expect(counter).toBe(1)
+      expect(target).toBe(rect)
     })
   })
   ;["mouseout", "mouseenter"].forEach(function (eventType) {
@@ -600,7 +600,7 @@ describe("fabric.Canvas events mixin", () => {
       var event = fabric.document.createEvent("HTMLEvents")
       event.initEvent(eventType, true, true)
       c.upperCanvasEl.dispatchEvent(event)
-      expect(counter).toEqual(1)
+      expect(counter).toBe(1)
     })
   })
 
@@ -677,10 +677,10 @@ describe("fabric.Canvas events mixin", () => {
       pointerX: 1,
       pointerY: 1
     })
-    expect(targetArray[0]).toEqual(group)
-    expect(targetArray[2]).toEqual(group2)
-    expect(targetArray[1]).toEqual(rect4)
-    expect(targetOutArray.length).toEqual(0)
+    expect(targetArray[0]).toBe(group)
+    expect(targetArray[2]).toBe(group2)
+    expect(targetArray[1]).toBe(rect4)
+    expect(targetOutArray.length).toBe(0)
 
     targetArray = []
     targetOutArray = []
@@ -688,11 +688,11 @@ describe("fabric.Canvas events mixin", () => {
       pointerX: 5,
       pointerY: 5
     })
-    expect(targetArray[0]).toEqual(rect5)
-    expect(targetArray.length).toEqual(1)
-    expect(targetOutArray[0]).toEqual(group)
-    expect(targetOutArray[2]).toEqual(group2)
-    expect(targetOutArray[1]).toEqual(rect4)
+    expect(targetArray[0]).toBe(rect5)
+    expect(targetArray.length).toBe(1)
+    expect(targetOutArray[0]).toBe(group)
+    expect(targetOutArray[2]).toBe(group2)
+    expect(targetOutArray[1]).toBe(rect4)
 
     targetArray = []
     targetOutArray = []
@@ -700,11 +700,11 @@ describe("fabric.Canvas events mixin", () => {
       pointerX: 9,
       pointerY: 9
     })
-    expect(targetArray[0]).toEqual(group)
-    expect(targetArray[2]).toEqual(group1)
-    expect(targetArray[1]).toEqual(rect2)
-    expect(targetOutArray.length).toEqual(1)
-    expect(targetOutArray[0]).toEqual(rect5)
+    expect(targetArray[0]).toBe(group)
+    expect(targetArray[2]).toBe(group1)
+    expect(targetArray[1]).toBe(rect2)
+    expect(targetOutArray.length).toBe(1)
+    expect(targetOutArray[0]).toBe(rect5)
 
     targetArray = []
     targetOutArray = []
@@ -712,10 +712,10 @@ describe("fabric.Canvas events mixin", () => {
       pointerX: 9,
       pointerY: 1
     })
-    expect(targetArray[0]).toEqual(rect1)
-    expect(targetArray.length).toEqual(1)
-    expect(targetOutArray.length).toEqual(1)
-    expect(targetOutArray[0]).toEqual(rect2)
+    expect(targetArray[0]).toBe(rect1)
+    expect(targetArray.length).toBe(1)
+    expect(targetOutArray.length).toBe(1)
+    expect(targetOutArray[0]).toBe(rect2)
   })
 
   test("Fabric mouseover, mouseout events fire for subTargets when subTargetCheck is enabled", function () {
@@ -751,16 +751,16 @@ describe("fabric.Canvas events mixin", () => {
         target.item(1).item(1).item(1)
       ]
       canvas._fireOverOutEvents(target, moveEvent)
-      expect(counterOver).toEqual(4)
-      expect(canvas._hoveredTarget).toEqual(target)
-      expect(canvas._hoveredTargets.length).toEqual(3)
+      expect(counterOver).toBe(4)
+      expect(canvas._hoveredTarget).toBe(target)
+      expect(canvas._hoveredTargets.length).toBe(3)
 
       // perform MouseOut even on all hoveredTargets
       canvas.targets = []
       canvas._fireOverOutEvents(null, moveEvent)
-      expect(counterOut).toEqual(4)
-      expect(canvas._hoveredTarget).toEqual(null)
-      expect(canvas._hoveredTargets.length).toEqual(0)
+      expect(counterOut).toBe(4)
+      expect(canvas._hoveredTarget).toBe(null)
+      expect(canvas._hoveredTargets.length).toBe(0)
     })
   })
 
@@ -794,7 +794,7 @@ describe("fabric.Canvas events mixin", () => {
       var event = fabric.document.createEvent("MouseEvent")
       event.initEvent(eventName, true, true)
       c.upperCanvasEl.dispatchEvent(event)
-      expect(counter).toEqual(1)
+      expect(counter).toBe(1)
     })
   })
 
@@ -817,7 +817,7 @@ describe("fabric.Canvas events mixin", () => {
       var event = fabric.document.createEvent("MouseEvent")
       event.initEvent("mouseup", true, true)
       fabric.document.dispatchEvent(event)
-      expect(counter).toEqual(1)
+      expect(counter).toBe(1)
       fabric.Canvas.prototype._onMouseUp = originalMouseUp
       c.cancelRequestedRender()
       done()
@@ -830,7 +830,7 @@ describe("fabric.Canvas events mixin", () => {
     var c = new fabric.Canvas()
     c._hoveredTarget = new fabric.Object()
     c.upperCanvasEl.dispatchEvent(event)
-    expect(c._hoveredTarget).toEqual(null)
+    expect(c._hoveredTarget).toBe(null)
   })
 
   test("mouseEnter does not remove _hoveredTarget if a transform is happening", function () {
@@ -841,7 +841,7 @@ describe("fabric.Canvas events mixin", () => {
     c._hoveredTarget = obj
     c.currentTransform = {}
     c.upperCanvasEl.dispatchEvent(event)
-    expect(c._hoveredTarget).toEqual(obj)
+    expect(c._hoveredTarget).toBe(obj)
   })
 
   test("mouseEnter removes __corner", function () {
@@ -853,7 +853,7 @@ describe("fabric.Canvas events mixin", () => {
     c.setActiveObject(obj)
     obj.__corner = "test"
     c.upperCanvasEl.dispatchEvent(event)
-    expect(obj.__corner).toEqual(0)
+    expect(obj.__corner).toBe(0)
   })
 
   test("mouseEnter does not removes __corner if there is a transform", function () {
@@ -865,7 +865,7 @@ describe("fabric.Canvas events mixin", () => {
     c.setActiveObject(obj)
     obj.__corner = "test"
     c.upperCanvasEl.dispatchEvent(event)
-    expect(obj.__corner).toEqual("test")
+    expect(obj.__corner).toBe("test")
   })
 
   test("avoid multiple events on window", function () {
@@ -881,7 +881,7 @@ describe("fabric.Canvas events mixin", () => {
     var event = fabric.document.createEvent("UIEvents")
     event.initUIEvent("resize", true, false, fabric.window, 0)
     fabric.window.dispatchEvent(event)
-    expect(counter).toEqual(1)
+    expect(counter).toBe(1)
     fabric.Canvas.prototype._onResize = originalResize
   })
 
@@ -998,139 +998,137 @@ describe("fabric.Canvas events mixin", () => {
     var target = new fabric.Object({ canvas: canvas })
     var e = {}
     e[key] = false
-    expect(canvas.getCornerCursor("mt", target, e)).toEqual("n-resize")
-    expect(canvas.getCornerCursor("mb", target, e)).toEqual("s-resize")
-    expect(canvas.getCornerCursor("ml", target, e)).toEqual("w-resize")
-    expect(canvas.getCornerCursor("mr", target, e)).toEqual("e-resize")
-    expect(canvas.getCornerCursor("tl", target, e)).toEqual("nw-resize")
-    expect(canvas.getCornerCursor("tr", target, e)).toEqual("ne-resize")
-    expect(canvas.getCornerCursor("bl", target, e)).toEqual("sw-resize")
-    expect(canvas.getCornerCursor("br", target, e)).toEqual("se-resize")
-    expect(canvas.getCornerCursor("mtr", target, e)).toEqual("crosshair")
+    expect(canvas.getCornerCursor("mt", target, e)).toBe("n-resize")
+    expect(canvas.getCornerCursor("mb", target, e)).toBe("s-resize")
+    expect(canvas.getCornerCursor("ml", target, e)).toBe("w-resize")
+    expect(canvas.getCornerCursor("mr", target, e)).toBe("e-resize")
+    expect(canvas.getCornerCursor("tl", target, e)).toBe("nw-resize")
+    expect(canvas.getCornerCursor("tr", target, e)).toBe("ne-resize")
+    expect(canvas.getCornerCursor("bl", target, e)).toBe("sw-resize")
+    expect(canvas.getCornerCursor("br", target, e)).toBe("se-resize")
+    expect(canvas.getCornerCursor("mtr", target, e)).toBe("crosshair")
 
     target = new fabric.Object({ canvas: canvas })
     target.lockScalingX = true
-    expect(canvas.getCornerCursor("mt", target, e)).toEqual("n-resize")
-    expect(canvas.getCornerCursor("mb", target, e)).toEqual("s-resize")
-    expect(canvas.getCornerCursor("ml", target, e)).toEqual("not-allowed")
-    expect(canvas.getCornerCursor("mr", target, e)).toEqual("not-allowed")
-    expect(canvas.getCornerCursor("tl", target, e)).toEqual("not-allowed")
-    expect(canvas.getCornerCursor("tr", target, e)).toEqual("not-allowed")
-    expect(canvas.getCornerCursor("bl", target, e)).toEqual("not-allowed")
-    expect(canvas.getCornerCursor("br", target, e)).toEqual("not-allowed")
-    expect(canvas.getCornerCursor("mtr", target, e)).toEqual("crosshair")
+    expect(canvas.getCornerCursor("mt", target, e)).toBe("n-resize")
+    expect(canvas.getCornerCursor("mb", target, e)).toBe("s-resize")
+    expect(canvas.getCornerCursor("ml", target, e)).toBe("not-allowed")
+    expect(canvas.getCornerCursor("mr", target, e)).toBe("not-allowed")
+    expect(canvas.getCornerCursor("tl", target, e)).toBe("not-allowed")
+    expect(canvas.getCornerCursor("tr", target, e)).toBe("not-allowed")
+    expect(canvas.getCornerCursor("bl", target, e)).toBe("not-allowed")
+    expect(canvas.getCornerCursor("br", target, e)).toBe("not-allowed")
+    expect(canvas.getCornerCursor("mtr", target, e)).toBe("crosshair")
     e[key2] = true
-    expect(canvas.getCornerCursor("tl", target, e)).toEqual("nw-resize")
-    expect(canvas.getCornerCursor("tr", target, e)).toEqual("ne-resize")
-    expect(canvas.getCornerCursor("bl", target, e)).toEqual("sw-resize")
-    expect(canvas.getCornerCursor("br", target, e)).toEqual("se-resize")
+    expect(canvas.getCornerCursor("tl", target, e)).toBe("nw-resize")
+    expect(canvas.getCornerCursor("tr", target, e)).toBe("ne-resize")
+    expect(canvas.getCornerCursor("bl", target, e)).toBe("sw-resize")
+    expect(canvas.getCornerCursor("br", target, e)).toBe("se-resize")
 
     var e = {}
     target = new fabric.Object({ canvas: canvas })
     target.lockScalingY = true
-    expect(canvas.getCornerCursor("mt", target, e)).toEqual("not-allowed")
-    expect(canvas.getCornerCursor("mb", target, e)).toEqual("not-allowed")
-    expect(canvas.getCornerCursor("ml", target, e)).toEqual("w-resize")
-    expect(canvas.getCornerCursor("mr", target, e)).toEqual("e-resize")
-    expect(canvas.getCornerCursor("tl", target, e)).toEqual("not-allowed")
-    expect(canvas.getCornerCursor("tr", target, e)).toEqual("not-allowed")
-    expect(canvas.getCornerCursor("bl", target, e)).toEqual("not-allowed")
-    expect(canvas.getCornerCursor("br", target, e)).toEqual("not-allowed")
-    expect(canvas.getCornerCursor("mtr", target, e)).toEqual("crosshair")
+    expect(canvas.getCornerCursor("mt", target, e)).toBe("not-allowed")
+    expect(canvas.getCornerCursor("mb", target, e)).toBe("not-allowed")
+    expect(canvas.getCornerCursor("ml", target, e)).toBe("w-resize")
+    expect(canvas.getCornerCursor("mr", target, e)).toBe("e-resize")
+    expect(canvas.getCornerCursor("tl", target, e)).toBe("not-allowed")
+    expect(canvas.getCornerCursor("tr", target, e)).toBe("not-allowed")
+    expect(canvas.getCornerCursor("bl", target, e)).toBe("not-allowed")
+    expect(canvas.getCornerCursor("br", target, e)).toBe("not-allowed")
+    expect(canvas.getCornerCursor("mtr", target, e)).toBe("crosshair")
     e[key2] = true
-    expect(canvas.getCornerCursor("tl", target, e)).toEqual("nw-resize")
-    expect(canvas.getCornerCursor("tr", target, e)).toEqual("ne-resize")
-    expect(canvas.getCornerCursor("bl", target, e)).toEqual("sw-resize")
-    expect(canvas.getCornerCursor("br", target, e)).toEqual("se-resize")
+    expect(canvas.getCornerCursor("tl", target, e)).toBe("nw-resize")
+    expect(canvas.getCornerCursor("tr", target, e)).toBe("ne-resize")
+    expect(canvas.getCornerCursor("bl", target, e)).toBe("sw-resize")
+    expect(canvas.getCornerCursor("br", target, e)).toBe("se-resize")
 
     var e = {}
     target = new fabric.Object({ canvas: canvas })
     target.lockScalingY = true
     target.lockScalingX = true
-    expect(canvas.getCornerCursor("mt", target, e)).toEqual("not-allowed")
-    expect(canvas.getCornerCursor("mb", target, e)).toEqual("not-allowed")
-    expect(canvas.getCornerCursor("ml", target, e)).toEqual("not-allowed")
-    expect(canvas.getCornerCursor("mr", target, e)).toEqual("not-allowed")
-    expect(canvas.getCornerCursor("tl", target, e)).toEqual("not-allowed")
-    expect(canvas.getCornerCursor("tr", target, e)).toEqual("not-allowed")
-    expect(canvas.getCornerCursor("bl", target, e)).toEqual("not-allowed")
-    expect(canvas.getCornerCursor("br", target, e)).toEqual("not-allowed")
-    expect(canvas.getCornerCursor("mtr", target, e)).toEqual("crosshair")
+    expect(canvas.getCornerCursor("mt", target, e)).toBe("not-allowed")
+    expect(canvas.getCornerCursor("mb", target, e)).toBe("not-allowed")
+    expect(canvas.getCornerCursor("ml", target, e)).toBe("not-allowed")
+    expect(canvas.getCornerCursor("mr", target, e)).toBe("not-allowed")
+    expect(canvas.getCornerCursor("tl", target, e)).toBe("not-allowed")
+    expect(canvas.getCornerCursor("tr", target, e)).toBe("not-allowed")
+    expect(canvas.getCornerCursor("bl", target, e)).toBe("not-allowed")
+    expect(canvas.getCornerCursor("br", target, e)).toBe("not-allowed")
+    expect(canvas.getCornerCursor("mtr", target, e)).toBe("crosshair")
     e[key2] = true
-    expect(canvas.getCornerCursor("tl", target, e)).toEqual("not-allowed")
-    expect(canvas.getCornerCursor("tr", target, e)).toEqual("not-allowed")
-    expect(canvas.getCornerCursor("bl", target, e)).toEqual("not-allowed")
-    expect(canvas.getCornerCursor("br", target, e)).toEqual("not-allowed")
+    expect(canvas.getCornerCursor("tl", target, e)).toBe("not-allowed")
+    expect(canvas.getCornerCursor("tr", target, e)).toBe("not-allowed")
+    expect(canvas.getCornerCursor("bl", target, e)).toBe("not-allowed")
+    expect(canvas.getCornerCursor("br", target, e)).toBe("not-allowed")
 
     var e = {}
     target = new fabric.Object({ canvas: canvas })
     target.lockRotation = true
-    expect(canvas.getCornerCursor("mt", target, e)).toEqual("n-resize")
-    expect(canvas.getCornerCursor("mb", target, e)).toEqual("s-resize")
-    expect(canvas.getCornerCursor("ml", target, e)).toEqual("w-resize")
-    expect(canvas.getCornerCursor("mr", target, e)).toEqual("e-resize")
-    expect(canvas.getCornerCursor("tl", target, e)).toEqual("nw-resize")
-    expect(canvas.getCornerCursor("tr", target, e)).toEqual("ne-resize")
-    expect(canvas.getCornerCursor("bl", target, e)).toEqual("sw-resize")
-    expect(canvas.getCornerCursor("br", target, e)).toEqual("se-resize")
-    expect(canvas.getCornerCursor("mtr", target, e)).toEqual("not-allowed")
+    expect(canvas.getCornerCursor("mt", target, e)).toBe("n-resize")
+    expect(canvas.getCornerCursor("mb", target, e)).toBe("s-resize")
+    expect(canvas.getCornerCursor("ml", target, e)).toBe("w-resize")
+    expect(canvas.getCornerCursor("mr", target, e)).toBe("e-resize")
+    expect(canvas.getCornerCursor("tl", target, e)).toBe("nw-resize")
+    expect(canvas.getCornerCursor("tr", target, e)).toBe("ne-resize")
+    expect(canvas.getCornerCursor("bl", target, e)).toBe("sw-resize")
+    expect(canvas.getCornerCursor("br", target, e)).toBe("se-resize")
+    expect(canvas.getCornerCursor("mtr", target, e)).toBe("not-allowed")
 
     target = new fabric.Object({ canvas: canvas })
     target.lockSkewingX = true
     target.lockSkewingY = true
-    expect(canvas.getCornerCursor("mt", target, e)).toEqual("n-resize")
-    expect(canvas.getCornerCursor("mb", target, e)).toEqual("s-resize")
-    expect(canvas.getCornerCursor("ml", target, e)).toEqual("w-resize")
-    expect(canvas.getCornerCursor("mr", target, e)).toEqual("e-resize")
-    expect(canvas.getCornerCursor("tl", target, e)).toEqual("nw-resize")
-    expect(canvas.getCornerCursor("tr", target, e)).toEqual("ne-resize")
-    expect(canvas.getCornerCursor("bl", target, e)).toEqual("sw-resize")
-    expect(canvas.getCornerCursor("br", target, e)).toEqual("se-resize")
-    expect(canvas.getCornerCursor("mtr", target, e)).toEqual("crosshair")
+    expect(canvas.getCornerCursor("mt", target, e)).toBe("n-resize")
+    expect(canvas.getCornerCursor("mb", target, e)).toBe("s-resize")
+    expect(canvas.getCornerCursor("ml", target, e)).toBe("w-resize")
+    expect(canvas.getCornerCursor("mr", target, e)).toBe("e-resize")
+    expect(canvas.getCornerCursor("tl", target, e)).toBe("nw-resize")
+    expect(canvas.getCornerCursor("tr", target, e)).toBe("ne-resize")
+    expect(canvas.getCornerCursor("bl", target, e)).toBe("sw-resize")
+    expect(canvas.getCornerCursor("br", target, e)).toBe("se-resize")
+    expect(canvas.getCornerCursor("mtr", target, e)).toBe("crosshair")
 
     e[key] = true
     target = new fabric.Object({ canvas: canvas })
     target.lockSkewingY = true
-    expect(canvas.getCornerCursor("mt", target, e)).toEqual("ew-resize")
-    expect(canvas.getCornerCursor("mb", target, e)).toEqual("ew-resize")
-    expect(canvas.getCornerCursor("ml", target, e)).toEqual("not-allowed")
-    expect(canvas.getCornerCursor("mr", target, e)).toEqual("not-allowed")
-    expect(canvas.getCornerCursor("tl", target, e)).toEqual("nw-resize")
-    expect(canvas.getCornerCursor("tr", target, e)).toEqual("ne-resize")
-    expect(canvas.getCornerCursor("bl", target, e)).toEqual("sw-resize")
-    expect(canvas.getCornerCursor("br", target, e)).toEqual("se-resize")
-    expect(canvas.getCornerCursor("mtr", target, e)).toEqual("crosshair")
+    expect(canvas.getCornerCursor("mt", target, e)).toBe("ew-resize")
+    expect(canvas.getCornerCursor("mb", target, e)).toBe("ew-resize")
+    expect(canvas.getCornerCursor("ml", target, e)).toBe("not-allowed")
+    expect(canvas.getCornerCursor("mr", target, e)).toBe("not-allowed")
+    expect(canvas.getCornerCursor("tl", target, e)).toBe("nw-resize")
+    expect(canvas.getCornerCursor("tr", target, e)).toBe("ne-resize")
+    expect(canvas.getCornerCursor("bl", target, e)).toBe("sw-resize")
+    expect(canvas.getCornerCursor("br", target, e)).toBe("se-resize")
+    expect(canvas.getCornerCursor("mtr", target, e)).toBe("crosshair")
 
     e[key] = true
     target = new fabric.Object({ canvas: canvas })
     target.lockSkewingX = true
-    expect(canvas.getCornerCursor("mt", target, e)).toEqual("not-allowed")
-    expect(canvas.getCornerCursor("mb", target, e)).toEqual("not-allowed")
-    expect(canvas.getCornerCursor("ml", target, e)).toEqual("ns-resize")
-    expect(canvas.getCornerCursor("mr", target, e)).toEqual("ns-resize")
-    expect(canvas.getCornerCursor("tl", target, e)).toEqual("nw-resize")
-    expect(canvas.getCornerCursor("tr", target, e)).toEqual("ne-resize")
-    expect(canvas.getCornerCursor("bl", target, e)).toEqual("sw-resize")
-    expect(canvas.getCornerCursor("br", target, e)).toEqual("se-resize")
-    expect(canvas.getCornerCursor("mtr", target, e)).toEqual("crosshair")
+    expect(canvas.getCornerCursor("mt", target, e)).toBe("not-allowed")
+    expect(canvas.getCornerCursor("mb", target, e)).toBe("not-allowed")
+    expect(canvas.getCornerCursor("ml", target, e)).toBe("ns-resize")
+    expect(canvas.getCornerCursor("mr", target, e)).toBe("ns-resize")
+    expect(canvas.getCornerCursor("tl", target, e)).toBe("nw-resize")
+    expect(canvas.getCornerCursor("tr", target, e)).toBe("ne-resize")
+    expect(canvas.getCornerCursor("bl", target, e)).toBe("sw-resize")
+    expect(canvas.getCornerCursor("br", target, e)).toBe("se-resize")
+    expect(canvas.getCornerCursor("mtr", target, e)).toBe("crosshair")
   })
   test("_addEventOptions return the correct event name", function () {
     var opt = {}
-    expect(canvas._addEventOptions(opt, { action: "scaleX" })).toEqual("scaled")
-    expect(opt.by).toEqual("x")
-    expect(canvas._addEventOptions(opt, { action: "scaleY" })).toEqual("scaled")
-    expect(opt.by).toEqual("y")
-    expect(canvas._addEventOptions(opt, { action: "scale" })).toEqual("scaled")
-    expect(opt.by).toEqual("equally")
-    expect(canvas._addEventOptions(opt, { action: "skewX" })).toEqual("skewed")
-    expect(opt.by).toEqual("x")
-    expect(canvas._addEventOptions(opt, { action: "skewY" })).toEqual("skewed")
-    expect(opt.by).toEqual("y")
-    expect(canvas._addEventOptions(opt, { action: "rotate" })).toEqual(
-      "rotated"
-    )
-    expect(opt.by).toEqual(undefined)
-    expect(canvas._addEventOptions(opt, { action: "drag" })).toEqual("moved")
-    expect(opt.by).toEqual(undefined)
+    expect(canvas._addEventOptions(opt, { action: "scaleX" })).toBe("scaled")
+    expect(opt.by).toBe("x")
+    expect(canvas._addEventOptions(opt, { action: "scaleY" })).toBe("scaled")
+    expect(opt.by).toBe("y")
+    expect(canvas._addEventOptions(opt, { action: "scale" })).toBe("scaled")
+    expect(opt.by).toBe("equally")
+    expect(canvas._addEventOptions(opt, { action: "skewX" })).toBe("skewed")
+    expect(opt.by).toBe("x")
+    expect(canvas._addEventOptions(opt, { action: "skewY" })).toBe("skewed")
+    expect(opt.by).toBe("y")
+    expect(canvas._addEventOptions(opt, { action: "rotate" })).toBe("rotated")
+    expect(opt.by).toBe(undefined)
+    expect(canvas._addEventOptions(opt, { action: "drag" })).toBe("moved")
+    expect(opt.by).toBe(undefined)
   })
 })

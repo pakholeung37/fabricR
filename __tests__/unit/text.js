@@ -1,59 +1,56 @@
-;(function () {
-  describe("fabric.Text")
+function createTextObject(text) {
+  return new fabric.Text(text || "x")
+}
+var CHAR_WIDTH = 20
 
-  function createTextObject(text) {
-    return new fabric.Text(text || "x")
-  }
+var REFERENCE_TEXT_OBJECT = {
+  version: fabric.version,
+  type: "text",
+  originX: "left",
+  originY: "top",
+  left: 0,
+  top: 0,
+  width: CHAR_WIDTH,
+  height: 45.2,
+  fill: "rgb(0,0,0)",
+  stroke: null,
+  strokeWidth: 1,
+  strokeDashArray: null,
+  strokeLineCap: "butt",
+  strokeDashOffset: 0,
+  strokeLineJoin: "miter",
+  strokeMiterLimit: 4,
+  scaleX: 1,
+  scaleY: 1,
+  angle: 0,
+  flipX: false,
+  flipY: false,
+  opacity: 1,
+  shadow: null,
+  visible: true,
+  backgroundColor: "",
+  text: "x",
+  fontSize: 40,
+  fontWeight: "normal",
+  fontFamily: "Times New Roman",
+  fontStyle: "normal",
+  lineHeight: 1.16,
+  underline: false,
+  overline: false,
+  linethrough: false,
+  textAlign: "left",
+  textBackgroundColor: "",
+  fillRule: "nonzero",
+  paintFirst: "fill",
+  globalCompositeOperation: "source-over",
+  skewX: 0,
+  skewY: 0,
+  charSpacing: 0,
+  styles: {}
+}
 
-  var CHAR_WIDTH = 20
-
-  var REFERENCE_TEXT_OBJECT = {
-    version: fabric.version,
-    type: "text",
-    originX: "left",
-    originY: "top",
-    left: 0,
-    top: 0,
-    width: CHAR_WIDTH,
-    height: 45.2,
-    fill: "rgb(0,0,0)",
-    stroke: null,
-    strokeWidth: 1,
-    strokeDashArray: null,
-    strokeLineCap: "butt",
-    strokeDashOffset: 0,
-    strokeLineJoin: "miter",
-    strokeMiterLimit: 4,
-    scaleX: 1,
-    scaleY: 1,
-    angle: 0,
-    flipX: false,
-    flipY: false,
-    opacity: 1,
-    shadow: null,
-    visible: true,
-    backgroundColor: "",
-    text: "x",
-    fontSize: 40,
-    fontWeight: "normal",
-    fontFamily: "Times New Roman",
-    fontStyle: "normal",
-    lineHeight: 1.16,
-    underline: false,
-    overline: false,
-    linethrough: false,
-    textAlign: "left",
-    textBackgroundColor: "",
-    fillRule: "nonzero",
-    paintFirst: "fill",
-    globalCompositeOperation: "source-over",
-    skewX: 0,
-    skewY: 0,
-    charSpacing: 0,
-    styles: {}
-  }
-
-  test("constructor", function (assert) {
+describe("fabric.Text", () => {
+  test("constructor", function () {
     expect(fabric.Text).toBeTruthy()
     var text = createTextObject()
 
@@ -61,74 +58,76 @@
     expect(text instanceof fabric.Text).toBeTruthy()
     expect(text instanceof fabric.Object).toBeTruthy()
 
-    expect(text.get("type")).toEqual("text")
-    expect(text.get("text")).toEqual("x")
+    expect(text.get("type")).toBe("text")
+    expect(text.get("text")).toBe("x")
   })
 
-  test("toString", function (assert) {
+  test("toString", function () {
     var text = createTextObject()
     expect(typeof text.toString === "function").toBeTruthy()
-    expect(text.toString()).toEqual('#<fabric.Text (1): { "text": "x", "fontFamily": "Times New Roman" }>')
+    expect(text.toString()).toBe(
+      '#<fabric.Text (1): { "text": "x", "fontFamily": "Times New Roman" }>'
+    )
   })
 
-  test("_getFontDeclaration", function (assert) {
+  test("_getFontDeclaration", function () {
     var text = createTextObject()
     expect(typeof text._getFontDeclaration === "function").toBeTruthy()
     var fontDecl = text._getFontDeclaration()
     expect(typeof fontDecl === "string").toBeTruthy()
-    expect(fontDecl).toEqual('normal normal 40px "Times New Roman"')
+    expect(fontDecl).toBe('normal normal 40px "Times New Roman"')
     text.fontFamily = '"Times New Roman"'
     fontDecl = text._getFontDeclaration()
-    expect(fontDecl).toEqual('normal normal 40px "Times New Roman"')
+    expect(fontDecl).toBe('normal normal 40px "Times New Roman"')
     text.fontFamily = "'Times New Roman'"
     fontDecl = text._getFontDeclaration()
-    expect(fontDecl).toEqual("normal normal 40px 'Times New Roman'")
+    expect(fontDecl).toBe("normal normal 40px 'Times New Roman'")
   })
 
-  test("_getFontDeclaration with coma", function (assert) {
+  test("_getFontDeclaration with coma", function () {
     var text = createTextObject()
     text.fontFamily = "Arial, sans-serif"
     var fontDecl = text._getFontDeclaration()
-    expect(fontDecl).toEqual("normal normal 40px Arial, sans-serif")
+    expect(fontDecl).toBe("normal normal 40px Arial, sans-serif")
   })
 
   fabric.Text.genericFonts.forEach(function (fontName) {
-    test("_getFontDeclaration with genericFonts", function (assert) {
+    test("_getFontDeclaration with genericFonts", function () {
       var text = createTextObject()
       text.fontFamily = fontName
       var fontDecl = text._getFontDeclaration()
-      expect(fontDecl).toEqual("normal normal 40px " + fontName)
+      expect(fontDecl).toBe("normal normal 40px " + fontName)
       text.fontFamily = fontName.toUpperCase()
       var fontDecl = text._getFontDeclaration()
-      expect(fontDecl).toEqual("normal normal 40px " + fontName.toUpperCase())
+      expect(fontDecl).toBe("normal normal 40px " + fontName.toUpperCase())
     })
   })
 
-  test("toObject", function (assert) {
+  test("toObject", function () {
     var text = createTextObject()
     expect(typeof text.toObject === "function").toBeTruthy()
     expect(text.toObject()).toEqual(REFERENCE_TEXT_OBJECT)
   })
 
-  test("complexity", function (assert) {
+  test("complexity", function () {
     var text = createTextObject()
     expect(typeof text.complexity === "function").toBeTruthy()
-    expect(text.complexity()).toEqual(1)
+    expect(text.complexity()).toBe(1)
   })
 
-  test("set", function (assert) {
+  test("set", function () {
     var text = createTextObject()
     expect(typeof text.set === "function").toBeTruthy()
-    expect(text.set("text", "bar")).toEqual(text)
+    expect(text.set("text", "bar")).toBe(text)
 
     text.set({ left: 1234, top: 2345, angle: 55 })
 
-    expect(text.get("left")).toEqual(1234)
-    expect(text.get("top")).toEqual(2345)
-    expect(text.get("angle")).toEqual(55)
+    expect(text.get("left")).toBe(1234)
+    expect(text.get("top")).toBe(2345)
+    expect(text.get("angle")).toBe(55)
   })
 
-  test("lineHeight with single line", function (assert) {
+  test("lineHeight with single line", function () {
     var text = createTextObject()
     text.text = "text with one line"
     text.lineHeight = 2
@@ -137,30 +136,30 @@
     text.lineHeight = 0.5
     text.initDimensions()
     var heightNew = text.height
-    expect(height).toEqual(heightNew)
+    expect(height).toBe(heightNew)
   })
 
-  test("lineHeight with multi line", function (assert) {
+  test("lineHeight with multi line", function () {
     var text = createTextObject()
     text.text = "text with\ntwo lines"
     text.lineHeight = 0.1
     text.initDimensions()
     var height = text.height,
       minimumHeight = text.fontSize * text._fontSizeMult
-    expect(height > minimumHeight).toEqual(true)
+    expect(height > minimumHeight).toBe(true)
   })
 
-  test('set with "hash"', function (assert) {
+  test('set with "hash"', function () {
     var text = createTextObject()
 
     text.set({ opacity: 0.123, fill: "red", fontFamily: "blah" })
 
-    expect(text.opacity).toEqual(0.123)
-    expect(text.fill).toEqual("red")
-    expect(text.fontFamily).toEqual("blah")
+    expect(text.opacity).toBe(0.123)
+    expect(text.fill).toBe("red")
+    expect(text.fontFamily).toBe("blah")
   })
 
-  test("get bounding rect after init", function (assert) {
+  test("get bounding rect after init", function () {
     var string =
       "Some long text, the quick brown fox jumps over the lazy dog etc... blah blah blah"
     var text = new fabric.Text(string, {
@@ -178,8 +177,7 @@
     expect(br).toEqual(br2)
   })
 
-  test("fabric.Text.fromObject", function (assert) {
-    var done = assert.async()
+  test("fabric.Text.fromObject", function (done) {
     expect(typeof fabric.Text.fromObject === "function").toBeTruthy()
     fabric.Text.fromObject(REFERENCE_TEXT_OBJECT, function (text) {
       expect(text.toObject()).toEqual(REFERENCE_TEXT_OBJECT)
@@ -187,7 +185,7 @@
     })
   })
 
-  test("fabric.Text.fromElement", function (assert) {
+  test("fabric.Text.fromElement", function () {
     expect(typeof fabric.Text.fromElement === "function").toBeTruthy()
 
     var elText = fabric.document.createElement("text")
@@ -210,9 +208,7 @@
     })
   })
 
-  test("fabric.Text.fromElement with custom attributes", function (
-    assert
-  ) {
+  test("fabric.Text.fromElement with custom attributes", function () {
     var namespace = "http://www.w3.org/2000/svg"
     var elTextWithAttrs = fabric.document.createElementNS(namespace, "text")
     elTextWithAttrs.textContent = "x"
@@ -271,106 +267,102 @@
     })
   })
 
-  test("empty fromElement", function (assert) {
+  test("empty fromElement", function () {
     fabric.Text.fromElement(null, function (text) {
-      expect(text).toEqual(null)
+      expect(text).toBe(null)
     })
   })
 
-  test("dimensions after text change", function (assert) {
+  test("dimensions after text change", function () {
     var text = new fabric.Text("x")
-    expect(text.width).toEqual(CHAR_WIDTH)
+    expect(text.width).toBe(CHAR_WIDTH)
 
     text.set("text", "xx")
-    expect(text.width).toEqual(CHAR_WIDTH * 2)
+    expect(text.width).toBe(CHAR_WIDTH * 2)
   })
 
-  test("dimensions without text", function (assert) {
+  test("dimensions without text", function () {
     var text = new fabric.Text("")
-    expect(text.width).toEqual(2)
+    expect(text.width).toBe(2)
   })
 
-  test("setting fontFamily", function (assert) {
+  test("setting fontFamily", function () {
     var text = new fabric.Text("x")
     text.path = "foobar.js"
 
     text.set("fontFamily", "foobar")
-    expect(text.get("fontFamily")).toEqual("foobar")
+    expect(text.get("fontFamily")).toBe("foobar")
 
     text.set("fontFamily", '"Arial Black", Arial')
-    expect(text.get("fontFamily")).toEqual('"Arial Black", Arial')
+    expect(text.get("fontFamily")).toBe('"Arial Black", Arial')
   })
 
-  test("text styleHas", function (assert) {
+  test("text styleHas", function () {
     var text = new fabric.Text("xxxxxx\nx y")
     text.styles = {}
     expect(typeof text.styleHas === "function").toBeTruthy()
-    expect(text.styleHas("stroke")).toEqual(false)
+    expect(text.styleHas("stroke")).toBe(false)
     text.styles = { 1: { 0: { stroke: "red" } } }
-    expect(text.styleHas("stroke")).toEqual(true)
+    expect(text.styleHas("stroke")).toBe(true)
   })
 
-  test("text cleanStyle", function (assert) {
+  test("text cleanStyle", function () {
     var text = new fabric.Text("xxxxxx\nx y")
     text.styles = { 1: { 0: { stroke: "red" } } }
     text.stroke = "red"
     expect(typeof text.cleanStyle === "function").toBeTruthy()
     text.cleanStyle("stroke")
-    expect(text.styles[1]).toEqual(undefined)
+    expect(text.styles[1]).toBe(undefined)
     text.styles = { 1: { 0: { stroke: "blue" } } }
     text.stroke = "red"
     text.cleanStyle("stroke")
-    expect(text.styles[1][0].stroke).toEqual("blue")
+    expect(text.styles[1][0].stroke).toBe("blue")
   })
 
-  test("text cleanStyle with different sub styles styles", function (
-    assert
-  ) {
+  test("text cleanStyle with different sub styles styles", function () {
     var text = new fabric.Text("xxxxxx\nx y")
     text.styles = {
       1: { 0: { fill: "red" }, 1: { stroke: "red" }, 2: { stroke: "blue" } }
     }
     text.stroke = "red"
     text.cleanStyle("stroke")
-    expect(text.stroke).toEqual("red")
-    expect(text.styles[1][0].fill).toEqual("red")
-    expect(text.styles[1][0].stroke).toEqual(undefined)
-    expect(text.styles[1][1]).toEqual(undefined)
-    expect(text.styles[1][2].stroke).toEqual("blue")
+    expect(text.stroke).toBe("red")
+    expect(text.styles[1][0].fill).toBe("red")
+    expect(text.styles[1][0].stroke).toBe(undefined)
+    expect(text.styles[1][1]).toBe(undefined)
+    expect(text.styles[1][2].stroke).toBe("blue")
   })
 
-  test("text cleanStyle with undefined and set styles", function (
-    assert
-  ) {
+  test("text cleanStyle with undefined and set styles", function () {
     var text = new fabric.Text("xxxxxx\nx y")
     text.styles = { 1: { 1: { stroke: "red" }, 3: { stroke: "red" } } }
     text.stroke = "red"
     text.cleanStyle("stroke")
-    expect(text.stroke).toEqual("red")
-    expect(text.styles[1]).toEqual(undefined)
+    expect(text.stroke).toBe("red")
+    expect(text.styles[1]).toBe(undefined)
   })
 
-  test("text cleanStyle with empty styles", function (assert) {
+  test("text cleanStyle with empty styles", function () {
     var text = new fabric.Text("xxxxxx\nx y")
     text.styles = { 1: { 0: {}, 1: {} }, 2: {}, 3: { 4: {} } }
     text.cleanStyle("any")
-    expect(text.styles[1]).toEqual(undefined)
-    expect(text.styles[2]).toEqual(undefined)
-    expect(text.styles[3]).toEqual(undefined)
+    expect(text.styles[1]).toBe(undefined)
+    expect(text.styles[2]).toBe(undefined)
+    expect(text.styles[3]).toBe(undefined)
   })
 
-  test("text cleanStyle with full style", function (assert) {
+  test("text cleanStyle with full style", function () {
     var text = new fabric.Text("xxx")
     text.styles = {
       0: { 0: { fill: "blue" }, 1: { fill: "blue" }, 2: { fill: "blue" } }
     }
     text.fill = "black"
     text.cleanStyle("fill")
-    expect(text.fill).toEqual("blue")
-    expect(text.styles[0]).toEqual(undefined)
+    expect(text.fill).toBe("blue")
+    expect(text.styles[0]).toBe(undefined)
   })
 
-  test("text cleanStyle with no relevant style", function (assert) {
+  test("text cleanStyle with no relevant style", function () {
     var text = new fabric.Text("xxx")
     text.styles = {
       0: {
@@ -381,16 +373,16 @@
     }
     text.fill = "black"
     text.cleanStyle("fill")
-    expect(text.fill).toEqual("black")
-    expect(text.styles[0][0].other).toEqual("value1")
-    expect(text.styles[0][0].full).toEqual(undefined)
-    expect(text.styles[0][1].other).toEqual("value2")
-    expect(text.styles[0][1].full).toEqual(undefined)
-    expect(text.styles[0][2].other).toEqual("value3")
-    expect(text.styles[0][2].full).toEqual(undefined)
+    expect(text.fill).toBe("black")
+    expect(text.styles[0][0].other).toBe("value1")
+    expect(text.styles[0][0].full).toBe(undefined)
+    expect(text.styles[0][1].other).toBe("value2")
+    expect(text.styles[0][1].full).toBe(undefined)
+    expect(text.styles[0][2].other).toBe("value3")
+    expect(text.styles[0][2].full).toBe(undefined)
   })
 
-  test("text removeStyle with some style", function (assert) {
+  test("text removeStyle with some style", function () {
     var text = new fabric.Text("xxx")
     text.styles = {
       0: {
@@ -402,25 +394,25 @@
     expect(typeof text.removeStyle === "function").toBeTruthy()
     text.fill = "red"
     text.removeStyle("fill")
-    expect(text.fill).toEqual("red")
-    expect(text.styles[0][0].stroke).toEqual("black")
-    expect(text.styles[0][0].fill).toEqual(undefined)
+    expect(text.fill).toBe("red")
+    expect(text.styles[0][0].stroke).toBe("black")
+    expect(text.styles[0][0].fill).toBe(undefined)
     text.styles = {
       0: { 0: { fill: "blue" }, 1: { fill: "blue" }, 2: { fill: "blue" } }
     }
     text.removeStyle("fill")
-    expect(text.styles[0]).toEqual(undefined)
+    expect(text.styles[0]).toBe(undefined)
   })
 
-  test("getFontCache works with fontWeight numbers", function (assert) {
+  test("getFontCache works with fontWeight numbers", function () {
     var text = new fabric.Text("xxx", { fontWeight: 400 })
     text.initDimensions()
     var cache = fabric.charWidthsCache[text.fontFamily.toLowerCase()]
     var cacheProp = text.fontStyle + "_400"
-    expect(cacheProp in cache).toEqual(true)
+    expect(cacheProp in cache).toBe(true)
   })
 
-  test("getFontCache is case insensitive", function (assert) {
+  test("getFontCache is case insensitive", function () {
     var text = new fabric.Text("xxx", {
       fontWeight: "BOld",
       fontStyle: "NormaL"
@@ -433,10 +425,10 @@
     text2.initDimensions()
     var cache = text.getFontCache(text)
     var cache2 = text2.getFontCache(text2)
-    expect(cache).toEqual(cache2)
+    expect(cache).toBe(cache2)
   })
   // moved
-  test("getSelectionStyles with no arguments", function (assert) {
+  test("getSelectionStyles with no arguments", function () {
     var iText = new fabric.Text("test foo bar-baz\nqux", {
       styles: {
         0: {
@@ -452,12 +444,12 @@
       }
     })
 
-    expect(typeof iText.getSelectionStyles).toEqual("function")
+    expect(typeof iText.getSelectionStyles).toBe("function")
 
     expect(iText.getSelectionStyles()).toEqual([])
   })
 
-  test("getSelectionStyles with 2 args", function (assert) {
+  test("getSelectionStyles with 2 args", function () {
     var iText = new fabric.Text("test foo bar-baz\nqux", {
       styles: {
         0: {
@@ -484,7 +476,7 @@
     expect(iText.getSelectionStyles(2, 2)).toEqual([])
   })
 
-  test("setSelectionStyles", function (assert) {
+  test("setSelectionStyles", function () {
     var iText = new fabric.Text("test foo bar-baz\nqux", {
       styles: {
         0: {
@@ -494,7 +486,7 @@
       }
     })
 
-    expect(typeof iText.setSelectionStyles).toEqual("function")
+    expect(typeof iText.setSelectionStyles).toBe("function")
 
     iText.setSelectionStyles({
       fill: "red",
@@ -534,7 +526,7 @@
     })
   })
 
-  test("getStyleAtPosition", function (assert) {
+  test("getStyleAtPosition", function () {
     var iText = new fabric.Text("test foo bar-baz\nqux", {
       styles: {
         0: {
@@ -550,7 +542,7 @@
       }
     })
 
-    expect(typeof iText.getStyleAtPosition).toEqual("function")
+    expect(typeof iText.getStyleAtPosition).toBe("function")
 
     expect(iText.getStyleAtPosition(2)).toEqual({
       textDecoration: "overline"
@@ -561,11 +553,11 @@
     expect(iText.getStyleAtPosition(18)).toEqual({ fill: "green" })
   })
 
-  test("_splitText", function (assert) {
+  test("_splitText", function () {
     var text = new fabric.Text("test foo bar-baz\nqux", {})
     var test = text._splitText()
-    expect(test.lines[0]).toEqual("test foo bar-baz")
-    expect(test.lines[1]).toEqual("qux")
+    expect(test.lines[0]).toBe("test foo bar-baz")
+    expect(test.lines[1]).toBe("qux")
     expect(test.graphemeLines[0]).toEqual([
       "t",
       "e",
@@ -587,7 +579,7 @@
     expect(test.graphemeLines[1]).toEqual(["q", "u", "x"])
   })
 
-  test("getStyleAtPosition complete", function (assert) {
+  test("getStyleAtPosition complete", function () {
     var iText = new fabric.Text("test foo bar-baz\nqux", {
       styles: {
         0: {
@@ -633,14 +625,14 @@
       deltaY: 0
     }
 
-    expect(typeof iText.getStyleAtPosition).toEqual("function")
+    expect(typeof iText.getStyleAtPosition).toBe("function")
 
     expect(iText.getStyleAtPosition(0, true)).toEqual(expectedStyle0)
 
     expect(iText.getStyleAtPosition(2, true)).toEqual(expectedStyle2)
   })
 
-  test("toSVG with NUM_FRACTION_DIGITS", function (assert) {
+  test("toSVG with NUM_FRACTION_DIGITS", function () {
     var iText = new fabric.IText("test foo bar-baz", {
       // makes weird numbers
       styles: {
@@ -666,17 +658,17 @@
     fabric.Object.NUM_FRACTION_DIGITS = 1
     var SVG_1 = iText.toSVG()
     // var SVG_1_EXPECTED = '\t<g transform="translate(124.5 23.1)">\n\t\t<text xml:space="preserve" font-family="Times New Roman" font-size="40" font-style="normal" font-weight="normal" style="stroke: none; stroke-width: 1; stroke-dasharray: none; stroke-linecap: butt; stroke-linejoin: miter; stroke-miterlimit: 4; fill: rgb(0,0,0); fill-rule: nonzero; opacity: 1; white-space: pre;" ><tspan x="-124" y="12.6" style="fill: rgb(255,0,0); ">t</tspan><tspan x="-112.9" y="12.6" style="fill: rgb(0,0,255); ">e</tspan><tspan x="-95.1" y="12.6" style="fill: rgb(0,128,0); ">s</tspan><tspan x="-79.6" y="12.6" style="fill: rgb(255,255,0); ">t</tspan><tspan x="-68.4" y="12.6" style="fill: rgb(255,192,203); white-space: pre; "> </tspan><tspan x="-58.4" y="12.6" >foo bar-baz</tspan></text>\n\t</g>\n';
-    //assert.equal(SVG_1, SVG_1_EXPECTED, 'numbers have max 1 decimal');
+    //.equal(SVG_1, SVG_1_EXPECTED, 'numbers have max 1 decimal');
     fabric.Object.NUM_FRACTION_DIGITS = 3
     var SVG_2 = iText.toSVG()
     // var SVG_2_EXPECTED = '\t<g transform="translate(124.484 23.1)">\n\t\t<text xml:space="preserve" font-family="Times New Roman" font-size="40" font-style="normal" font-weight="normal" style="stroke: none; stroke-width: 1; stroke-dasharray: none; stroke-linecap: butt; stroke-linejoin: miter; stroke-miterlimit: 4; fill: rgb(0,0,0); fill-rule: nonzero; opacity: 1; white-space: pre;" ><tspan x="-123.984" y="12.566" style="fill: rgb(255,0,0); ">t</tspan><tspan x="-112.871" y="12.566" style="fill: rgb(0,0,255); ">e</tspan><tspan x="-95.117" y="12.566" style="fill: rgb(0,128,0); ">s</tspan><tspan x="-79.551" y="12.566" style="fill: rgb(255,255,0); ">t</tspan><tspan x="-68.438" y="12.566" style="fill: rgb(255,192,203); white-space: pre; "> </tspan><tspan x="-58.438" y="12.566" >foo bar-baz</tspan></text>\n\t</g>\n';
-    //assert.equal(SVG_2, SVG_2_EXPECTED, 'numbers have max 3 decimal');
+    //.equal(SVG_2, SVG_2_EXPECTED, 'numbers have max 3 decimal');
     expect(SVG_2.length > SVG_1.length).toBeTruthy()
     // put back to 2 or break all tests
     fabric.Object.NUM_FRACTION_DIGITS = 2
   })
 
-  test("getSvgSpanStyles produces correct output", function (assert) {
+  test("getSvgSpanStyles produces correct output", function () {
     var iText = new fabric.IText("test foo bar-baz")
     var styleObject = {
       fill: "red",
@@ -687,80 +679,65 @@
     var styleString = iText.getSvgSpanStyles(styleObject)
     var expected =
       "stroke-width: 30; font-family: 'Verdana'; font-size: 25px; fill: rgb(255,0,0); "
-    expect(styleString).toEqual(expected)
+    expect(styleString).toBe(expected)
   })
-  test(
-    "getSvgSpanStyles produces correct output with useWhiteSpace",
-    function (assert) {
-      var iText = new fabric.IText("test foo bar-baz")
-      var styleObject = {
-        fill: "red",
-        strokeWidth: 30,
-        fontFamily: "Verdana",
-        fontSize: 25
-      }
-      var styleString = iText.getSvgSpanStyles(styleObject, true)
-      var expected =
-        "stroke-width: 30; font-family: 'Verdana'; font-size: 25px; fill: rgb(255,0,0); white-space: pre; "
-      expect(styleString).toEqual(expected)
+  test("getSvgSpanStyles produces correct output with useWhiteSpace", function () {
+    var iText = new fabric.IText("test foo bar-baz")
+    var styleObject = {
+      fill: "red",
+      strokeWidth: 30,
+      fontFamily: "Verdana",
+      fontSize: 25
     }
-  )
-  test(
-    "getSvgTextDecoration with overline true produces correct output",
-    function (assert) {
-      var iText = new fabric.IText("test foo bar-baz")
-      var styleObject = {
-        overline: true
-      }
-      var styleString = iText.getSvgTextDecoration(styleObject)
-      var expected = "overline"
-      expect(styleString).toEqual(expected)
+    var styleString = iText.getSvgSpanStyles(styleObject, true)
+    var expected =
+      "stroke-width: 30; font-family: 'Verdana'; font-size: 25px; fill: rgb(255,0,0); white-space: pre; "
+    expect(styleString).toBe(expected)
+  })
+  test("getSvgTextDecoration with overline true produces correct output", function () {
+    var iText = new fabric.IText("test foo bar-baz")
+    var styleObject = {
+      overline: true
     }
-  )
-  test(
-    "getSvgTextDecoration with overline underline true produces correct output",
-    function (assert) {
-      var iText = new fabric.IText("test foo bar-baz")
-      var styleObject = {
-        overline: true,
-        underline: true
-      }
-      var styleString = iText.getSvgTextDecoration(styleObject)
-      var expected = "overline underline"
-      expect(styleString).toEqual(expected)
+    var styleString = iText.getSvgTextDecoration(styleObject)
+    var expected = "overline"
+    expect(styleString).toBe(expected)
+  })
+  test("getSvgTextDecoration with overline underline true produces correct output", function () {
+    var iText = new fabric.IText("test foo bar-baz")
+    var styleObject = {
+      overline: true,
+      underline: true
     }
-  )
-  test(
-    "getSvgTextDecoration with overline underline true produces correct output",
-    function (assert) {
-      var iText = new fabric.IText("test foo bar-baz")
-      var styleObject = {
-        overline: true,
-        underline: true,
-        linethrough: true
-      }
-      var styleString = iText.getSvgTextDecoration(styleObject)
-      var expected = "overline underline line-through"
-      expect(styleString).toEqual(expected)
+    var styleString = iText.getSvgTextDecoration(styleObject)
+    var expected = "overline underline"
+    expect(styleString).toBe(expected)
+  })
+  test("getSvgTextDecoration with overline underline true produces correct output", function () {
+    var iText = new fabric.IText("test foo bar-baz")
+    var styleObject = {
+      overline: true,
+      underline: true,
+      linethrough: true
     }
-  )
+    var styleString = iText.getSvgTextDecoration(styleObject)
+    var expected = "overline underline line-through"
+    expect(styleString).toBe(expected)
+  })
 
-  test(
-    "getSvgTextDecoration with overline underline true produces correct output",
-    function (assert) {
-      var iText = new fabric.IText("test foo bar-baz")
-      var styleObject = {
-        overline: true,
-        underline: true,
-        linethrough: true
-      }
-      var styleString = iText.getSvgTextDecoration(styleObject)
-      var expected = "overline underline line-through"
-      expect(styleString).toEqual(expected)
+  test("getSvgTextDecoration with overline underline true produces correct output", function () {
+    var iText = new fabric.IText("test foo bar-baz")
+    var styleObject = {
+      overline: true,
+      underline: true,
+      linethrough: true
     }
-  )
+    var styleString = iText.getSvgTextDecoration(styleObject)
+    var expected = "overline underline line-through"
+    expect(styleString).toBe(expected)
+  })
 
-  test("text superscript", function (assert) {
+  test("text superscript", function () {
     var text = new fabric.Text("xxx", {
       styles: {
         0: {
@@ -778,17 +755,19 @@
     var styleDeltaY = text.styles[0][2].deltaY
     text.setSuperscript(1, 2).setSuperscript(2, 3)
 
-    expect(text.styles[0][0].fontSize).toEqual(undefined)
-    expect(text.styles[0][0].deltaY).toEqual(undefined)
+    expect(text.styles[0][0].fontSize).toBe(undefined)
+    expect(text.styles[0][0].deltaY).toBe(undefined)
 
-    expect(text.styles[0][1].fontSize).toEqual(size * schema.size)
-    expect(text.styles[0][1].deltaY).toEqual(size * schema.baseline)
+    expect(text.styles[0][1].fontSize).toBe(size * schema.size)
+    expect(text.styles[0][1].deltaY).toBe(size * schema.baseline)
 
-    expect(text.styles[0][2].fontSize).toEqual(styleFontSize * schema.size)
-    expect(text.styles[0][2].deltaY).toEqual(styleDeltaY + styleFontSize * schema.baseline)
+    expect(text.styles[0][2].fontSize).toBe(styleFontSize * schema.size)
+    expect(text.styles[0][2].deltaY).toBe(
+      styleDeltaY + styleFontSize * schema.baseline
+    )
   })
 
-  test("text subscript", function (assert) {
+  test("text subscript", function () {
     var text = new fabric.Text("xxx", {
       styles: {
         0: {
@@ -806,37 +785,41 @@
     var styleDeltaY = text.styles[0][2].deltaY
     text.setSubscript(1, 2).setSubscript(2, 3)
 
-    expect(text.styles[0][0].fontSize).toEqual(undefined)
-    expect(text.styles[0][0].deltaY).toEqual(undefined)
+    expect(text.styles[0][0].fontSize).toBe(undefined)
+    expect(text.styles[0][0].deltaY).toBe(undefined)
 
-    expect(text.styles[0][1].fontSize).toEqual(size * schema.size)
-    expect(text.styles[0][1].deltaY).toEqual(size * schema.baseline)
+    expect(text.styles[0][1].fontSize).toBe(size * schema.size)
+    expect(text.styles[0][1].deltaY).toBe(size * schema.baseline)
 
-    expect(text.styles[0][2].fontSize).toEqual(styleFontSize * schema.size)
-    expect(text.styles[0][2].deltaY).toEqual(styleDeltaY + styleFontSize * schema.baseline)
+    expect(text.styles[0][2].fontSize).toBe(styleFontSize * schema.size)
+    expect(text.styles[0][2].deltaY).toBe(
+      styleDeltaY + styleFontSize * schema.baseline
+    )
   })
 
-  test("getHeightOfLine measures height of aline", function (assert) {
+  test("getHeightOfLine measures height of aline", function () {
     var text = new fabric.Text("xxx\n")
     var height1 = text.getHeightOfLine(0)
     var height2 = text.getHeightOfLine(1)
-    expect(Math.round(height1)).toEqual(52)
-    expect(Math.round(height2)).toEqual(52)
-    expect(height1).toEqual(height2)
+    expect(Math.round(height1)).toBe(52)
+    expect(Math.round(height2)).toBe(52)
+    expect(height1).toBe(height2)
   })
 
-  test("_measureChar handles 0 width chars", function (assert) {
+  test("_measureChar handles 0 width chars", function () {
     fabric.charWidthsCache = {}
     var zwc = "\u200b"
     var text = new fabric.Text("")
     var style = text.getCompleteStyleDeclaration(0, 0)
     var box = text._measureChar("a", style, zwc, style)
     var box2 = text._measureChar("a", style, zwc, style)
-    expect(fabric.charWidthsCache[text.fontFamily.toLowerCase()].normal_normal[zwc]).toEqual(0)
-    expect(box.kernedWidth).toEqual(box2.kernedWidth)
+    expect(
+      fabric.charWidthsCache[text.fontFamily.toLowerCase()].normal_normal[zwc]
+    ).toBe(0)
+    expect(box.kernedWidth).toBe(box2.kernedWidth)
   })
 
-  test("_deleteStyleDeclaration", function (assert) {
+  test("_deleteStyleDeclaration", function () {
     var text = new fabric.Text("aaa aaq ggg gg oee eee", {
       styles: {
         0: {
@@ -862,10 +845,10 @@
       width: 5
     })
     text._deleteStyleDeclaration(0, 10)
-    expect(text.styles[0][10]).toEqual(undefined)
+    expect(text.styles[0][10]).toBe(undefined)
   })
 
-  test("_setStyleDeclaration", function (assert) {
+  test("_setStyleDeclaration", function () {
     var text = new fabric.Text("aaa aaq ggg gg oee eee", {
       styles: {
         0: {
@@ -890,13 +873,13 @@
       },
       width: 5
     })
-    expect(typeof text._setStyleDeclaration).toEqual("function")
+    expect(typeof text._setStyleDeclaration).toBe("function")
     var newStyle = { fontSize: 10 }
     text._setStyleDeclaration(0, 10, newStyle)
-    expect(text.styles[0][10]).toEqual(newStyle)
+    expect(text.styles[0][10]).toBe(newStyle)
   })
 
-  test("styleHas", function (assert) {
+  test("styleHas", function () {
     var textbox = new fabric.Textbox("aaa\naaq ggg gg oee eee", {
       styles: {
         0: {
@@ -912,11 +895,11 @@
       },
       width: 5
     })
-    expect(textbox.styleHas("fontSize")).toEqual(true)
-    expect(textbox.styleHas("fontSize", 0)).toEqual(true)
-    expect(textbox.styleHas("fontSize", 1)).toEqual(false)
-    expect(textbox.styleHas("fontFamily")).toEqual(true)
-    expect(textbox.styleHas("fontFamily", 0)).toEqual(false)
-    expect(textbox.styleHas("fontFamily", 1)).toEqual(true)
+    expect(textbox.styleHas("fontSize")).toBe(true)
+    expect(textbox.styleHas("fontSize", 0)).toBe(true)
+    expect(textbox.styleHas("fontSize", 1)).toBe(false)
+    expect(textbox.styleHas("fontFamily")).toBe(true)
+    expect(textbox.styleHas("fontFamily", 0)).toBe(false)
+    expect(textbox.styleHas("fontFamily", 1)).toBe(true)
   })
-})()
+})

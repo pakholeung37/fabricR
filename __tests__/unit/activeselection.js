@@ -68,7 +68,7 @@ describe("fabric.ActiveSelection", () => {
 
   test("toString", function () {
     var group = makeAsWith2Objects()
-    expect(group.toString()).toEqual("#<fabric.ActiveSelection: (2)>")
+    expect(group.toString()).toBe("#<fabric.ActiveSelection: (2)>")
   })
 
   test("toObject", function () {
@@ -195,7 +195,7 @@ describe("fabric.ActiveSelection", () => {
   test("get with locked objects", function () {
     var group = makeAsWith2Objects()
 
-    expect(group.get("lockMovementX")).toEqual(false)
+    expect(group.get("lockMovementX")).toBe(false)
 
     // TODO acitveGroup
     // group.getObjects()[0].lockMovementX = true;
@@ -205,7 +205,7 @@ describe("fabric.ActiveSelection", () => {
     // .equal(group.get('lockMovementX'), false);
 
     group.set("lockMovementX", true)
-    expect(group.get("lockMovementX")).toEqual(true)
+    expect(group.get("lockMovementX")).toBe(true)
 
     // group.set('lockMovementX', false);
     // group.getObjects()[0].lockMovementY = true;
@@ -225,10 +225,10 @@ describe("fabric.ActiveSelection", () => {
     expect(typeof group.insertAt === "function").toBeTruthy()
 
     group.insertAt(rect1, 1)
-    expect(group.item(1)).toEqual(rect1)
+    expect(group.item(1)).toBe(rect1)
     group.insertAt(rect2, 2)
-    expect(group.item(2)).toEqual(rect2)
-    expect(group.insertAt(rect1, 2)).toEqual(group)
+    expect(group.item(2)).toBe(rect2)
+    expect(group.insertAt(rect1, 2)).toBe(group)
   })
 
   test("group addWithUpdate", function () {
@@ -314,15 +314,15 @@ describe("fabric.ActiveSelection", () => {
         objectCaching: true
       })
 
-    expect(group.shouldCache()).toEqual(false)
+    expect(group.shouldCache()).toBe(false)
   })
 
   test("canvas property propagation", function () {
     var g2 = makeAsWith4Objects()
 
     canvas.add(g2)
-    expect(g2.canvas).toEqual(canvas)
-    expect(g2._objects[3].canvas).toEqual(canvas)
+    expect(g2.canvas).toBe(canvas)
+    expect(g2._objects[3].canvas).toBe(canvas)
   })
 
   test("moveTo on activeSelection", function () {
@@ -336,29 +336,29 @@ describe("fabric.ActiveSelection", () => {
     expect(typeof group.item(0).moveTo === "function").toBeTruthy()
 
     // [ 1, 2, 3, 4 ]
-    expect(group.item(0)).toEqual(groupEl1)
-    expect(group.item(1)).toEqual(groupEl2)
-    expect(group.item(2)).toEqual(groupEl3)
-    expect(group.item(3)).toEqual(groupEl4)
-    expect(group.item(9999)).toEqual(undefined)
-    expect(canvas.item(0)).toEqual(groupEl1)
-    expect(canvas.item(1)).toEqual(groupEl2)
-    expect(canvas.item(2)).toEqual(groupEl3)
-    expect(canvas.item(3)).toEqual(groupEl4)
-    expect(canvas.item(9999)).toEqual(undefined)
+    expect(group.item(0)).toBe(groupEl1)
+    expect(group.item(1)).toBe(groupEl2)
+    expect(group.item(2)).toBe(groupEl3)
+    expect(group.item(3)).toBe(groupEl4)
+    expect(group.item(9999)).toBe(undefined)
+    expect(canvas.item(0)).toBe(groupEl1)
+    expect(canvas.item(1)).toBe(groupEl2)
+    expect(canvas.item(2)).toBe(groupEl3)
+    expect(canvas.item(3)).toBe(groupEl4)
+    expect(canvas.item(9999)).toBe(undefined)
 
     group.item(0).moveTo(3)
 
-    expect(group.item(0)).toEqual(groupEl1)
-    expect(group.item(1)).toEqual(groupEl2)
-    expect(group.item(2)).toEqual(groupEl3)
-    expect(group.item(3)).toEqual(groupEl4)
-    expect(group.item(9999)).toEqual(undefined)
+    expect(group.item(0)).toBe(groupEl1)
+    expect(group.item(1)).toBe(groupEl2)
+    expect(group.item(2)).toBe(groupEl3)
+    expect(group.item(3)).toBe(groupEl4)
+    expect(group.item(9999)).toBe(undefined)
     // moved 1 to level 3 — [2, 3, 4, 1]
-    expect(canvas.item(3)).toEqual(groupEl1)
-    expect(canvas.item(0)).toEqual(groupEl2)
-    expect(canvas.item(1)).toEqual(groupEl3)
-    expect(canvas.item(2)).toEqual(groupEl4)
-    expect(canvas.item(9999)).toEqual(undefined)
+    expect(canvas.item(3)).toBe(groupEl1)
+    expect(canvas.item(0)).toBe(groupEl2)
+    expect(canvas.item(1)).toBe(groupEl3)
+    expect(canvas.item(2)).toBe(groupEl4)
+    expect(canvas.item(9999)).toBe(undefined)
   })
 })

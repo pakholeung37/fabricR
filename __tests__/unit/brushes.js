@@ -10,13 +10,13 @@ describe("fabric.BaseBrush", function () {
     var brush = new fabric.BaseBrush()
 
     expect(brush instanceof fabric.BaseBrush).toBeTruthy()
-    expect(brush.color).toEqual("rgb(0, 0, 0)")
-    expect(brush.width).toEqual(1)
+    expect(brush.color).toBe("rgb(0, 0, 0)")
+    expect(brush.width).toBe(1)
   })
   test("fabric pencil brush constructor", function () {
     expect(fabric.PencilBrush).toBeTruthy()
     var brush = new fabric.PencilBrush(canvas)
-    expect(brush.canvas).toEqual(canvas)
+    expect(brush.canvas).toBe(canvas)
     expect(brush._points).toEqual([])
   })
   ;[true, false].forEach(function (val) {
@@ -31,7 +31,7 @@ describe("fabric.BaseBrush", function () {
           var pointer = canvas.getPointer({ clientX: 10, clientY: 10 })
           brush.onMouseDown(pointer, { e: {} })
           var pathData = brush.convertPointsToSVGPath(brush._points).join("")
-          expect(pathData).toEqual("M 9.999 10 L 10.001 10")
+          expect(pathData).toBe("M 9.999 10 L 10.001 10")
         })
         test("fabric pencil brush multiple points", function () {
           var brush = new fabric.PencilBrush(canvas)
@@ -42,8 +42,8 @@ describe("fabric.BaseBrush", function () {
           brush.onMouseMove(pointer, { e: {} })
           brush.onMouseMove(pointer, { e: {} })
           var pathData = brush.convertPointsToSVGPath(brush._points).join("")
-          expect(pathData).toEqual("M 9.999 10 L 10.001 10")
-          expect(brush._points.length).toEqual(2)
+          expect(pathData).toBe("M 9.999 10 L 10.001 10")
+          expect(brush._points.length).toBe(2)
         })
         test("fabric pencil brush multiple points not discarded", function () {
           var brush = new fabric.PencilBrush(canvas)
@@ -56,10 +56,10 @@ describe("fabric.BaseBrush", function () {
           brush.onMouseMove(pointer2, { e: {} })
           brush.onMouseMove(pointer3, { e: {} })
           var pathData = brush.convertPointsToSVGPath(brush._points).join("")
-          expect(pathData).toEqual(
+          expect(pathData).toBe(
             "M 9.999 9.999 Q 10 10 12.5 12.5 Q 15 15 17.5 17.5 Q 20 20 17.5 17.5 Q 15 15 17.5 17.5 L 20.001 20.001"
           )
-          expect(brush._points.length).toEqual(6)
+          expect(brush._points.length).toBe(6)
         })
         test("fabric pencil brush multiple points not discarded", function () {
           var fireBeforePathCreatedEvent = false
@@ -82,8 +82,8 @@ describe("fabric.BaseBrush", function () {
           brush.onMouseMove(pointer2, { e: {} })
           brush.onMouseMove(pointer3, { e: {} })
           brush.onMouseUp({ e: {} })
-          expect(fireBeforePathCreatedEvent).toEqual(true)
-          expect(firePathCreatedEvent).toEqual(true)
+          expect(fireBeforePathCreatedEvent).toBe(true)
+          expect(firePathCreatedEvent).toBe(true)
           expect(added instanceof fabric.Path).toBeTruthy()
           expect(added.path.length).toBeTruthy()
           canvas.off()

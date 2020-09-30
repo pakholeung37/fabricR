@@ -13,8 +13,8 @@ describe("fabric.Circle", () => {
   test("constructor with radius", function () {
     expect(fabric.Circle).toBeTruthy()
     var circle = new fabric.Circle({ radius: 20 })
-    expect(circle.width).toEqual(40)
-    expect(circle.height).toEqual(40)
+    expect(circle.width).toBe(40)
+    expect(circle.height).toBe(40)
   })
 
   test("getRadiusX, getRadiusY", function () {
@@ -23,23 +23,23 @@ describe("fabric.Circle", () => {
     expect(typeof circle.getRadiusX === "function").toBeTruthy()
     expect(typeof circle.getRadiusY === "function").toBeTruthy()
 
-    expect(circle.getRadiusX()).toEqual(10)
-    expect(circle.getRadiusY()).toEqual(10)
+    expect(circle.getRadiusX()).toBe(10)
+    expect(circle.getRadiusY()).toBe(10)
 
     circle.scale(2)
 
-    expect(circle.getRadiusX()).toEqual(20)
-    expect(circle.getRadiusY()).toEqual(20)
+    expect(circle.getRadiusX()).toBe(20)
+    expect(circle.getRadiusY()).toBe(20)
 
     circle.set("scaleX", 3)
 
-    expect(circle.getRadiusX()).toEqual(30)
-    expect(circle.getRadiusY()).toEqual(20)
+    expect(circle.getRadiusX()).toBe(30)
+    expect(circle.getRadiusY()).toBe(20)
 
     circle.set("scaleY", 4)
 
-    expect(circle.getRadiusX()).toEqual(30)
-    expect(circle.getRadiusY()).toEqual(40)
+    expect(circle.getRadiusX()).toBe(30)
+    expect(circle.getRadiusY()).toBe(40)
   })
 
   test("setRadius", function () {
@@ -47,19 +47,19 @@ describe("fabric.Circle", () => {
 
     expect(typeof circle.setRadius === "function").toBeTruthy()
 
-    expect(circle.getRadiusX()).toEqual(10)
-    expect(circle.getRadiusY()).toEqual(10)
+    expect(circle.getRadiusX()).toBe(10)
+    expect(circle.getRadiusY()).toBe(10)
 
-    expect(circle.width).toEqual(20)
-    expect(circle.height).toEqual(20)
+    expect(circle.width).toBe(20)
+    expect(circle.height).toBe(20)
 
-    expect(circle).toEqual(circle.setRadius(20))
+    expect(circle).toBe(circle.setRadius(20))
 
-    expect(circle.getRadiusX()).toEqual(20)
-    expect(circle.getRadiusY()).toEqual(20)
+    expect(circle.getRadiusX()).toBe(20)
+    expect(circle.getRadiusY()).toBe(20)
 
-    expect(circle.width).toEqual(40)
-    expect(circle.height).toEqual(40)
+    expect(circle.width).toBe(40)
+    expect(circle.height).toBe(40)
   })
 
   test("set radius", function () {
@@ -67,17 +67,17 @@ describe("fabric.Circle", () => {
 
     circle.set("radius", 20)
 
-    expect(circle.getRadiusX()).toEqual(20)
-    expect(circle.getRadiusY()).toEqual(20)
+    expect(circle.getRadiusX()).toBe(20)
+    expect(circle.getRadiusY()).toBe(20)
 
-    expect(circle.width).toEqual(40)
-    expect(circle.height).toEqual(40)
+    expect(circle.width).toBe(40)
+    expect(circle.height).toBe(40)
   })
 
   test("complexity", function () {
     var circle = new fabric.Circle()
     expect(typeof circle.complexity === "function").toBeTruthy()
-    expect(circle.complexity()).toEqual(1)
+    expect(circle.complexity()).toBe(1)
   })
 
   test("toObject", function () {
@@ -140,10 +140,10 @@ describe("fabric.Circle", () => {
     var circle = new fabric.Circle({ width: 100, height: 100, radius: 10 })
     var svg = circle.toSVG()
     var svgClipPath = circle.toClipPathSVG()
-    expect(svg).toEqual(
+    expect(svg).toBe(
       '<g transform="matrix(1 0 0 1 10.5 10.5)"  >\n<circle style="stroke: none; stroke-width: 1; stroke-dasharray: none; stroke-linecap: butt; stroke-dashoffset: 0; stroke-linejoin: miter; stroke-miterlimit: 4; fill: rgb(0,0,0); fill-rule: nonzero; opacity: 1;"  cx="0" cy="0" r="10" />\n</g>\n'
     )
-    expect(svgClipPath).toEqual(
+    expect(svgClipPath).toBe(
       '\t<circle transform="matrix(1 0 0 1 10.5 10.5)" cx="0" cy="0" r="10" />\n'
     )
   })
@@ -157,10 +157,10 @@ describe("fabric.Circle", () => {
     })
     var svg = circle.toSVG()
     var svgClipPath = circle.toClipPathSVG()
-    expect(svg).toEqual(
+    expect(svg).toBe(
       '<g transform="matrix(1 0 0 1 10.5 10.5)"  >\n<path d="M 10 0 A 10 10 0 0 1 -10 0" style="stroke: none; stroke-width: 1; stroke-dasharray: none; stroke-linecap: butt; stroke-dashoffset: 0; stroke-linejoin: miter; stroke-miterlimit: 4; fill: rgb(0,0,0); fill-rule: nonzero; opacity: 1;"   />\n</g>\n'
     )
-    expect(svgClipPath).toEqual(
+    expect(svgClipPath).toBe(
       '\t<path d="M 10 0 A 10 10 0 0 1 -10 0" transform="matrix(1 0 0 1 10.5 10.5)"  />\n'
     )
   })
@@ -194,16 +194,16 @@ describe("fabric.Circle", () => {
 
     fabric.Circle.fromElement(elCircle, function (oCircle) {
       expect(oCircle instanceof fabric.Circle).toBeTruthy()
-      expect(oCircle.get("radius")).toEqual(radius)
-      expect(oCircle.get("left")).toEqual(left - radius)
-      expect(oCircle.get("top")).toEqual(top - radius)
-      expect(oCircle.get("fill")).toEqual(fill)
-      expect(oCircle.get("opacity")).toEqual(opacity)
-      expect(oCircle.get("strokeWidth")).toEqual(strokeWidth)
+      expect(oCircle.get("radius")).toBe(radius)
+      expect(oCircle.get("left")).toBe(left - radius)
+      expect(oCircle.get("top")).toBe(top - radius)
+      expect(oCircle.get("fill")).toBe(fill)
+      expect(oCircle.get("opacity")).toBe(opacity)
+      expect(oCircle.get("strokeWidth")).toBe(strokeWidth)
       expect(oCircle.get("strokeDashArray")).toEqual(strokeDashArray)
-      expect(oCircle.get("strokeLineCap")).toEqual(strokeLineCap)
-      expect(oCircle.get("strokeLineJoin")).toEqual(strokeLineJoin)
-      expect(oCircle.get("strokeMiterLimit")).toEqual(strokeMiterLimit)
+      expect(oCircle.get("strokeLineCap")).toBe(strokeLineCap)
+      expect(oCircle.get("strokeLineJoin")).toBe(strokeLineJoin)
+      expect(oCircle.get("strokeMiterLimit")).toBe(strokeMiterLimit)
 
       var elFaultyCircle = fabric.document.createElementNS(namespace, "circle")
       elFaultyCircle.setAttributeNS(namespace, "r", "-10")
@@ -247,10 +247,10 @@ describe("fabric.Circle", () => {
       function (circle) {
         expect(circle instanceof fabric.Circle).toBeTruthy()
 
-        expect(circle.get("left")).toEqual(left)
-        expect(circle.get("top")).toEqual(top)
-        expect(circle.get("radius")).toEqual(radius)
-        expect(circle.get("fill")).toEqual(fill)
+        expect(circle.get("left")).toBe(left)
+        expect(circle.get("top")).toBe(top)
+        expect(circle.get("radius")).toBe(radius)
+        expect(circle.get("fill")).toBe(fill)
 
         var expected = circle.toObject()
         fabric.Circle.fromObject(expected, function (actual) {
@@ -266,11 +266,11 @@ describe("fabric.Circle", () => {
     circle.scale(2)
 
     circle.clone(function (clone) {
-      expect(clone.width).toEqual(20)
-      expect(clone.getScaledWidth()).toEqual(40)
-      expect(clone.height).toEqual(20)
-      expect(clone.getScaledHeight()).toEqual(40)
-      expect(clone.radius).toEqual(10)
+      expect(clone.width).toBe(20)
+      expect(clone.getScaledWidth()).toBe(40)
+      expect(clone.height).toBe(20)
+      expect(clone.getScaledHeight()).toBe(40)
+      expect(clone.radius).toBe(10)
     })
   })
 })

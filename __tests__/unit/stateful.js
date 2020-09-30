@@ -1,6 +1,5 @@
-;(function () {
-  describe("fabric.stateful")
-  test("hasStateChanged", function (assert) {
+describe("fabric.stateful", () => {
+  test("hasStateChanged", function () {
     var cObj = new fabric.Object()
     expect(typeof cObj.hasStateChanged === "function").toBeTruthy()
     cObj.setupState()
@@ -10,19 +9,19 @@
     expect(cObj.hasStateChanged()).toBeTruthy()
   })
 
-  test("saveState", function (assert) {
+  test("saveState", function () {
     var cObj = new fabric.Object()
     expect(typeof cObj.saveState === "function").toBeTruthy()
     cObj.setupState()
-    expect(cObj.saveState()).toEqual(cObj)
+    expect(cObj.saveState()).toBe(cObj)
     cObj.set("left", 123).set("top", 456)
     cObj.saveState()
     cObj.set("left", 223).set("top", 556)
-    expect(cObj._stateProperties.left).toEqual(123)
-    expect(cObj._stateProperties.top).toEqual(456)
+    expect(cObj._stateProperties.left).toBe(123)
+    expect(cObj._stateProperties.top).toBe(456)
   })
 
-  test("saveState with extra props", function (assert) {
+  test("saveState with extra props", function () {
     var cObj = new fabric.Object()
     cObj.prop1 = "a"
     cObj.prop2 = "b"
@@ -30,14 +29,14 @@
     var extraProps = ["prop1", "prop2"]
     var options = { stateProperties: extraProps }
     cObj.setupState(options)
-    expect(cObj._stateProperties.prop1).toEqual("a")
-    expect(cObj._stateProperties.prop2).toEqual("b")
+    expect(cObj._stateProperties.prop1).toBe("a")
+    expect(cObj._stateProperties.prop2).toBe("b")
     cObj.prop1 = "c"
     expect(cObj.hasStateChanged()).toBeTruthy()
-    expect(cObj._stateProperties.left).toEqual(123)
+    expect(cObj._stateProperties.left).toBe(123)
   })
 
-  test("saveState with array", function (assert) {
+  test("saveState with array", function () {
     var cObj = new fabric.Text("Hello")
     cObj.set("strokeDashArray", [0, 4])
     cObj.setupState()
@@ -51,7 +50,7 @@
     expect(cObj.hasStateChanged()).toBeTruthy()
   })
 
-  test("saveState with array to null", function (assert) {
+  test("saveState with array to null", function () {
     var cObj = new fabric.Text("Hello")
     cObj.set("strokeDashArray", [0, 4])
     cObj.setupState()
@@ -65,7 +64,7 @@
     expect(cObj.hasStateChanged()).toBeTruthy()
   })
 
-  test("saveState with fabric class gradient", function (assert) {
+  test("saveState with fabric class gradient", function () {
     var cObj = new fabric.Object()
     var gradient = new fabric.Gradient({
       type: "linear",
@@ -96,9 +95,7 @@
     expect(cObj.hasStateChanged()).toBeTruthy()
   })
 
-  test("saveState with fabric class gradient to other types", function (
-    assert
-  ) {
+  test("saveState with fabric class gradient to other types", function () {
     var cObj = new fabric.Object()
     var gradient = new fabric.Gradient({
       type: "linear",
@@ -126,7 +123,7 @@
     expect(cObj.hasStateChanged()).toBeTruthy()
   })
 
-  test("savestate with custom property set", function (assert) {
+  test("savestate with custom property set", function () {
     var cObj = new fabric.Object()
     cObj.myProperties = ["a", "b"]
     cObj.a = 1
@@ -141,4 +138,4 @@
     cObj.a = 2
     expect(cObj.hasStateChanged("myProperties")).toBeTruthy()
   })
-})()
+})

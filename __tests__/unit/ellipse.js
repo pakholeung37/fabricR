@@ -1,11 +1,8 @@
-;(function () {
-  describe("fabric.Ellipse", {
-    beforeEach: function () {
-      fabric.Object.__uid = 0
-    }
+describe("fabric.Ellipse", () => {
+  beforeEach(function () {
+    fabric.Object.__uid = 0
   })
-
-  test("constructor", function (assert) {
+  test("constructor", function () {
     expect(fabric.Ellipse).toBeTruthy()
 
     var ellipse = new fabric.Ellipse()
@@ -13,16 +10,16 @@
     expect(ellipse instanceof fabric.Ellipse).toBeTruthy()
     expect(ellipse instanceof fabric.Object).toBeTruthy()
 
-    expect(ellipse.type).toEqual("ellipse")
+    expect(ellipse.type).toBe("ellipse")
   })
 
-  test("complexity", function (assert) {
+  test("complexity", function () {
     var ellipse = new fabric.Ellipse()
     expect(typeof ellipse.complexity === "function").toBeTruthy()
-    expect(ellipse.complexity()).toEqual(1)
+    expect(ellipse.complexity()).toBe(1)
   })
 
-  test("toObject", function (assert) {
+  test("toObject", function () {
     var ellipse = new fabric.Ellipse()
     var defaultProperties = {
       version: fabric.version,
@@ -84,33 +81,33 @@
     expect(ellipse.getRx()).toEqual(ellipse.rx * ellipse.scaleX)
   })
 
-  test("isNotVisible", function (assert) {
+  test("isNotVisible", function () {
     var ellipse = new fabric.Ellipse()
     ellipse.set("rx", 0).set("ry", 0)
 
-    expect(ellipse.isNotVisible()).toEqual(false)
+    expect(ellipse.isNotVisible()).toBe(false)
 
     ellipse.set("strokeWidth", 0)
 
-    expect(ellipse.isNotVisible()).toEqual(true)
+    expect(ellipse.isNotVisible()).toBe(true)
   })
 
-  test("toSVG", function (assert) {
+  test("toSVG", function () {
     var ellipse = new fabric.Ellipse({
       rx: 100,
       ry: 12,
       fill: "red",
       stroke: "blue"
     })
-    expect(ellipse.toSVG()).toEqual(
+    expect(ellipse.toSVG()).toBe(
       '<g transform="matrix(1 0 0 1 100.5 12.5)"  >\n<ellipse style="stroke: rgb(0,0,255); stroke-width: 1; stroke-dasharray: none; stroke-linecap: butt; stroke-dashoffset: 0; stroke-linejoin: miter; stroke-miterlimit: 4; fill: rgb(255,0,0); fill-rule: nonzero; opacity: 1;"  cx="0" cy="0" rx="100" ry="12" />\n</g>\n'
     )
-    expect(ellipse.toClipPathSVG()).toEqual(
+    expect(ellipse.toClipPathSVG()).toBe(
       '\t<ellipse transform="matrix(1 0 0 1 100.5 12.5)" cx="0" cy="0" rx="100" ry="12" />\n'
     )
   })
 
-  test("toSVG with a clipPath", function (assert) {
+  test("toSVG with a clipPath", function () {
     var ellipse = new fabric.Ellipse({
       rx: 100,
       ry: 12,
@@ -123,12 +120,12 @@
       left: 60,
       top: -50
     })
-    expect(ellipse.toSVG()).toEqual(
+    expect(ellipse.toSVG()).toBe(
       '<g transform="matrix(1 0 0 1 100.5 12.5)" clip-path="url(#CLIPPATH_0)"  >\n<clipPath id="CLIPPATH_0" >\n\t<ellipse transform="matrix(1 0 0 1 72.5 50.5)" cx="0" cy="0" rx="12" ry="100" />\n</clipPath>\n<ellipse style="stroke: rgb(0,0,255); stroke-width: 1; stroke-dasharray: none; stroke-linecap: butt; stroke-dashoffset: 0; stroke-linejoin: miter; stroke-miterlimit: 4; fill: rgb(255,0,0); fill-rule: nonzero; opacity: 1;"  cx="0" cy="0" rx="100" ry="12" />\n</g>\n'
     )
   })
 
-  test("toSVG with a clipPath absolute positioned", function (assert) {
+  test("toSVG with a clipPath absolute positioned", function () {
     var ellipse = new fabric.Ellipse({
       rx: 100,
       ry: 12,
@@ -142,12 +139,12 @@
       top: -50
     })
     ellipse.clipPath.absolutePositioned = true
-    expect(ellipse.toSVG()).toEqual(
+    expect(ellipse.toSVG()).toBe(
       '<g clip-path="url(#CLIPPATH_0)"  >\n<g transform="matrix(1 0 0 1 100.5 12.5)"  >\n<clipPath id="CLIPPATH_0" >\n\t<ellipse transform="matrix(1 0 0 1 72.5 50.5)" cx="0" cy="0" rx="12" ry="100" />\n</clipPath>\n<ellipse style="stroke: rgb(0,0,255); stroke-width: 1; stroke-dasharray: none; stroke-linecap: butt; stroke-dashoffset: 0; stroke-linejoin: miter; stroke-miterlimit: 4; fill: rgb(255,0,0); fill-rule: nonzero; opacity: 1;"  cx="0" cy="0" rx="100" ry="12" />\n</g>\n</g>\n'
     )
   })
 
-  test("fromElement", function (assert) {
+  test("fromElement", function () {
     expect(typeof fabric.Ellipse.fromElement === "function").toBeTruthy()
 
     var namespace = "http://www.w3.org/2000/svg"
@@ -178,22 +175,21 @@
 
     fabric.Ellipse.fromElement(elEllipse, function (oEllipse) {
       expect(oEllipse instanceof fabric.Ellipse).toBeTruthy()
-      expect(oEllipse.get("rx")).toEqual(rx)
-      expect(oEllipse.get("ry")).toEqual(ry)
-      expect(oEllipse.get("left")).toEqual(left - rx)
-      expect(oEllipse.get("top")).toEqual(top - ry)
-      expect(oEllipse.get("fill")).toEqual(fill)
-      expect(oEllipse.get("opacity")).toEqual(opacity)
-      expect(oEllipse.get("strokeWidth")).toEqual(strokeWidth)
+      expect(oEllipse.get("rx")).toBe(rx)
+      expect(oEllipse.get("ry")).toBe(ry)
+      expect(oEllipse.get("left")).toBe(left - rx)
+      expect(oEllipse.get("top")).toBe(top - ry)
+      expect(oEllipse.get("fill")).toBe(fill)
+      expect(oEllipse.get("opacity")).toBe(opacity)
+      expect(oEllipse.get("strokeWidth")).toBe(strokeWidth)
       expect(oEllipse.get("strokeDashArray")).toEqual(strokeDashArray)
-      expect(oEllipse.get("strokeLineCap")).toEqual(strokeLineCap)
-      expect(oEllipse.get("strokeLineJoin")).toEqual(strokeLineJoin)
-      expect(oEllipse.get("strokeMiterLimit")).toEqual(strokeMiterLimit)
+      expect(oEllipse.get("strokeLineCap")).toBe(strokeLineCap)
+      expect(oEllipse.get("strokeLineJoin")).toBe(strokeLineJoin)
+      expect(oEllipse.get("strokeMiterLimit")).toBe(strokeMiterLimit)
     })
   })
 
-  test("fromObject", function (assert) {
-    var done = assert.async()
+  test("fromObject", function (done) {
     expect(typeof fabric.Ellipse === "function").toBeTruthy()
 
     var left = 112,
@@ -213,11 +209,11 @@
       function (ellipse) {
         expect(ellipse instanceof fabric.Ellipse).toBeTruthy()
 
-        expect(ellipse.get("left")).toEqual(left)
-        expect(ellipse.get("top")).toEqual(top)
-        expect(ellipse.get("rx")).toEqual(rx)
-        expect(ellipse.get("ry")).toEqual(ry)
-        expect(ellipse.get("fill")).toEqual(fill)
+        expect(ellipse.get("left")).toBe(left)
+        expect(ellipse.get("top")).toBe(top)
+        expect(ellipse.get("rx")).toBe(rx)
+        expect(ellipse.get("ry")).toBe(ry)
+        expect(ellipse.get("fill")).toBe(fill)
 
         var expected = ellipse.toObject()
         fabric.Ellipse.fromObject(expected, function (actual) {
@@ -227,4 +223,4 @@
       }
     )
   })
-})()
+})

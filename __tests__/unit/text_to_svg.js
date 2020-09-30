@@ -1,34 +1,39 @@
-;(function () {
-  function removeTranslate(str) {
-    return str.replace(/matrix\(.*?\)/, "")
-  }
-  describe("fabric.Text")
-  test("toSVG", function (assert) {
+function removeTranslate(str) {
+  return str.replace(/matrix\(.*?\)/, "")
+}
+describe("fabric.Text", () => {
+  test("toSVG", function () {
     var TEXT_SVG =
       '<g transform="" style=""  >\n\t\t<text xml:space="preserve" font-family="Times New Roman" font-size="40" font-style="normal" font-weight="normal" style="stroke: none; stroke-width: 1; stroke-dasharray: none; stroke-linecap: butt; stroke-dashoffset: 0; stroke-linejoin: miter; stroke-miterlimit: 4; fill: rgb(0,0,0); fill-rule: nonzero; opacity: 1; white-space: pre;" ><tspan x="-10" y="12.57" >x</tspan></text>\n</g>\n'
     var text = new fabric.Text("x")
-    expect(removeTranslate(text.toSVG())).toEqual(removeTranslate(TEXT_SVG))
+    expect(removeTranslate(text.toSVG())).toBe(removeTranslate(TEXT_SVG))
     text.set("fontFamily", "Arial")
-    expect(removeTranslate(text.toSVG())).toEqual(removeTranslate(
-      TEXT_SVG.replace('font-family="Times New Roman"', 'font-family="Arial"')
-    ))
+    expect(removeTranslate(text.toSVG())).toBe(
+      removeTranslate(
+        TEXT_SVG.replace('font-family="Times New Roman"', 'font-family="Arial"')
+      )
+    )
   })
-  test("toSVG justified", function (assert) {
+  test("toSVG justified", function () {
     var TEXT_SVG_JUSTIFIED =
       '<g transform="" style=""  >\n\t\t<text xml:space="preserve" font-family="Times New Roman" font-size="40" font-style="normal" font-weight="normal" style="stroke: none; stroke-width: 1; stroke-dasharray: none; stroke-linecap: butt; stroke-dashoffset: 0; stroke-linejoin: miter; stroke-miterlimit: 4; fill: rgb(0,0,0); fill-rule: nonzero; opacity: 1; white-space: pre;" ><tspan x="-60" y="-13.65" >xxxxxx</tspan><tspan x="-60" y="38.78" style="white-space: pre; ">x </tspan><tspan x="40" y="38.78" >y</tspan></text>\n</g>\n'
     var text = new fabric.Text("xxxxxx\nx y", {
       textAlign: "justify"
     })
 
-    expect(removeTranslate(text.toSVG())).toEqual(removeTranslate(TEXT_SVG_JUSTIFIED))
+    expect(removeTranslate(text.toSVG())).toBe(
+      removeTranslate(TEXT_SVG_JUSTIFIED)
+    )
   })
-  test("toSVG with multiple spaces", function (assert) {
+  test("toSVG with multiple spaces", function () {
     var TEXT_SVG_MULTIPLESPACES =
       '<g transform="" style=""  >\n\t\t<text xml:space="preserve" font-family="Times New Roman" font-size="40" font-style="normal" font-weight="normal" style="stroke: none; stroke-width: 1; stroke-dasharray: none; stroke-linecap: butt; stroke-dashoffset: 0; stroke-linejoin: miter; stroke-miterlimit: 4; fill: rgb(0,0,0); fill-rule: nonzero; opacity: 1; white-space: pre;" ><tspan x="-105" y="12.57" style="white-space: pre; ">x                 y</tspan></text>\n</g>\n'
     var text = new fabric.Text("x                 y")
-    expect(removeTranslate(text.toSVG())).toEqual(removeTranslate(TEXT_SVG_MULTIPLESPACES))
+    expect(removeTranslate(text.toSVG())).toBe(
+      removeTranslate(TEXT_SVG_MULTIPLESPACES)
+    )
   })
-  test("toSVG with deltaY", function (assert) {
+  test("toSVG with deltaY", function () {
     fabric.Object.NUM_FRACTION_DIGITS = 0
     var TEXT_SVG =
       '<g transform="" style=""  >\n\t\t<text xml:space="preserve" font-family="Times New Roman" font-size="40" font-style="normal" font-weight="normal" style="stroke: none; stroke-width: 1; stroke-dasharray: none; stroke-linecap: butt; stroke-dashoffset: 0; stroke-linejoin: miter; stroke-miterlimit: 4; fill: rgb(0,0,0); fill-rule: nonzero; opacity: 1; white-space: pre;" ><tspan x="-16" y="13" >x</tspan><tspan x="4" y="13"  dy="-14" style="font-size: 24px; baseline-shift: 14; ">x</tspan></text>\n</g>\n'
@@ -42,11 +47,11 @@
         }
       }
     })
-    expect(removeTranslate(text.toSVG())).toEqual(removeTranslate(TEXT_SVG))
+    expect(removeTranslate(text.toSVG())).toBe(removeTranslate(TEXT_SVG))
     fabric.Object.NUM_FRACTION_DIGITS = 2
   })
 
-  test("toSVG with font", function (assert) {
+  test("toSVG with font", function () {
     var TEXT_SVG_WITH_FONT =
       '<g transform="" style=""  >\n\t\t<text xml:space="preserve" font-family="Times New Roman" font-size="40" font-style="normal" font-weight="normal" style="stroke: none; stroke-width: 1; stroke-dasharray: none; stroke-linecap: butt; stroke-dashoffset: 0; stroke-linejoin: miter; stroke-miterlimit: 4; fill: rgb(0,0,0); fill-rule: nonzero; opacity: 1; white-space: pre;" ><tspan x="-60" y="-13.65" style="font-family: \'Times New Roman\'; ">xxxxxx</tspan><tspan x="-60" y="38.78" style="white-space: pre; ">x </tspan><tspan x="40" y="38.78" >y</tspan></text>\n</g>\n'
     var text = new fabric.Text("xxxxxx\nx y", {
@@ -62,9 +67,11 @@
         }
       }
     })
-    expect(removeTranslate(text.toSVG())).toEqual(removeTranslate(TEXT_SVG_WITH_FONT))
+    expect(removeTranslate(text.toSVG())).toBe(
+      removeTranslate(TEXT_SVG_WITH_FONT)
+    )
   })
-  test("toSVG with text as a clipPath", function (assert) {
+  test("toSVG with text as a clipPath", function () {
     fabric.Object.NUM_FRACTION_DIGITS = 0
     fabric.Object.__uid = 0
     var EXPECTED =
@@ -72,7 +79,7 @@
     var clipPath = new fabric.Text("text as clipPath")
     var rect = new fabric.Rect({ width: 200, height: 100 })
     rect.clipPath = clipPath
-    expect(removeTranslate(rect.toSVG())).toEqual(removeTranslate(EXPECTED))
+    expect(removeTranslate(rect.toSVG())).toBe(removeTranslate(EXPECTED))
     fabric.Object.NUM_FRACTION_DIGITS = 2
   })
-})()
+})
