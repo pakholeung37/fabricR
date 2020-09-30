@@ -689,7 +689,7 @@
         var XmlDomParser = require("xmldom").DOMParser
         parser = new XmlDomParser()
       } else {
-        parser = new DOMParser()
+        parser = new fabric.window.DOMParser()
       }
       var svgString = canvas.toSVG(),
         doc = parser.parseFromString(svgString, "image/svg+xml"),
@@ -731,7 +731,7 @@
       canvas.add(group)
       expect(typeof iText1.toSVG).toEqual("function")
       expect(typeof iText2.toSVG).toEqual("function")
-      var parser = new DOMParser()
+      var parser = new fabric.window.DOMParser()
       var svgString = canvas.toSVG(),
         doc = parser.parseFromString(svgString, "image/svg+xml"),
         style = doc.getElementsByTagName("style")[0].firstChild.data

@@ -91,8 +91,11 @@ describe("fabric.Canvas events mixin", () => {
     var rect = new fabric.Rect({ width: 60, height: 60 })
     canvas._currentTransform = null
     canvas.add(rect)
+    // origin null
     expect(canvas._pointer).toEqual(undefined)
+    // origin null
     expect(canvas._absolutePointer).toEqual(undefined)
+    // origin null
     expect(canvas._target).toEqual(undefined)
     canvas.viewportTransform = [2, 0, 0, 2, 0, 0]
     canvas._cacheTransformEventData(e)

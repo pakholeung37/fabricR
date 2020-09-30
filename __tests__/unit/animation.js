@@ -2,7 +2,7 @@ describe("fabric.util.animate", () => {
   test("animateColor", function (done) {
     function testing(val, changePerc) {
       if (changePerc !== 1) {
-        expect(val).not.toEqual("rgba(0,0,255,1)")
+        expect(val).not.toBe("rgba(0,0,255,1)")
       }
     }
     expect(typeof fabric.util.animateColor === "function").toBeTruthy()

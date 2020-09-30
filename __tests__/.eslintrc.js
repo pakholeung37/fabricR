@@ -3,6 +3,8 @@ module.exports = {
     jest: true
   },
   globals: {
-    fabric: "readonly"
+    fabric: "readonly",
+    isWin: "readonly",
+    path: "readonly"
   }
 }

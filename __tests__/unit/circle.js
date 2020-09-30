@@ -1,7 +1,5 @@
-;(function () {
-  describe("fabric.Circle")
-
-  test("constructor", function (assert) {
+describe("fabric.Circle", () => {
+  test("constructor", function () {
     expect(fabric.Circle).toBeTruthy()
 
     var circle = new fabric.Circle()
@@ -12,14 +10,14 @@
     expect(circle.type).toEqual("circle")
   })
 
-  test("constructor with radius", function (assert) {
+  test("constructor with radius", function () {
     expect(fabric.Circle).toBeTruthy()
     var circle = new fabric.Circle({ radius: 20 })
     expect(circle.width).toEqual(40)
     expect(circle.height).toEqual(40)
   })
 
-  test("getRadiusX, getRadiusY", function (assert) {
+  test("getRadiusX, getRadiusY", function () {
     var circle = new fabric.Circle({ radius: 10 })
 
     expect(typeof circle.getRadiusX === "function").toBeTruthy()
@@ -44,7 +42,7 @@
     expect(circle.getRadiusY()).toEqual(40)
   })
 
-  test("setRadius", function (assert) {
+  test("setRadius", function () {
     var circle = new fabric.Circle({ radius: 10, strokeWidth: 0 })
 
     expect(typeof circle.setRadius === "function").toBeTruthy()
@@ -64,7 +62,7 @@
     expect(circle.height).toEqual(40)
   })
 
-  test("set radius", function (assert) {
+  test("set radius", function () {
     var circle = new fabric.Circle({ strokeWidth: 0 })
 
     circle.set("radius", 20)
@@ -76,13 +74,13 @@
     expect(circle.height).toEqual(40)
   })
 
-  test("complexity", function (assert) {
+  test("complexity", function () {
     var circle = new fabric.Circle()
     expect(typeof circle.complexity === "function").toBeTruthy()
     expect(circle.complexity()).toEqual(1)
   })
 
-  test("toObject", function (assert) {
+  test("toObject", function () {
     var circle = new fabric.Circle()
     var defaultProperties = {
       version: fabric.version,
@@ -138,7 +136,7 @@
     expect(circle.toObject()).toEqual(augmentedProperties)
   })
 
-  test("toSVG with full circle", function (assert) {
+  test("toSVG with full circle", function () {
     var circle = new fabric.Circle({ width: 100, height: 100, radius: 10 })
     var svg = circle.toSVG()
     var svgClipPath = circle.toClipPathSVG()
@@ -150,7 +148,7 @@
     )
   })
 
-  test("toSVG with half circle", function (assert) {
+  test("toSVG with half circle", function () {
     var circle = new fabric.Circle({
       width: 100,
       height: 100,
@@ -167,7 +165,7 @@
     )
   })
 
-  test("fromElement", function (assert) {
+  test("fromElement", function () {
     expect(typeof fabric.Circle.fromElement === "function").toBeTruthy()
 
     var namespace = "http://www.w3.org/2000/svg"
@@ -231,8 +229,7 @@
     })
   })
 
-  test("fromObject", function (assert) {
-    var done = assert.async()
+  test("fromObject", function (done) {
     expect(typeof fabric.Circle.fromObject === "function").toBeTruthy()
 
     var left = 112,
@@ -264,7 +261,7 @@
     )
   })
 
-  test("cloning and radius, width, height", function (assert) {
+  test("cloning and radius, width, height", function () {
     var circle = new fabric.Circle({ radius: 10, strokeWidth: 0 })
     circle.scale(2)
 
@@ -276,4 +273,4 @@
       expect(clone.radius).toEqual(10)
     })
   })
-})()
+})

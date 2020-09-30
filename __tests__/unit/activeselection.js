@@ -257,7 +257,7 @@ describe("fabric.ActiveSelection", () => {
     var coords = group.oCoords
     group.addWithUpdate(rect2)
     var newCoords = group.oCoords
-    expect(coords).not.toEqual(newCoords)
+    expect(coords).not.toBe(newCoords)
   })
 
   test("group removeWithUpdate", function () {
@@ -286,7 +286,7 @@ describe("fabric.ActiveSelection", () => {
     var coords = group.oCoords
     group.removeWithUpdate(rect2)
     var newCoords = group.oCoords
-    expect(coords).not.toEqual(newCoords)
+    expect(coords).not.toBe(newCoords)
   })
 
   test("ActiveSelection shouldCache", function () {

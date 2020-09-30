@@ -1,21 +1,16 @@
-;(function () {
-  var collection = fabric.Collection
-
-  describe("fabric.Collection", {
-    beforeEach: function () {
-      collection.rendered = 0
-      collection._objects = []
-      delete collection.renderOnAddRemove
-      delete collection._onObjectAdded
-      delete collection._onObjectRemoved
-    }
+var collection = fabric.Collection
+collection.requestRenderAll = function () {
+  this.rendered++
+}
+describe("fabric.Collection", () => {
+  beforeEach(function () {
+    collection.rendered = 0
+    collection._objects = []
+    delete collection.renderOnAddRemove
+    delete collection._onObjectAdded
+    delete collection._onObjectRemoved
   })
-
-  collection.requestRenderAll = function () {
-    this.rendered++
-  }
-
-  test("add", function (assert) {
+  test("add", function () {
     var obj = { prop: 4 },
       fired = 0
     expect(typeof collection.add === "function").toBeTruthy()
@@ -43,7 +38,7 @@
     expect(collection.rendered).toEqual(2)
   })
 
-  test("insertAt", function (assert) {
+  test("insertAt", function () {
     var obj = { prop: 4 },
       fired = 0,
       index = 1,
@@ -64,7 +59,7 @@
     var returned = collection.insertAt(newObject, index, nonSplicing)
     expect(returned).toEqual(collection)
     expect(collection._objects[index]).toEqual(newObject)
-    expect(collection._objects[index + 1]).not.toEqual(previousObject)
+    expect(collection._objects[index + 1]).not.toBe(previousObject)
     expect(collection._objects.indexOf(previousObject)).toEqual(-1)
     expect(collection._objects.length).toEqual(previousLenght)
     expect(typeof collection._onObjectAdded === "undefined").toBeTruthy()
@@ -79,7 +74,7 @@
     expect(collection.rendered).toEqual(1)
   })
 
-  test("remove", function (assert) {
+  test("remove", function () {
     var obj = { prop: 4 },
       obj2 = { prop: 2 },
       obj3 = { prop: 3 },
@@ -114,7 +109,7 @@
     expect(collection.rendered).toEqual(2)
   })
 
-  test("forEachObject", function (assert) {
+  test("forEachObject", function () {
     var obj = { prop: false },
       obj2 = { prop: false },
       obj3 = { prop: false },
@@ -133,20 +128,20 @@
     expect(obj3.prop).toEqual(true)
   })
 
-  test("getObjects", function (assert) {
+  test("getObjects", function () {
     var obj = { type: "a" },
       obj2 = { type: "b" }
     collection.add(obj2, obj)
     expect(typeof collection.getObjects === "function").toBeTruthy()
     var returned = collection.getObjects()
-    expect(returned).not.toEqual(collection._objects)
+    expect(returned).not.toBe(collection._objects)
     returned = collection.getObjects("a")
-    expect(returned).not.toEqual(collection._objects)
+    expect(returned).not.toBe(collection._objects)
     expect(returned.indexOf(obj2)).toEqual(-1)
     expect(returned.indexOf(obj)).toEqual(0)
   })
 
-  test("item", function (assert) {
+  test("item", function () {
     var obj = { type: "a" },
       obj2 = { type: "b" },
       index = 1
@@ -156,7 +151,7 @@
     expect(returned).toEqual(collection._objects[index])
   })
 
-  test("isEmpty", function (assert) {
+  test("isEmpty", function () {
     var obj = { type: "a" },
       obj2 = { type: "b" }
     expect(typeof collection.isEmpty === "function").toBeTruthy()
@@ -167,7 +162,7 @@
     expect(returned).toEqual(false)
   })
 
-  test("size", function (assert) {
+  test("size", function () {
     var obj = { type: "a" },
       obj2 = { type: "b" }
     expect(typeof collection.size === "function").toBeTruthy()
@@ -179,7 +174,7 @@
     expect(returned).toEqual(2)
   })
 
-  test("contains", function (assert) {
+  test("contains", function () {
     var obj = { type: "a" }
     expect(typeof collection.contains === "function").toBeTruthy()
     var returned = collection.contains(obj)
@@ -190,7 +185,7 @@
     expect(returned).toEqual(true)
   })
 
-  test("complexity", function (assert) {
+  test("complexity", function () {
     var obj = { type: "a" },
       obj2 = { type: "b" }
     expect(typeof collection.complexity === "function").toBeTruthy()
@@ -214,4 +209,4 @@
     returned = collection.complexity()
     expect(returned).toEqual(19)
   })
-})()
+})
