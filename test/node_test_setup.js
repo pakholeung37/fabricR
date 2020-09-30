@@ -46,21 +46,3 @@ class CustomResourceLoader extends jsdom.ResourceLoader {
     })
   }
 }
-
-var jsdom = require("jsdom")
-var virtualWindow = new jsdom.JSDOM(
-  decodeURIComponent(
-    "%3C!DOCTYPE%20html%3E%3Chtml%3E%3Chead%3E%3C%2Fhead%3E%3Cbody%3E%3C%2Fbody%3E%3C%2Fhtml%3E"
-  ),
-  {
-    features: {
-      FetchExternalResources: ["img"]
-    },
-    resources: new CustomResourceLoader()
-  }
-).window
-fabric.document = virtualWindow.document
-fabric.jsdomImplForWrapper = require("jsdom/lib/jsdom/living/generated/utils").implForWrapper
-fabric.nodeCanvas = require("jsdom/lib/jsdom/utils").Canvas
-fabric.window = virtualWindow
-DOMParser = fabric.window.DOMParser
