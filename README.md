@@ -9,11 +9,12 @@
 ### Goals
 
 - [x] modern frontend workflow (rollup + eslint + prettier + babel)
-- [ ] tree shaking and dynamic import
+- [x] migrate to esm
+- [x] tree shaking
 - [ ] modern es6+ syntax (especially class)
 - [ ] heavy utils external
 - [ ] plugin system
 - [ ] excellent performance
 - [ ] typescript support
-- [ ] migrate test framework to jest
+- [x] migrate test framework to jest
 - [ ] independent fabric config
